@@ -1,0 +1,150 @@
+/**
+ * Copyright (c) 2009 Digital Primates IT Consulting Group
+ * 
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following
+ * conditions:
+ * 
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ * 
+ * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @version    
+ **/ 
+package org.flexunit.experimental.theories.internals {
+	import flex.lang.reflect.Constructor;
+	import flex.lang.reflect.Method;
+	
+	import org.flexunit.experimental.theories.IParameterSupplier;
+	import org.flexunit.experimental.theories.IPotentialAssignment;
+	import org.flexunit.experimental.theories.ParameterSignature;
+	import org.flexunit.experimental.theories.internals.error.CouldNotGenerateValueException;
+	import org.flexunit.runners.model.TestClass;
+	
+
+	public class Assignments {
+		public var assigned:Array;
+		public var unassigned:Array;		
+		public var testClass:TestClass;
+
+		public function Assignments( assigned:Array, unassigned:Array, testClass:TestClass ) {
+			this.assigned = assigned;
+			this.unassigned = unassigned;
+			this.testClass = testClass;
+		}
+		
+		/** This is perhaps a tad bit more complicated than really needed for AS. The java version really
+		 *  needs to worry about multiple method signatures including multiple constructor signatures.
+		 *  No such worries here, but the basic flow was kept the same to be relatable and cause...
+		 *  who knows what the future could bring.
+		 **/
+		public static function allUnassigned( method:Method, testClass:TestClass ):Assignments {
+			var signatures:Array;
+			var constructor:Constructor = testClass.klassInfo.constructor;
+
+			signatures = ParameterSignature.signaturesByContructor( constructor );
+			signatures = signatures.concat( ParameterSignature.signaturesByMethod( method ) );
+			//trace( signatures.toString() );
+			return new Assignments( new Array(), signatures, testClass );
+		}
+
+		public function get complete():Boolean {
+			return unassigned.length == 0;
+		}
+	
+		public function nextUnassigned():ParameterSignature {
+			return unassigned[ 0 ];
+		}
+	
+		public function assignNext( source:IPotentialAssignment ):Assignments {
+			var assigned:Array = assigned.slice();
+			assigned.push(source);
+	
+			return new Assignments(assigned, unassigned.slice(1,unassigned.length), testClass);
+		}
+	
+		public function getActualValues( start:int, stop:int, nullsOk:Boolean ):Array{
+			var values:Array = new Array(stop - start); //Object[stop - start];
+			for (var i:int= start; i < stop; i++) {
+				var value:Object= assigned[i].getValue();
+				if (value == null && !nullsOk)
+					throw new CouldNotGenerateValueException();
+				values[i - start]= value;
+			}
+			return values;
+		}
+	
+		public function potentialsForNextUnassigned():Array  {
+			var unassigned:ParameterSignature = nextUnassigned();
+			return getSupplier(unassigned).getValueSources(unassigned);
+		}
+	
+		public function getSupplier( unassigned:ParameterSignature ):IParameterSupplier {
+			var supplier:IParameterSupplier = getAnnotatedSupplier(unassigned);
+			if (supplier != null)
+				return supplier;
+	
+			return new AllMembersSupplier(testClass);
+		}
+	
+		public function getAnnotatedSupplier( unassigned:ParameterSignature ):IParameterSupplier {
+/* 			var supplier:Boolean = unassigned.findDeepAnnotation( "ParametersSuppliedBy" );
+			if ( supplier == null)
+ 				return null;
+ */
+			//fix me 	return annotation.value().newInstance();
+			return null;
+		}
+	
+		public function getConstructorArguments( nullsOk:Boolean ):Array {
+			return getActualValues(0, getConstructorParameterCount(), nullsOk);
+		}
+	
+		public function getMethodArguments( nullsOk:Boolean ):Array {
+			return getActualValues(getConstructorParameterCount(),assigned.length, nullsOk);
+		}
+	
+		public function getAllArguments( nullsOk:Boolean ):Array {
+			return getActualValues(0, assigned.length, nullsOk);
+		}
+	
+		private function getConstructorParameterCount():int {
+			var constructor:Constructor = testClass.klassInfo.constructor;
+			var signatures:Array = ParameterSignature.signaturesByContructor( constructor );
+			var constructorParameterCount:int = signatures.length;
+			return constructorParameterCount;
+		}
+	
+		public function getArgumentStrings( nullsOk:Boolean ):Array {
+			var values:Array = new Array( assigned.length );
+			for (var i:int = 0; i < values.length; i++) {
+				values[i]= assigned[ i ].getDescription();
+			}
+			return values;
+		}
+		
+		public function toString():String {
+			var str:String = "              Assignments :\n";
+			
+			str += ("                  testClass:" + testClass + "\n");
+			str += ("                  assigned:" + assigned + "\n");
+			str += ("                  unassigned:" + unassigned);
+
+			return str; 		
+		}
+ 	}
+}
