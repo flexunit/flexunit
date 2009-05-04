@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flexLibProperties version="1">
+<includeClasses>
+<classEntry path="flexunit.flexui.TestRunnerBase"/>
+<classEntry path="flexunit.flexui.controls.FlexUnitLabels"/>
+<classEntry path="flexunit.flexui.controls.LeftHandSide"/>
+<classEntry path="flexunit.flexui.controls.PromptingTextInput"/>
+<classEntry path="flexunit.flexui.controls.RightHandSide"/>
+<classEntry path="flexunit.flexui.controls.Title"/>
+<classEntry path="flexunit.flexui.controls.left.FilterArea"/>
+<classEntry path="flexunit.flexui.controls.left.TestCasesTree"/>
+<classEntry path="flexunit.flexui.controls.left.events.SearchBarEvent"/>
+<classEntry path="flexunit.flexui.controls.left.itemRenderer.TestResultTreeItemRenderer"/>
+<classEntry path="flexunit.flexui.controls.right.RunningTests"/>
+<classEntry path="flexunit.flexui.controls.right.SelectedTestCaseForm"/>
+<classEntry path="flexunit.flexui.controls.right.StackTraceContainer"/>
+<classEntry path="flexunit.flexui.controls.right.TestsComplete"/>
+<classEntry path="flexunit.flexui.data.AbstractRowData"/>
+<classEntry path="flexunit.flexui.data.FilterTestsModel"/>
+<classEntry path="flexunit.flexui.data.TestCaseData"/>
+<classEntry path="flexunit.flexui.data.TestFunctionRowData"/>
+<classEntry path="flexunit.flexui.data.TestRunnerBasePresentationModel"/>
+<classEntry path="flexunit.flexui.data.filter.AllTestFunctionStatus"/>
+<classEntry path="flexunit.flexui.data.filter.EmptyTestFunctionStatus"/>
+<classEntry path="flexunit.flexui.data.filter.ErrorTestFunctionStatus"/>
+<classEntry path="flexunit.flexui.data.filter.ITestFunctionStatus"/>
+<classEntry path="flexunit.flexui.data.filter.TestfFunctionStatuses"/>
+<classEntry path="flexunit.flexui.event.TestRunnerBasePresentationModelProperyChangedEvent"/>
+<classEntry path="flexunit.flexui.event.TestsCompleteEvent"/>
+<classEntry path="flexunit.flexui.patterns.AbstractPattern"/>
+<classEntry path="flexunit.flexui.patterns.AssertContainedPattern"/>
+<classEntry path="flexunit.flexui.patterns.AssertEqualsPattern"/>
+<classEntry path="flexunit.flexui.patterns.AssertEventOcurredPattern"/>
+<classEntry path="flexunit.flexui.patterns.AssertMatchPattern"/>
+<classEntry path="flexunit.flexui.patterns.AssertNoMatchPattern"/>
+<classEntry path="flexunit.flexui.patterns.AssertNotContainedPattern"/>
+<classEntry path="flexunit.flexui.patterns.AssertNotNullPattern"/>
+<classEntry path="flexunit.flexui.patterns.AssertNotUndefinedPattern"/>
+<classEntry path="flexunit.flexui.patterns.AssertNullPattern"/>
+<classEntry path="flexunit.flexui.patterns.AssertUndefinedPattern"/>
+<classEntry path="flexunit.flexui.patterns.FailAsyncCallPattern"/>
+<classEntry path="org.flexunit.listeners.UIListener"/>
+</includeClasses>
+<includeResources>
+<resourceEntry destPath="skins/ButtonBarButton_selectedUpSkin.png" sourcePath="skins/ButtonBarButton_selectedUpSkin.png"/>
+<resourceEntry destPath="skins/SWFLoader_brokenImageSkin.png" sourcePath="skins/SWFLoader_brokenImageSkin.png"/>
+<resourceEntry destPath="skins/VScrollBar_trackDisabledSkin.png" sourcePath="skins/VScrollBar_trackDisabledSkin.png"/>
+<resourceEntry destPath="skins/CheckBox_overIcon.png" sourcePath="skins/CheckBox_overIcon.png"/>
+<resourceEntry destPath="skins/PopUpButton_downSkin.png" sourcePath="skins/PopUpButton_downSkin.png"/>
+<resourceEntry destPath="skins/PopUpButton_popUpDownSkin.png" sourcePath="skins/PopUpButton_popUpDownSkin.png"/>
+<resourceEntry destPath="skins/HScrollBar_thumbOverSkin.png" sourcePath="skins/HScrollBar_thumbOverSkin.png"/>
+<resourceEntry destPath="skins/HScrollBar_rightArrowUpSkin.png" sourcePath="skins/HScrollBar_rightArrowUpSkin.png"/>
+<resourceEntry destPath="skins/Tab_upSkin.png" sourcePath="skins/Tab_upSkin.png"/>
+<resourceEntry destPath="skins/ButtonBarLastButton_disabledSkin.png" sourcePath="skins/ButtonBarLastButton_disabledSkin.png"/>
+<resourceEntry destPath="skins/VScrollBar_upArrowDisabledSkin.png" sourcePath="skins/VScrollBar_upArrowDisabledSkin.png"/>
+<resourceEntry destPath="skins/DragManager_moveCursor.png" sourcePath="skins/DragManager_moveCursor.png"/>
+<resourceEntry destPath="css/FlexUnit.css" sourcePath="css/FlexUnit.css"/>
+<resourceEntry destPath="skins/DividedBox_dividerSkin.png" sourcePath="skins/DividedBox_dividerSkin.png"/>
+<resourceEntry destPath="skins/DateChooser_prevYearOverSkin.png" sourcePath="skins/DateChooser_prevYearOverSkin.png"/>
+<resourceEntry destPath="skins/Menu_radioIcon.png" sourcePath="skins/Menu_radioIcon.png"/>
+<resourceEntry destPath="skins/TextInput_borderSkin.png" sourcePath="skins/TextInput_borderSkin.png"/>
+<resourceEntry destPath="skins/DateField_overSkin.png" sourcePath="skins/DateField_overSkin.png"/>
+<resourceEntry destPath="skins/DateChooser_prevYearUpSkin.png" sourcePath="skins/DateChooser_prevYearUpSkin.png"/>
+<resourceEntry destPath="skins/NumericStepper_downArrowDisabledSkin.png" sourcePath="skins/NumericStepper_downArrowDisabledSkin.png"/>
+<resourceEntry destPath="skins/Tab_overSkin.png" sourcePath="skins/Tab_overSkin.png"/>
+<resourceEntry destPath="skins/VScrollBar_thumbOverSkin.png" sourcePath="skins/VScrollBar_thumbOverSkin.png"/>
+<resourceEntry destPath="skins/RadioButton_downIcon.png" sourcePath="skins/RadioButton_downIcon.png"/>
+<resourceEntry destPath="skins/DataGrid_borderSkin.png" sourcePath="skins/DataGrid_borderSkin.png"/>
+<resourceEntry destPath="skins/Button_disabledSkin.png" sourcePath="skins/Button_disabledSkin.png"/>
+<resourceEntry destPath="skins/DateField_disabledSkin.png" sourcePath="skins/DateField_disabledSkin.png"/>
+<resourceEntry destPath="skins/NumericStepper_upArrowDisabledSkin.png" sourcePath="skins/NumericStepper_upArrowDisabledSkin.png"/>
+<resourceEntry destPath="skins/ButtonBarFirstButton_upSkin.png" sourcePath="skins/ButtonBarFirstButton_upSkin.png"/>
+<resourceEntry destPath="skins/DividedBox_verticalCursor.png" sourcePath="skins/DividedBox_verticalCursor.png"/>
+<resourceEntry destPath="skins/DateChooser_nextMonthUpSkin.png" sourcePath="skins/DateChooser_nextMonthUpSkin.png"/>
+<resourceEntry destPath="skins/HScrollArrowRight_disabledSkin.png" sourcePath="skins/HScrollArrowRight_disabledSkin.png"/>
+<resourceEntry destPath="assets/fail_mini.png" sourcePath="assets/fail_mini.png"/>
+<resourceEntry destPath="skins/CheckBox_disabledIcon.png" sourcePath="skins/CheckBox_disabledIcon.png"/>
+<resourceEntry destPath="skins/ButtonBarButton_downSkin.png" sourcePath="skins/ButtonBarButton_downSkin.png"/>
+<resourceEntry destPath="skins/ButtonBarLastButton_selectedDisabledSkin.png" sourcePath="skins/ButtonBarLastButton_selectedDisabledSkin.png"/>
+<resourceEntry destPath="skins/ColorPicker_overSkin.png" sourcePath="skins/ColorPicker_overSkin.png"/>
+<resourceEntry destPath="skins/Button_overSkin.png" sourcePath="skins/Button_overSkin.png"/>
+<resourceEntry destPath="skins/RadioButton_disabledIcon.png" sourcePath="skins/RadioButton_disabledIcon.png"/>
+<resourceEntry destPath="skins/CursorManager_busyCursor.png" sourcePath="skins/CursorManager_busyCursor.png"/>
+<resourceEntry destPath="skins/VScrollBar_downArrowDownSkin.png" sourcePath="skins/VScrollBar_downArrowDownSkin.png"/>
+<resourceEntry destPath="skins/ComboBox_editableOverSkin.png" sourcePath="skins/ComboBox_editableOverSkin.png"/>
+<resourceEntry destPath="skins/ColorPicker_upSkin.png" sourcePath="skins/ColorPicker_upSkin.png"/>
+<resourceEntry destPath="skins/VScrollBar_downArrowUpSkin.png" sourcePath="skins/VScrollBar_downArrowUpSkin.png"/>
+<resourceEntry destPath="skins/Tree_folderOpenIcon.png" sourcePath="skins/Tree_folderOpenIcon.png"/>
+<resourceEntry destPath="assets/prev.png" sourcePath="assets/prev.png"/>
+<resourceEntry destPath="skins/Panel_closeButtonOverSkin.png" sourcePath="skins/Panel_closeButtonOverSkin.png"/>
+<resourceEntry destPath="skins/Tab_downSkin.png" sourcePath="skins/Tab_downSkin.png"/>
+<resourceEntry destPath="skins/empty.swf" sourcePath="skins/empty.swf"/>
+<resourceEntry destPath="skins/Menu_checkIcon.png" sourcePath="skins/Menu_checkIcon.png"/>
+<resourceEntry destPath="skins/CheckBox_upIcon.png" sourcePath="skins/CheckBox_upIcon.png"/>
+<resourceEntry destPath="skins/ProgressBar_trackSkin.png" sourcePath="skins/ProgressBar_trackSkin.png"/>
+<resourceEntry destPath="assets/searchIcn.png" sourcePath="assets/searchIcn.png"/>
+<resourceEntry destPath="skins/ToolTip_borderSkin.png" sourcePath="skins/ToolTip_borderSkin.png"/>
+<resourceEntry destPath="skins/ButtonBarButton_disabledSkin.png" sourcePath="skins/ButtonBarButton_disabledSkin.png"/>
+<resourceEntry destPath="assets/pass_big.png" sourcePath="assets/pass_big.png"/>
+<resourceEntry destPath="skins/DataGrid_columnResizeSkin.png" sourcePath="skins/DataGrid_columnResizeSkin.png"/>
+<resourceEntry destPath="skins/DragManager_rejectCursor.png" sourcePath="skins/DragManager_rejectCursor.png"/>
+<resourceEntry destPath="skins/VScrollBar_downArrowDisabledSkin.png" sourcePath="skins/VScrollBar_downArrowDisabledSkin.png"/>
+<resourceEntry destPath="skins/Tab_selectedDisabledSkin.png" sourcePath="skins/Tab_selectedDisabledSkin.png"/>
+<resourceEntry destPath="skins/FormItem_indicatorSkin.png" sourcePath="skins/FormItem_indicatorSkin.png"/>
+<resourceEntry destPath="skins/DividedBox_horizontalCursor.png" sourcePath="skins/DividedBox_horizontalCursor.png"/>
+<resourceEntry destPath="skins/NumericStepper_upArrowOverSkin.png" sourcePath="skins/NumericStepper_upArrowOverSkin.png"/>
+<resourceEntry destPath="skins/DataGrid_stretchCursor.png" sourcePath="skins/DataGrid_stretchCursor.png"/>
+<resourceEntry destPath="skins/ButtonBarLastButton_overSkin.png" sourcePath="skins/ButtonBarLastButton_overSkin.png"/>
+<resourceEntry destPath="skins/RadioButton_selectedOverIcon.png" sourcePath="skins/RadioButton_selectedOverIcon.png"/>
+<resourceEntry destPath="skins/DataGrid_sortArrowSkin.png" sourcePath="skins/DataGrid_sortArrowSkin.png"/>
+<resourceEntry destPath="skins/ProgressBar_indeterminateSkin.png" sourcePath="skins/ProgressBar_indeterminateSkin.png"/>
+<resourceEntry destPath="skins/DateChooser_nextMonthOverSkin.png" sourcePath="skins/DateChooser_nextMonthOverSkin.png"/>
+<resourceEntry destPath="assets/pass_small.png" sourcePath="assets/pass_small.png"/>
+<resourceEntry destPath="skins/VScrollBar_upArrowUpSkin.png" sourcePath="skins/VScrollBar_upArrowUpSkin.png"/>
+<resourceEntry destPath="skins/DateChooser_prevMonthDownSkin.png" sourcePath="skins/DateChooser_prevMonthDownSkin.png"/>
+<resourceEntry destPath="skins/VScrollBar_trackSkin.png" sourcePath="skins/VScrollBar_trackSkin.png"/>
+<resourceEntry destPath="skins/DateChooser_selectionIndicatorSkin.png" sourcePath="skins/DateChooser_selectionIndicatorSkin.png"/>
+<resourceEntry destPath="skins/CheckBox_selectedUpIcon.png" sourcePath="skins/CheckBox_selectedUpIcon.png"/>
+<resourceEntry destPath="skins/ButtonBarFirstButton_selectedDisabledSkin.png" sourcePath="skins/ButtonBarFirstButton_selectedDisabledSkin.png"/>
+<resourceEntry destPath="skins/Thumbs.db" sourcePath="skins/Thumbs.db"/>
+<resourceEntry destPath="skins/DateChooser_nextYearDownSkin.png" sourcePath="skins/DateChooser_nextYearDownSkin.png"/>
+<resourceEntry destPath="skins/Tree_disclosureClosedIcon.png" sourcePath="skins/Tree_disclosureClosedIcon.png"/>
+<resourceEntry destPath="skins/ProgressBar_barSkin.png" sourcePath="skins/ProgressBar_barSkin.png"/>
+<resourceEntry destPath="skins/ComboBox_disabledSkin.png" sourcePath="skins/ComboBox_disabledSkin.png"/>
+<resourceEntry destPath="skins/DateChooser_prevMonthOverSkin.png" sourcePath="skins/DateChooser_prevMonthOverSkin.png"/>
+<resourceEntry destPath="skins/HScrollBar_trackSkin.png" sourcePath="skins/HScrollBar_trackSkin.png"/>
+<resourceEntry destPath="skins/Slider_trackSkin.png" sourcePath="skins/Slider_trackSkin.png"/>
+<resourceEntry destPath="skins/HScrollBar_leftArrowDownSkin.png" sourcePath="skins/HScrollBar_leftArrowDownSkin.png"/>
+<resourceEntry destPath="skins/RadioButton_selectedDisabledIcon.png" sourcePath="skins/RadioButton_selectedDisabledIcon.png"/>
+<resourceEntry destPath="skins/LinkButton_disabledSkin.png" sourcePath="skins/LinkButton_disabledSkin.png"/>
+<resourceEntry destPath="skins/VScrollBar_thumbIcon.png" sourcePath="skins/VScrollBar_thumbIcon.png"/>
+<resourceEntry destPath="skins/ComboBox_overSkin.png" sourcePath="skins/ComboBox_overSkin.png"/>
+<resourceEntry destPath="skins/DragManager_linkCursor.png" sourcePath="skins/DragManager_linkCursor.png"/>
+<resourceEntry destPath="skins/DateChooser_prevMonthDisabledSkin.png" sourcePath="skins/DateChooser_prevMonthDisabledSkin.png"/>
+<resourceEntry destPath="skins/VScrollBar_thumbUpSkin.png" sourcePath="skins/VScrollBar_thumbUpSkin.png"/>
+<resourceEntry destPath="skins/ButtonBarLastButton_upSkin.png" sourcePath="skins/ButtonBarLastButton_upSkin.png"/>
+<resourceEntry destPath="skins/HScrollArrowLeft_disabledSkin.png" sourcePath="skins/HScrollArrowLeft_disabledSkin.png"/>
+<resourceEntry destPath="skins/Panel_borderSkin.png" sourcePath="skins/Panel_borderSkin.png"/>
+<resourceEntry destPath="skins/DateChooser_todayIndicatorSkin.png" sourcePath="skins/DateChooser_todayIndicatorSkin.png"/>
+<resourceEntry destPath="skins/MenuBar_itemDownSkin.png" sourcePath="skins/MenuBar_itemDownSkin.png"/>
+<resourceEntry destPath="skins/Slider_thumbUpSkin.png" sourcePath="skins/Slider_thumbUpSkin.png"/>
+<resourceEntry destPath="skins/Tree_defaultLeafIcon.png" sourcePath="skins/Tree_defaultLeafIcon.png"/>
+<resourceEntry destPath="skins/Panel_controlBarBackgroundSkin.png" sourcePath="skins/Panel_controlBarBackgroundSkin.png"/>
+<resourceEntry destPath="skins/LinkButton_upSkin.png" sourcePath="skins/LinkButton_upSkin.png"/>
+<resourceEntry destPath="skins/MenuBar_backgroundSkin.png" sourcePath="skins/MenuBar_backgroundSkin.png"/>
+<resourceEntry destPath="skins/Menu_branchDisabledIcon.png" sourcePath="skins/Menu_branchDisabledIcon.png"/>
+<resourceEntry destPath="skins/DateChooser_nextYearDisabledSkin.png" sourcePath="skins/DateChooser_nextYearDisabledSkin.png"/>
+<resourceEntry destPath="skins/HScrollBar_trackDisabledSkin.png" sourcePath="skins/HScrollBar_trackDisabledSkin.png"/>
+<resourceEntry destPath="skins/HScrollBar_leftArrowUpSkin.png" sourcePath="skins/HScrollBar_leftArrowUpSkin.png"/>
+<resourceEntry destPath="skins/HScrollBar_rightArrowDownSkin.png" sourcePath="skins/HScrollBar_rightArrowDownSkin.png"/>
+<resourceEntry destPath="skins/ColorPicker_disabledSkin.png" sourcePath="skins/ColorPicker_disabledSkin.png"/>
+<resourceEntry destPath="skins/DateChooser_prevYearDisabledSkin.png" sourcePath="skins/DateChooser_prevYearDisabledSkin.png"/>
+<resourceEntry destPath="skins/ComboBox_editableDownSkin.png" sourcePath="skins/ComboBox_editableDownSkin.png"/>
+<resourceEntry destPath="skins/DateChooser_prevMonthUpSkin.png" sourcePath="skins/DateChooser_prevMonthUpSkin.png"/>
+<resourceEntry destPath="skins/Panel_closeButtonUpSkin.png" sourcePath="skins/Panel_closeButtonUpSkin.png"/>
+<resourceEntry destPath="skins/PopUpButton_upSkin.png" sourcePath="skins/PopUpButton_upSkin.png"/>
+<resourceEntry destPath="skins/ButtonBarFirstButton_selectedUpSkin.png" sourcePath="skins/ButtonBarFirstButton_selectedUpSkin.png"/>
+<resourceEntry destPath="skins/Menu_checkDisabledIcon.png" sourcePath="skins/Menu_checkDisabledIcon.png"/>
+<resourceEntry destPath="skins/HScrollBar_thumbDownSkin.png" sourcePath="skins/HScrollBar_thumbDownSkin.png"/>
+<resourceEntry destPath="skins/DataGrid_columnDropIndicatorSkin.png" sourcePath="skins/DataGrid_columnDropIndicatorSkin.png"/>
+<resourceEntry destPath="skins/Tab_disabledSkin.png" sourcePath="skins/Tab_disabledSkin.png"/>
+<resourceEntry destPath="assets/next.png" sourcePath="assets/next.png"/>
+<resourceEntry destPath="skins/List_borderSkin.png" sourcePath="skins/List_borderSkin.png"/>
+<resourceEntry destPath="fonts/fonts.swf" sourcePath="fonts/fonts.swf"/>
+<resourceEntry destPath="assets/fail_big.png" sourcePath="assets/fail_big.png"/>
+<resourceEntry destPath="skins/DateField_upSkin.png" sourcePath="skins/DateField_upSkin.png"/>
+<resourceEntry destPath="skins/AccordionHeader_upSkin.png" sourcePath="skins/AccordionHeader_upSkin.png"/>
+<resourceEntry destPath="skins/ButtonBarLastButton_selectedUpSkin.png" sourcePath="skins/ButtonBarLastButton_selectedUpSkin.png"/>
+<resourceEntry destPath="skins/Tree_borderSkin.png" sourcePath="skins/Tree_borderSkin.png"/>
+<resourceEntry destPath="skins/PopUpButton_disabledSkin.png" sourcePath="skins/PopUpButton_disabledSkin.png"/>
+<resourceEntry destPath="skins/VScrollBar_downArrowOverSkin.png" sourcePath="skins/VScrollBar_downArrowOverSkin.png"/>
+<resourceEntry destPath="skins/DragManager_defaultDragImageSkin.png" sourcePath="skins/DragManager_defaultDragImageSkin.png"/>
+<resourceEntry destPath="skins/CheckBox_selectedDisabledIcon.png" sourcePath="skins/CheckBox_selectedDisabledIcon.png"/>
+<resourceEntry destPath="skins/DateChooser_rollOverIndicatorSkin.png" sourcePath="skins/DateChooser_rollOverIndicatorSkin.png"/>
+<resourceEntry destPath="skins/AccordionHeader_selectedSkin.png" sourcePath="skins/AccordionHeader_selectedSkin.png"/>
+<resourceEntry destPath="skins/ButtonBarFirstButton_disabledSkin.png" sourcePath="skins/ButtonBarFirstButton_disabledSkin.png"/>
+<resourceEntry destPath="skins/MenuBar_itemOverSkin.png" sourcePath="skins/MenuBar_itemOverSkin.png"/>
+<resourceEntry destPath="skins/LinkButton_overSkin.png" sourcePath="skins/LinkButton_overSkin.png"/>
+<resourceEntry destPath="skins/VScrollBar_upArrowOverSkin.png" sourcePath="skins/VScrollBar_upArrowOverSkin.png"/>
+<resourceEntry destPath="skins/DataGrid_headerSeparatorSkin.png" sourcePath="skins/DataGrid_headerSeparatorSkin.png"/>
+<resourceEntry destPath="skins/RadioButton_selectedDownIcon.png" sourcePath="skins/RadioButton_selectedDownIcon.png"/>
+<resourceEntry destPath="skins/CheckBox_downIcon.png" sourcePath="skins/CheckBox_downIcon.png"/>
+<resourceEntry destPath="skins/Tree_disclosureOpenIcon.png" sourcePath="skins/Tree_disclosureOpenIcon.png"/>
+<resourceEntry destPath="skins/AccordionHeader_overSkin.png" sourcePath="skins/AccordionHeader_overSkin.png"/>
+<resourceEntry destPath="skins/LinkButton_downSkin.png" sourcePath="skins/LinkButton_downSkin.png"/>
+<resourceEntry destPath="skins/AccordionHeader_downSkin.png" sourcePath="skins/AccordionHeader_downSkin.png"/>
+<resourceEntry destPath="skins/RadioButton_selectedUpIcon.png" sourcePath="skins/RadioButton_selectedUpIcon.png"/>
+<resourceEntry destPath="skins/HScrollBar_leftArrowOverSkin.png" sourcePath="skins/HScrollBar_leftArrowOverSkin.png"/>
+<resourceEntry destPath="skins/ButtonBarButton_selectedDisabledSkin.png" sourcePath="skins/ButtonBarButton_selectedDisabledSkin.png"/>
+<resourceEntry destPath="skins/CheckBox_selectedDownIcon.png" sourcePath="skins/CheckBox_selectedDownIcon.png"/>
+<resourceEntry destPath="skins/NumericStepper_downArrowDownSkin.png" sourcePath="skins/NumericStepper_downArrowDownSkin.png"/>
+<resourceEntry destPath="skins/Slider_thumbOverSkin.png" sourcePath="skins/Slider_thumbOverSkin.png"/>
+<resourceEntry destPath="skins/RadioButton_overIcon.png" sourcePath="skins/RadioButton_overIcon.png"/>
+<resourceEntry destPath="skins/Tree_folderClosedIcon.png" sourcePath="skins/Tree_folderClosedIcon.png"/>
+<resourceEntry destPath="skins/NumericStepper_downArrowUpSkin.png" sourcePath="skins/NumericStepper_downArrowUpSkin.png"/>
+<resourceEntry destPath="skins/Tab_selectedUpSkin.png" sourcePath="skins/Tab_selectedUpSkin.png"/>
+<resourceEntry destPath="skins/HScrollBar_thumbIcon.png" sourcePath="skins/HScrollBar_thumbIcon.png"/>
+<resourceEntry destPath="skins/RadioButton_upIcon.png" sourcePath="skins/RadioButton_upIcon.png"/>
+<resourceEntry destPath="skins/ComboBox_editableDisabledSkin.png" sourcePath="skins/ComboBox_editableDisabledSkin.png"/>
+<resourceEntry destPath="skins/ComboBox_downSkin.png" sourcePath="skins/ComboBox_downSkin.png"/>
+<resourceEntry destPath="skins/TextArea_borderSkin.png" sourcePath="skins/TextArea_borderSkin.png"/>
+<resourceEntry destPath="skins/Menu_radioDisabledIcon.png" sourcePath="skins/Menu_radioDisabledIcon.png"/>
+<resourceEntry destPath="skins/NumericStepper_upArrowUpSkin.png" sourcePath="skins/NumericStepper_upArrowUpSkin.png"/>
+<resourceEntry destPath="skins/DateChooser_prevYearDownSkin.png" sourcePath="skins/DateChooser_prevYearDownSkin.png"/>
+<resourceEntry destPath="skins/Panel_closeButtonDownSkin.png" sourcePath="skins/Panel_closeButtonDownSkin.png"/>
+<resourceEntry destPath="skins/Menu_branchIcon.png" sourcePath="skins/Menu_branchIcon.png"/>
+<resourceEntry destPath="skins/DateChooser_nextMonthDisabledSkin.png" sourcePath="skins/DateChooser_nextMonthDisabledSkin.png"/>
+<resourceEntry destPath="skins/ButtonBarButton_overSkin.png" sourcePath="skins/ButtonBarButton_overSkin.png"/>
+<resourceEntry destPath="skins/DragManager_copyCursor.png" sourcePath="skins/DragManager_copyCursor.png"/>
+<resourceEntry destPath="skins/Slider_thumbDisabledSkin.png" sourcePath="skins/Slider_thumbDisabledSkin.png"/>
+<resourceEntry destPath="skins/VScrollBar_upArrowDownSkin.png" sourcePath="skins/VScrollBar_upArrowDownSkin.png"/>
+<resourceEntry destPath="skins/ButtonBarButton_upSkin.png" sourcePath="skins/ButtonBarButton_upSkin.png"/>
+<resourceEntry destPath="assets/pass_mini.png" sourcePath="assets/pass_mini.png"/>
+<resourceEntry destPath="skins/DataGrid_headerBackgroundSkin.png" sourcePath="skins/DataGrid_headerBackgroundSkin.png"/>
+<resourceEntry destPath="assets/fail_small.png" sourcePath="assets/fail_small.png"/>
+<resourceEntry destPath="skins/HScrollBar_rightArrowOverSkin.png" sourcePath="skins/HScrollBar_rightArrowOverSkin.png"/>
+<resourceEntry destPath="skins/ScrollThumb_downSkin.png" sourcePath="skins/ScrollThumb_downSkin.png"/>
+<resourceEntry destPath="skins/CheckBox_selectedOverIcon.png" sourcePath="skins/CheckBox_selectedOverIcon.png"/>
+<resourceEntry destPath="skins/ComboBox_editableUpSkin.png" sourcePath="skins/ComboBox_editableUpSkin.png"/>
+<resourceEntry destPath="skins/Button_downSkin.png" sourcePath="skins/Button_downSkin.png"/>
+<resourceEntry destPath="skins/PopUpButton_overSkin.png" sourcePath="skins/PopUpButton_overSkin.png"/>
+<resourceEntry destPath="skins/AccordionHeader_disabledSkin.png" sourcePath="skins/AccordionHeader_disabledSkin.png"/>
+<resourceEntry destPath="css/FlexUnitComponents.css" sourcePath="css/FlexUnitComponents.css"/>
+<resourceEntry destPath="skins/NumericStepper_upArrowDownSkin.png" sourcePath="skins/NumericStepper_upArrowDownSkin.png"/>
+<resourceEntry destPath="assets/clearIcn.png" sourcePath="assets/clearIcn.png"/>
+<resourceEntry destPath="skins/ColorPicker_downSkin.png" sourcePath="skins/ColorPicker_downSkin.png"/>
+<resourceEntry destPath="skins/DateChooser_nextYearUpSkin.png" sourcePath="skins/DateChooser_nextYearUpSkin.png"/>
+<resourceEntry destPath="skins/ButtonBarLastButton_downSkin.png" sourcePath="skins/ButtonBarLastButton_downSkin.png"/>
+<resourceEntry destPath="skins/Menu_separatorSkin.png" sourcePath="skins/Menu_separatorSkin.png"/>
+<resourceEntry destPath="skins/HScrollBar_thumbUpSkin.png" sourcePath="skins/HScrollBar_thumbUpSkin.png"/>
+<resourceEntry destPath="skins/Slider_trackHighlightSkin.png" sourcePath="skins/Slider_trackHighlightSkin.png"/>
+<resourceEntry destPath="skins/Panel_closeButtonDisabledSkin.png" sourcePath="skins/Panel_closeButtonDisabledSkin.png"/>
+<resourceEntry destPath="skins/DateChooser_nextMonthDownSkin.png" sourcePath="skins/DateChooser_nextMonthDownSkin.png"/>
+<resourceEntry destPath="skins/NumericStepper_downArrowOverSkin.png" sourcePath="skins/NumericStepper_downArrowOverSkin.png"/>
+<resourceEntry destPath="skins/Button_upSkin.png" sourcePath="skins/Button_upSkin.png"/>
+<resourceEntry destPath="skins/ButtonBarFirstButton_overSkin.png" sourcePath="skins/ButtonBarFirstButton_overSkin.png"/>
+<resourceEntry destPath="skins/PopUpButton_popUpOverSkin.png" sourcePath="skins/PopUpButton_popUpOverSkin.png"/>
+<resourceEntry destPath="skins/DateField_downSkin.png" sourcePath="skins/DateField_downSkin.png"/>
+<resourceEntry destPath="skins/ComboBox_upSkin.png" sourcePath="skins/ComboBox_upSkin.png"/>
+<resourceEntry destPath="skins/MenuBar_itemUpSkin.png" sourcePath="skins/MenuBar_itemUpSkin.png"/>
+<resourceEntry destPath="skins/DateChooser_nextYearOverSkin.png" sourcePath="skins/DateChooser_nextYearOverSkin.png"/>
+<resourceEntry destPath="skins/Slider_thumbDownSkin.png" sourcePath="skins/Slider_thumbDownSkin.png"/>
+<resourceEntry destPath="skins/ButtonBarFirstButton_downSkin.png" sourcePath="skins/ButtonBarFirstButton_downSkin.png"/>
+<resourceEntry destPath="skins/VScrollBar_thumbDownSkin.png" sourcePath="skins/VScrollBar_thumbDownSkin.png"/>
+</includeResources>
+<namespaceManifests/>
+</flexLibProperties>

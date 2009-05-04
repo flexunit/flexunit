@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+   Copyright (c) 2008. Adobe Systems Incorporated.
+   All rights reserved.
+
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are met:
+
+     * Redistributions of source code must retain the above copyright notice,
+       this list of conditions and the following disclaimer.
+     * Redistributions in binary form must reproduce the above copyright notice,
+       this list of conditions and the following disclaimer in the documentation
+       and/or other materials provided with the distribution.
+     * Neither the name of Adobe Systems Incorporated nor the names of its
+       contributors may be used to endorse or promote products derived from this
+       software without specific prior written permission.
+
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+   POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<mx:HBox
+   xmlns:mx="http://www.adobe.com/2006/mxml"
+   width="100%"
+   verticalAlign="middle"
+   horizontalAlign="left"
+   paddingTop="0"
+   horizontalScrollPolicy="off"
+   verticalScrollPolicy="off">
+
+   <mx:Script>
+      <![CDATA[
+         import flexunit.flexui.controls.FlexUnitLabels;
+         import flexunit.flexui.data.TestRunnerBasePresentationModel;
+
+         private var _model : TestRunnerBasePresentationModel;
+
+         [Embed(source="/assets/pass_big.png")]
+         public var pass_big : Class;
+
+         [Embed(source="/assets/fail_big.png")]
+         public var fail_big : Class;
+
+         private var _resultImage : Class = pass_big;
+
+         public function set model( value : TestRunnerBasePresentationModel ) : void
+         {
+            _model = value;
+         }
+
+         public function onTestEnd() : void
+         {
+            testrun.text = _model.numTestsRun.toString();
+
+            if( _model.totalErrors > 0 || _model.totalFailures > 0 )
+            {
+               displayFailIcon()
+            }
+
+            if ( _model.numTestsRun == _model.totalTests )
+            {
+               updateResultImage();
+            }
+         }
+
+         public function updateTotalFailureUI() : void
+         {
+            failures.text = _model.totalFailures.toString();
+         }
+
+         public function updateTotalErrorUI() : void
+         {
+            errors.text = _model.totalErrors.toString();
+         }
+
+         public function updateRunDuration() : void
+         {
+           /*// TODO: [XB] reactivate  var average : Number = Assert.totalAssertionsMade / _model.numTestsRun;
+            
+            time.text = _model.suiteDurationFormatted;
+            totalAssertionsMade.text = average.toFixed( 2 ) + 
+                     " " + FlexUnitLabels.ASSERTIONS_PER_TEST_IN_AVERAGE;
+			*/
+         }
+
+         public function updateResultImage() : void
+         {
+            result.source = _resultImage;
+         }
+
+         public function displayFailIcon() : void
+         {
+            if ( _resultImage != fail_big )
+            {
+               _resultImage = fail_big;
+            }
+         }
+      ]]>
+   </mx:Script>
+
+   <mx:Image
+      id="result" 
+      />
+
+   <mx:Form
+      styleName="flexUnitForm"
+      width="310">
+
+      <mx:FormItem
+         styleName="flexUnitFormItemLabel"
+         label="{ FlexUnitLabels.TESTS_RUN }"
+         width="100%">
+
+         <mx:Label
+            id="testrun"
+            styleName="flexUnitFormItemValue"
+            width="100%"
+            />
+
+      </mx:FormItem>
+
+      <mx:FormItem
+         styleName="flexUnitFormItemLabel"
+         label="{ FlexUnitLabels.TIME_TAKEN }"
+         width="100%">
+
+         <mx:Label
+            id="time"
+            styleName="flexUnitFormItemValue"
+            width="100%"
+            />
+
+      </mx:FormItem>
+
+      <mx:FormItem
+         styleName="flexUnitFormItemLabel"
+         label="{ FlexUnitLabels.ASSERTS }"
+         width="100%">
+
+         <mx:Label
+            id="totalAssertionsMade"
+            styleName="flexUnitFormItemValue"
+            width="100%"
+            />
+
+      </mx:FormItem>
+
+      <mx:FormItem
+         styleName="flexUnitFormItemLabel"
+         label="{ FlexUnitLabels.ERRORS }"
+         width="100%">
+
+         <mx:Label
+            id="errors"
+            styleName="flexUnitFormItemValue"
+            width="100%"
+            />
+
+      </mx:FormItem>
+
+      <mx:FormItem
+         styleName="flexUnitFormItemLabel"
+         label="{ FlexUnitLabels.FAILURES }"
+         width="100%">
+
+         <mx:Label
+            id="failures"
+            styleName="flexUnitFormItemValue"
+            width="100%"
+            />
+
+      </mx:FormItem>
+
+   </mx:Form>
+
+</mx:HBox>

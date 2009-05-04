@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+   Copyright (c) 2008. Adobe Systems Incorporated.
+   All rights reserved.
+
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are met:
+
+     * Redistributions of source code must retain the above copyright notice,
+       this list of conditions and the following disclaimer.
+     * Redistributions in binary form must reproduce the above copyright notice,
+       this list of conditions and the following disclaimer in the documentation
+       and/or other materials provided with the distribution.
+     * Neither the name of Adobe Systems Incorporated nor the names of its
+       contributors may be used to endorse or promote products derived from this
+       software without specific prior written permission.
+
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+   POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<mx:Form
+   xmlns:mx="http://www.adobe.com/2006/mxml"
+   width="100%"
+   styleName="flexUnitForm"
+   minWidth="190"
+   >
+
+   <mx:Script>
+      <![CDATA[
+         import flexunit.flexui.controls.FlexUnitLabels;
+         import mx.utils.StringUtil;
+         import mx.core.UIComponent;
+         import flexunit.flexui.data.TestRunnerBasePresentationModel;
+         import flexunit.flexui.data.TestFunctionRowData;
+
+         private var _model : TestRunnerBasePresentationModel;
+
+         public function set model( value : TestRunnerBasePresentationModel ) : void
+         {
+            _model = value;
+         }
+         
+         public function updateRowSummaryToDisplay() : void
+         {
+            assertionsPerTestFormItem.visible = ! _model.testsRunning;
+            assertionsPerTestFormItem.includeInLayout = ! _model.testsRunning;   
+            
+            if( ! _model.testsRunning ||
+                ( _model.rowSelected != null ) )
+            {
+               if( _model.rowSelected )
+               {
+                  cas.text = _model.rowSelected.className;
+                  assertionsPerTest.text = _model.rowSelected.assertionsMadeLegend;
+               }
+               
+               if( _model.testFunctionSelected )
+               {
+                  func.text = _model.testFunctionSelected.testMethodName;
+                  expected.text = _model.testFunctionSelected.expectedResult;
+                  actual.text = _model.testFunctionSelected.actualResult;
+                  errorMessage.text = _model.testFunctionSelected.errorMessage;                  
+                  errorMessage.toolTip = _model.testFunctionSelected.errorMessage;
+                  location.text = _model.testFunctionSelected.location;
+               }
+               else
+               {
+                  if ( _model.testCaseSelected )
+                  {
+                     classResults.text = StringUtil.substitute( 
+                        FlexUnitLabels.PASSED_TESTS_NUMBER_MESSAGE,
+                        _model.testCaseSelected.passedTestsNumber,
+                        _model.testCaseSelected.testsNumber );
+                  }
+               }
+                              
+               setFormVisibilty( _model.testFunctionSelected != null );
+            }
+         }
+
+         private function setFormVisibilty( isTestCase : Boolean ) : void
+         {
+            setFormItemVisibilty( functionFormItem, isTestCase );
+            setFormItemVisibilty( expectedFormItem, isTestCase );
+            setFormItemVisibilty( actualFormItem,   isTestCase );
+            setFormItemVisibilty( messageFormItem,  isTestCase );
+            setFormItemVisibilty( locationFormItem, isTestCase );
+            setFormItemVisibilty( resultFormItem, ! isTestCase );
+         }
+
+         private function setFormItemVisibilty( 
+                     formItem : UIComponent, 
+                     isTestCase : Boolean ) : void
+         {
+            formItem.visible = isTestCase;
+            formItem.includeInLayout = isTestCase;
+         }
+
+      ]]>
+   </mx:Script>
+   <mx:FormItem
+      styleName="flexUnitFormItemLabel"
+      label="{ FlexUnitLabels.CASE }"
+      width="100%">
+
+      <mx:Label
+         id="cas"
+         styleName="flexUnitFormItemValue"
+         truncateToFit="true"
+         selectable="true"
+         width="310"
+         />
+
+   </mx:FormItem>
+
+   <mx:FormItem
+      id="functionFormItem"
+      styleName="flexUnitFormItemLabel"
+      label="{ FlexUnitLabels.FUNCTION }"
+      width="100%">
+
+      <mx:Label
+         id="func"
+         styleName="flexUnitFormItemValue"
+         truncateToFit="true"
+         selectable="true"
+         width="310"
+         />
+
+   </mx:FormItem>
+
+   <mx:FormItem
+      id="assertionsPerTestFormItem"
+      styleName="flexUnitFormItemLabel"
+      label="{ FlexUnitLabels.ASSERTS }"
+      toolTip="{ FlexUnitLabels.ASSERTIONS_PER_TEST }"
+      width="100%">
+
+      <mx:Label
+         id="assertionsPerTest"
+         styleName="flexUnitFormItemValue"
+         truncateToFit="true"
+         selectable="true"
+         width="310"
+         />
+
+   </mx:FormItem> 
+     
+   <mx:FormItem
+      id="expectedFormItem"
+      styleName="flexUnitFormItemLabel"
+      label="{ FlexUnitLabels.EXPECTED }"
+      width="100%">
+
+      <mx:Label
+         id="expected"
+         styleName="flexUnitFormItemValue"
+         truncateToFit="true"
+         selectable="true"
+         width="310"
+         />
+
+   </mx:FormItem>
+
+   <mx:FormItem
+      id="actualFormItem"
+      styleName="flexUnitFormItemLabel"
+      label="{ FlexUnitLabels.ACTUAL }"
+      width="100%">
+
+      <mx:Label
+         id="actual"
+         styleName="flexUnitFormItemValue"
+         truncateToFit="true"
+         selectable="true"
+         width="310"
+         />
+
+   </mx:FormItem>
+
+   <mx:FormItem
+      id="locationFormItem"
+      styleName="flexUnitFormItemLabel"
+      label="{ FlexUnitLabels.LOCATION }"
+      width="100%">
+
+      <mx:Label
+         id="location"
+         width="310"
+         selectable="true"
+         truncateToFit="true"
+         styleName="flexUnitFormItemValue"
+         />
+
+   </mx:FormItem>
+
+   <mx:FormItem
+      id="messageFormItem"
+      styleName="flexUnitFormItemLabel"
+      label="{ FlexUnitLabels.MESSAGE }"
+      width="100%">
+
+      <mx:Text
+         id="errorMessage"
+         width="310"
+         maxHeight="70"
+         styleName="flexUnitFormItemValue"
+         />
+
+   </mx:FormItem>
+
+   <mx:FormItem
+      id="resultFormItem"
+      styleName="flexUnitFormItemLabel"
+      label="{ FlexUnitLabels.RESULT }"
+      width="100%">
+
+      <mx:Text
+         id="classResults"
+         width="310"
+         maxHeight="70"
+         styleName="flexUnitFormItemValue"
+         />
+
+   </mx:FormItem>
+
+</mx:Form>

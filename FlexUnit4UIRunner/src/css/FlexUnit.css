@@ -1,0 +1,54 @@
+/* CSS file for application-level compilation */
+
+/* Type-selectors do not get compiled into the components, but they are available for use by new TestRunner Applications */
+Application {
+   backgroundColor: #3872b2;
+   backgroundGradientColors: #3872b2, #0c1a3d;
+   backgroundGradientAlphas: 1, 1;
+   themeColor: #ffffff;
+   color: #444444;
+   fontFamily: "Myriad Pro Semibold";
+   fontSize: 12;
+}
+
+ScrollBar
+{
+	downArrowDisabledSkin: Embed( source="/skins/VScrollBar_downArrowDisabledSkin.png" );
+	downArrowDownSkin: Embed( source="/skins/VScrollBar_downArrowDownSkin.png" );
+	downArrowOverSkin: Embed( source="/skins/VScrollBar_downArrowOverSkin.png" );
+	downArrowUpSkin: Embed( source="/skins/VScrollBar_downArrowUpSkin.png" );
+	thumbIcon: Embed( source="/skins/VScrollBar_thumbIcon.png" );
+	trackSkin: Embed( source="/skins/VScrollBar_trackSkin.png" );
+	upArrowDisabledSkin: Embed( source="/skins/VScrollBar_upArrowDisabledSkin.png" );
+	upArrowDownSkin: Embed( source="/skins/VScrollBar_upArrowDownSkin.png" );
+	upArrowOverSkin: Embed( source="/skins/VScrollBar_upArrowOverSkin.png" );
+	upArrowUpSkin: Embed( source="/skins/VScrollBar_upArrowUpSkin.png" );
+	thumbDownSkin: Embed( 
+	   source="/skins/VScrollBar_thumbDownSkin.png",
+		   scaleGridLeft="1", scaleGridTop="5", 
+		   scaleGridRight="8", scaleGridBottom="44" );
+	thumbOverSkin: Embed( 
+	   source="/skins/VScrollBar_thumbOverSkin.png",
+   		scaleGridLeft="1", scaleGridTop="5", 
+   		scaleGridRight="8", scaleGridBottom="44" );
+	thumbUpSkin: Embed( 
+	   source="/skins/VScrollBar_thumbUpSkin.png",
+		   scaleGridLeft="1", scaleGridTop="5", 
+		   scaleGridRight="8", scaleGridBottom="44" );
+}
+
+/* Embedded Fonts */
+ @font-face {
+	font-family: "Myriad Pro SemiCond";
+	src: url( "/fonts/fonts.swf" );
+}
+
+ @font-face {
+	font-family: "Myriad Pro Semibold SemiCond";
+	src: url( "/fonts/fonts.swf" );
+}
+
+ @font-face {
+	font-family: "Myriad Pro Semibold";
+	src: url( "/fonts/fonts.swf" );
+}

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+   Copyright (c) 2008. Adobe Systems Incorporated.
+   All rights reserved.
+
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are met:
+
+     * Redistributions of source code must retain the above copyright notice,
+       this list of conditions and the following disclaimer.
+     * Redistributions in binary form must reproduce the above copyright notice,
+       this list of conditions and the following disclaimer in the documentation
+       and/or other materials provided with the distribution.
+     * Neither the name of Adobe Systems Incorporated nor the names of its
+       contributors may be used to endorse or promote products derived from this
+       software without specific prior written permission.
+
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+   POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<mx:VBox
+   xmlns:mx="http://www.adobe.com/2006/mxml"
+   xmlns:controls="flexunit.flexui.controls.*"
+   width="100%"
+   verticalScrollPolicy="off"
+   horizontalScrollPolicy="off"
+   horizontalAlign="right"
+   creationComplete="handleCreateComplete()" verticalGap="0">
+
+   <mx:Metadata>
+      [Event( name="filterChanged", type="flash.events.Event")]
+      [Event( name="filterTextChanged", type="flash.events.Event")]
+      [Event( name="filterResultChanged", type="flash.events.Event")]
+      [Event( name="filterAssertionChanged", type="flash.events.Event")]
+   </mx:Metadata>
+
+   <mx:Script>
+      <![CDATA[
+         import flexunit.flexui.controls.FlexUnitLabels;
+         import flexunit.flexui.controls.left.events.SearchBarEvent;
+         import flexunit.flexui.data.filter.ITestFunctionStatus;
+         import flexunit.flexui.data.filter.TestfFunctionStatuses;
+         import flexunit.flexui.data.TestRunnerBasePresentationModel;
+
+         import mx.events.SliderEvent;
+         import mx.formatters.NumberFormatter;
+         import mx.utils.StringUtil;
+
+         private var _model : TestRunnerBasePresentationModel;
+
+         public function set model( value : TestRunnerBasePresentationModel ) : void
+         {
+            _model = value;
+         }
+
+         public function updateFilterSectionEnable() : void
+         {
+            searchTextInput.enabled = _model.filterSectionEnabled;
+            resultTypeComboBox.enabled = _model.filterSectionEnabled;
+         }
+
+         public function onAllTestsEnd() : void
+         {
+            resultTypeComboBox.selectedIndex = 2;
+            
+            resultTypeComboBox.invalidateProperties();            
+            
+            _model.filterModel.selectedTestFunctionStatus = TestfFunctionStatuses.ERRORS_AND_FAILURES;
+
+            onSearch();
+         }
+
+         private function handleCreateComplete() : void
+         {
+            resultTypeComboBox.dataProvider = TestfFunctionStatuses.toArray();
+            resultTypeComboBox.selectedIndex = 2;
+         }
+         
+         private function onFilterTextChange() : void
+         {
+            onSearch();
+            
+            dispatchEvent( new SearchBarEvent( SearchBarEvent.FILTER_TEXT_CHANGED_EVENT ) );
+         }
+         
+         private function onSearch() : void
+         {
+            _model.filterModel.filter = searchTextInput.text;
+
+            searchImage.visible = searchTextInput.text.length > 0;
+
+            _model.dataProvider.refresh();
+
+            dispatchEvent( new SearchBarEvent( SearchBarEvent.FILTER_CHANGED_EVENT ) );
+         }
+
+         private function clearSearch() : void
+         {
+            if ( searchTextInput && searchTextInput.text != "" )
+            {
+               searchTextInput.text = "";
+
+               onSearch();
+            }
+         }
+
+         private function onResultTypeFilterChange( event : Event ) : void
+         {
+            var eventComboBox : ComboBox = event.target as ComboBox;
+
+            _model.filterModel.selectedTestFunctionStatus = eventComboBox.selectedItem as ITestFunctionStatus
+            
+            if( eventComboBox.selectedIndex == 1 )
+            {
+               dispatchEvent( new SearchBarEvent( SearchBarEvent.FILTER_ASSERTION_CHANGED_EVENT ) );
+            }
+            else
+            {
+               dispatchEvent( new SearchBarEvent( SearchBarEvent.FILTER_RESULT_CHANGED_EVENT ) );
+            }
+
+            onSearch();
+         }
+         
+      ]]>
+   </mx:Script>
+
+   <mx:HBox
+      width="100%"
+      verticalAlign="middle">
+
+      <mx:Canvas>
+
+         <controls:PromptingTextInput
+            id="searchTextInput"
+            styleName="flexUnitTextInput"
+            verticalCenter="0"
+            width="200"
+            textIndent="20"
+            prompt="{ FlexUnitLabels.FILTER_PROMPT }"
+            toolTip="{ FlexUnitLabels.FILTER_TOOLTIP }"
+            change="onFilterTextChange()"
+            />
+      
+         <mx:Image
+            source="@Embed('/assets/searchIcn.png')"
+            verticalCenter="0"
+            left="8"
+            />
+         
+      </mx:Canvas>
+   
+      <mx:Image
+         id="searchImage"
+         visible="false"
+         left="208"
+         verticalCenter="0"
+         source="@Embed('/assets/clearIcn.png')"
+         buttonMode="true"
+         useHandCursor="true"
+         mouseChildren="false"
+         click="clearSearch()"
+         />
+      
+      <mx:Spacer
+         width="100%"
+         />
+            
+      <!-- Test Results Filter -->
+        
+      <mx:ComboBox
+         id="resultTypeComboBox"
+         styleName="flexUnitComboBox"
+         verticalCenter="0"
+         editable="false"
+         width="130"
+         right="0"
+         change="onResultTypeFilterChange( event )"
+         />
+      
+   </mx:HBox>
+   
+</mx:VBox>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+   Copyright (c) 2008. Adobe Systems Incorporated.
+   All rights reserved.
+
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are met:
+
+     * Redistributions of source code must retain the above copyright notice,
+       this list of conditions and the following disclaimer.
+     * Redistributions in binary form must reproduce the above copyright notice,
+       this list of conditions and the following disclaimer in the documentation
+       and/or other materials provided with the distribution.
+     * Neither the name of Adobe Systems Incorporated nor the names of its
+       contributors may be used to endorse or promote products derived from this
+       software without specific prior written permission.
+
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+   POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<mx:VBox
+   xmlns:mx="http://www.adobe.com/2006/mxml"
+   xmlns:controls="flexunit.flexui.controls.*"
+   xmlns:left="flexunit.flexui.controls.left.*"
+   width="100%" height="100%"
+   minWidth="450"
+   verticalScrollPolicy="off"
+   horizontalScrollPolicy="off"
+   verticalGap="2"
+   >
+
+   <mx:Script>
+      <![CDATA[
+         import flexunit.flexui.data.AbstractRowData;
+         import flexunit.flexui.data.TestRunnerBasePresentationModel;
+
+         private var _model : TestRunnerBasePresentationModel;
+
+         public function set model( value : TestRunnerBasePresentationModel ) : void
+         {
+            _model = value;
+            filterArea.model = _model;
+            testCasesContainer.model = _model;
+         }
+
+         public function onAllTestsEnd() : void
+         {
+            testCasesContainer.onAllTestsEnd();
+            filterArea.onAllTestsEnd();
+         }
+
+         public function launchTests() : void
+         {
+            testCasesContainer.launchTests();
+         }
+
+         //---------------------------------------------------------------------
+         // Filter Methods
+         //---------------------------------------------------------------------
+
+         public function refreshTree() : void
+         {
+            testCasesContainer.refreshTree();
+         }
+
+         public function updateFilterSectionEnable() : void
+         {
+            filterArea.updateFilterSectionEnable();
+         }
+
+         public function updateScrollPosition() : void
+         {
+            testCasesContainer.updateScrollPosition();
+         }
+
+         private function handleFilterAreaResize() : void
+         {
+            testCasesContainer.width = filterArea.width;
+         }
+
+      ]]>
+   </mx:Script>
+
+   <controls:Title
+      text="{ FlexUnitLabels.TEST_CASES }"
+      />
+
+   <mx:HRule
+      styleName="flexUnitHRule"
+      width="100%" 
+      />
+
+   <left:FilterArea
+      id="filterArea"
+      resize="handleFilterAreaResize()"
+      filterChanged="refreshTree()"
+      filterTextChanged="testCasesContainer.filterChangedEffect.play( [ testCasesContainer.caseName, testCasesContainer.expectedUI, testCasesContainer.actualUI ] )"
+      filterResultChanged="testCasesContainer.filterChangedEffect.play( [ testCasesContainer.resultUI ] )"
+      filterAssertionChanged="testCasesContainer.filterChangedEffect.play( [ testCasesContainer.assertionUI ] )"
+      x="10" 
+      y="10"
+      />
+
+   <left:TestCasesTree
+      id="testCasesContainer"
+      label="Tree"
+     />
+
+</mx:VBox>
