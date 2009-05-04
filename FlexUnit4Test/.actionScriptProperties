@@ -6,7 +6,7 @@
 <libraryPathEntry kind="4" path=""/>
 <libraryPathEntry kind="1" linkType="1" path="libs"/>
 <libraryPathEntry kind="3" linkType="1" path="/FlexUnit4/bin/FlexUnit4.swc" useDefaultLinkType="false"/>
-<libraryPathEntry kind="3" linkType="1" path="/flexUnit4UIRunner/bin/flexUnit4UIRunner.swc" useDefaultLinkType="false"/>
+<libraryPathEntry kind="3" linkType="1" path="/FlexUnit4UIRunner/bin/FlexUnit4UIRunner.swc" useDefaultLinkType="false"/>
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>
