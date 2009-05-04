@@ -36,6 +36,7 @@ package org.flexunit.runner {
 	import mx.logging.LogEventLevel;
 	import mx.logging.targets.TraceTarget;
 	
+	import org.flexunit.experimental.theories.Theories;
 	import org.flexunit.internals.TextListener;
 	import org.flexunit.runner.notification.Failure;
 	import org.flexunit.runner.notification.IAsyncStartupRunListener;
@@ -69,6 +70,9 @@ package org.flexunit.runner {
 		private var asyncListenerWatcher:AsyncListenerWatcher;
 		
 		private static const RUN_LISTENER:String = "runListener";
+		
+		//Just keep theories linked in until we decide how to deal with it
+		private var theory:Theories;
 
 		public function get version():String {
 			return "4.0.0a";
