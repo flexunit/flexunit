@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+	creationComplete="runMe()" xmlns:flexui="flexunit.flexui.*"
+	styleName="flexUnitApplication" >
+	
+	<mx:Script>
+		<![CDATA[
+			import flexUnitTests.flexUnit4.suites.frameworkSuite.FlexUnit4Suite;
+			//import org.flexunit.listeners.JUnitListener;
+			import org.flexunit.runner.notification.async.XMLListener;
+			import org.flexunit.listeners.UIListener;
+			import org.flexunit.runner.Request;
+
+			import org.flexunit.runner.FlexUnitCore;
+			private var core:FlexUnitCore;
+
+			public function runMe():void {
+
+				core = new FlexUnitCore();
+
+				//Listeners for CI systems or plugins 
+				//core.addListener( new JUnitListener());
+				//core.addListener( new XMLListener() );
+
+				//Listener for the UI
+				core.addListener( new UIListener( uiListener ));
+				core.run( FlexUnit4Suite );
+
+				//The run method can take a single class or suite
+				//core.run( FrameworkSuite ); or core.run( TestAssert );
+
+				//It can take a request, which allows you to selected specific tests
+				//core.run( Request.method( TestTwo, "testTwo3" ) );
+				
+				//It can take a comma separated list of the previous choices
+				//core.run( FrameworkSuite, TestAssert, Request.method( TestAssert, "testFail" ) );
+				
+				//It can take an array
+				//var ar:Array = new Array();
+				//ar.push( Request.method( TestAssert, "testFail" ) );
+				//ar.push( FrameworkSuite );
+				//core.run( ar );
+
+				//Or a combination of any of the above
+				//var ar:Array = new Array();
+				//ar.push( Request.method( TestAssert, "testFail" ) );
+				//ar.push( FrameworkSuite );
+				//core.run( FrameworkSuite, ar, TestAssert  );
+
+				//The only really important thing is that you pass them all at once. You don't want to call core.run() more than once at this time
+			}
+		]]>
+	</mx:Script>
+	<mx:Style>
+		Application {
+			   backgroundColor: #3872b2;
+			   backgroundGradientColors: #3872b2, #0c1a3d;
+			   backgroundGradientAlphas: 1, 1;
+			   themeColor: #ffffff;
+			   color: #444444;
+			   fontFamily: "Myriad Pro Semibold";
+			   fontSize: 12;
+			}
+	</mx:Style>
+	
+	<flexui:TestRunnerBase id="uiListener" 
+		width="100%" height="100%" />
+</mx:Application>
