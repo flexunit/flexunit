@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flexLibProperties version="1">
+<includeClasses>
+<classEntry path="org.flexunit.listeners.JUnitListener"/>
+<classEntry path="org.flexunit.listeners.TestCaseReport"/>
+<classEntry path="org.flexunit.listeners.TestSuiteReport"/>
+</includeClasses>
+<includeResources/>
+<namespaceManifests/>
+</flexLibProperties>
