@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <flexLibProperties version="1">
 <includeClasses>
-<classEntry path="flexunit.flexui.TestRunnerBase"/>
-<classEntry path="flexunit.flexui.controls.FlexUnitLabels"/>
-<classEntry path="flexunit.flexui.controls.LeftHandSide"/>
-<classEntry path="flexunit.flexui.controls.PromptingTextInput"/>
-<classEntry path="flexunit.flexui.controls.RightHandSide"/>
-<classEntry path="flexunit.flexui.controls.Title"/>
-<classEntry path="flexunit.flexui.controls.left.FilterArea"/>
-<classEntry path="flexunit.flexui.controls.left.TestCasesTree"/>
-<classEntry path="flexunit.flexui.controls.left.events.SearchBarEvent"/>
-<classEntry path="flexunit.flexui.controls.left.itemRenderer.TestResultTreeItemRenderer"/>
-<classEntry path="flexunit.flexui.controls.right.RunningTests"/>
-<classEntry path="flexunit.flexui.controls.right.SelectedTestCaseForm"/>
-<classEntry path="flexunit.flexui.controls.right.StackTraceContainer"/>
-<classEntry path="flexunit.flexui.controls.right.TestsComplete"/>
-<classEntry path="flexunit.flexui.data.AbstractRowData"/>
-<classEntry path="flexunit.flexui.data.FilterTestsModel"/>
-<classEntry path="flexunit.flexui.data.TestCaseData"/>
-<classEntry path="flexunit.flexui.data.TestFunctionRowData"/>
-<classEntry path="flexunit.flexui.data.TestRunnerBasePresentationModel"/>
-<classEntry path="flexunit.flexui.data.filter.AllTestFunctionStatus"/>
-<classEntry path="flexunit.flexui.data.filter.EmptyTestFunctionStatus"/>
-<classEntry path="flexunit.flexui.data.filter.ErrorTestFunctionStatus"/>
-<classEntry path="flexunit.flexui.data.filter.ITestFunctionStatus"/>
-<classEntry path="flexunit.flexui.data.filter.TestfFunctionStatuses"/>
-<classEntry path="flexunit.flexui.event.TestRunnerBasePresentationModelProperyChangedEvent"/>
-<classEntry path="flexunit.flexui.event.TestsCompleteEvent"/>
-<classEntry path="flexunit.flexui.patterns.AbstractPattern"/>
-<classEntry path="flexunit.flexui.patterns.AssertContainedPattern"/>
-<classEntry path="flexunit.flexui.patterns.AssertEqualsPattern"/>
-<classEntry path="flexunit.flexui.patterns.AssertEventOcurredPattern"/>
-<classEntry path="flexunit.flexui.patterns.AssertMatchPattern"/>
-<classEntry path="flexunit.flexui.patterns.AssertNoMatchPattern"/>
-<classEntry path="flexunit.flexui.patterns.AssertNotContainedPattern"/>
-<classEntry path="flexunit.flexui.patterns.AssertNotNullPattern"/>
-<classEntry path="flexunit.flexui.patterns.AssertNotUndefinedPattern"/>
-<classEntry path="flexunit.flexui.patterns.AssertNullPattern"/>
-<classEntry path="flexunit.flexui.patterns.AssertUndefinedPattern"/>
-<classEntry path="flexunit.flexui.patterns.FailAsyncCallPattern"/>
+<classEntry path="org.flexunit.flexui.TestRunnerBase"/>
+<classEntry path="org.flexunit.flexui.controls.FlexUnitLabels"/>
+<classEntry path="org.flexunit.flexui.controls.LeftHandSide"/>
+<classEntry path="org.flexunit.flexui.controls.PromptingTextInput"/>
+<classEntry path="org.flexunit.flexui.controls.RightHandSide"/>
+<classEntry path="org.flexunit.flexui.controls.Title"/>
+<classEntry path="org.flexunit.flexui.controls.left.FilterArea"/>
+<classEntry path="org.flexunit.flexui.controls.left.TestCasesTree"/>
+<classEntry path="org.flexunit.flexui.controls.left.events.SearchBarEvent"/>
+<classEntry path="org.flexunit.flexui.controls.left.itemRenderer.TestResultTreeItemRenderer"/>
+<classEntry path="org.flexunit.flexui.controls.right.RunningTests"/>
+<classEntry path="org.flexunit.flexui.controls.right.SelectedTestCaseForm"/>
+<classEntry path="org.flexunit.flexui.controls.right.StackTraceContainer"/>
+<classEntry path="org.flexunit.flexui.controls.right.TestsComplete"/>
+<classEntry path="org.flexunit.flexui.data.AbstractRowData"/>
+<classEntry path="org.flexunit.flexui.data.FilterTestsModel"/>
+<classEntry path="org.flexunit.flexui.data.TestCaseData"/>
+<classEntry path="org.flexunit.flexui.data.TestFunctionRowData"/>
+<classEntry path="org.flexunit.flexui.data.TestRunnerBasePresentationModel"/>
+<classEntry path="org.flexunit.flexui.data.filter.AllTestFunctionStatus"/>
+<classEntry path="org.flexunit.flexui.data.filter.EmptyTestFunctionStatus"/>
+<classEntry path="org.flexunit.flexui.data.filter.ErrorTestFunctionStatus"/>
+<classEntry path="org.flexunit.flexui.data.filter.ITestFunctionStatus"/>
+<classEntry path="org.flexunit.flexui.data.filter.TestfFunctionStatuses"/>
+<classEntry path="org.flexunit.flexui.event.TestRunnerBasePresentationModelProperyChangedEvent"/>
+<classEntry path="org.flexunit.flexui.event.TestsCompleteEvent"/>
+<classEntry path="org.flexunit.flexui.patterns.AbstractPattern"/>
+<classEntry path="org.flexunit.flexui.patterns.AssertContainedPattern"/>
+<classEntry path="org.flexunit.flexui.patterns.AssertEqualsPattern"/>
+<classEntry path="org.flexunit.flexui.patterns.AssertEventOcurredPattern"/>
+<classEntry path="org.flexunit.flexui.patterns.AssertMatchPattern"/>
+<classEntry path="org.flexunit.flexui.patterns.AssertNoMatchPattern"/>
+<classEntry path="org.flexunit.flexui.patterns.AssertNotContainedPattern"/>
+<classEntry path="org.flexunit.flexui.patterns.AssertNotNullPattern"/>
+<classEntry path="org.flexunit.flexui.patterns.AssertNotUndefinedPattern"/>
+<classEntry path="org.flexunit.flexui.patterns.AssertNullPattern"/>
+<classEntry path="org.flexunit.flexui.patterns.AssertUndefinedPattern"/>
+<classEntry path="org.flexunit.flexui.patterns.FailAsyncCallPattern"/>
 <classEntry path="org.flexunit.listeners.UIListener"/>
 </includeClasses>
 <includeResources>
@@ -56,17 +56,17 @@
 <resourceEntry destPath="skins/DragManager_moveCursor.png" sourcePath="skins/DragManager_moveCursor.png"/>
 <resourceEntry destPath="css/FlexUnit.css" sourcePath="css/FlexUnit.css"/>
 <resourceEntry destPath="skins/DividedBox_dividerSkin.png" sourcePath="skins/DividedBox_dividerSkin.png"/>
-<resourceEntry destPath="skins/DateChooser_prevYearOverSkin.png" sourcePath="skins/DateChooser_prevYearOverSkin.png"/>
 <resourceEntry destPath="skins/Menu_radioIcon.png" sourcePath="skins/Menu_radioIcon.png"/>
+<resourceEntry destPath="skins/DateChooser_prevYearOverSkin.png" sourcePath="skins/DateChooser_prevYearOverSkin.png"/>
 <resourceEntry destPath="skins/TextInput_borderSkin.png" sourcePath="skins/TextInput_borderSkin.png"/>
 <resourceEntry destPath="skins/DateField_overSkin.png" sourcePath="skins/DateField_overSkin.png"/>
 <resourceEntry destPath="skins/DateChooser_prevYearUpSkin.png" sourcePath="skins/DateChooser_prevYearUpSkin.png"/>
-<resourceEntry destPath="skins/NumericStepper_downArrowDisabledSkin.png" sourcePath="skins/NumericStepper_downArrowDisabledSkin.png"/>
 <resourceEntry destPath="skins/Tab_overSkin.png" sourcePath="skins/Tab_overSkin.png"/>
+<resourceEntry destPath="skins/NumericStepper_downArrowDisabledSkin.png" sourcePath="skins/NumericStepper_downArrowDisabledSkin.png"/>
 <resourceEntry destPath="skins/VScrollBar_thumbOverSkin.png" sourcePath="skins/VScrollBar_thumbOverSkin.png"/>
 <resourceEntry destPath="skins/RadioButton_downIcon.png" sourcePath="skins/RadioButton_downIcon.png"/>
-<resourceEntry destPath="skins/DataGrid_borderSkin.png" sourcePath="skins/DataGrid_borderSkin.png"/>
 <resourceEntry destPath="skins/Button_disabledSkin.png" sourcePath="skins/Button_disabledSkin.png"/>
+<resourceEntry destPath="skins/DataGrid_borderSkin.png" sourcePath="skins/DataGrid_borderSkin.png"/>
 <resourceEntry destPath="skins/DateField_disabledSkin.png" sourcePath="skins/DateField_disabledSkin.png"/>
 <resourceEntry destPath="skins/NumericStepper_upArrowDisabledSkin.png" sourcePath="skins/NumericStepper_upArrowDisabledSkin.png"/>
 <resourceEntry destPath="skins/ButtonBarFirstButton_upSkin.png" sourcePath="skins/ButtonBarFirstButton_upSkin.png"/>
@@ -91,9 +91,10 @@
 <resourceEntry destPath="skins/Tab_downSkin.png" sourcePath="skins/Tab_downSkin.png"/>
 <resourceEntry destPath="skins/empty.swf" sourcePath="skins/empty.swf"/>
 <resourceEntry destPath="skins/Menu_checkIcon.png" sourcePath="skins/Menu_checkIcon.png"/>
-<resourceEntry destPath="skins/CheckBox_upIcon.png" sourcePath="skins/CheckBox_upIcon.png"/>
 <resourceEntry destPath="skins/ProgressBar_trackSkin.png" sourcePath="skins/ProgressBar_trackSkin.png"/>
+<resourceEntry destPath="skins/CheckBox_upIcon.png" sourcePath="skins/CheckBox_upIcon.png"/>
 <resourceEntry destPath="assets/searchIcn.png" sourcePath="assets/searchIcn.png"/>
+<resourceEntry destPath="design.xml" sourcePath="design.xml"/>
 <resourceEntry destPath="skins/ToolTip_borderSkin.png" sourcePath="skins/ToolTip_borderSkin.png"/>
 <resourceEntry destPath="skins/ButtonBarButton_disabledSkin.png" sourcePath="skins/ButtonBarButton_disabledSkin.png"/>
 <resourceEntry destPath="assets/pass_big.png" sourcePath="assets/pass_big.png"/>
@@ -114,28 +115,28 @@
 <resourceEntry destPath="skins/VScrollBar_upArrowUpSkin.png" sourcePath="skins/VScrollBar_upArrowUpSkin.png"/>
 <resourceEntry destPath="skins/DateChooser_prevMonthDownSkin.png" sourcePath="skins/DateChooser_prevMonthDownSkin.png"/>
 <resourceEntry destPath="skins/VScrollBar_trackSkin.png" sourcePath="skins/VScrollBar_trackSkin.png"/>
-<resourceEntry destPath="skins/DateChooser_selectionIndicatorSkin.png" sourcePath="skins/DateChooser_selectionIndicatorSkin.png"/>
 <resourceEntry destPath="skins/CheckBox_selectedUpIcon.png" sourcePath="skins/CheckBox_selectedUpIcon.png"/>
+<resourceEntry destPath="skins/DateChooser_selectionIndicatorSkin.png" sourcePath="skins/DateChooser_selectionIndicatorSkin.png"/>
 <resourceEntry destPath="skins/ButtonBarFirstButton_selectedDisabledSkin.png" sourcePath="skins/ButtonBarFirstButton_selectedDisabledSkin.png"/>
 <resourceEntry destPath="skins/Thumbs.db" sourcePath="skins/Thumbs.db"/>
-<resourceEntry destPath="skins/DateChooser_nextYearDownSkin.png" sourcePath="skins/DateChooser_nextYearDownSkin.png"/>
 <resourceEntry destPath="skins/Tree_disclosureClosedIcon.png" sourcePath="skins/Tree_disclosureClosedIcon.png"/>
+<resourceEntry destPath="skins/DateChooser_nextYearDownSkin.png" sourcePath="skins/DateChooser_nextYearDownSkin.png"/>
 <resourceEntry destPath="skins/ProgressBar_barSkin.png" sourcePath="skins/ProgressBar_barSkin.png"/>
 <resourceEntry destPath="skins/ComboBox_disabledSkin.png" sourcePath="skins/ComboBox_disabledSkin.png"/>
 <resourceEntry destPath="skins/DateChooser_prevMonthOverSkin.png" sourcePath="skins/DateChooser_prevMonthOverSkin.png"/>
-<resourceEntry destPath="skins/HScrollBar_trackSkin.png" sourcePath="skins/HScrollBar_trackSkin.png"/>
 <resourceEntry destPath="skins/Slider_trackSkin.png" sourcePath="skins/Slider_trackSkin.png"/>
-<resourceEntry destPath="skins/HScrollBar_leftArrowDownSkin.png" sourcePath="skins/HScrollBar_leftArrowDownSkin.png"/>
+<resourceEntry destPath="skins/HScrollBar_trackSkin.png" sourcePath="skins/HScrollBar_trackSkin.png"/>
 <resourceEntry destPath="skins/RadioButton_selectedDisabledIcon.png" sourcePath="skins/RadioButton_selectedDisabledIcon.png"/>
-<resourceEntry destPath="skins/LinkButton_disabledSkin.png" sourcePath="skins/LinkButton_disabledSkin.png"/>
+<resourceEntry destPath="skins/HScrollBar_leftArrowDownSkin.png" sourcePath="skins/HScrollBar_leftArrowDownSkin.png"/>
 <resourceEntry destPath="skins/VScrollBar_thumbIcon.png" sourcePath="skins/VScrollBar_thumbIcon.png"/>
+<resourceEntry destPath="skins/LinkButton_disabledSkin.png" sourcePath="skins/LinkButton_disabledSkin.png"/>
 <resourceEntry destPath="skins/ComboBox_overSkin.png" sourcePath="skins/ComboBox_overSkin.png"/>
 <resourceEntry destPath="skins/DragManager_linkCursor.png" sourcePath="skins/DragManager_linkCursor.png"/>
 <resourceEntry destPath="skins/DateChooser_prevMonthDisabledSkin.png" sourcePath="skins/DateChooser_prevMonthDisabledSkin.png"/>
 <resourceEntry destPath="skins/VScrollBar_thumbUpSkin.png" sourcePath="skins/VScrollBar_thumbUpSkin.png"/>
 <resourceEntry destPath="skins/ButtonBarLastButton_upSkin.png" sourcePath="skins/ButtonBarLastButton_upSkin.png"/>
-<resourceEntry destPath="skins/HScrollArrowLeft_disabledSkin.png" sourcePath="skins/HScrollArrowLeft_disabledSkin.png"/>
 <resourceEntry destPath="skins/Panel_borderSkin.png" sourcePath="skins/Panel_borderSkin.png"/>
+<resourceEntry destPath="skins/HScrollArrowLeft_disabledSkin.png" sourcePath="skins/HScrollArrowLeft_disabledSkin.png"/>
 <resourceEntry destPath="skins/DateChooser_todayIndicatorSkin.png" sourcePath="skins/DateChooser_todayIndicatorSkin.png"/>
 <resourceEntry destPath="skins/MenuBar_itemDownSkin.png" sourcePath="skins/MenuBar_itemDownSkin.png"/>
 <resourceEntry destPath="skins/Tree_defaultLeafIcon.png" sourcePath="skins/Tree_defaultLeafIcon.png"/>
@@ -235,13 +236,15 @@
 <resourceEntry destPath="skins/Button_upSkin.png" sourcePath="skins/Button_upSkin.png"/>
 <resourceEntry destPath="skins/ButtonBarFirstButton_overSkin.png" sourcePath="skins/ButtonBarFirstButton_overSkin.png"/>
 <resourceEntry destPath="skins/PopUpButton_popUpOverSkin.png" sourcePath="skins/PopUpButton_popUpOverSkin.png"/>
-<resourceEntry destPath="skins/DateField_downSkin.png" sourcePath="skins/DateField_downSkin.png"/>
 <resourceEntry destPath="skins/ComboBox_upSkin.png" sourcePath="skins/ComboBox_upSkin.png"/>
+<resourceEntry destPath="skins/DateField_downSkin.png" sourcePath="skins/DateField_downSkin.png"/>
 <resourceEntry destPath="skins/MenuBar_itemUpSkin.png" sourcePath="skins/MenuBar_itemUpSkin.png"/>
 <resourceEntry destPath="skins/DateChooser_nextYearOverSkin.png" sourcePath="skins/DateChooser_nextYearOverSkin.png"/>
 <resourceEntry destPath="skins/Slider_thumbDownSkin.png" sourcePath="skins/Slider_thumbDownSkin.png"/>
 <resourceEntry destPath="skins/ButtonBarFirstButton_downSkin.png" sourcePath="skins/ButtonBarFirstButton_downSkin.png"/>
 <resourceEntry destPath="skins/VScrollBar_thumbDownSkin.png" sourcePath="skins/VScrollBar_thumbDownSkin.png"/>
 </includeResources>
-<namespaceManifests/>
+<namespaceManifests>
+<namespaceManifestEntry manifest="flexUnitUIRunner-manifest.xml" namespace="http://www.adobe.com/2009/flexUnitUIRunner"/>
+</namespaceManifests>
 </flexLibProperties>
