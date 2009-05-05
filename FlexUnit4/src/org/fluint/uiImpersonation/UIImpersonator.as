@@ -25,6 +25,7 @@
  * @author     Michael Labriola <labriola@digitalprimates.net>
  * @version    
  **/ 
+ 
  package org.fluint.uiImpersonation
 {
 	import flash.display.DisplayObject;
