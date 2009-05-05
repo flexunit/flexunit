@@ -51,18 +51,9 @@
 			}
 		]]>
 	</mx:Script>
-	<mx:Style>
-		Application {
-			   backgroundColor: #3872b2;
-			   backgroundGradientColors: #3872b2, #0c1a3d;
-			   backgroundGradientAlphas: 1, 1;
-			   themeColor: #ffffff;
-			   color: #444444;
-			   fontFamily: "Myriad Pro Semibold";
-			   fontSize: 12;
-			}
-	</mx:Style>
 	
+	<mx:Style source="css/FlexUnitComponents.css" />
+	   
 	<flexui:TestRunnerBase id="uiListener" 
 		width="100%" height="100%" />
 </mx:Application>
