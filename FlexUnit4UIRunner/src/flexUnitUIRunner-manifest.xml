@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<componentPackage>
+	<component class="org.flexunit.flexui.TestRunnerBase" id="TestRunnerBase"/>
+</componentPackage>

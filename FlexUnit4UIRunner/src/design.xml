@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<design>
+   <namespaces>
+     <namespace prefix="flexUnitUIRunner" uri="http://www.adobe.com/2009/flexUnitUIRunner"/>
+   </namespaces>
+   
+   <categories>
+	   <category id="flexUnit" label="flexUnit" defaultExpand="true"/>
+   </categories>
+		
+   <components>
+		<component name="org.flexunit.flexui.TestRunnerBase" namespace="flexUnitUIRunner" category="flexUnit"/>
+   </components>
+</design>
