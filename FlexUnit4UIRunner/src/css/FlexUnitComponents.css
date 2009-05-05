@@ -4,19 +4,19 @@
 /* Font for titles */
 @font-face {
 	font-family: "Myriad Pro SemiCond";
-	src: url("/fonts/fonts.swf");
+	src: url("fonts/fonts.swf");
 }
 
 /* Font for anything else */
 @font-face {
 	font-family: "Myriad Pro";
-	src: url("/fonts/fonts.swf");
+	src: url("fonts/fonts.swf");
 }
 
 @font-face {
 	font-family: "Myriad Pro";
 	font-weight: bold;
-	src: url("/fonts/fonts.swf");
+	src: url("fonts/fonts.swf");
 }
 
 /* Class-selectors are the only way to apply styles to components */
@@ -47,26 +47,26 @@
 
 .flexUnitScrollBar
 {
-	downArrowDisabledSkin: Embed(source="/skins/VScrollBar_downArrowDisabledSkin.png");
-	downArrowDownSkin: Embed(source="/skins/VScrollBar_downArrowDownSkin.png");
-	downArrowOverSkin: Embed(source="/skins/VScrollBar_downArrowOverSkin.png");
-	downArrowUpSkin: Embed(source="/skins/VScrollBar_downArrowUpSkin.png");
-	thumbIcon: Embed(source="/skins/VScrollBar_thumbIcon.png");
-	trackSkin: Embed(source="/skins/VScrollBar_trackSkin.png");
-	upArrowDisabledSkin: Embed(source="/skins/VScrollBar_upArrowDisabledSkin.png");
-	upArrowDownSkin: Embed(source="/skins/VScrollBar_upArrowDownSkin.png");
-	upArrowOverSkin: Embed(source="/skins/VScrollBar_upArrowOverSkin.png");
-	upArrowUpSkin: Embed(source="/skins/VScrollBar_upArrowUpSkin.png");
+	downArrowDisabledSkin: Embed(source="skins/VScrollBar_downArrowDisabledSkin.png");
+	downArrowDownSkin: Embed(source="skins/VScrollBar_downArrowDownSkin.png");
+	downArrowOverSkin: Embed(source="skins/VScrollBar_downArrowOverSkin.png");
+	downArrowUpSkin: Embed(source="skins/VScrollBar_downArrowUpSkin.png");
+	thumbIcon: Embed(source="skins/VScrollBar_thumbIcon.png");
+	trackSkin: Embed(source="skins/VScrollBar_trackSkin.png");
+	upArrowDisabledSkin: Embed(source="skins/VScrollBar_upArrowDisabledSkin.png");
+	upArrowDownSkin: Embed(source="skins/VScrollBar_upArrowDownSkin.png");
+	upArrowOverSkin: Embed(source="skins/VScrollBar_upArrowOverSkin.png");
+	upArrowUpSkin: Embed(source="skins/VScrollBar_upArrowUpSkin.png");
 	thumbDownSkin: Embed(
-	   source="/skins/VScrollBar_thumbDownSkin.png",
+	   source="skins/VScrollBar_thumbDownSkin.png",
 		   scaleGridLeft="1", scaleGridTop="5", 
 		   scaleGridRight="8", scaleGridBottom="44" );
 	thumbOverSkin: Embed(
-	   source="/skins/VScrollBar_thumbOverSkin.png",
+	   source="skins/VScrollBar_thumbOverSkin.png",
 		   scaleGridLeft="1", scaleGridTop="5", 
 		   scaleGridRight="8", scaleGridBottom="44" );
 	thumbUpSkin: Embed(
-	   source="/skins/VScrollBar_thumbUpSkin.png",
+	   source="skins/VScrollBar_thumbUpSkin.png",
 		   scaleGridLeft="1", scaleGridTop="5", 
 		   scaleGridRight="8", scaleGridBottom="44" );
 }
@@ -101,7 +101,7 @@
    header-height: 0;
    vertical-gap: 2;
 	borderSkin: Embed( 
-	   source="/skins/Panel_borderSkin.png", 
+	   source="skins/Panel_borderSkin.png", 
    	   scaleGridLeft="12", scaleGridTop="31", 
    	   scaleGridRight="265", scaleGridBottom="189" );	
    padding-top: 20;
@@ -115,7 +115,7 @@
 
 .flexUnitTextAreaWithBorder {
 	borderSkin: Embed(
-	   source="/skins/TextArea_borderSkin.png",
+	   source="skins/TextArea_borderSkin.png",
    		scaleGridLeft="4", scaleGridTop="4", 
    		scaleGridRight="150", scaleGridBottom="18" );
 	paddingTop: 10;
@@ -165,19 +165,19 @@
 
 .flexUnitComboBox {
 	upSkin: Embed(
-	   source="/skins/ComboBox_upSkin.png",
+	   source="skins/ComboBox_upSkin.png",
 		   scaleGridLeft="4", scaleGridTop="4", 
 		   scaleGridRight="64", scaleGridBottom="18" );
 	overSkin: Embed(
-	   source="/skins/ComboBox_overSkin.png",
+	   source="skins/ComboBox_overSkin.png",
 		   scaleGridLeft="4", scaleGridTop="4", 
 		   scaleGridRight="64", scaleGridBottom="18" );
 	downSkin: Embed(
-	   source="/skins/ComboBox_downSkin.png",
+	   source="skins/ComboBox_downSkin.png",
 		   scaleGridLeft="4", scaleGridTop="4", 
 		   scaleGridRight="64", scaleGridBottom="18" );
 	disabledSkin: Embed(
-	   source="/skins/ComboBox_disabledSkin.png",
+	   source="skins/ComboBox_disabledSkin.png",
 		   scaleGridLeft="4", scaleGridTop="4", 
 		   scaleGridRight="64", scaleGridBottom="18" );
    themeColor: #2863b4;
@@ -187,7 +187,7 @@
 {
 	barColor: #51C148;
 	trackSkin: Embed(
-	   source="/skins/ProgressBar_trackSkin.png",
+	   source="skins/ProgressBar_trackSkin.png",
 		   scaleGridLeft="1", scaleGridTop="0", 
 		   scaleGridRight="149", scaleGridBottom="3" );
 	trackHeight: 11;
@@ -219,35 +219,35 @@
 .firstButtonBarButton
 {
     disabledSkin: Embed(
-      source="/skins/ButtonBarFirstButton_disabledSkin.png",
+      source="skins/ButtonBarFirstButton_disabledSkin.png",
 		   scaleGridLeft="6", scaleGridTop="6", 
 		   scaleGridRight="40", scaleGridBottom="16" );
     downSkin: Embed(
-      source="/skins/ButtonBarFirstButton_downSkin.png",
+      source="skins/ButtonBarFirstButton_downSkin.png",
 		   scaleGridLeft="6", scaleGridTop="6", 
 		   scaleGridRight="40", scaleGridBottom="16" );
     overSkin: Embed(
-      source="/skins/ButtonBarFirstButton_overSkin.png",
+      source="skins/ButtonBarFirstButton_overSkin.png",
 		   scaleGridLeft="6", scaleGridTop="6", 
 		   scaleGridRight="40", scaleGridBottom="16" );
     selectedDisabledSkin: Embed(
-      source="/skins/ButtonBarFirstButton_selectedDisabledSkin.png",
+      source="skins/ButtonBarFirstButton_selectedDisabledSkin.png",
 		   scaleGridLeft="6", scaleGridTop="6", 
 		   scaleGridRight="40", scaleGridBottom="16" );
     selectedDownSkin: Embed(
-      source="/skins/ButtonBarFirstButton_downSkin.png",
+      source="skins/ButtonBarFirstButton_downSkin.png",
 		   scaleGridLeft="6", scaleGridTop="6", 
 		   scaleGridRight="40", scaleGridBottom="16" );
     selectedOverSkin: Embed(
-      source="/skins/ButtonBarFirstButton_overSkin.png",
+      source="skins/ButtonBarFirstButton_overSkin.png",
 		   scaleGridLeft="6", scaleGridTop="6", 
 		   scaleGridRight="40", scaleGridBottom="16" );
     selectedUpSkin: Embed(
-      source="/skins/ButtonBarFirstButton_selectedUpSkin.png",
+      source="skins/ButtonBarFirstButton_selectedUpSkin.png",
 		   scaleGridLeft="6", scaleGridTop="6", 
 		   scaleGridRight="40", scaleGridBottom="16" );
     upSkin: Embed(
-      source="/skins/ButtonBarFirstButton_upSkin.png",
+      source="skins/ButtonBarFirstButton_upSkin.png",
 		   scaleGridLeft="6", scaleGridTop="6", 
 		   scaleGridRight="40", scaleGridBottom="16" );
 }
@@ -255,35 +255,35 @@
 .lastButtonBarButton
 {
     disabledSkin: Embed(
-      source="/skins/ButtonBarLastButton_disabledSkin.png",
+      source="skins/ButtonBarLastButton_disabledSkin.png",
    		scaleGridLeft="6", scaleGridTop="6", 
    		scaleGridRight="40", scaleGridBottom="16" );
     downSkin: Embed(
-      source="/skins/ButtonBarLastButton_downSkin.png",
+      source="skins/ButtonBarLastButton_downSkin.png",
 		   scaleGridLeft="6", scaleGridTop="6", 
 		   scaleGridRight="40", scaleGridBottom="16" );
     overSkin: Embed(
-      source="/skins/ButtonBarLastButton_overSkin.png",
+      source="skins/ButtonBarLastButton_overSkin.png",
 		   scaleGridLeft="6", scaleGridTop="6", 
 		   scaleGridRight="40", scaleGridBottom="16" );
     selectedDisabledSkin: Embed(
-      source="/skins/ButtonBarLastButton_disabledSkin.png",
+      source="skins/ButtonBarLastButton_disabledSkin.png",
 		   scaleGridLeft="6", scaleGridTop="6", 
 		   scaleGridRight="40", scaleGridBottom="16" );
     selectedDownSkin: Embed(
-      source="/skins/ButtonBarLastButton_downSkin.png",
+      source="skins/ButtonBarLastButton_downSkin.png",
 		   scaleGridLeft="6", scaleGridTop="6", 
 		   scaleGridRight="40", scaleGridBottom="16" );
     selectedOverSkin: Embed(
-      source="/skins/ButtonBarLastButton_overSkin.png",
+      source="skins/ButtonBarLastButton_overSkin.png",
 		   scaleGridLeft="6", scaleGridTop="6", 
 		   scaleGridRight="40", scaleGridBottom="16" );
     selectedUpSkin: Embed(
-      source="/skins/ButtonBarLastButton_selectedUpSkin.png",
+      source="skins/ButtonBarLastButton_selectedUpSkin.png",
 		   scaleGridLeft="6", scaleGridTop="6", 
 		   scaleGridRight="40", scaleGridBottom="16" );
     upSkin: Embed(
-      source="/skins/ButtonBarLastButton_upSkin.png",
+      source="skins/ButtonBarLastButton_upSkin.png",
 		   scaleGridLeft="6", scaleGridTop="6", 
 		   scaleGridRight="40", scaleGridBottom="16" );
 }
@@ -294,7 +294,7 @@
 	paddingLeft: 4;
 	paddingRight: 12;
 	borderSkin: Embed(
-	   source="/skins/Panel_controlBarBackgroundSkin.png",
+	   source="skins/Panel_controlBarBackgroundSkin.png",
 		   scaleGridLeft="8", scaleGridTop="1", 
 		   scaleGridRight="270", scaleGridBottom="17" );
 }
