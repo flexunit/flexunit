@@ -37,6 +37,10 @@ package org.flexunit.internals.builders {
 
 	public class MetaDataBuilder extends RunnerBuilderBase {
 		public static const RUN_WITH:String = "RunWith";
+		private static const CLASS_NOT_FOUND:String = "classNotFound";
+		private static const INVALID_CONSTRUCTOR_ARGS:String = "invalidConstructorArguments";
+		private static const UNSPECIFIED:String = "unspecified";
+		
 		private var suiteBuilder:IRunnerBuilder;
 
 		override public function runnerForClass( testClass:Class ):IRunner {
@@ -56,14 +60,56 @@ package org.flexunit.internals.builders {
 				var runnerClass:Class = getDefinitionByName( runnerClassName ) as Class;
 				return new runnerClass( testClass );
 			} catch ( e:Error ) {
-				try {
-					return new runnerClass( testClass, suiteBuilder );
-				} catch (e:Error ) {
-					throw new InitializationError( "Custom runner class " + runnerClassName + " should be linked into project and implement IRunner. Further it needs to have a constructor which either just accepts the class, or the class and a builder." );
+				if ( e is InitializationError ) {
+					throw e;
+				} else if ( e is ReferenceError ) {
+					throw createInitializationError( CLASS_NOT_FOUND, runnerClassName );
+				} else if ( ( e is TypeError ) || ( e is ArgumentError ) ) {
+					if ( ( e.errorID == 1007 ) || ( e.errorID == 1063 ) ) {
+						//our constructor params may be different, give it one more whirl
+						return buildWithSecondSignature( runnerClass, testClass, runnerClassName );
+					} else {
+						throw createInitializationError( INVALID_CONSTRUCTOR_ARGS, runnerClassName );
+					}
 				}
+				
+				throw createInitializationError( UNSPECIFIED, runnerClassName );
 			}
  
  			return null;
+		}
+
+		private function buildWithSecondSignature( runnerClass:Class, testClass:Class, runnerClassName:String ):IRunner {
+			try {
+				return new runnerClass( testClass, suiteBuilder );
+			} catch ( e:Error ) {
+				if ( e is InitializationError ) {
+					throw e
+				} else {
+					throw createInitializationError( UNSPECIFIED, runnerClassName );
+				}
+			}
+			
+			return null;
+		}
+		
+		private function createInitializationError( reason:String, runnerClassName:String ):InitializationError {
+			var error:InitializationError;
+			switch ( reason ) {
+				case CLASS_NOT_FOUND: 
+					error = new InitializationError( "Custom runner class " + runnerClassName + " should be linked into project and implement IRunner. Further it needs to have a constructor which either just accepts the class, or the class and a builder." );
+				break;
+				
+				case INVALID_CONSTRUCTOR_ARGS:
+					error = new InitializationError( "Custom runner class " + runnerClassName + " cannot be built with the specified constructor arguments." );
+				break;
+
+				default:
+					error = new InitializationError( "Custom runner class " + runnerClassName + " cannot be instantiated" );
+				break;
+			}
+
+			return error;	
 		}
 
 		public function MetaDataBuilder( suiteBuilder:IRunnerBuilder ) {

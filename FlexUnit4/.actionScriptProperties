@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<actionScriptProperties mainApplicationPath="FlexUnit4.as" version="3">
-<compiler additionalCompilerArguments="-keep-as3-metadata=RunWith,BeforeClass,AfterClass,Before,After,Suite,Test,Ignore,Filter,Sort,Theory,DataPoint,DataPoints,ArrayElementType" copyDependentFiles="false" enableModuleDebug="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersion="9.0.124" htmlPlayerVersionCheck="true" outputFolderPath="bin" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
-<compilerSourcePath/>
-<libraryPath defaultLinkType="1">
-<libraryPathEntry kind="4" path="">
-<modifiedEntries>
-<libraryPathEntry kind="3" linkType="2" path="${PROJECT_FRAMEWORKS}/libs/flex.swc" useDefaultLinkType="false"/>
-<libraryPathEntry kind="3" linkType="2" path="${PROJECT_FRAMEWORKS}/libs/framework.swc" useDefaultLinkType="false"/>
-</modifiedEntries>
-</libraryPathEntry>
-<libraryPathEntry kind="1" linkType="1" path="libs"/>
-</libraryPath>
-<sourceAttachmentPath/>
-</compiler>
-<applications>
-<application path="FlexUnit4.as"/>
-</applications>
-<modules/>
-<buildCSSFiles/>
+<actionScriptProperties mainApplicationPath="FlexUnit4.as" version="5">
+  <compiler additionalCompilerArguments="-keep-as3-metadata=RunWith,BeforeClass,AfterClass,Before,After,Suite,Test,Ignore,Filter,Sort,Theory,DataPoint,DataPoints,ArrayElementType" copyDependentFiles="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" verifyDigests="true" warn="true">
+    <compilerSourcePath/>
+    <libraryPath defaultLinkType="1">
+      <libraryPathEntry kind="4" path="">
+        <modifiedEntries>
+          <libraryPathEntry kind="3" linkType="2" path="${PROJECT_FRAMEWORKS}/libs/flex.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="2" path="${PROJECT_FRAMEWORKS}/libs/framework.swc" useDefaultLinkType="false"/>
+        </modifiedEntries>
+      </libraryPathEntry>
+      <libraryPathEntry kind="1" linkType="1" path="libs"/>
+    </libraryPath>
+    <sourceAttachmentPath/>
+  </compiler>
+  <applications>
+    <application path="FlexUnit4.as"/>
+  </applications>
+  <modules/>
+  <buildCSSFiles/>
 </actionScriptProperties>

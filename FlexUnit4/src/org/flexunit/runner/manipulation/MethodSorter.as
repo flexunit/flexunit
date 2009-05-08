@@ -34,8 +34,8 @@ package org.flexunit.runner.manipulation {
 	import mx.collections.Sort;
 	
 	public class MethodSorter {
-		private function getOrderValueFromMethod( method:Method ):int {
-			var order:int = 0;
+		private function getOrderValueFromMethod( method:Method ):Number {
+			var order:Number = 0;
 			
 			var metaDataList:XMLList = method.metadata;
 			var metaData:XML;
@@ -45,7 +45,7 @@ package org.flexunit.runner.manipulation {
 
 				var orderString:String = MetadataTools.getArgValueFromMetaDataNode( method.methodXML, metaData.@name, "order" );
 				if ( orderString ) {
-					order = int( orderString );
+					order = Number( orderString );
 					break;
 				}
 			} 
@@ -55,8 +55,8 @@ package org.flexunit.runner.manipulation {
 	
 		private function orderMethodSortFunction( aMethod:Method, bMethod:Method, fields:Object ):int {
 			var field:String;
-			var a:int;
-			var b:int; 
+			var a:Number;
+			var b:Number; 
 
 			if ( !aMethod.metadata && !bMethod.metadata ) {
 				return 0;

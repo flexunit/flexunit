@@ -159,7 +159,7 @@ package org.flexunit.runners.model {
 			var needsParams:Boolean = method.parameterTypes.length > 0;
 
 			if ( needsParams )
-				errors.add(new Error("Method " + name + " should have no parameters"));
+				errors.push(new Error("Method " + name + " should have no parameters"));
 		}
 
 		/**
@@ -174,18 +174,18 @@ package org.flexunit.runners.model {
 
 			if ( method.isStatic != isStatic) {
 				var state:String = isStatic ? "should" : "should not";
-				errors.add( new Error("Method " + name + "() " + state + " be static"));
+				errors.push( new Error("Method " + name + "() " + state + " be static"));
 			}
 
 //			if (!Modifier.isPublic(fMethod.getDeclaringClass().getModifiers()))
-//				errors.add(new Exception("Class " + fMethod.getDeclaringClass().getName() + " should be public"));
+//				errors.push(new Exception("Class " + fMethod.getDeclaringClass().getName() + " should be public"));
 //			if (!Modifier.isPublic(fMethod.getModifiers()))
-//				errors.add(new Exception("Method " + fMethod.getName() + "() should be public"));
+//				errors.push(new Exception("Method " + fMethod.getName() + "() should be public"));
 
 			var isVoid:Boolean = !method.returnType;
 
 			if ( !isVoid )
-				errors.add(new Error("Method " + name + "() should be void"));
+				errors.push(new Error("Method " + name + "() should be void"));
 		}
 
 		override public function toString():String {

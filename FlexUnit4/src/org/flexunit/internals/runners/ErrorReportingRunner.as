@@ -57,6 +57,9 @@ package org.flexunit.internals.runners {
 				description.addChild( describeCause( _causes[ i ] ) );
 				runCause( _causes[ i ], notifier );
 			}
+			
+			//notify our parent that we are good to continue
+			token.sendResult();
 		}
 
 		private function getCauses( cause:Error ):Array {

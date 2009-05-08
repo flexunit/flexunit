@@ -29,6 +29,7 @@ package org.flexunit.runners.model {
 	import flash.utils.Dictionary;
 	
 	import org.flexunit.internals.runners.ErrorReportingRunner;
+	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.runner.IRequest;
 	import org.flexunit.runner.IRunner;
 
@@ -100,10 +101,12 @@ package org.flexunit.runners.model {
 		}
 
 		private function addParent( parent:Class ):Class {
-			if ( !parent ) {
+			if ( parent ) {
 				if ( parents[ parent ] ) {
 					//this one already exists
-					throw new Error( "Class " + parent + " (possibly indirectly) contains itself as a SuiteClass" );
+					//need to catch and handle this error better than before, currently becomes an initialization
+					//error which is incorrect
+					throw new InitializationError( "Class " + parent + " (possibly indirectly) contains itself as a SuiteClass" );
 				}
 	
 				parents[ parent ] = true;
