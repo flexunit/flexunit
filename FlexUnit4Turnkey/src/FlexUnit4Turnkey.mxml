@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
-	creationComplete="runMe()" xmlns:flexui="flexunit.flexui.*"
+	creationComplete="runMe()" xmlns:flexUnitUIRunner="http://www.adobe.com/2009/flexUnitUIRunner" 
 	styleName="flexUnitApplication" >
 	
 	<mx:Script>
@@ -67,6 +67,6 @@
 			}
 	</mx:Style>
 	
-	<flexui:TestRunnerBase id="uiListener" 
-		width="100%" height="100%" />
+	<flexUnitUIRunner:TestRunnerBase id="uiListener" 
+		width="100%" height="100%" />	
 </mx:Application>
