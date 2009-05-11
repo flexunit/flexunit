@@ -103,20 +103,29 @@ package org.flexunit.runner.notification.async
 		}
 		
 		public function testRunStarted( description:IDescription ):void{
-		
+			// XML Socket in flexbuilder is expecting a startTestRun node at the begining of the results.
+			// it seems to use this to reset hte current results, and prepopulate the total number of tests
+			// however, in flexunit4, we are unable to determine the total number of tests before hand, so
+			// we are sending through an empty startTestRun node, so the reset can still happen.
+			sendResults("<startTestRun totalTestCount='0'  projectName='' contextName='' />");
 		}
 
 		public function testRunFinished( result:Result ):void {
 		
-			printHeader( result );
-			printResults(result);
+			// if we want to wait until all tests are finished before sending any results, 
+			// in this method we should first call printHeader, then printResults, then printFooter
+			// however, as we are now sending through results as they happen, we use this method only to call printFooter		
+			//printHeader( result );
+			//printResults(result);
 			printFooter( result );
 		}
 
 		public function testStarted( description:IDescription ):void {
+			// called before each test
 		}
 		
 		public function testFinished( description:IDescription ):void {
+			// called after each test
 			if(!lastFailedTest || description.displayName != lastFailedTest.displayName){
 				var desc:Descriptor = getDescriptorFromDescription(description);
 				sendResults("<testCase name='"+desc.method+"' testSuite='"+desc.suite+"'  status='"+SUCCESS+"'/>");
@@ -125,9 +134,11 @@ package org.flexunit.runner.notification.async
 		}
 
 		public function testAssumptionFailure( failure:Failure ):void {
+			// called on assumptionFail
 		}
 
 		public function testIgnored( description:IDescription ):void {
+			// called on ignored test
 			var desc:Descriptor = getDescriptorFromDescription(description);
 			sendResults("<testCase name='"+desc.method+"' testSuite='"+desc.suite+"'  status='"+IGNORE+"'/>");
 			msgQueue.push("<testCase name='"+desc.method+"' testSuite='"+desc.suite+"'  status='"+IGNORE+"'/>");
@@ -135,6 +146,7 @@ package org.flexunit.runner.notification.async
 	
 	
 		public function testFailure( failure:Failure ):void {
+			// called on a test failure
 			lastFailedTest = failure.description;
 			var descriptor:Descriptor = getDescriptorFromDescription(failure.description);
 			var type : String = failure.description.displayName
@@ -157,6 +169,7 @@ package org.flexunit.runner.notification.async
 		 */
 
 		private function getDescriptorFromDescription(description:IDescription ):Descriptor{
+			// reads relavent data from descriptor
 			var descriptor:Descriptor = new Descriptor();
 			var descriptionArray:Array = description.displayName.split("::");
 			descriptor.path = descriptionArray[0];
@@ -183,7 +196,8 @@ package org.flexunit.runner.notification.async
 		}
 	
 		protected function printFooter( result:Result ):void {
-			logger.warn(END_OF_TEST_RUN);
+		//	logger.warn(END_OF_TEST_RUN);
+			sendResults(END_OF_TEST_RUN);
 		}
 	
 		protected function sendResults(msg:String):void{
