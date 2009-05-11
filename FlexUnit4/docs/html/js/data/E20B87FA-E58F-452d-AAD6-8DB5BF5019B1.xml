@@ -1,0 +1,9 @@
+tocTab[tocTab.length] = new Array("3.3:1", "", "theories", "EARoot/EA3/EA3/EA59.htm", "3.png", "17", "0", "", "Logical diagram");
+tocTab[tocTab.length] = new Array("3.3:2", "", "«interface» IParameterSupplier", "EARoot/EA3/EA3/EA62.htm", "8.png", "59", "0", "", "Interface");
+tocTab[tocTab.length] = new Array("3.3:3", "", "«interface» IPotentialAssignment", "EARoot/EA3/EA3/EA63.htm", "8.png", "60", "0", "", "Interface");
+tocTab[tocTab.length] = new Array("3.3:4", "", "ParameterSignature", "EARoot/EA3/EA3/EA64.htm", "5.png", "61", "0", "", "Class");
+tocTab[tocTab.length] = new Array("3.3:5", "", "ParametersSuppliedBy", "EARoot/EA3/EA3/EA65.htm", "5.png", "62", "0", "", "Class");
+tocTab[tocTab.length] = new Array("3.3:6", "", "PotentialAssignment", "EARoot/EA3/EA3/EA66.htm", "5.png", "63", "0", "", "Class");
+tocTab[tocTab.length] = new Array("3.3:7", "", "Theories", "EARoot/EA3/EA3/EA68.htm", "5.png", "64", "0", "", "Class");
+tocTab[tocTab.length] = new Array("3.3.1", "1", "internals", "EARoot/EA3/EA3/EA61.htm", "4.png", "", "", "{DA2F7159-141F-4106-9F21-048CF28A65AA}", "Package");
+tocTab[tocTab.length] = new Array("3.3.2", "1", "suppliers", "EARoot/EA3/EA3/EA67.htm", "4.png", "", "", "{B3DA92FE-3606-4838-AAFB-C778E1FD0B54}", "Package");

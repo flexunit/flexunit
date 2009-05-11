@@ -1,0 +1,292 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>flexunit::Assume</title>
+<link href="../../../../css/ea.css" rel="stylesheet" type="text/css" />
+<script>
+function initPage(src) {
+	if(parent==this&&(this.location+"").indexOf('EARoot')!=-1)
+		document.location=(this.location+"").substring(0,(this.location+"").indexOf('EARoot'))+"index"+(this.location+"").substring((this.location+"").lastIndexOf('.'))+"?goto="+((this.location+"").substring((this.location+"").indexOf('EARoot')+7,(this.location+"").lastIndexOf('.')).replace(/\//g,':').replace(/EA/g,""));
+	else
+		parent.initPage(src);
+}
+</script>
+</head>
+<body onload="initPage(this);" class="Content">
+<div class="pageHeader"></div>
+<div class="PageBody">
+	<span class="ObjectTitle">Assume  : public   class</span>
+	<table border="0" cellpadding="0" cellspacing="0" class="ObjectDetails">
+		<tr>
+			<td width="15%" class="ObjectDetailsTopic">Created:</td>
+			<td width="85%" class="ObjectDetailsValue">5/11/2009 4:27:37 PM</td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic">Modified:</td>
+			<td class="ObjectDetailsValue">5/11/2009 4:27:37 PM</td>
+		</tr>
+		<tr style="height: 10px"><td colspan="2"></td></tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../../../../images/plus03.gif" align="absmiddle" id="proj" onclick="parent.toggleData(this.id)" />Project:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Author:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Version:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj02" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Phase:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj03" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Status:</td>
+			<td class="ObjectDetailsValue">Proposed</td>
+		</tr>
+		<tr id="proj04" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Complexity:</td>
+			<td class="ObjectDetailsValue">Easy</td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../../../../images/plus03.gif" align="absmiddle" id="adv" onclick="parent.toggleData(this.id)" />Advanced:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="adv00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">UUID:</td>
+			<td class="ObjectDetailsValue">{46F33494-7A82-47f5-AE76-EFCD2D5B83F1}</td>
+		</tr>
+		<tr id="adv01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Appears In:</td>
+			<td class="ObjectDetailsValue"><a href="EA29.htm">flexunit</a></td>
+		</tr>
+	</table>
+	<div class="ObjectDetailsNotes">A set of methods useful for stating assumptions about the conditions in which a test is meaningful. A failed assumption does not mean the code is broken, but that the test provides no useful information. The default JUnit runner treats tests with failing assumptions as ignored.  Custom runners may behave differently.  For example:<br />&lt;pre&gt; only provides information if database is reachable. \@Test public void calculateTotalSalary() { DBConnection dbc = Database.connect(); assumeNotNull(dbc); ... }<br />&lt;/pre&gt; These methods can be used directly: &lt;code&gt;Assume.assumeTrue(...)&lt;/code&gt;, however, they read better if they are referenced through static import:&lt;br/&gt;<br />&lt;pre&gt; import static org.junit.Assume.*; ... assumeTrue(...);<br />&lt;/pre&gt;</div>
+
+	<div class="TableGroup" id="TableGroup">
+		<ul class="ItemTitle">
+			<li onClick="parent.toggleItem('Operations');" id="OperationsTitle">Operations</li>
+		</ul>
+<div class="ItemBody" id="OperationsTable">
+	<table border="0" cellspacing="0" cellpadding="0" class="Table">
+		<tr>
+			<td width="40%" class="TableHeading">Operation</td>
+			<td width="60%" class="TableHeading">Details</td>
+		</tr>
+						<tr>
+				<td width="40%" class="TableRow">
+					<i>public static</i><br />
+					<strong>assumeTrue</strong>(<br />
+					<a href="#" onclick="parent.toggleData('param{71218F21-6631-44b9-A802-F6F3F955C06E}')" style="text-decoration: none; color: #000000;"><img src="../../../../images/plus03.gif" align="absmiddle" id="param{71218F21-6631-44b9-A802-F6F3F955C06E}" border="0" />b: Boolean</a>, 
+					<table border="0" cellspacing="0" cellpadding="0" class="Table" style="padding: 4px 18px;">
+						<tr id="param{71218F21-6631-44b9-A802-F6F3F955C06E}00" style="display: none;">
+							<td width="50"><strong>Default:</strong></td>
+							<td></td>
+						</tr>
+						<tr id="param{71218F21-6631-44b9-A802-F6F3F955C06E}01" style="display: none;">
+							<td width="50"><strong>Kind:</strong></td>
+							<td>in</td>
+						</tr>
+						<tr id="param{71218F21-6631-44b9-A802-F6F3F955C06E}02" style="display: none;">
+							<td width="50"><strong>Stereotype: </strong></td>
+							<td></td>
+						</tr>
+						<tr id="param{71218F21-6631-44b9-A802-F6F3F955C06E}03" style="display: none;">
+							<td width="50"></td>
+							<td><div class="ObjectDetailsNotes">b</div>
+</td>
+						</tr>
+					</table>
+):void
+				</td>
+				<td width="60%" class="TableRow">
+					<i>Sequential  </i>
+					<table>
+						<tr>
+							<td valign = "top"><i></i><span style="margin-left: .7cm;"> </span></td>
+							<td></td>
+						</tr>
+					</table>
+					<div class="ObjectDetailsNotes"><table>
+	<tr>
+		<td valign="top">
+			<i>Notes: </i><span style="margin-left: .4cm;"> </span>
+		</td>
+		<td>
+			If called with an expression evaluating to {@code false}, the test will halt and be ignored.
+		</td>
+	</tr>
+</table></div>
+
+				</td>
+			</tr>
+			<tr>
+				<td width="40%" class="TableRow">
+					<i>public static</i><br />
+					<strong>assumeNotNull</strong>(<br />
+					<a href="#" onclick="parent.toggleData('param{8457BCDE-FEE3-488e-B410-BBBE8EA67E07}')" style="text-decoration: none; color: #000000;"><img src="../../../../images/plus03.gif" align="absmiddle" id="param{8457BCDE-FEE3-488e-B410-BBBE8EA67E07}" border="0" />objects: rest</a>, 
+					<table border="0" cellspacing="0" cellpadding="0" class="Table" style="padding: 4px 18px;">
+						<tr id="param{8457BCDE-FEE3-488e-B410-BBBE8EA67E07}00" style="display: none;">
+							<td width="50"><strong>Default:</strong></td>
+							<td></td>
+						</tr>
+						<tr id="param{8457BCDE-FEE3-488e-B410-BBBE8EA67E07}01" style="display: none;">
+							<td width="50"><strong>Kind:</strong></td>
+							<td>in</td>
+						</tr>
+						<tr id="param{8457BCDE-FEE3-488e-B410-BBBE8EA67E07}02" style="display: none;">
+							<td width="50"><strong>Stereotype: </strong></td>
+							<td></td>
+						</tr>
+						<tr id="param{8457BCDE-FEE3-488e-B410-BBBE8EA67E07}03" style="display: none;">
+							<td width="50"></td>
+							<td><div class="ObjectDetailsNotes">objects</div>
+</td>
+						</tr>
+					</table>
+):void
+				</td>
+				<td width="60%" class="TableRow">
+					<i>Sequential  </i>
+					<table>
+						<tr>
+							<td valign = "top"><i></i><span style="margin-left: .7cm;"> </span></td>
+							<td></td>
+						</tr>
+					</table>
+					<div class="ObjectDetailsNotes"><table>
+	<tr>
+		<td valign="top">
+			<i>Notes: </i><span style="margin-left: .4cm;"> </span>
+		</td>
+		<td>
+			If called with one or more null elements in &lt;code&gt;objects&lt;/code&gt;, the test will halt and be ignored.
+		</td>
+	</tr>
+</table></div>
+
+				</td>
+			</tr>
+			<tr>
+				<td width="40%" class="TableRow">
+					<i>public static</i><br />
+					<strong>assumeThat</strong>(<br />
+					<a href="#" onclick="parent.toggleData('param{28386159-E534-475c-9B7C-BF888BE0A5A9}')" style="text-decoration: none; color: #000000;"><img src="../../../../images/plus03.gif" align="absmiddle" id="param{28386159-E534-475c-9B7C-BF888BE0A5A9}" border="0" />actual: Object</a>, 
+					<table border="0" cellspacing="0" cellpadding="0" class="Table" style="padding: 4px 18px;">
+						<tr id="param{28386159-E534-475c-9B7C-BF888BE0A5A9}00" style="display: none;">
+							<td width="50"><strong>Default:</strong></td>
+							<td></td>
+						</tr>
+						<tr id="param{28386159-E534-475c-9B7C-BF888BE0A5A9}01" style="display: none;">
+							<td width="50"><strong>Kind:</strong></td>
+							<td>in</td>
+						</tr>
+						<tr id="param{28386159-E534-475c-9B7C-BF888BE0A5A9}02" style="display: none;">
+							<td width="50"><strong>Stereotype: </strong></td>
+							<td></td>
+						</tr>
+						<tr id="param{28386159-E534-475c-9B7C-BF888BE0A5A9}03" style="display: none;">
+							<td width="50"></td>
+							<td><div class="ObjectDetailsNotes">the computed value being compared</div>
+</td>
+						</tr>
+					</table>
+					<a href="#" onclick="parent.toggleData('param{9F6CF2EB-DD2B-46ae-83CF-6687BBAA5782}')" style="text-decoration: none; color: #000000;"><img src="../../../../images/plus03.gif" align="absmiddle" id="param{9F6CF2EB-DD2B-46ae-83CF-6687BBAA5782}" border="0" />matcher: Matcher</a>, 
+					<table border="0" cellspacing="0" cellpadding="0" class="Table" style="padding: 4px 18px;">
+						<tr id="param{9F6CF2EB-DD2B-46ae-83CF-6687BBAA5782}00" style="display: none;">
+							<td width="50"><strong>Default:</strong></td>
+							<td></td>
+						</tr>
+						<tr id="param{9F6CF2EB-DD2B-46ae-83CF-6687BBAA5782}01" style="display: none;">
+							<td width="50"><strong>Kind:</strong></td>
+							<td>in</td>
+						</tr>
+						<tr id="param{9F6CF2EB-DD2B-46ae-83CF-6687BBAA5782}02" style="display: none;">
+							<td width="50"><strong>Stereotype: </strong></td>
+							<td></td>
+						</tr>
+						<tr id="param{9F6CF2EB-DD2B-46ae-83CF-6687BBAA5782}03" style="display: none;">
+							<td width="50"></td>
+							<td><div class="ObjectDetailsNotes">an expression,  built of {</div>
+</td>
+						</tr>
+					</table>
+):void
+				</td>
+				<td width="60%" class="TableRow">
+					<i>Sequential  </i>
+					<table>
+						<tr>
+							<td valign = "top"><i></i><span style="margin-left: .7cm;"> </span></td>
+							<td></td>
+						</tr>
+					</table>
+					<div class="ObjectDetailsNotes"><table>
+	<tr>
+		<td valign="top">
+			<i>Notes: </i><span style="margin-left: .4cm;"> </span>
+		</td>
+		<td>
+			Call to assume that &lt;code&gt;actual&lt;/code&gt; satisfies the condition specified by &lt;code&gt;matcher&lt;/code&gt;. If not, the test halts and is ignored. Example:&lt;br /&gt;&lt;pre&gt;: assumeThat(1, is(1)); // passes foo(); // will execute assumeThat(0, is(1)); // assumption failure! test halts int x = 1 / 0; // will never execute&lt;br /&gt;&lt;/pre&gt; &lt;br /&gt;@param &lt;T&gt; the static type accepted by the matcher (this can flag obvious compile-time problems such as {@code assumeThat(1, is(&quot;a&quot;))}&lt;br /&gt;@link Matcher}s, specifying allowed values &lt;br /&gt;@see org.hamcrest.CoreMatchers&lt;br /&gt;@see org.junit.matchers.JUnitMatchers
+		</td>
+	</tr>
+</table></div>
+
+				</td>
+			</tr>
+			<tr>
+				<td width="40%" class="TableRow">
+					<i>public static</i><br />
+					<strong>assumeNoException</strong>(<br />
+					<a href="#" onclick="parent.toggleData('param{69A7FA61-3C83-487b-94A7-0C38A2329E3E}')" style="text-decoration: none; color: #000000;"><img src="../../../../images/plus03.gif" align="absmiddle" id="param{69A7FA61-3C83-487b-94A7-0C38A2329E3E}" border="0" />e: Error</a>, 
+					<table border="0" cellspacing="0" cellpadding="0" class="Table" style="padding: 4px 18px;">
+						<tr id="param{69A7FA61-3C83-487b-94A7-0C38A2329E3E}00" style="display: none;">
+							<td width="50"><strong>Default:</strong></td>
+							<td></td>
+						</tr>
+						<tr id="param{69A7FA61-3C83-487b-94A7-0C38A2329E3E}01" style="display: none;">
+							<td width="50"><strong>Kind:</strong></td>
+							<td>in</td>
+						</tr>
+						<tr id="param{69A7FA61-3C83-487b-94A7-0C38A2329E3E}02" style="display: none;">
+							<td width="50"><strong>Stereotype: </strong></td>
+							<td></td>
+						</tr>
+						<tr id="param{69A7FA61-3C83-487b-94A7-0C38A2329E3E}03" style="display: none;">
+							<td width="50"></td>
+							<td></td>
+						</tr>
+					</table>
+):void
+				</td>
+				<td width="60%" class="TableRow">
+					<i>Sequential  </i>
+					<table>
+						<tr>
+							<td valign = "top"><i></i><span style="margin-left: .7cm;"> </span></td>
+							<td></td>
+						</tr>
+					</table>
+					<div class="ObjectDetailsNotes"><table>
+	<tr>
+		<td valign="top">
+			<i>Notes: </i><span style="margin-left: .4cm;"> </span>
+		</td>
+		<td>
+			Use to assume that an operation completes normally.  If {@code t} is non-null, the test will halt and be ignored.  For example:&lt;br /&gt;&lt;pre&gt; \@Test public void parseDataFile() { DataFile file; try { file = DataFile.open(&quot;sampledata.txt&quot;); } catch (IOException e) { stop test and ignore if data can&#39;t be opened assumeNoException(e); } ... }&lt;br /&gt;&lt;/pre&gt;&lt;br /&gt;@param t if non-null, the offending exception
+		</td>
+	</tr>
+</table></div>
+
+				</td>
+			</tr>
+
+		</table>
+</div>	</div>
+<div class="pageFooter"></div>
+ 
+</body>
+</html>

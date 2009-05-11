@@ -1,0 +1,7 @@
+tocTab[tocTab.length] = new Array("6.1:1", "", "manipulation", "EARoot/EA6/EA1/EA183.htm", "3.png", "33", "0", "", "Logical diagram");
+tocTab[tocTab.length] = new Array("6.1:2", "", "Filter", "EARoot/EA6/EA1/EA185.htm", "5.png", "132", "0", "", "Class");
+tocTab[tocTab.length] = new Array("6.1:3", "", "«interface» IFilterable", "EARoot/EA6/EA1/EA186.htm", "8.png", "133", "0", "", "Interface");
+tocTab[tocTab.length] = new Array("6.1:4", "", "MethodSorter", "EARoot/EA6/EA1/EA187.htm", "5.png", "134", "0", "", "Class");
+tocTab[tocTab.length] = new Array("6.1:5", "", "NoTestsRemainException", "EARoot/EA6/EA1/EA188.htm", "5.png", "135", "0", "", "Class");
+tocTab[tocTab.length] = new Array("6.1:6", "", "Sortable", "EARoot/EA6/EA1/EA189.htm", "5.png", "136", "0", "", "Class");
+tocTab[tocTab.length] = new Array("6.1:7", "", "Sorter", "EARoot/EA6/EA1/EA190.htm", "5.png", "137", "0", "", "Class");

@@ -1,0 +1,2 @@
+tocTab[tocTab.length] = new Array("3.3.1.1:1", "", "error", "EARoot/EA3/EA3/EA1/EA1/EA76.htm", "3.png", "19", "0", "", "Logical diagram");
+tocTab[tocTab.length] = new Array("3.3.1.1:2", "", "CouldNotGenerateValueException", "EARoot/EA3/EA3/EA1/EA1/EA78.htm", "5.png", "51", "0", "", "Class");

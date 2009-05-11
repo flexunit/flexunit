@@ -1,0 +1,16 @@
+tocTab[tocTab.length] = new Array("4.7.2:1", "", "statements", "EARoot/EA4/EA7/EA2/EA148.htm", "3.png", "30", "0", "", "Logical diagram");
+tocTab[tocTab.length] = new Array("4.7.2:2", "", "AsyncStatementBase", "EARoot/EA4/EA7/EA2/EA150.htm", "5.png", "94", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7.2:3", "", "ExpectAsync", "EARoot/EA4/EA7/EA2/EA151.htm", "5.png", "95", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7.2:4", "", "ExpectException", "EARoot/EA4/EA7/EA2/EA152.htm", "5.png", "96", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7.2:5", "", "Fail", "EARoot/EA4/EA7/EA2/EA153.htm", "5.png", "97", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7.2:6", "", "FailOnTimeout", "EARoot/EA4/EA7/EA2/EA154.htm", "5.png", "98", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7.2:7", "", "«interface» IAsyncHandlingStatement", "EARoot/EA4/EA7/EA2/EA155.htm", "8.png", "99", "0", "", "Interface");
+tocTab[tocTab.length] = new Array("4.7.2:8", "", "«interface» IAsyncStatement", "EARoot/EA4/EA7/EA2/EA156.htm", "8.png", "100", "0", "", "Interface");
+tocTab[tocTab.length] = new Array("4.7.2:9", "", "InvokeMethod", "EARoot/EA4/EA7/EA2/EA157.htm", "5.png", "101", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7.2:10", "", "RunAfters", "EARoot/EA4/EA7/EA2/EA158.htm", "5.png", "102", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7.2:11", "", "RunAftersClass", "EARoot/EA4/EA7/EA2/EA159.htm", "5.png", "103", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7.2:12", "", "RunBefores", "EARoot/EA4/EA7/EA2/EA160.htm", "5.png", "104", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7.2:13", "", "RunBeforesClass", "EARoot/EA4/EA7/EA2/EA161.htm", "5.png", "105", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7.2:14", "", "SequencerWithDecoration", "EARoot/EA4/EA7/EA2/EA162.htm", "5.png", "106", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7.2:15", "", "StackAndFrameManagement", "EARoot/EA4/EA7/EA2/EA163.htm", "5.png", "107", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7.2:16", "", "StatementSequencer", "EARoot/EA4/EA7/EA2/EA164.htm", "5.png", "108", "0", "", "Class");

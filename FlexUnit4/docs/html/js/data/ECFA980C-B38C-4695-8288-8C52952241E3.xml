@@ -1,0 +1,17 @@
+tocTab[tocTab.length] = new Array("4.7:1", "", "runners", "EARoot/EA4/EA7/EA125.htm", "3.png", "28", "0", "", "Logical diagram");
+tocTab[tocTab.length] = new Array("4.7:2", "", "AdaptingTestMethodResult", "EARoot/EA4/EA7/EA127.htm", "5.png", "117", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7:3", "", "ChildRunnerSequencer", "EARoot/EA4/EA7/EA128.htm", "5.png", "109", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7:4", "", "ClassRoadie", "EARoot/EA4/EA7/EA129.htm", "5.png", "110", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7:5", "", "ErrorReportingRunner", "EARoot/EA4/EA7/EA130.htm", "5.png", "111", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7:6", "", "FailedBefore", "EARoot/EA4/EA7/EA131.htm", "5.png", "112", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7:7", "", "FlexUnit1ClassRunner", "EARoot/EA4/EA7/EA132.htm", "5.png", "113", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7:8", "", "Fluint1ClassRunner", "EARoot/EA4/EA7/EA133.htm", "5.png", "115", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7:9", "", "FluintAdaptingListener", "EARoot/EA4/EA7/EA134.htm", "5.png", "116", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7:10", "", "InitializationError", "EARoot/EA4/EA7/EA135.htm", "5.png", "118", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7:11", "", "MethodRoadie", "EARoot/EA4/EA7/EA136.htm", "5.png", "119", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7:12", "", "MethodValidator", "EARoot/EA4/EA7/EA137.htm", "5.png", "120", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7:13", "", "OldTestClassAdaptingListener", "EARoot/EA4/EA7/EA139.htm", "5.png", "114", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7:14", "", "SuiteMethod", "EARoot/EA4/EA7/EA141.htm", "5.png", "121", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7:15", "", "TestMethod", "EARoot/EA4/EA7/EA142.htm", "5.png", "122", "0", "", "Class");
+tocTab[tocTab.length] = new Array("4.7.1", "1", "model", "EARoot/EA4/EA7/EA138.htm", "4.png", "", "", "{F0D35771-7BCE-4feb-8F8D-83476E6D8D5E}", "Package");
+tocTab[tocTab.length] = new Array("4.7.2", "1", "statements", "EARoot/EA4/EA7/EA140.htm", "4.png", "", "", "{96A4B660-258E-4a1e-8E49-0F10D0EA403A}", "Package");

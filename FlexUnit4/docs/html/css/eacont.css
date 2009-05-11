@@ -1,0 +1,34 @@
+A, A:visited {
+	color: #000000;
+	text-decoration: none;
+	font-weight: normal;
+}
+A:active, A:hover {
+	cursor: default;
+}
+BODY {
+	cursor: default;
+	font-family: Arial, Helvetica;
+	font-size: 10px;
+	margin: 0px;
+	padding: 5px;
+}
+IMG {
+	border: none;
+	text-decoration: none;
+	margin-bottom: -3px;
+}
+LI {
+	list-style: none;
+	margin: 0px;
+	white-space: nowrap;
+}
+UL {
+	margin: 0px;
+	padding: 0px;
+}
+
+.Loading {
+	color: #CCCCCC;
+	text-align : center;
+}

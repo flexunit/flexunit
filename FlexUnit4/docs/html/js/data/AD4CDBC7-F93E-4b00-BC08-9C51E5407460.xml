@@ -1,0 +1,3 @@
+tocTab[tocTab.length] = new Array("1.2.2.2:1", "", "uiImpersonation", "EARoot/EA1/EA2/EA2/EA2/EA267.htm", "3.png", "43", "0", "", "Logical diagram");
+tocTab[tocTab.length] = new Array("1.2.2.2:2", "", "TestEnvironment", "EARoot/EA1/EA2/EA2/EA2/EA269.htm", "5.png", "202", "0", "", "Class");
+tocTab[tocTab.length] = new Array("1.2.2.2:3", "", "UIImpersonator", "EARoot/EA1/EA2/EA2/EA2/EA270.htm", "5.png", "203", "0", "", "Class");

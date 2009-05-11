@@ -1,0 +1,7 @@
+tocTab[tocTab.length] = new Array("1:1", "", "async", "EARoot/EA1/EA27.htm", "3.png", "11", "0", "", "Logical diagram");
+tocTab[tocTab.length] = new Array("1:2", "", "Async", "EARoot/EA1/EA29.htm", "5.png", "27", "0", "", "Class");
+tocTab[tocTab.length] = new Array("1:3", "", "AsyncHandler", "EARoot/EA1/EA30.htm", "5.png", "28", "0", "", "Class");
+tocTab[tocTab.length] = new Array("1:4", "", "AsyncLocator", "EARoot/EA1/EA31.htm", "5.png", "29", "0", "", "Class");
+tocTab[tocTab.length] = new Array("1:5", "", "AsyncTestResponder", "EARoot/EA1/EA32.htm", "5.png", "30", "0", "", "Class");
+tocTab[tocTab.length] = new Array("1:6", "", "«interface» ITestResponder", "EARoot/EA1/EA33.htm", "8.png", "31", "0", "", "Interface");
+tocTab[tocTab.length] = new Array("1:7", "", "TestResponder", "EARoot/EA1/EA34.htm", "5.png", "32", "0", "", "Class");
