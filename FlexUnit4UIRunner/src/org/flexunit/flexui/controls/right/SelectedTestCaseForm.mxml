@@ -54,8 +54,8 @@
          
          public function updateRowSummaryToDisplay() : void
          {
-            assertionsPerTestFormItem.visible = ! _model.testsRunning;
-            assertionsPerTestFormItem.includeInLayout = ! _model.testsRunning;   
+            //assertionsPerTestFormItem.visible = ! _model.testsRunning;
+            //assertionsPerTestFormItem.includeInLayout = ! _model.testsRunning;   
             
             if( ! _model.testsRunning ||
                 ( _model.rowSelected != null ) )
@@ -63,7 +63,7 @@
                if( _model.rowSelected )
                {
                   cas.text = _model.rowSelected.className;
-                  assertionsPerTest.text = _model.rowSelected.assertionsMadeLegend;
+                  //assertionsPerTest.text = _model.rowSelected.assertionsMadeLegend;
                }
                
                if( _model.testFunctionSelected )
@@ -141,13 +141,13 @@
 
    </mx:FormItem>
 
-   <mx:FormItem
+   <!--mx:FormItem
       id="assertionsPerTestFormItem"
       styleName="flexUnitFormItemLabel"
       label="{ FlexUnitLabels.ASSERTS }"
       toolTip="{ FlexUnitLabels.ASSERTIONS_PER_TEST }"
       width="100%">
-
+			This has been removed until we can figure out if we can make this work across the board
       <mx:Label
          id="assertionsPerTest"
          styleName="flexUnitFormItemValue"
@@ -156,7 +156,7 @@
          width="310"
          />
 
-   </mx:FormItem> 
+   </mx:FormItem--> 
      
    <mx:FormItem
       id="expectedFormItem"

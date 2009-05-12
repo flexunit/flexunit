@@ -177,7 +177,7 @@
          text="{ FlexUnitLabels.ASSERTS }"
          toolTip="{ FlexUnitLabels.ASSERTIONS_PER_TEST }"
          paddingTop="4"
-         paddingBottom="2"
+         paddingBottom="2" visible="false"
          />
 
       <mx:Label

@@ -107,10 +107,11 @@
       filterChanged="refreshTree()"
       filterTextChanged="testCasesContainer.filterChangedEffect.play( [ testCasesContainer.caseName, testCasesContainer.expectedUI, testCasesContainer.actualUI ] )"
       filterResultChanged="testCasesContainer.filterChangedEffect.play( [ testCasesContainer.resultUI ] )"
-      filterAssertionChanged="testCasesContainer.filterChangedEffect.play( [ testCasesContainer.assertionUI ] )"
       x="10" 
       y="10"
       />
+      <!--filterAssertionChanged="testCasesContainer.filterChangedEffect.play( [ testCasesContainer.assertionUI ] )"
+      	removed to avoid confusion until we can make this work across all tests-->
 
    <left:TestCasesTree
       id="testCasesContainer"
