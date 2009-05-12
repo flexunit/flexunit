@@ -29,6 +29,9 @@ package org.flexunit.internals.runners {
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
+	import flex.lang.reflect.Klass;
+	import flex.lang.reflect.Method;
+	
 	import flexunit.framework.Test;
 	import flexunit.framework.TestCase;
 	import flexunit.framework.TestListener;
@@ -42,7 +45,7 @@ package org.flexunit.internals.runners {
 	import org.flexunit.runner.manipulation.Filter;
 	import org.flexunit.runner.manipulation.IFilterable;
 	import org.flexunit.runner.notification.IRunNotifier;
-	import org.flexunit.runner.notification.RunNotifier;
+	import org.flexunit.runners.model.FrameworkMethod;
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.utils.ClassNameUtil;
@@ -50,17 +53,60 @@ package org.flexunit.internals.runners {
 	public class FlexUnit1ClassRunner implements IRunner, IFilterable {
 
 		private var test:Test;
+		private var klassOrTest:*;
 		private var totalTestCount:int = 0;
 		private var numTestsRun:int = 0;
+		private var filterRef:Filter = null;
 
 		public function FlexUnit1ClassRunner( klassOrTest:* ) {
 			super();
+
+			this.klassOrTest = klassOrTest;
 
 			if ( klassOrTest is Test ) {
 				this.test = klassOrTest;
 			} else {
 				//in this case, we need to make a suite
-				this.test = new TestSuite( klassOrTest );
+				this.test = createTestSuiteWithFilter( filterRef );
+			}
+		}
+
+		protected function describeChild( child:* ):IDescription {
+			var method:FrameworkMethod = FrameworkMethod( child );
+			return Description.createTestDescription( klassOrTest, method.name, method.metadata?method.metadata[ 0 ]:null );
+		}
+		
+		private function shouldRun( item:* ):Boolean {
+			return filterRef == null || filterRef.shouldRun( describeChild( item ) );
+		}
+		
+		private function getMethodListFromFilter( klassInfo:Klass, filter:Filter ):Array {
+			var list:Array = [];
+
+			for ( var i:int=0; i<klassInfo.methods.length; i++ ) {
+				var method:Method = klassInfo.methods[ i ] as Method;
+				var frameworkMethod:FrameworkMethod = new FrameworkMethod( method );
+
+				if ( shouldRun( frameworkMethod ) ) {
+					list.push( method.name );
+				}  
+			}
+
+			return list;
+		}
+		
+		private function createTestSuiteWithFilter( filter:Filter = null ):Test {
+			if ( !filter ) {
+				return new TestSuite( klassOrTest );
+			} else {
+				var suite:TestSuite = new TestSuite();
+				var klassInfo:Klass = new Klass( klassOrTest );
+				var methodList:Array = getMethodListFromFilter( klassInfo, filter );
+
+				for ( var i:int=0; i<methodList.length; i++ ) {
+					suite.addTest( new klassOrTest( methodList[ i ] ) );
+				}
+				return suite;
 			}
 		}
 
@@ -111,7 +157,8 @@ package org.flexunit.internals.runners {
 				var n:int = ts.testCount();
 				var tests:Array = ts.getTests();
 				for ( var i:int = 0; i < n; i++)
-					description.addChild( makeDescription( tests[i] ));
+					description.addChild( makeDescription( tests[i] ) );
+
 				return description;
 			} else if (test is IDescribable) {
 				var adapter:IDescribable = IDescribable( test );
@@ -131,6 +178,9 @@ package org.flexunit.internals.runners {
 				var adapter:IFilterable = IFilterable( test );
 				adapter.filter(filter);
 			}
+			
+			this.filterRef = filter;
+			test = createTestSuiteWithFilter( filterRef );
 		}
 	
 /* 		public void sort(Sorter sorter) {
@@ -184,10 +234,8 @@ class OldTestClassAdaptingListener implements TestListener {
 			return facade.description;
 		}
 
-		return Description.createTestDescription( FlexUnit1ClassRunner.getClassFromTest( test ), getName(test));
+		return Description.createTestDescription( FlexUnit1ClassRunner.getClassFromTest( test ), getName(test) );
 	}
-
-
 
 	private function getName( test:Test ):String {
 		if ( test is TestCase )

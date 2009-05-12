@@ -189,7 +189,7 @@ package org.flexunit.runner.notification.async
 		}
 	
 		protected function printResults( result:Result ):void{
-			logger.info("printResults");
+			//logger.info("printResults");
 			for(var i:int=0;i<msgQueue.length;i++){
 				sendResults(msgQueue[i]);
 			}
@@ -203,7 +203,7 @@ package org.flexunit.runner.notification.async
 		protected function sendResults(msg:String):void{
 			if(socket.connected){
 				socket.send( msg );
-				trace(msg);
+				//trace(msg);
 			}
 			
 		}

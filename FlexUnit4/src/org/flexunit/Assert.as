@@ -35,13 +35,23 @@ package org.flexunit
  
 	public class Assert
 	{
-		public static var assertCount:int = 0;
+		public static var _assertCount:int = 0;
+
+		public static function get assertionsMade() : Number {
+			return _assertCount;
+		}
+		  
+		public static function resetAssertionsFields() : void {
+			_assertCount = 0;
+		}
 
 		public static function assertWithApply( asserter:Function, args:Array ):void {
+			_assertCount++;
 			asserter.apply( null, args );
 		}
 
 		public static function assertWith( asserter:Function, ...rest ):void {
+			_assertCount++;
 			asserter.apply( null, rest );
 		}
 
@@ -51,7 +61,7 @@ package org.flexunit
 		 */
 		public static function assertEquals(... rest):void
 		{
-			assertCount++;
+			_assertCount++;
 			if ( rest.length == 3 )
 				failNotEquals( rest[0], rest[1], rest[2] );
 			else
@@ -72,7 +82,7 @@ package org.flexunit
 		 */
 		public static function assertStrictlyEquals(... rest):void
 		{
-			assertCount++;
+			_assertCount++;
 			if ( rest.length == 3 )
 				failNotStrictlyEquals( rest[0], rest[1], rest[2] );
 			else
@@ -99,7 +109,7 @@ package org.flexunit
 		 */
 		public static function assertTrue(... rest):void
 		{
-			assertCount++;
+			_assertCount++;
 			if ( rest.length == 2 )
 				failNotTrue( rest[0], rest[1] );
 			else
@@ -126,7 +136,7 @@ package org.flexunit
 		 */
 		public static function assertFalse(... rest):void
 		{
-			assertCount++;
+			_assertCount++;
 			if ( rest.length == 2 )
 				failTrue( rest[0], rest[1] );
 			else
@@ -155,7 +165,7 @@ package org.flexunit
 		 */
 		public static function assertNull(... rest):void
 		{
-			assertCount++;
+			_assertCount++;
 			if ( rest.length == 2 )
 				failNotNull( rest[0], rest[1] );
 			else
@@ -184,7 +194,7 @@ package org.flexunit
 		 */
 		public static function assertNotNull(... rest):void
 		{
-			assertCount++;
+			_assertCount++;
 			if ( rest.length == 2 )
 				failNull( rest[0], rest[1] );
 			else
