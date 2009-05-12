@@ -5,6 +5,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.flexunit.runner.notification.async.XMLListener;
 			import suite.FlexUnitIn360;
 			import flexUnitTests.flexUnit1.framework.AllFrameworkTests;
 			import flexUnitTests.hamcrest.HamcrestSuite;
@@ -21,6 +22,7 @@
 
 				//Listener for the UI, optional
 				core.addListener( new UIListener( uiListener ));
+				//core.addListener( new XMLListener() );
 				
 				//This run statements executes the unit tests for the FlexUnit4 framework 
 				//the Hamcrest matchers and some of the tests shown in the FlexUnit in 360 seconds blog post
