@@ -54,6 +54,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	    }
 	
 	//------------------------------------------------------------------------------
+		[Test]
 	    public function testAssertEquals():void
 	    {
 	        var  o : Object = new Object();
@@ -62,7 +63,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	    }
 	
 	//------------------------------------------------------------------------------
-	
+		[Test]
 	    public function testAssertEqualsNull():void 
 	    {
 	        Assert.assertEquals( null, null );
