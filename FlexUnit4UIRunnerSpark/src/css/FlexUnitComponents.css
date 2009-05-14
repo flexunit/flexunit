@@ -1,0 +1,300 @@
+/* CSS file used for component-level compilation */
+
+/* Embedded Fonts */
+/* Font for titles */
+@font-face {
+	font-family: "Myriad Pro SemiCond";
+	src: url("fonts/fonts.swf");
+}
+
+/* Font for anything else */
+@font-face {
+	font-family: "Myriad Pro";
+	src: url("fonts/fonts.swf");
+}
+
+@font-face {
+	font-family: "Myriad Pro";
+	font-weight: bold;
+	src: url("fonts/fonts.swf");
+}
+
+/* Class-selectors are the only way to apply styles to components */
+.flexUnitApplication {
+   backgroundColor: #3872b2;
+   backgroundGradientColors: #3872b2, #0c1a3d;
+   backgroundGradientAlphas: 1, 1;
+   themeColor: #ffffff;
+   color: #444444;
+   fontFamily: "Myriad Pro";
+   fontSize: 12;
+   verticalScrollBarStyleName: flexUnitScrollBar;
+   horizontalScrollBarStyleName: flexUnitScrollBar;
+   modal-transparency-blur: 0;
+   modal-transparency: 0;   
+}
+
+.myToolTip {
+   fontFamily: "Myriad Pro";
+   background-color: #3872b2;
+   leading: 5;
+}
+
+.flexUnitVBox {
+   verticalScrollBarStyleName: flexUnitScrollBar;
+   horizontalScrollBarStyleName: flexUnitScrollBar;
+}
+
+.flexUnitScrollBar
+{
+	downArrowDisabledSkin: Embed(source="skins/VScrollBar_downArrowDisabledSkin.png");
+	downArrowDownSkin: Embed(source="skins/VScrollBar_downArrowDownSkin.png");
+	downArrowOverSkin: Embed(source="skins/VScrollBar_downArrowOverSkin.png");
+	downArrowUpSkin: Embed(source="skins/VScrollBar_downArrowUpSkin.png");
+	thumbIcon: Embed(source="skins/VScrollBar_thumbIcon.png");
+	trackSkin: Embed(source="skins/VScrollBar_trackSkin.png");
+	upArrowDisabledSkin: Embed(source="skins/VScrollBar_upArrowDisabledSkin.png");
+	upArrowDownSkin: Embed(source="skins/VScrollBar_upArrowDownSkin.png");
+	upArrowOverSkin: Embed(source="skins/VScrollBar_upArrowOverSkin.png");
+	upArrowUpSkin: Embed(source="skins/VScrollBar_upArrowUpSkin.png");
+	thumbDownSkin: Embed(
+	   source="skins/VScrollBar_thumbDownSkin.png",
+		   scaleGridLeft="1", scaleGridTop="5", 
+		   scaleGridRight="8", scaleGridBottom="44" );
+	thumbOverSkin: Embed(
+	   source="skins/VScrollBar_thumbOverSkin.png",
+		   scaleGridLeft="1", scaleGridTop="5", 
+		   scaleGridRight="8", scaleGridBottom="44" );
+	thumbUpSkin: Embed(
+	   source="skins/VScrollBar_thumbUpSkin.png",
+		   scaleGridLeft="1", scaleGridTop="5", 
+		   scaleGridRight="8", scaleGridBottom="44" );
+}
+
+.flexUnitDataGrid {
+   alternatingItemColors: #ffffff, #f6f6f6;
+   headerColors: #fcfcfc, #e5e5e5;
+   verticalGridLineColor: #dcdcdc;
+   useRollOver: false;
+   rollOverColor: #cccccc;
+   selectionColor: #2863b4;
+   textSelectedColor: #ffffff;
+}
+
+.flexUnitSlider {
+   themeColor: #2863b4;
+}
+
+.flexUnitTree {
+   alternatingItemColors: #ffffff, #f6f6f6;
+   headerColors: #fcfcfc, #e5e5e5;
+   verticalGridLineColor: #dcdcdc;
+   useRollOver: false;
+   rollOverColor: #cccccc;
+   selectionColor: #2863b4;
+   textSelectedColor: #ffffff;
+   verticalScrollBarStyleName: flexUnitScrollBar;
+   horizontalScrollBarStyleName: flexUnitScrollBar;
+}
+
+.mainPanel {
+   header-height: 0;
+   vertical-gap: 2;
+	borderSkin: Embed( 
+	   source="skins/Panel_borderSkin.png", 
+   	   scaleGridLeft="12", scaleGridTop="31", 
+   	   scaleGridRight="265", scaleGridBottom="189" );	
+   padding-top: 20;
+	padding-left: 8;
+	padding-right: 8;
+}
+
+.flexUnitTextInput {
+	themeColor: #ffffff;
+}
+
+.flexUnitTextAreaWithBorder {
+	borderSkin: Embed(
+	   source="skins/TextArea_borderSkin.png",
+   		scaleGridLeft="4", scaleGridTop="4", 
+   		scaleGridRight="150", scaleGridBottom="18" );
+	paddingTop: 10;
+	leading: 0;
+	fontSize: 11;
+	wordWrap: false;
+	verticalScrollBarStyleName: flexUnitScrollBar;
+	horizontalScrollBarStyleName: flexUnitScrollBar;
+}
+
+.flexUnitTextArea {
+	borderStyle: none;
+	backgroundAlpha: 0;
+	paddingTop: 10;
+	leading: 0;
+	fontSize: 11;
+	wordWrap: false;
+	verticalScrollBarStyleName: flexUnitScrollBar;
+	horizontalScrollBarStyleName: flexUnitScrollBar;
+}
+
+.panelTitleStyle {
+   fontFamily: "Myriad Pro SemiCond";
+   fontSize: 24;
+   textIndent: 20;
+}
+
+.panelTitleSubStyle {
+   fontFamily: "Myriad Pro SemiCond";
+   fontSize: 16;
+}
+
+.flexUnitHRule {
+	strokeColor: #b9b9b9;
+	strokeWidth: 2;
+	shadowColor: #FFFFFF; 
+}
+
+.h1 {
+	fontFamily: "Myriad Pro SemiCond";
+	fontSize: 18;
+}
+
+.h2 {
+	fontSize: 13;
+}
+
+.flexUnitComboBox {
+	upSkin: Embed(
+	   source="skins/ComboBox_upSkin.png",
+		   scaleGridLeft="4", scaleGridTop="4", 
+		   scaleGridRight="64", scaleGridBottom="18" );
+	overSkin: Embed(
+	   source="skins/ComboBox_overSkin.png",
+		   scaleGridLeft="4", scaleGridTop="4", 
+		   scaleGridRight="64", scaleGridBottom="18" );
+	downSkin: Embed(
+	   source="skins/ComboBox_downSkin.png",
+		   scaleGridLeft="4", scaleGridTop="4", 
+		   scaleGridRight="64", scaleGridBottom="18" );
+	disabledSkin: Embed(
+	   source="skins/ComboBox_disabledSkin.png",
+		   scaleGridLeft="4", scaleGridTop="4", 
+		   scaleGridRight="64", scaleGridBottom="18" );
+   themeColor: #2863b4;
+}
+
+.flexUnitProgressBar
+{
+	barColor: #51C148;
+	trackSkin: Embed(
+	   source="skins/ProgressBar_trackSkin.png",
+		   scaleGridLeft="1", scaleGridTop="0", 
+		   scaleGridRight="149", scaleGridBottom="3" );
+	trackHeight: 11;
+}
+
+.flexUnitForm {
+	paddingTop: 0;
+	paddingBottom: 0;
+	paddingLeft: 0;
+	paddingRight: 0;
+	verticalGap: -2;
+}
+
+.flexUnitFormItemLabel {
+	color: #777777;
+}
+
+.flexUnitFormItemValue {
+	color: #444444;
+}
+
+.flexUnitButtonBar
+{
+	horizontalGap: -1;
+    firstButtonStyleName: "firstButtonBarButton";
+    lastButtonStyleName: "lastButtonBarButton";
+}
+
+.firstButtonBarButton
+{
+    disabledSkin: Embed(
+      source="skins/ButtonBarFirstButton_disabledSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    downSkin: Embed(
+      source="skins/ButtonBarFirstButton_downSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    overSkin: Embed(
+      source="skins/ButtonBarFirstButton_overSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    selectedDisabledSkin: Embed(
+      source="skins/ButtonBarFirstButton_selectedDisabledSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    selectedDownSkin: Embed(
+      source="skins/ButtonBarFirstButton_downSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    selectedOverSkin: Embed(
+      source="skins/ButtonBarFirstButton_overSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    selectedUpSkin: Embed(
+      source="skins/ButtonBarFirstButton_selectedUpSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    upSkin: Embed(
+      source="skins/ButtonBarFirstButton_upSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+}
+
+.lastButtonBarButton
+{
+    disabledSkin: Embed(
+      source="skins/ButtonBarLastButton_disabledSkin.png",
+   		scaleGridLeft="6", scaleGridTop="6", 
+   		scaleGridRight="40", scaleGridBottom="16" );
+    downSkin: Embed(
+      source="skins/ButtonBarLastButton_downSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    overSkin: Embed(
+      source="skins/ButtonBarLastButton_overSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    selectedDisabledSkin: Embed(
+      source="skins/ButtonBarLastButton_disabledSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    selectedDownSkin: Embed(
+      source="skins/ButtonBarLastButton_downSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    selectedOverSkin: Embed(
+      source="skins/ButtonBarLastButton_overSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    selectedUpSkin: Embed(
+      source="skins/ButtonBarLastButton_selectedUpSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    upSkin: Embed(
+      source="skins/ButtonBarLastButton_upSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+}
+
+.flexUnitControlBar {
+	paddingTop: 5;
+	paddingBottom: 2;
+	paddingLeft: 4;
+	paddingRight: 12;
+	borderSkin: Embed(
+	   source="skins/Panel_controlBarBackgroundSkin.png",
+		   scaleGridLeft="8", scaleGridTop="1", 
+		   scaleGridRight="270", scaleGridBottom="17" );
+}
