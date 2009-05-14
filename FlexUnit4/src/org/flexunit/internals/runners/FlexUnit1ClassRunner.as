@@ -104,7 +104,23 @@ package org.flexunit.internals.runners {
 				var methodList:Array = getMethodListFromFilter( klassInfo, filter );
 
 				for ( var i:int=0; i<methodList.length; i++ ) {
-					suite.addTest( new klassOrTest( methodList[ i ] ) );
+					var numConstructorArgs:int = klassInfo.constructor.parameterTypes.length;
+					var test:Test;
+					
+					if ( numConstructorArgs == 0 ) {
+						test = klassInfo.constructor.newInstance() as Test;
+						if ( test is TestCase ) {
+							//If this is a testCase && it does not take a constructor argument
+							//then we try to pass it into methodName
+							TestCase( test ).methodName = methodList[ i ];
+						}
+					} else if ( numConstructorArgs == 1 ) {
+						test = klassInfo.constructor.newInstance( methodList[ i ] ) as Test;
+					} else {
+						throw new InitializationError( "Asking to instatiate TestClass with unknown number of arguments" );
+					}
+
+					suite.addTest( test );
 				}
 				return suite;
 			}
