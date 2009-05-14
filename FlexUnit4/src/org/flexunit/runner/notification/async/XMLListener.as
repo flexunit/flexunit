@@ -82,8 +82,13 @@ package org.flexunit.runner.notification.async
 		private var lastFailedTest:IDescription;
 		
 		private var msgQueue:Array = new Array();
+		private var projectName:String;
+		private var contextName:String;
 
-		public function XMLListener() {
+		public function XMLListener( projectName:String = "", contextName:String = "" ) {
+			this.projectName = projectName;
+			this.contextName = contextName;
+
 			socket = new XMLSocket ();
 	      	socket.addEventListener( Event.CONNECT, handleConnect );
 			socket.addEventListener( IOErrorEvent.IO_ERROR, errorHandler);
@@ -95,6 +100,8 @@ package org.flexunit.runner.notification.async
    	   		} catch (e:Error) {
    	   			trace (e.message);
    	   		}
+   	   		
+   	   		
 		}
 		
 		[Bindable(event="listenerReady")]
@@ -102,12 +109,16 @@ package org.flexunit.runner.notification.async
 			return _ready;
 		}
 		
+		private function getTestCount( description:IDescription ):int {
+			return description.testCount;
+		}
+		
 		public function testRunStarted( description:IDescription ):void{
 			// XML Socket in flexbuilder is expecting a startTestRun node at the begining of the results.
 			// it seems to use this to reset hte current results, and prepopulate the total number of tests
 			// however, in flexunit4, we are unable to determine the total number of tests before hand, so
 			// we are sending through an empty startTestRun node, so the reset can still happen.
-			sendResults("<startTestRun totalTestCount='0'  projectName='' contextName='' />");
+			sendResults("<startTestRun totalTestCount='" + getTestCount( description ) + "'  projectName='" + projectName + "' contextName='" + contextName +"' />");
 		}
 
 		public function testRunFinished( result:Result ):void {
@@ -175,7 +186,7 @@ package org.flexunit.runner.notification.async
 			descriptor.path = descriptionArray[0];
 			var classMethod:String =  descriptionArray[1];
 			var classMethodArray:Array = classMethod.split(".");
-			descriptor.suite = classMethodArray[0];
+			descriptor.suite = descriptor.path + "::" + classMethodArray[0];
 			descriptor.method = classMethodArray[1];
 			return descriptor;
 		}

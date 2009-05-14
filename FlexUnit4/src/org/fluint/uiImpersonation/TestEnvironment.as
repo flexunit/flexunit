@@ -25,9 +25,12 @@
 package org.fluint.uiImpersonation {
 	import mx.core.ApplicationGlobals;
 	import mx.core.Container;
+	//import mx.core.FlexGlobals;
+	import mx.core.FlexVersion;
 	import mx.events.FlexEvent;
 	import mx.managers.ILayoutManagerClient;
 	import mx.managers.SystemManager;
+	import flash.utils.getDefinitionByName;
 
 	/** 
 	 * TestEnvironment is a singleton class that allows tests to have 
@@ -53,7 +56,17 @@ package org.fluint.uiImpersonation {
 				//need to eventually go this route
 				//instance = buildInstance();
 				instance = new TestEnvironment();
-				var systemManager:SystemManager = ApplicationGlobals.application.systemManager;
+				var systemManager:SystemManager;
+
+				//TO-DO: need to deal with this, can't reference 4, likely 3_4 or some other # 				
+				if ( FlexVersion.CURRENT_VERSION > FlexVersion.VERSION_3_0 ) {
+					var flexGlobals:Class = Class(getDefinitionByName("mx.core::FlexGlobals"));
+					systemManager = flexGlobals.topLevelApplication.systemManager;
+				} else {
+					systemManager = ApplicationGlobals.application.systemManager;
+				}
+				
+				 //= ApplicationGlobals.application.systemManager;
 				systemManager.addChild( instance );				
 			}
 			

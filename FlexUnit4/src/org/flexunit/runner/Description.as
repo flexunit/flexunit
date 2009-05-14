@@ -57,8 +57,6 @@ package org.flexunit.runner {
 		private var _children:ArrayCollection;
 		private var _displayName:String = "";
 		private var _metadata:XML;
-		private var _isSuite:Boolean = false;
-		private var _testCount:int = 0;
 		private var _isInstance:Boolean = false;
 		
 		/**
@@ -79,21 +77,35 @@ package org.flexunit.runner {
 		 * @return <code>true</code> if the receiver is a suite
 		 */
 		public function get isSuite():Boolean {
-			return _isSuite;
+			return !isTest;
 		}
 
 		/**
 		 * @return <code>true</code> if the receiver is an atomic test
 		 */
 		public function get isTest():Boolean {
-			return !isSuite;
+			return ( ( children == null ) || ( children && children.length == 0 ) );
 		}
 
 		/**
 		 * @return the total number of atomic tests in the receiver
 		 */
 		public function get testCount():int {
-			return _testCount;
+			if ( isTest ) {
+				return 1;
+			}
+
+			var result:int = 0;
+			
+			if ( children ) {
+				var child:IDescription;
+				for ( var i:int=0; i<children.length; i++ ) {
+					child = children[ i ] as IDescription;
+					result += child.testCount;
+				}
+			}
+
+			return result;
 		}
 
 		/**
@@ -126,10 +138,6 @@ package org.flexunit.runner {
 		 */
 		public function addChild( description:IDescription ):void {
 			children.addItem( description );
-			
-			if ( description.isTest ) {
-				_testCount++;
-			}
 		}
 		
 			/**
