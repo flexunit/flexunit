@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+<mx:Application 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 	
 	xmlns:flexUnitUIRunner="http://www.adobe.com/2009/flexUnitUIRunner" 
 	creationComplete="runMe()" 
 	styleName="flexUnitApplication" >
 	
 	<mx:Script>
 		<![CDATA[
+			import org.flexunit.listeners.UIListener;
 			import flexUnitTests.flexUnit4.suites.frameworkSuite.FlexUnit4Suite;
 			//import org.flexunit.listeners.JUnitListener;
 			import org.flexunit.runner.notification.async.XMLListener;
-			import org.flexunit.listeners.UIListener;
 			import org.flexunit.runner.Request;
 
 			import org.flexunit.runner.FlexUnitCore;
@@ -21,7 +22,7 @@
 
 				//Listeners for CI systems or plugins 
 				//core.addListener( new JUnitListener());
-				//core.addListener( new XMLListener() );
+				core.addListener( new XMLListener( "FlexUnit4Test" ) );
 
 				//Listener for the UI
 				core.addListener( new UIListener( uiListener ));
