@@ -52,6 +52,7 @@ package org.fluint.uiImpersonation {
 		 * @return A reference to the TestEnvironment class.
 		 */
 		public static function getInstance():TestEnvironment {
+			var globals:Class
 			if ( !instance ) {
 				//need to eventually go this route
 				//instance = buildInstance();
@@ -60,10 +61,11 @@ package org.fluint.uiImpersonation {
 
 				//TO-DO: need to deal with this, can't reference 4, likely 3_4 or some other # 				
 				if ( FlexVersion.CURRENT_VERSION > FlexVersion.VERSION_3_0 ) {
-					var flexGlobals:Class = Class(getDefinitionByName("mx.core::FlexGlobals"));
-					systemManager = flexGlobals.topLevelApplication.systemManager;
+					globals = Class(getDefinitionByName("mx.core::FlexGlobals"));
+					systemManager = globals.topLevelApplication.systemManager;
 				} else {
-					systemManager = ApplicationGlobals.application.systemManager;
+					globals = Class(getDefinitionByName("mx.core.ApplicationGlobals"));
+					systemManager = globals.application.systemManager;
 				}
 				
 				 //= ApplicationGlobals.application.systemManager;
