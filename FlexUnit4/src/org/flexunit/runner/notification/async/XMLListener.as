@@ -25,16 +25,6 @@
  * @author     Jeff Tapper <jtapper@digitalprimates.net>
  * @version    
  **/ 
-/**
- * notes
- * 
- * currently, im printing all successes, then all failures, then all ignores.
- * may make more sense to return them in order.  
- * since we need to return the total number of tests in the first result, but we can't know that until
- * all the tests are complete, we probably need to keep an array of all the results in order as they come back, 
- * and when the tests are done, loop over the array and send the messages. 
- * 
- * */
 
 package org.flexunit.runner.notification.async
 {
