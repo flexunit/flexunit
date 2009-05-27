@@ -1,4 +1,6 @@
 package suite.cases {
+	import flash.errors.IllegalOperationError;
+	
 	import math.SimpleMath;
 	
 	import org.flexunit.Assert;

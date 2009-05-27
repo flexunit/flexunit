@@ -13,6 +13,9 @@ package math {
 		}
 
 		public function divide( n1:Number, n2:Number ):Number {
+			if ( n2 == 0 ) {
+				throw new TypeError("Cannot divide by 0");
+			}
 			return (n1/n2);
 		}
 	}

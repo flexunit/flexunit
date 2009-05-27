@@ -5,6 +5,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import suite.cases.BasicMathTest;
 			import org.flexunit.runner.notification.async.XMLListener;
 			import suite.FlexUnitIn360;
 			import flexUnitTests.flexUnit1.framework.AllFrameworkTests;
