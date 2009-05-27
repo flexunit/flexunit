@@ -35,19 +35,19 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
      */
 	public class TestAssert
 	{
-		[Test(expected="mx.collections.errors.ItemPendingError")]
+		[Test(expects="mx.collections.errors.ItemPendingError")]
 	    public function fails2():void
 	    {
             throw new ItemPendingError( null );
 	    }
 
-		[Test(expected="flexunit.framework.AssertionFailedError")]
+		[Test(expects="flexunit.framework.AssertionFailedError")]
 	    public function testFail():void
 	    {
             Assert.fail();
 	    }
 
-		[Test(expected="flexunit.framework.AssertionFailedError")]
+		[Test(expects="flexunit.framework.AssertionFailedError")]
 	    public function testFailAssertEquals():void
 	    {
             Assert.assertEquals( new Object(), new Object() );
@@ -71,7 +71,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	
 	//------------------------------------------------------------------------------
 	
-		[Test(expected="flexunit.framework.AssertionFailedError")]
+		[Test(expects="flexunit.framework.AssertionFailedError")]
 	    public function testAssertNullNotEqualsString():void 
 	    {
 	        Assert.assertEquals( null, "foo" );
@@ -79,7 +79,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	
 	//------------------------------------------------------------------------------
 
-		[Test(expected="flexunit.framework.AssertionFailedError")]	
+		[Test(expects="flexunit.framework.AssertionFailedError")]	
 	    public function testAssertStringNotEqualsNull():void 
 	    {
             Assert.assertEquals( "foo", null );
@@ -87,7 +87,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	
 	//------------------------------------------------------------------------------
 	
-		[Test(expected="flexunit.framework.AssertionFailedError")]
+		[Test(expects="flexunit.framework.AssertionFailedError")]
 	    public function testAssertNullNotEqualsNull():void 
 	    {
 			Assert.assertEquals( null, new Object() );
@@ -101,7 +101,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 			Assert.assertNull( null );
 	    }
 
-		[Test(expected="flexunit.framework.AssertionFailedError")]
+		[Test(expects="flexunit.framework.AssertionFailedError")]
 	    public function testAssertNullFail():void 
 	    {
 			Assert.assertNull( new Object() );
@@ -115,7 +115,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	    	Assert.assertNotNull( new Object() );
 	    }
 
-		[Test(expected="flexunit.framework.AssertionFailedError")]
+		[Test(expects="flexunit.framework.AssertionFailedError")]
 	    public function testAssertNotNullFail():void 
 	    {
 	    	Assert.assertNotNull( null );
@@ -129,7 +129,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
             Assert.assertTrue( true );
 	    }
 
-		[Test(expected="flexunit.framework.AssertionFailedError")]	
+		[Test(expects="flexunit.framework.AssertionFailedError")]	
 	    public function testAssertTrueFail():void
 	    {
             Assert.assertTrue( false );
@@ -143,7 +143,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
             Assert.assertFalse( false );
 	    }
 
-		[Test(expected="flexunit.framework.AssertionFailedError")]
+		[Test(expects="flexunit.framework.AssertionFailedError")]
 	    public function testAssertFalseFail():void
 	    {
             Assert.assertFalse( true );
@@ -157,7 +157,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	        Assert.assertStrictlyEquals( o, o );
 	    }
 
-		[Test(expected="flexunit.framework.AssertionFailedError")]
+		[Test(expects="flexunit.framework.AssertionFailedError")]
 	    public function testAssertStictlyEqualsFail():void 
 	    {
             Assert.assertStrictlyEquals( "5", 5 );
@@ -171,7 +171,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	    
 	//------------------------------------------------------------------------------
 	
-		[Test(expected="flexunit.framework.AssertionFailedError")]
+		[Test(expects="flexunit.framework.AssertionFailedError")]
 	    public function testAssertNullNotStrictlyEqualsString():void 
 	    {
             Assert.assertStrictlyEquals( null, "foo" );
@@ -179,7 +179,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	
 	//------------------------------------------------------------------------------
 	
-		[Test(expected="flexunit.framework.AssertionFailedError")]
+		[Test(expects="flexunit.framework.AssertionFailedError")]
 	    public function testAssertStringNotStrictlyEqualsNull():void 
 	    {
             Assert.assertStrictlyEquals( "foo", null );
@@ -187,7 +187,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	
 	//------------------------------------------------------------------------------
 
-		[Test(expected="flexunit.framework.AssertionFailedError")]	
+		[Test(expects="flexunit.framework.AssertionFailedError")]	
 	    public function testAssertNullNotStrictlyEqualsNull():void 
 	    {
 			Assert.assertStrictlyEquals( null, new Object() );

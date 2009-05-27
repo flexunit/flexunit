@@ -73,7 +73,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 	    	timer.start();
 	    }
 
-		[Test(async,expected="flexunit.framework.AssertionFailedError")]
+		[Test(async,expects="flexunit.framework.AssertionFailedError")]
 	    public function testInTimeFail() : void {
 	    	//We fire in SHORT_TIME mills, but are willing to wait LONG_TIME
 	    	timer.delay = SHORT_TIME;
@@ -81,7 +81,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 	    	timer.start();
 	    }
 
-		[Test(async,expected="TypeError")]
+		[Test(async,expects="TypeError")]
 	    public function testInTimeError() : void {
 	    	//We fire in SHORT_TIME mills, but are willing to wait LONG_TIME
 	    	timer.delay = SHORT_TIME;
@@ -97,7 +97,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 	    	timer.start();
 	    }
 
-		[Test(async,expected="flexunit.framework.AssertionFailedError")]
+		[Test(async,expects="flexunit.framework.AssertionFailedError")]
 	    public function testTooLateFail() : void {
 	    	//We fire in LONG_TIME mills, but are willing to wait SHORT_TIME
 	    	timer.delay = LONG_TIME;
@@ -105,7 +105,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 	    	timer.start();
 	    }
 
-		[Test(async,expected="TypeError")]
+		[Test(async,expects="TypeError")]
 	    public function testTooLateError() : void {
 	    	//We fire in LONG_TIME mills, but are willing to wait SHORT_TIME
 	    	timer.delay = LONG_TIME;
@@ -122,7 +122,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 	    	eventDispatcher.dispatchEvent( new Event('immediate') ); 
 	    }
 
-		[Test(async,expected="flexunit.framework.AssertionFailedError")]
+		[Test(async,expects="flexunit.framework.AssertionFailedError")]
 	    public function testNotReallyAsynchronousFail() : void {
 	    	//This tests one of the edges that flex unit did not handle well. What if we receive our async event *before*
 	    	//this method finishes executing
@@ -235,7 +235,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 			testInTimePass();
 	    }
 
-		[Test(async,expected="flexunit.framework.AssertionFailedError")]
+		[Test(async,expects="flexunit.framework.AssertionFailedError")]
 	    public function testMultipleAsyncFirstReturnsBeforeSecondTimeout() : void {
 			testNotReallyAsynchronousPass();
 			testTooLateFail();
