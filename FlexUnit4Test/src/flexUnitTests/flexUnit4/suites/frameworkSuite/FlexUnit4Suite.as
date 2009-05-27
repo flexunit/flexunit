@@ -34,6 +34,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestBeforeAfterOrder;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestBeforeAfterOrderAsync;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestBindingUse;
+	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestDoubleMetaData;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestIgnore;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestMXMLComponentUse;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestMethodOrder;
@@ -49,6 +50,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite
 	public class FlexUnit4Suite {
 		public var testAssert:TestAssert;
 		public var testIgnore:TestIgnore;
+		public var testDouble:TestDoubleMetaData;
 		public var testMethodOrder:TestMethodOrder;
 		public var testBeforeAfterOrder:TestBeforeAfterOrder;
 		public var testBeforeAfterClassOrder:TestBeforeAfterClassOrder;
