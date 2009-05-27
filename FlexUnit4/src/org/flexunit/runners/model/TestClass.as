@@ -87,7 +87,20 @@ package org.flexunit.runners.model {
 						entry = metaDataDictionary[ metaTag ]
 					}
 					
-					entry.push( testMethod );
+					var found:Boolean = false;
+					//Before we push this onto the stack, we take a quick pass to ensure it is not already there
+					//this covers the case where someone double flags a test with a piece of metadata
+					//bugID="FXU-33")
+ 					for ( var j:int=0; j<entry.length; j++ ) {
+						if ( ( entry[ j ] as FrameworkMethod ).method === testMethod.method ) {
+							found = true;
+							break;	
+						}
+					}
+					
+					if ( !found ) {
+						entry.push( testMethod );
+					}
 				}
 			}
 		}
