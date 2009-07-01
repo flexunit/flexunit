@@ -30,11 +30,11 @@ package org.flexunit.runner {
 	import flash.events.EventDispatcher;
 	import flash.utils.*;
 	
-	import mx.logging.ILogger;
-	import mx.logging.ILoggingTarget;
-	import mx.logging.Log;
-	import mx.logging.LogEventLevel;
-	import mx.logging.targets.TraceTarget;
+	//import mx.logging.ILogger;
+	//import mx.logging.ILoggingTarget;
+	//import mx.logging.Log;
+	//import mx.logging.LogEventLevel;
+	//import mx.logging.targets.TraceTarget;
 	
 	import org.flexunit.experimental.theories.Theories;
 	import org.flexunit.internals.TextListener;
@@ -65,12 +65,15 @@ package org.flexunit.runner {
 
 	public class FlexUnitCore extends EventDispatcher {
 		private var notifier:IRunNotifier;
-		private var logTarget:ILoggingTarget;
-		private var logger:ILogger;
+		//private var logTarget:ILoggingTarget;
+		//private var logger:ILogger;
 		private var asyncListenerWatcher:AsyncListenerWatcher;
 		
 		private static const RUN_LISTENER:String = "runListener";
-		
+		public static const TESTS_COMPLETE : String = "testsComplete";
+		public static const RUNNER_START : String = "runnerStart";
+		public static const RUNNER_COMPLETE : String = "runnerComplete";
+
 		//Just keep theories linked in until we decide how to deal with it
 		private var theory:Theories;
 
@@ -99,7 +102,7 @@ package org.flexunit.runner {
 					}
 				}
 				catch ( error:Error ) {
-					logger.error( "Cannot find class {0}", ar[i] ); 
+					//logger.error( "Cannot find class {0}", ar[i] ); 
 					var desc:IDescription = Description.createSuiteDescription( ar[ i ] );
 					var failure:Failure = new Failure( desc, error );
 					missingClasses.push( failure );
@@ -120,8 +123,8 @@ package org.flexunit.runner {
 			
 			dealWithArgArray( args, foundClasses, missingClasses );
 
-			var listener:IRunListener = new TextListener( logger );
-			addListener( listener );
+			//var listener:IRunListener = new TextListener( logger );
+			//addListener( listener );
 			var result:Result = runClasses.apply( this, foundClasses );
 			
 			for ( var i:int=0; i<missingClasses.length; i++ ) {
@@ -151,7 +154,7 @@ package org.flexunit.runner {
 				beginRunnerExecution( runner );
 			} else {
 				//we need to wait until all listeners are ready (or failed) before we can continue
-				var token:AsyncListenersToken = asyncListenerWatcher.token;
+				var token:AsyncListenersToken = asyncListenerWatcher.startUpToken;
 				token.runner = runner;
 				token.addNotificationMethod( beginRunnerExecution );
 			}
@@ -166,23 +169,32 @@ package org.flexunit.runner {
 			token.addNotificationMethod( handleRunnerComplete );
 			token[ RUN_LISTENER ] = runListener;
 
+			dispatchEvent( new Event( RUNNER_START ) );
+
 			try {
 				notifier.fireTestRunStarted( runner.description );
 				runner.run( notifier, token );
 			}
 			
 			catch ( error:Error ) {
+				//I think we need to further restrict the case where this is true
 				notifier.fireTestAssumptionFailed( new Failure( runner.description, error ) );
-				notifier.fireTestRunFinished( runListener.result );
-				removeListener( runListener );
+
+				finishRun( runListener );
 			}
 		}
 		
 		private function handleRunnerComplete( result:ChildResult ):void {
 			var runListener:RunListener = result.token[ RUN_LISTENER ];
 
+			finishRun( runListener );
+		}
+
+		private function finishRun( runListener:RunListener ):void {
 			notifier.fireTestRunFinished( runListener.result );
 			removeListener( runListener );
+			
+			dispatchEvent( new Event( TESTS_COMPLETE ) );
 		}
 
 		/**
@@ -212,7 +224,7 @@ package org.flexunit.runner {
 			notifier.removeListener( listener );
 
 			if ( listener is IAsyncStartupRunListener ) {
-				asyncListenerWatcher.watchListener( listener as IAsyncStartupRunListener );
+				asyncListenerWatcher.unwatchListener( listener as IAsyncStartupRunListener );
 			}			
 		}
 		
@@ -220,10 +232,10 @@ package org.flexunit.runner {
 			
 		}
 		
-		protected function buildILoggingTarget():ILoggingTarget {
+/*		protected function buildILoggingTarget():ILoggingTarget {
 			var traceTarget:TraceTarget = new TraceTarget();
-			traceTarget.level = LogEventLevel.INFO;
-
+			traceTarget.level = LogEventLevel.DEBUG;
+			
             traceTarget.includeDate = true;
             traceTarget.includeTime = true;
             traceTarget.includeCategory = true;
@@ -231,19 +243,19 @@ package org.flexunit.runner {
 			
 			return traceTarget;
 		}
-
+*/
 		/**
 		 * Create a new <code>FlexUnitCore</code> to run tests.
 		 */
 		public function FlexUnitCore() {
 			notifier = new RunNotifier();
 			
-			logTarget = buildILoggingTarget();
-			Log.addTarget(logTarget);
+			//logTarget = buildILoggingTarget();
+			//Log.addTarget(logTarget);
 			
-			logger = Log.getLogger("FlexUnit4"); 
+			//logger = Log.getLogger("FlexUnit4"); 
 			
-			asyncListenerWatcher = new AsyncListenerWatcher( notifier, logger );
+			asyncListenerWatcher = new AsyncListenerWatcher( notifier, null );
 			//asyncListenerWatcher.addEventListener( AsyncListenerWatcher.ALL_LISTENERS_READY, handleAllListenersReady, false, 0, true );
 		}
 	}

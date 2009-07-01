@@ -76,7 +76,8 @@ package org.flexunit.internals.builders {
 		}
 	
 		protected function fluint1Builder():IRunnerBuilder {
-			return new Fluint1Builder();
+			//return new Fluint1Builder();\
+			return new NullBuilder();
 		}		
 
 		protected function flexUnit4Builder():FlexUnit4Builder {

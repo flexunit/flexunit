@@ -25,15 +25,9 @@
  * @author     Michael Labriola <labriola@digitalprimates.net>
  * @version    
  **/ 
-package org.flexunit.runner {
-	import org.flexunit.runner.manipulation.ISort;
+package org.flexunit.runner.notification {
 	
-	public interface IRequest {
-		function get sort():ISort;
-		function set sort( value:ISort ):void;
-
-		function get iRunner():IRunner;
-		
-		function filterWith( filterOrDescription:* ):Request;
+	public interface IAsyncCompletionRunListener extends IAsyncRunListener {
+		function get complete():Boolean;
 	}
 }

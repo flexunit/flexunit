@@ -61,6 +61,13 @@ package org.flexunit.token {
  			}
 		}
 		
+		public function sendComplete():void {
+			if ( methodsEntries ) {
+ 				for ( var i:int=0; i<methodsEntries.length; i++ ) {
+					methodsEntries[ i ]( runner );
+				}
+ 			}
+		}
 		
 		public function AsyncListenersToken() {
 		}

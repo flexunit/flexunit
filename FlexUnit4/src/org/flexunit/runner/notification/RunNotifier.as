@@ -186,9 +186,6 @@ package org.flexunit.runner.notification {
 }
 
 import org.flexunit.runner.notification.RunListener;
-import mx.collections.ArrayCollection;
-import mx.collections.IViewCursor;
-import mx.collections.Sort;
 import org.flexunit.runner.notification.Failure;
 import org.flexunit.runner.Description;
 import org.flexunit.runner.notification.RunNotifier;
@@ -198,23 +195,22 @@ import org.flexunit.runner.notification.IRunListener;
 
 class SafeNotifier {
 	protected var notifier:IRunNotifier;
-	protected var listenerCollection:ArrayCollection;
-	protected var iterator:IViewCursor;
+	protected var listeners:Array;
 	
 	public function SafeNotifier( notifier:IRunNotifier, listeners:Array ) {
 		this.notifier = notifier;
-		listenerCollection = new ArrayCollection( listeners );
-		iterator = listenerCollection.createCursor();
+		this.listeners = listeners;
 	}
 	
 	public function run():void {
-		while ( !iterator.afterLast ) {
+		for ( var i:int=0; i<listeners.length; i++ ) {
 			try {
-				notifyListener( iterator.current as IRunListener );
-				iterator.moveNext();
+				notifyListener( listeners[ i ] as IRunListener );
 			} catch ( e:Error ) {
-				iterator.remove();
+				listeners.splice( i, 1 );
 				notifier.fireTestFailure( new Failure( Description.TEST_MECHANISM, e));
+				//since we have deleted, we might need to repeat
+				i--;
 			}			
 		}
 	}

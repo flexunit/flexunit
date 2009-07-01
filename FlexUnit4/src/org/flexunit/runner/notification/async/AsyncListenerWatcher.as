@@ -27,10 +27,10 @@
  **/ 
  package org.flexunit.runner.notification.async {
 	import flash.events.Event;
-	import flash.events.EventDispatcher;
 	
-	import mx.logging.ILogger;
+	//import mx.logging.ILogger;
 	
+	import org.flexunit.runner.notification.IAsyncCompletionRunListener;
 	import org.flexunit.runner.notification.IAsyncStartupRunListener;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.token.AsyncListenersToken;
@@ -38,29 +38,39 @@
 	public class AsyncListenerWatcher {
 		public static const LISTENER_READY:String = "listenerReady";
 		public static const LISTENER_FAILED:String = "listenerFailed";
+		public static const LISTENER_COMPLETE:String = "listenerComplete";
 
 		//public static const ALL_LISTENERS_READY:String = "allListenersReady";
 
-		private var _pendingCount:int;
-		private var _totalCount:int;
+		private var _pendingStartupCount:int;
+		private var _totalStartUpCount:int;
 		private var notifier:IRunNotifier;
-		private var logger:ILogger;
-		private var _token:AsyncListenersToken;
+		//private var logger:ILogger;
+		private var _startToken:AsyncListenersToken;
+		private var _completeToken:AsyncListenersToken;
 
-		public function get token():AsyncListenersToken {
-			return _token;
+		public function get startUpToken():AsyncListenersToken {
+			return _startToken;
+		}
+
+		public function get completeToken():AsyncListenersToken {
+			return _completeToken;
 		}
 
 		public function get allListenersReady():Boolean {
 			return (pendingCount==0);
 		}
 
+		public function get allListenersComplete():Boolean {
+			return (pendingCount==0);
+		}
+
 		public function get pendingCount():int {
-			return _pendingCount;
+			return _pendingStartupCount;
 		}
 
 		public function get totalCount():int {
-			return _totalCount;
+			return _totalStartUpCount;
 		}
 
 		protected function monitorForAsyncStartup( listener:IAsyncStartupRunListener ):void {
@@ -68,20 +78,20 @@
 			listener.addEventListener( LISTENER_FAILED, handleListenerFailed );
 		}
 
-		protected function cleanupListeners( listener:IAsyncStartupRunListener ):void {
+		protected function cleanupStartupListeners( listener:IAsyncStartupRunListener ):void {
 			listener.removeEventListener( LISTENER_READY, handleListenerReady );
 			listener.removeEventListener( LISTENER_FAILED, handleListenerFailed );
 		}
 
 		protected function sendReadyNotification():void {
-			token.sendReady();
+			startUpToken.sendReady();
 		}
 
 		protected function handleListenerReady( event:Event ):void {
 			var asyncListener:IAsyncStartupRunListener = event.target as IAsyncStartupRunListener;
 
-			cleanupListeners( asyncListener );
-			_pendingCount--;
+			cleanupStartupListeners( asyncListener );
+			_pendingStartupCount--;
 			
 			if ( allListenersReady ) {
 				sendReadyNotification();
@@ -91,10 +101,10 @@
 		protected function handleListenerFailed( event:Event ):void {
 			var asyncListener:IAsyncStartupRunListener = event.target as IAsyncStartupRunListener;
 
-			cleanupListeners( asyncListener );
-			_pendingCount--;
+			cleanupStartupListeners( asyncListener );
+			_pendingStartupCount--;
 
-			logger.error( "Listener {0} failed to start ", asyncListener );
+			//logger.error( "Listener {0} failed to start ", asyncListener );
 			notifier.removeListener( asyncListener );
 
 			if ( allListenersReady ) {
@@ -103,27 +113,44 @@
 		}
 
 		public function unwatchListener( listener:IAsyncStartupRunListener ):void {
-			_totalCount--;
+			if ( listener is IAsyncStartupRunListener ) {
+				_totalStartUpCount--;
+
+				var startListener:IAsyncStartupRunListener = listener as IAsyncStartupRunListener; 
+
+				if ( !startListener.ready ) {
+					_pendingStartupCount--;
+					cleanupStartupListeners( startListener );
+				}
+			}
 			
-			if ( !listener.ready ) {
-				_pendingCount--;
-				cleanupListeners( listener );
+			if ( listener is IAsyncCompletionRunListener ) {
+				var completeListener:IAsyncCompletionRunListener = listener as IAsyncCompletionRunListener;
 			}
 		}
 
 		public function watchListener( listener:IAsyncStartupRunListener ):void {
-			_totalCount++;
-			
-			if ( !listener.ready ) {
-				_pendingCount++;
-				monitorForAsyncStartup( listener );
+			if ( listener is IAsyncStartupRunListener ) {
+				_totalStartUpCount++;
+
+				var startListener:IAsyncStartupRunListener = listener as IAsyncStartupRunListener; 
+
+				if ( !startListener.ready ) {
+					_pendingStartupCount++;
+					monitorForAsyncStartup( startListener );
+				}
 			}
+			
+			if ( listener is IAsyncCompletionRunListener ) {
+				var completeListener:IAsyncCompletionRunListener = listener as IAsyncCompletionRunListener;
+			}
+
 		}
 
-		public function AsyncListenerWatcher( notifier:IRunNotifier, logger:ILogger ) {
+		public function AsyncListenerWatcher( notifier:IRunNotifier, logger:* ) {
 			this.notifier = notifier;
-			this.logger = logger;
-			this._token = new AsyncListenersToken();
+			//this.logger = logger;
+			this._startToken = new AsyncListenersToken();
 		}
 	}
 }

@@ -26,13 +26,12 @@
  * @version    
  **/ 
 package org.flexunit.runner {
-	import mx.collections.Sort;
-	
 	import org.flexunit.internals.builders.AllDefaultPossibilitiesBuilder;
 	import org.flexunit.internals.namespaces.classInternal;
 	import org.flexunit.internals.requests.ClassRequest;
 	import org.flexunit.internals.requests.FilterRequest;
 	import org.flexunit.runner.manipulation.Filter;
+	import org.flexunit.runner.manipulation.ISort;
 	import org.flexunit.runners.Suite;
 	
 	use namespace classInternal;
@@ -54,14 +53,14 @@ package org.flexunit.runner {
 	 */
 	public class Request implements IRequest {
 		private var _filter:Function;
-		private var _sort:Sort;
+		private var _sort:ISort;
 		classInternal var _runner:IRunner;
 
-		public function get sort():Sort {
+		public function get sort():ISort {
 			return _sort;
 		}
 
-		public function set sort( value:Sort ):void {
+		public function set sort( value:ISort ):void {
 			_sort = value;
 			trace("To be implemented");
 		}

@@ -26,26 +26,15 @@
  * @version    
  **/ 
 package org.flexunit.internals {
-	import mx.formatters.NumberFormatter;
-	import mx.logging.ILogger;
-	import mx.logging.Log;
-	
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.Result;
 	import org.flexunit.runner.notification.Failure;
 	import org.flexunit.runner.notification.RunListener;
 
-	public class TextListener extends RunListener {
-		private var logger:ILogger;
-		private static var nf:NumberFormatter;
+	public class TraceListener extends RunListener {
 
-		public function TextListener( logger:ILogger ) {
+		public function TraceListener() {
 			super();
-			this.logger = logger;
-			
-			if ( !nf ) {
-				nf = new NumberFormatter();
-			}
 		}
 		
 		override public function testRunFinished( result:Result ):void {
@@ -55,22 +44,22 @@ package org.flexunit.internals {
 		}
 	
 		override public function testStarted( description:IDescription ):void {
-			logger.info( description.displayName + " ." );
+			trace( description.displayName + " ." );
 		}
 	
 		override public function testFailure( failure:Failure ):void {
-			logger.warn( failure.description.displayName + " E" );
+			trace( failure.description.displayName + " E" );
 		}
 	
 		override public function testIgnored( description:IDescription ):void {
-			logger.info( description.displayName + " I" );
+			trace( description.displayName + " I" );
 		}
 	
 		/*
 		 * Internal methods
 		 */
 		protected function printHeader( runTime:Number ):void {
-			logger.info( "Time: {0}", elapsedTimeAsString(runTime) );
+			trace( "Time: " + elapsedTimeAsString(runTime) );
 			//trace( elapsedTimeAsString(runTime) );
 		}
 	
@@ -79,9 +68,9 @@ package org.flexunit.internals {
 			if (failures.length == 0)
 				return;
 			if (failures.length == 1)
-				logger.warn( "There was {0} failure:", failures.length );
+				trace( "There was " + failures.length + " failure:" );
 			else
-				logger.warn("There were {0} failures:", failures.length );
+				trace("There were " + failures.length + " failures:" );
 			
 			for ( var i:int=0; i<failures.length; i++ ) {
 				printFailure( failures[ i ], String( i+1 ) );
@@ -89,14 +78,14 @@ package org.flexunit.internals {
 		}
 	
 		protected function printFailure( failure:Failure, prefix:String ):void {
-			//logger.warn( "{0} {1} {2}", prefix, failure.testHeader, failure.stackTrace );
+			trace( prefix + " " + failure.testHeader + " " + failure.stackTrace );
 		}
 	
 		protected function printFooter( result:Result ):void {
 			if (result.successful ) {
-				logger.info( "OK ({0} test{1})", result.runCount, (result.runCount == 1 ? "" : "s") );
+				trace( "OK (" + result.runCount + " test " + (result.runCount == 1 ? "" : "s") + ")" );
 			} else {
-				logger.warn( "FAILURES!!! Tests run: {0}, {1} Failures:", result.runCount, result.failureCount );
+				trace( "FAILURES!!! Tests run: " + result.runCount + ", " + result.failureCount + " Failures:" );
 			}
 		}
 	
@@ -105,7 +94,7 @@ package org.flexunit.internals {
 		 * BaseTestRunner. Fix it.
 		 */
 		protected function elapsedTimeAsString( runTime:Number ):String {
-			return nf.format( ( runTime / 1000 ) );
+			return String( runTime / 1000 );
 		}
 	}
 }

@@ -34,9 +34,6 @@ package org.flexunit.runner.notification.async
 	import flash.events.SecurityErrorEvent;
 	import flash.net.XMLSocket;
 	
-	import mx.logging.ILogger;
-	import mx.logging.Log;
-	
 	import org.flexunit.runner.Descriptor;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.Result;
@@ -47,7 +44,7 @@ package org.flexunit.runner.notification.async
 	public class XMLListener extends EventDispatcher implements IAsyncStartupRunListener
 	{
 		
-		private var logger:ILogger = Log.getLogger( "XMLListener" );
+		//private var logger:ILogger = Log.getLogger( "XMLListener" );
 		
 		
 		private static const SUCCESS:String = "success";
@@ -153,13 +150,22 @@ package org.flexunit.runner.notification.async
 			var type : String = failure.description.displayName
 			var message : String = failure.message;
 			var stackTrace : String = failure.stackTrace;
-			var methodName : String = descriptor.method
-					
+			var methodName : String = descriptor.method;
+
+			var escape:XML = <escape/>;
+			
+			escape.setChildren( message );
+			message = escape.toString();
+
+			escape.setChildren( stackTrace );
+			stackTrace = stackTrace.toString();
+						
+			//message+ "</messageInfo>"+ stackTrace+ "</stackTraceInfo>"+
 			var xml : String =
 				"<testCase name='"+descriptor.method+"' testSuite='"+descriptor.suite+"'  status='"+FAILURE+"'>"+
 					"<failure type='"+ type +"' >"+
-						"<messageInfo>"+ message+ "</messageInfo>"+ 
-						"<stackTraceInfo>" + stackTrace+ "</stackTraceInfo>"+
+						"<messageInfo>"+message+ "</messageInfo>"+  
+						"<stackTraceInfo>" +stackTrace+ "</stackTraceInfo>"+ 
 					 "</failure>"+
 				"</testCase>";
 			sendResults(xml);
@@ -204,7 +210,7 @@ package org.flexunit.runner.notification.async
 		protected function sendResults(msg:String):void{
 			if(socket.connected){
 				socket.send( msg );
-				//trace(msg);
+				trace(msg);
 			}
 			
 		}

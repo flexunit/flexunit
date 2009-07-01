@@ -43,7 +43,6 @@ package org.flexunit.runner.notification.async
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
-	import org.flexunit.runner.Descriptor;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.Result;
 	import org.flexunit.runner.notification.Failure;

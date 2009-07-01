@@ -28,7 +28,6 @@
 package org.flexunit.runner {
 	import flash.utils.getQualifiedClassName;
 	
-	import mx.collections.ArrayCollection;
 	import mx.utils.ObjectUtil;
 	
 	/**
@@ -54,7 +53,7 @@ package org.flexunit.runner {
 		public static var EMPTY:Description = new Description("Empty", null );
 		public static var TEST_MECHANISM:Description = new Description("Test mechanism", null );
 
-		private var _children:ArrayCollection;
+		private var _children:Array;
 		private var _displayName:String = "";
 		private var _metadata:XML;
 		private var _isInstance:Boolean = false;
@@ -62,7 +61,7 @@ package org.flexunit.runner {
 		/**
 		 * @return the receiver's children, if any
 		 */
-		public function get children():ArrayCollection {
+		public function get children():Array {
 			return _children;
 		}
 
@@ -137,7 +136,7 @@ package org.flexunit.runner {
 		 * @param description the soon-to-be child.
 		 */
 		public function addChild( description:IDescription ):void {
-			children.addItem( description );
+			children.push( description );
 		}
 		
 			/**
@@ -194,7 +193,7 @@ package org.flexunit.runner {
 			_displayName = displayName;
 			_isInstance = isInstance;
 			
-			_children = new ArrayCollection();
+			_children = new Array();
 			_metadata = metadata;
 		}
 	}

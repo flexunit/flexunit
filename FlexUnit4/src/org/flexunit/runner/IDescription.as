@@ -1,8 +1,7 @@
 package org.flexunit.runner {
-	import mx.collections.ArrayCollection;
 	
 	public interface IDescription {
-		function get children():ArrayCollection;
+		function get children():Array;
 		/**
 		 * @return a user-understandable label
 		 */

@@ -29,10 +29,6 @@ package org.flexunit.runner.manipulation {
 	import flex.lang.reflect.Method;
 	import flex.lang.reflect.utils.MetadataTools;
 	
-	import mx.collections.ArrayCollection;
-	import mx.collections.IViewCursor;
-	import mx.collections.Sort;
-	
 	public class MethodSorter {
 		private function getOrderValueFromMethod( method:Method ):Number {
 			var order:Number = 0;
@@ -53,7 +49,7 @@ package org.flexunit.runner.manipulation {
 			return order;
 		}
 	
-		private function orderMethodSortFunction( aMethod:Method, bMethod:Method, fields:Object ):int {
+		private function orderMethodSortFunction( aMethod:Method, bMethod:Method ):int {
 			var field:String;
 			var a:Number;
 			var b:Number; 
@@ -81,28 +77,71 @@ package org.flexunit.runner.manipulation {
 			return 0;
 		}
 		
-	    public function createCursor():IViewCursor {
-        	return collection.createCursor();
+	    public function createCursor():ISimpleCursor {
+        	return new MethodSorterCursor( collection );
 	    }
 
 	    public function get length():int {
 	    	return collection.length;
 	    }
-		
 
 		public function sort():void {
-			collection.sort = sorter;
-			collection.refresh();
+			collection.sort( orderMethodSortFunction );
 		}
 
-		private var collection:ArrayCollection;
-		private var sorter:Sort;
+		private var collection:Array;
 		public function MethodSorter( methodList:Array ) {
 			
-			collection = new ArrayCollection( methodList );
-
-			sorter = new Sort();
-			sorter.compareFunction = orderMethodSortFunction;
+			collection = methodList.slice();
 		}
+	}
+}
+	import org.flexunit.runner.manipulation.ISimpleCursor;
+	
+
+class MethodSorterCursor implements ISimpleCursor {
+	private static const afterLast:String = "afterLast";
+	private static const beforeFirst:String = "beforeFirst";
+	private var currentIndex:int = 0;
+	private var collection:Array;
+	
+	public function MethodSorterCursor( collection:Array ) {
+		this.collection = collection;
+	}	
+	
+	public function moveNext():Boolean {
+        if (afterLast) {
+            return false;
+        }
+        
+		currentIndex++;
+		
+		return !afterLast;
+	}
+
+	public function movePrevious():Boolean {
+        if (beforeFirst) {
+            return false;
+        }
+		
+		currentIndex--;
+		
+        return !beforeFirst;
+	}
+
+	public function get current():Object {
+		if ( beforeFirst || afterLast ) {
+			return null;
+		}	
+		
+		return collection[ currentIndex ];
+	}
+	
+	public function get beforeFirst():Boolean {
+		return ( currentIndex < 0 || collection.length == 0 ); 
+	}
+
+	public function get afterLast():Boolean {
+		return ( currentIndex >= collection.length || collection.length == 0 ); 
 	}
 }

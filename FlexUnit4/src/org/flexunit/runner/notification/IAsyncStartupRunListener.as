@@ -26,9 +26,8 @@
  * @version    
  **/ 
 package org.flexunit.runner.notification {
-	import flash.events.IEventDispatcher;
 	
-	public interface IAsyncStartupRunListener extends IRunListener, IEventDispatcher {
+	public interface IAsyncStartupRunListener extends IAsyncRunListener {
 		function get ready():Boolean;
 	}
 }

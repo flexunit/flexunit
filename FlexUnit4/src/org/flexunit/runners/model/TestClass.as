@@ -31,8 +31,7 @@ package org.flexunit.runners.model {
 	import flex.lang.reflect.Klass;
 	import flex.lang.reflect.Method;
 	
-	import mx.collections.IViewCursor;
-	
+	import org.flexunit.runner.manipulation.ISimpleCursor;
 	import org.flexunit.runner.manipulation.MethodSorter;
 
 	/**
@@ -57,11 +56,12 @@ package org.flexunit.runners.model {
 			//Ensures that the Order argument of the Test, Begin, After and BeforeClass and AfterClass are respected
 			var sorter:MethodSorter = new MethodSorter( _klassInfo.methods );
 			sorter.sort();
-			var cursor:IViewCursor = sorter.createCursor();
+			var cursor:ISimpleCursor = sorter.createCursor();
 			 
 			var method:Method;
 			while (!cursor.afterLast ) {
 				method = cursor.current as Method;
+				
 				addToMetaDataDictionary( new FrameworkMethod( method ) );
 				cursor.moveNext();
 			}
