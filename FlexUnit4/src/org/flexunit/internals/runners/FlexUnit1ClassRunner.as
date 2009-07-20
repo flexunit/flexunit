@@ -149,7 +149,7 @@ package org.flexunit.internals.runners {
 		}
 		
 		protected function handleTestComplete( result:ChildResult ):void {
-			trace( numTestsRun + ' ' + totalTestCount );
+			//trace( numTestsRun + ' ' + totalTestCount );
 			if ( ++numTestsRun == totalTestCount ) {
 				var error:Error = result.error;
 				var token:AsyncTestToken = result.token;
@@ -235,19 +235,19 @@ class OldTestClassAdaptingListener implements TestListener {
 	}
 
 	public function endTest( test:Test ):void {
-		trace("End Test");
+		//trace("End Test");
 		notifier.fireTestFinished(asDescription(test));
 		token.sendResult();
 	}
 
 	public function startTest( test:Test ):void {
-		trace("Start Test");
+		//trace("Start Test");
 		notifier.fireTestStarted(asDescription(test));
 	}
 
 	// Implement junit.framework.TestListener
 	public function addError( test:Test, error:Error ):void {
-		trace("Add Error");
+		//trace("Add Error");
 		var failure:Failure = new Failure(asDescription(test), error );
 		notifier.fireTestFailure(failure);
 	}

@@ -113,8 +113,8 @@ package org.flexunit.runner.notification.async
 			// if we want to wait until all tests are finished before sending any results, 
 			// in this method we should first call printHeader, then printResults, then printFooter
 			// however, as we are now sending through results as they happen, we use this method only to call printFooter		
-			//printHeader( result );
-			//printResults(result);
+			printHeader( result );
+			printResults(result);
 			printFooter( result );
 		}
 

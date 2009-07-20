@@ -33,6 +33,7 @@ package org.flexunit.runners {
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runners.model.IRunnerBuilder;
 	import org.flexunit.token.AsyncTestToken;
+	import org.flexunit.internals.runners.InitializationError;
 	
 //TODO: How do references to older JUnits compare to older FlexUnits?	
 	/**
@@ -118,8 +119,13 @@ package org.flexunit.runners {
 
 			super( testClass );
 			
-			if ( !error ) {
+			//Fix for FXU-51
+			//Tests to see if suite actually has viable children. If it does not, it is considered an
+			//initialization error
+			if ( !error && classArray.length > 0) { //a class is specified as a Suite, but has no children
 				_runners = builder.runners( testClass, classArray );
+			} else if ( !error && classArray.length == 0 ) {
+				 throw new InitializationError("Empty test Suite!");
 			} else {
 				throw new Error("Incorrectly formed arguments passed to suite class");
 			}

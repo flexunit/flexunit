@@ -47,6 +47,10 @@ package org.flexunit.internals {
 				nf = new NumberFormatter();
 			}
 		}
+
+		override public function testRunStarted( description:IDescription ):void {
+			logger.info( "Running {0} Tests", description.testCount );			
+		}
 		
 		override public function testRunFinished( result:Result ):void {
 			printHeader( result.runTime );
