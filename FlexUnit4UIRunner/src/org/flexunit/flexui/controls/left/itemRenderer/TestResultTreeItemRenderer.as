@@ -109,7 +109,7 @@ package org.flexunit.flexui.controls.left.itemRenderer
              assertionsLabel = new UITextField();
              assertionsLabel.styleName = this;
              //made invisible to avoid confusion until we can make this work across the board
-             assertionsLabel.visible = false;
+             //assertionsLabel.visible = false;
              addChild( assertionsLabel );
           }
           

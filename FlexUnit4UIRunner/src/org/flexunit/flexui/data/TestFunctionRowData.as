@@ -28,15 +28,17 @@
 */
 package org.flexunit.flexui.data
 {
+   import mx.formatters.NumberFormatter;
+   
    import org.flexunit.flexui.patterns.*;
    import org.flexunit.runner.notification.Failure;
-   
-   import mx.formatters.NumberFormatter;
 
    public class TestFunctionRowData extends AbstractRowData
    {
       public static const EMPTY_STRING : String = "-";
 
+	  	/* Available patterns.  Any new patterns should be added
+	  	to this array. */
       private const patterns : Array =
           [
              new AssertNotContainedPattern(),
@@ -49,7 +51,9 @@ package org.flexunit.flexui.data
              new AssertNotUndefinedPattern(),
              new AssertNullPattern(),
              new AssertUndefinedPattern(),
-             new FailAsyncCallPattern()
+             new FailAsyncCallPattern(),
+             new AssertThatPattern(),
+		  	 new GreaterThanPattern()
           ];
 
       public var testMethodName : String;
@@ -80,11 +84,15 @@ package org.flexunit.flexui.data
       }
       
       // TODO: [XB] implement this
+      /* Currently, assertions are counted in org.flexunit.Assert everytime an assertion is called.
+         However, since Assert is never insantiated, the static variable is never stored anywhere */
       override public function get assertionsMade() : Number
       {
          return 0;
       }
-
+      
+	  /* Calls the method assertionsMade and formats it into a string for printing Currently only
+	  	 formats "0".*/
       override public function get formattedAssertionsMade() : String
       {
          var f : NumberFormatter = new NumberFormatter();
@@ -95,11 +103,13 @@ package org.flexunit.flexui.data
          return f.format( assertionsMade );
       }
       
+      /* Returns false for average since test rows are only sums of tests */
       override public function get isAverage() : Boolean
       {
          return false;
       }
 
+	  /* Sets the error message by comparing it to a list of predefined patterns (patterns:Array)*/
       public function set error( value : Failure ) : void
       {
          _error = value;
@@ -108,6 +118,10 @@ package org.flexunit.flexui.data
          expectedResult = EMPTY_STRING;
          actualResult = EMPTY_STRING;
 
+		 /* If there is an error, calls formatStack passing the error's stack trace and replacing all
+		    instances of "<" and ">" with appropriate html forms.  Then loops through all patterns
+		    comparing each pattern to the error message.  If a match is found, runs the pattern's
+		    apply method then breaks out. */
          if ( error != null )
          {
             _stackTrace = formatStack( error.stackTrace.replace( "<", "&lt;" ).replace( ">", "&gt;" ) );
@@ -120,7 +134,7 @@ package org.flexunit.flexui.data
                {
                   pattern.apply( this );
                   break;
-               }
+               } 
             }
          }
       }
@@ -135,6 +149,8 @@ package org.flexunit.flexui.data
          return _errorMessage;
       }
 
+	  /* Returns the error location of the form "error location (1.XXX)" where xxx is
+	     the line within the file the error propigates from. */
       public function get location() : String
       {
          if( _location )
@@ -148,6 +164,7 @@ package org.flexunit.flexui.data
       {
          return _stackTrace;
       }
+      
       
       public function get stackTraceToolTip() : String
       {
@@ -169,6 +186,9 @@ package org.flexunit.flexui.data
                 expectedResult.toLowerCase().indexOf( filter ) > -1
       }
 
+	  /* Splits the parameter string into an array for error location, using a regular expression
+	     to remove non-class information.  Errors are of the form 
+	     "at [package]::[location]/[test][ [absolute location]:[line] ]" */
       private function extractLocation( line : String ) : Boolean
       {
 
@@ -186,7 +206,13 @@ package org.flexunit.flexui.data
 
         return false;
       }
-
+	  
+	  /* Formats the error stack into a displayable format.  First, we parse the stack to find
+	     the error origination.  This is done through a serious of regular expressions.  Only
+	     lines that match a location will be added to the formatted stack.  If the line is the
+	     first non-library file, it is added as the error originitaion and added to the
+	     formatted stack.  If it is a standard library file or is not the first non-standard
+	     library file it is merely added to the formatted stack. */
       private function formatStack( stackTrace : String ) : String
       {
          var replaceNewLine : RegExp = /\n/mg;
@@ -196,27 +222,38 @@ package org.flexunit.flexui.data
 
          for ( var i : int = 1; i < html.split( "<br/>" ).length; i++ )
          {
+         	/* Lines begining with the following should be ignored for purposes of finding
+         	   error origination: */
             var currentLine : String = html.split( "<br/>" )[ i ];
             var matchingFlexunit : RegExp = /(at flexunit.*)$/g;
             var matchingFlash : RegExp = /(at flash.*)$/g;
             var matchingFlex : RegExp = /(at mx.*)$/g;
             var matchingFunction : RegExp = /at Function\/http:\/\/adobe\.com\/AS3\//
+            var matchingGlobal : RegExp = /(at global.*)$/g;
+            var matchingError : RegExp = /(at.*)$/g;
+			var matchingOrg : RegExp = /(at.org.*)$/g;
 
-            if( ! matchingFlex.test( currentLine ) &&
-                ! matchingFlexunit.test( currentLine ) &&
-                ! matchingFlash.test( currentLine ) &&
-                ! matchingFunction.test( currentLine ) )
-            {
-               if( isFirst && extractLocation( currentLine ) )
-               {
-                  isFirst = false;
-               }
-               formattedStack += "<b>" + currentLine + "</b><br/>";
-            }
-            else
-            {
-               formattedStack += currentLine + "<br/>";
-            }
+			if ( matchingError.test( currentLine ) )
+			{
+	            if( ! matchingFlex.test( currentLine ) &&
+	                ! matchingFlexunit.test( currentLine ) &&
+	                ! matchingFlash.test( currentLine ) &&
+	                ! matchingFunction.test( currentLine ) &&
+	                ! matchingGlobal.test( currentLine ) &&
+					! matchingOrg.test( currentLine ) )
+	            {
+	            	/* If (isFirst flag is set and the location matches an error:) */
+	               if( isFirst && extractLocation( currentLine ) )
+	               {
+	                  isFirst = false;
+	               }
+	               formattedStack += "<b>" + currentLine + "</b><br/>";
+	            }
+	            else
+	            {
+	               formattedStack += currentLine + "<br/>";
+	            }
+         	}
          }
          return formattedStack;
       }
