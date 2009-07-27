@@ -76,8 +76,17 @@ package org.flexunit.internals.builders {
 		}
 	
 		protected function fluint1Builder():IRunnerBuilder {
-			//return new Fluint1Builder();\
-			return new NullBuilder();
+			var runner:IRunnerBuilder;
+
+			CONFIG::useFlexClasses {
+				runner = new Fluint1Builder();
+			}
+				
+			if ( !runner ) {
+				runner = new NullBuilder();
+			}
+			
+			return runner;
 		}		
 
 		protected function flexUnit4Builder():FlexUnit4Builder {
