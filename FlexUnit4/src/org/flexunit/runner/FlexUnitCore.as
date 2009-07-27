@@ -35,6 +35,14 @@ package org.flexunit.runner {
 	//import mx.logging.Log;
 	//import mx.logging.LogEventLevel;
 	//import mx.logging.targets.TraceTarget;
+
+	// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
+	// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
+	// flex classes since it will cause errors.
+	CONFIG::useFlexClasses {
+		// This class imports all Flex classes.
+		import org.flexunit.IncludeFlexClasses;
+	}
 	
 	import org.flexunit.experimental.theories.Theories;
 	import org.flexunit.internals.TextListener;

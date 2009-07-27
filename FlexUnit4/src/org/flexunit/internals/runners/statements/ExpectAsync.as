@@ -29,7 +29,13 @@ package org.flexunit.internals.runners.statements {
 	import flash.events.Event;
 	
 	import mx.events.PropertyChangeEvent;
-	import mx.rpc.IResponder;
+	
+	// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
+	// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
+	// flex classes since it will cause errors.
+	CONFIG::useFlexClasses {
+		import mx.rpc.IResponder;
+	}
 	
 	import org.flexunit.Assert;
 	import org.flexunit.async.AsyncHandler;
@@ -98,6 +104,10 @@ package org.flexunit.internals.runners.statements {
 			return asyncHandler.handleEvent;
 		}
 
+		// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
+		// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
+		// flex classes since it will cause errors.
+		CONFIG::useFlexClasses
 		public function asyncResponder( responder:*, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):IResponder { 
 
 			if ( !( ( responder is IResponder ) || ( responder is ITestResponder ) ) ) {
@@ -233,6 +243,10 @@ package org.flexunit.internals.runners.statements {
 			startAsyncTimers();
 	    }
 
+		// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
+		// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
+		// flex classes since it will cause errors.
+		CONFIG::useFlexClasses
 	    public function handleBindableNextSequence( event:Event, sequenceRunner:SequenceRunner ):void {
 	    	if ( sequenceRunner.getPendingStep() is SequenceBindingWaiter ) {
 

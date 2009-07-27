@@ -29,7 +29,12 @@ package org.flexunit.async
 {
 	import flash.events.IEventDispatcher;
 	
-	import mx.rpc.IResponder;
+	// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
+	// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
+	// flex classes since it will cause errors.
+	CONFIG::useFlexClasses {
+		import mx.rpc.IResponder;
+	}
 	
 	import org.flexunit.AssertionError;
 	import org.flexunit.internals.runners.statements.IAsyncHandlingStatement;
@@ -66,6 +71,10 @@ package org.flexunit.async
 			return asyncHandlingStatement.asyncHandler( eventHandler, timeout, passThroughData, timeoutHandler );
 		}
 
+		// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
+		// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
+		// flex classes since it will cause errors.
+		CONFIG::useFlexClasses
 		public static function asyncResponder( testCase:Object, responder:*, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):IResponder {
 			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
 			
