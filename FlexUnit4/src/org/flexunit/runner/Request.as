@@ -30,6 +30,7 @@ package org.flexunit.runner {
 	import org.flexunit.internals.namespaces.classInternal;
 	import org.flexunit.internals.requests.ClassRequest;
 	import org.flexunit.internals.requests.FilterRequest;
+	import org.flexunit.internals.requests.SortingRequest;
 	import org.flexunit.runner.manipulation.Filter;
 	import org.flexunit.runner.manipulation.ISort;
 	import org.flexunit.runners.Suite;
@@ -127,6 +128,15 @@ package org.flexunit.runner {
 			}
 
 			return this;
+		}
+		
+		/**
+		 *
+		 * @param comparator definition of the order of the tests in this Request
+		 * @return a Request with ordered Tests
+		 */
+		public function sortWith(comparator:Function):Request {
+			return new SortingRequest(this, comparator);
 		}
 
 		public static function aClass( clazz:Class ):Request {

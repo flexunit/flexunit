@@ -42,7 +42,9 @@ package org.flexunit.runners {
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.manipulation.Filter;
+	import org.flexunit.runner.manipulation.ISortable;
 	import org.flexunit.runner.manipulation.NoTestsRemainException;
+	import org.flexunit.runner.manipulation.Sorter;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runner.notification.StoppedByUserException;
 	import org.flexunit.runners.model.FrameworkMethod;
@@ -70,11 +72,12 @@ package org.flexunit.runners {
  * {@link Description}, and run children sequentially.
  */
 
-	public class ParentRunner implements IRunner {
+	public class ParentRunner implements IRunner, ISortable {
 		protected static const EACH_NOTIFIER:String = "eachNotifier";
 		
 		private var _testClass:TestClass;
 		private var filterRef:Filter = null;
+		private var sorter:Sorter = Sorter.NULL;
 		
 		/**
 		 * Constructs a new {@code ParentRunner} that will run {@code @TestClass}
@@ -256,17 +259,19 @@ package org.flexunit.runners {
 						
 					}
 				}
-				
 			}
-
-			//Collections.sort(filtered, comparator());
+			
+			filtered.sort(compare);
 			return filtered;
 		}
 
 		private function sortChild( child:* ):void {
-			//implement later
-			//fSorter.apply(child);
+			sorter.apply(child);
 		}
+		
+		private function compare(o1:Object, o2:Object):int {
+			return sorter.compare(describeChild(o1), describeChild(o2));
+		};
 
 		private function filterChild( child:* ):void {
  			if (filterRef != null)
@@ -333,6 +338,15 @@ package org.flexunit.runners {
 			
 			throw new NoTestsRemainException();
 		}
+		
+		public function sort(sorter:Sorter):void {
+			//Determine if the runner has already specified a Sorter besides the default NULL Sorter,
+			//if it has, ignore the new Sorter.  This is to prevent a potential problem with a parent Runner
+			//overwriting a child's non-default Sorter.
+			if(Sorter.NULL == this.sorter) {
+				this.sorter = sorter;
+			}
+		}
 
 		public function toString():String {
 			return "ParentRunner";
@@ -341,4 +355,3 @@ package org.flexunit.runners {
 
 	}
 }
-

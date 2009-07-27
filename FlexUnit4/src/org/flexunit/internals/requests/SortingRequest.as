@@ -27,14 +27,27 @@
  **/ 
 package org.flexunit.internals.requests
 {
+	import org.flexunit.runner.IRequest;
+	import org.flexunit.runner.IRunner;
+	import org.flexunit.runner.Request;
+	import org.flexunit.runner.manipulation.Sorter;
 	
-	/**
-	 * Not yet implemented
-	 */
-	public class SortingRequest
+	public class SortingRequest extends Request
 	{
-		public function SortingRequest()
+		private var request:IRequest;
+		private var comparator:Function;
+		
+		public function SortingRequest(request:IRequest, comparator:Function)
 		{
+			super();
+			this.request = request;
+			this.comparator = comparator;
+		}
+		
+		public override function get iRunner():IRunner {
+			var runner:IRunner = request.iRunner;
+			new Sorter(comparator).apply(runner);
+			return runner;
 		}
 
 	}

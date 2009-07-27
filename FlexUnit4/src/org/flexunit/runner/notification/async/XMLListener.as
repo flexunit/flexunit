@@ -113,8 +113,8 @@ package org.flexunit.runner.notification.async
 			// if we want to wait until all tests are finished before sending any results, 
 			// in this method we should first call printHeader, then printResults, then printFooter
 			// however, as we are now sending through results as they happen, we use this method only to call printFooter		
-			printHeader( result );
-			printResults(result);
+			//printHeader( result );
+			//printResults(result);
 			printFooter( result );
 		}
 
@@ -177,16 +177,28 @@ package org.flexunit.runner.notification.async
 
 		private function getDescriptorFromDescription(description:IDescription ):Descriptor{
 			// reads relavent data from descriptor
+			/**
+			 * JAdkins - 7/27/07 - FXU-53 - Listener was returning a null value for the test class
+			 * causing no data to be returned.  If length of array is greater than 1, then class is
+			 * not in the default package.  If array length is 1, then test class is default package
+			 * and formats accordingly.
+			 **/
 			var descriptor:Descriptor = new Descriptor();
 			var descriptionArray:Array = description.displayName.split("::");
-			descriptor.path = descriptionArray[0];
-			var classMethod:String =  descriptionArray[1];
+			var classMethod:String;
+			if ( descriptionArray.length > 1 ) {
+				descriptor.path = descriptionArray[0];
+				classMethod =  descriptionArray[1];
+			} else {
+				classMethod =  descriptionArray[0];
+			}
 			var classMethodArray:Array = classMethod.split(".");
-			descriptor.suite = descriptor.path + "::" + classMethodArray[0];
+			descriptor.suite = ( descriptor.path == "" ) ?  classMethodArray[0] : 
+				descriptor.path + "::" + classMethodArray[0];
 			descriptor.method = classMethodArray[1];
 			return descriptor;
 		}
-		 
+		
 		protected function printHeader( result:Result ):void {
 			var totalTestCount:int = result.runCount;
 			var currentProjectName:String = "currentProjectName";
