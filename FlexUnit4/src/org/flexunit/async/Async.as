@@ -29,14 +29,8 @@ package org.flexunit.async
 {
 	import flash.events.IEventDispatcher;
 	
-	// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
-	// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
-	// flex classes since it will cause errors.
-	CONFIG::useFlexClasses {
-		import mx.rpc.IResponder;
-	}
+	import mx.rpc.IResponder;
 	
-	import org.flexunit.AssertionError;
 	import org.flexunit.internals.runners.statements.IAsyncHandlingStatement;
 	
 	public class Async
