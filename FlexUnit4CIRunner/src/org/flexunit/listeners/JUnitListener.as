@@ -4,7 +4,7 @@ package org.flexunit.listeners
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
-	import flash.net.XMLSocket;
+	import flash.net.XMLSocket;	
 	
 	import mx.logging.ILogger;
 	import mx.logging.Log;
@@ -23,6 +23,7 @@ package org.flexunit.listeners
 		private static const END_OF_TEST_RUN : String = "<endOfTestRun/>";
 		private static const END_OF_TEST_ACK : String ="<endOfTestRunAck/>";
 
+		private var lastFailedTest:IDescription;
 		
 		private var successes:Array = new Array();
 		private var ignores:Array = new Array();
@@ -55,11 +56,17 @@ package org.flexunit.listeners
 		override public function testFinished( description:IDescription ):void 
 		{
 			// Add failing method to proper TestCase in the proper TestSuite
-			var descriptor : Descriptor = getDescriptorFromDescription( description );
+			/**
+			 * JAdkins - 7/27/09 - Now checks if test is not a failure.  If test is not a failure
+			 * Adds to the finished tests
+			 */
+			if(!lastFailedTest || description.displayName != lastFailedTest.displayName) {
+				var descriptor : Descriptor = getDescriptorFromDescription( description );
 			
-			var report : TestSuiteReport = getReportForTestSuite( descriptor.path + "." + descriptor.suite );
-			report.tests++;
-			report.methods.push( descriptor );	
+				var report : TestSuiteReport = getReportForTestSuite( descriptor.path + "." + descriptor.suite );
+				report.tests++;
+				report.methods.push( descriptor );	
+			}
 		}
 		
 		override public function testRunFinished( result:Result ):void 
@@ -75,6 +82,8 @@ package org.flexunit.listeners
 		override public function testFailure( failure:Failure ):void 
 		{
 			// Add failing method to proper TestCase in the proper TestSuite
+			lastFailedTest = failure.description;
+			
 			var descriptor : Descriptor = getDescriptorFromDescription( failure.description );
 			
 			var report : TestSuiteReport = getReportForTestSuite( descriptor.path + "." + descriptor.suite );
@@ -108,12 +117,13 @@ package org.flexunit.listeners
 			
 			// Send the end of reports terminator.
 			socket.send( END_OF_TEST_RUN );
+			exit();
 		}
 		
 		private function errorHandler(event:Event):void
 		{
 			logger.error("unable to connect to flexUnit ant task to send results. {0}", event.type );
-			throw new Error("unable to connect to flex builder to send results");
+			throw new Error("unable to connect to flex builder to send results: " + event.type);
 		}
 		
 
@@ -122,12 +132,25 @@ package org.flexunit.listeners
 		
 		private function getDescriptorFromDescription(description:IDescription ):Descriptor
 		{
+			// reads relavent data from descriptor
+			/**
+			 * JAdkins - 7/27/07 - FXU-53 - Listener was returning a null value for the test class
+			 * causing no data to be returned.  If length of array is greater than 1, then class is
+			 * not in the default package.  If array length is 1, then test class is default package
+			 * and formats accordingly.
+			 **/
 			var descriptor:Descriptor = new Descriptor();
 			var descriptionArray:Array = description.displayName.split("::");
-			descriptor.path = descriptionArray[0];
-			var classMethod:String =  descriptionArray[1];
+			var classMethod:String;
+			if ( descriptionArray.length > 1 ) {
+				descriptor.path = descriptionArray[0];
+				classMethod =  descriptionArray[1];
+			} else {
+				classMethod =  descriptionArray[0];
+			}
 			var classMethodArray:Array = classMethod.split(".");
-			descriptor.suite = classMethodArray[0];
+			descriptor.suite = ( descriptor.path == "" ) ?  "" : 
+				classMethodArray[0];
 			descriptor.method = classMethodArray[1];
 			
 			return descriptor;
@@ -153,12 +176,14 @@ package org.flexunit.listeners
 		 */
 		private function createXMLReports () : void
 		{
+			/**
+			 * JAdkins - 7/27/09 - Removed duplicate console report
+			 */
+			
 			for each ( var testSuiteReport : TestSuiteReport in testSuiteReports )
 			{
 				// Create the XML report.
 				var xml : XML = createXMLTestSuite( testSuiteReport );
-
-				trace(xml.toXMLString());
 				
 				// Send the XML report.
 				if( socket && socket.connected )
