@@ -182,13 +182,19 @@ package flex.lang.reflect {
 			var fieldList:XMLList = classXML.factory.variable;			
 			
 			for ( var i:int=0; i<fieldList.length(); i++ ) {
-				fields.push( new Field( fieldList[ i ], false, clazz ) );
+				fields.push( new Field( fieldList[ i ], false, clazz, false ) );
 			}
 
 			var staticFieldList:XMLList = classXML.variable;			
 
 			for ( var j:int=0; j<staticFieldList.length(); j++ ) {
-				fields.push( new Field( staticFieldList[ j ], true, clazz ) );
+				fields.push( new Field( staticFieldList[ j ], true, clazz, false ) );
+			}
+			
+			var propertyFieldList:XMLList = classXML.factory.accessor;			
+
+			for ( var k:int=0; k<propertyFieldList.length(); k++ ) {
+				fields.push( new Field( propertyFieldList[ k ], true, clazz, true ) );
 			}
 
 			return fields;

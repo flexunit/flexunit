@@ -43,6 +43,11 @@ package flex.lang.reflect {
 			return _isStatic;
 		}
 		
+		private var _isProperty:Boolean;
+		public function get isProperty():Boolean {
+			return _isProperty;
+		}
+		
 		public function getObj( obj:Object ):Object {
 			if ( obj == null ) {
 				return _definedBy[ name ];
@@ -87,11 +92,12 @@ package flex.lang.reflect {
 			return _type;
 		}
 
-		public function Field( fieldXML:XML, isStatic:Boolean, definedBy:Class ) {
+		public function Field( fieldXML:XML, isStatic:Boolean, definedBy:Class, isProperty:Boolean ) {
 			_fieldXML = fieldXML;
 			_name = fieldXML.@name;		
 			_isStatic = isStatic;	
 			_definedBy = definedBy;
+			_isProperty = isProperty;
 		}
 
 	}
