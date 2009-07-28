@@ -28,6 +28,8 @@
 package org.flexunit.runner {
 	import flash.utils.getQualifiedClassName;
 	
+	import flex.lang.reflect.utils.MetadataTools;
+	
 	import mx.utils.ObjectUtil;
 	
 	/**
@@ -113,7 +115,7 @@ package org.flexunit.runner {
 		 */
 		public function getMetadata( type:String ):XML {
 			//Extract specific needed node by type
-			return _metadata[0];
+			return MetadataTools.getMetaDataNodeFromNodesList( _metadata, type );
 		}
 
 		public function getAllMetadata():XMLList {

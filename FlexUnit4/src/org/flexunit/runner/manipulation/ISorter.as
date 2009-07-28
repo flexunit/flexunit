@@ -27,18 +27,25 @@
  **/ 
 package org.flexunit.runner.manipulation
 {
+	import org.flexunit.runner.IDescription;
+	
 	/**
-	 * Interface for runners that allow sorting of tests. By sorting tests based on when they last failed, 
-	 * most recently failed first, you can reduce the average time to the first test failing. Test sorting 
-	 * should not be used to cope with order dependencies between tests. Tests that are isolated from each 
-	 * other are less expensive to maintain and can be run individually. 
-	 * */
-	public interface ISortable
-	{
+	 * Sorters should implement this interface.
+	 */
+	public interface ISorter
+	{	
 		/**
-		 * Sorts the tests using <code>sorter</code>
-		 * @param sorter the {@link Sorter} to use for sorting the tests
+		 * Sorts the test in <code>runner</code> using <code>compare function</code>
+		 * @param object
 		 */
-		function sort(sorter:ISorter):void;
+		function apply(object:Object):void;
+		
+		/**
+		 * Compares its two arguments for order. Returns a negative integer, zero, or a positive integer 
+		 * as the first argument is less than, equal to, or greater than the second.
+		 * @param o1 (@link IDescription) the first object to be compared
+		 * @param o2 (@link IDescription) the second object to be compared
+		 * */
+		function compare(o1:IDescription, o2:IDescription):int;
 	}
 }

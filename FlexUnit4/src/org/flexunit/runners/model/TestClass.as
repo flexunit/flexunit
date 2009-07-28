@@ -30,9 +30,6 @@ package org.flexunit.runners.model {
 	
 	import flex.lang.reflect.Klass;
 	import flex.lang.reflect.Method;
-	
-	import org.flexunit.runner.manipulation.ISimpleCursor;
-	import org.flexunit.runner.manipulation.MethodSorter;
 
 	/**
 	 * Wraps a class to be run, providing method validation and annotation searching
@@ -53,17 +50,13 @@ package org.flexunit.runners.model {
 			this.klass = klass;
 			_klassInfo = new Klass( klass );
 			
-			//Ensures that the Order argument of the Test, Begin, After and BeforeClass and AfterClass are respected
-			var sorter:MethodSorter = new MethodSorter( _klassInfo.methods );
-			sorter.sort();
-			var cursor:ISimpleCursor = sorter.createCursor();
-			 
+			var methods:Array = _klassInfo.methods;
 			var method:Method;
-			while (!cursor.afterLast ) {
-				method = cursor.current as Method;
+			
+			for ( var i:int=0; i<methods.length; i++) {
+				method = methods[i] as Method;
 				
 				addToMetaDataDictionary( new FrameworkMethod( method ) );
-				cursor.moveNext();
 			}
 		}
 		

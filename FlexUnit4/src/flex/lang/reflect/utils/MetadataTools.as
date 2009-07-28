@@ -147,6 +147,23 @@ package flex.lang.reflect.utils
 			return null;
 		}
 		
+		public static function getMetaDataNodeFromNodesList( nodes:XMLList, type:String ):XML {
+			if(nodes) {
+				
+				var node:XML;
+				for( var i:int=0; i<nodes.length(); i++ ) {
+					node = nodes[i] as XML;
+					
+					//Determine if the node contains an name with the referenced type
+					if( ( node.(@name == type) ).length() ) {
+						return  node;
+					}
+				}
+			}
+			
+			return null;
+		}
+		
 		public static function getArgsFromFromNode( node:XML, metaDataName:String ):XML {
 			var metadata:XML;
 
@@ -193,6 +210,26 @@ package flex.lang.reflect.utils
 
 				if ( metaNodes.arg ) {
 					arg = metaNodes.arg.(@key==key);
+					
+					if ( String( arg.@value ).length > 0 ) {
+						value = arg.@value;
+					}
+				}
+			}
+			
+			return value;
+		}
+		
+		//Consider upper/lower case issues
+		public static function getArgValueFromSingleMetaDataNode( node:XML, key:String ):String {
+			var value:String;
+			var metaNodes:XMLList;
+			var arg:XMLList;
+			
+			if ( node  ) {
+				
+				if ( node.arg && ( node.arg.length() > 0) ) {
+					arg = node.arg.(@key==key);
 					
 					if ( String( arg.@value ).length > 0 ) {
 						value = arg.@value;

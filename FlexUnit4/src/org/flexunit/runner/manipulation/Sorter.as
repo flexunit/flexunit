@@ -38,17 +38,8 @@ package org.flexunit.runner.manipulation
 	 * 
 	 * 
 	 */
-	public class Sorter
-	{
-		/**
-		 * NULL is a <code>Sorter</code> that leaves elements in an undefined order
-		 */
-		public static var NULL:Sorter = buildNullSorter();
-			
-		private static function buildNullSorter():Sorter {
-			return new Sorter(function compare(o1:IDescription, o2:IDescription):int {return 0;});
-		}	
-		
+	public class Sorter implements ISorter
+	{	
 		private var comparator:Function;
 		
 		/**

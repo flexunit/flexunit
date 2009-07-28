@@ -43,6 +43,8 @@ package org.flexunit.runners {
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.manipulation.Filter;
 	import org.flexunit.runner.manipulation.ISortable;
+	import org.flexunit.runner.manipulation.ISorter;
+	import org.flexunit.runner.manipulation.MetadataSorter;
 	import org.flexunit.runner.manipulation.NoTestsRemainException;
 	import org.flexunit.runner.manipulation.Sorter;
 	import org.flexunit.runner.notification.IRunNotifier;
@@ -77,7 +79,7 @@ package org.flexunit.runners {
 		
 		private var _testClass:TestClass;
 		private var filterRef:Filter = null;
-		private var sorter:Sorter = Sorter.NULL;
+		private var sorter:ISorter = MetadataSorter.NULL;
 		
 		/**
 		 * Constructs a new {@code ParentRunner} that will run {@code @TestClass}
@@ -176,6 +178,8 @@ package org.flexunit.runners {
 		 */
 		protected function withBeforeClasses():IAsyncStatement {
 			var befores:Array = testClass.getMetaDataMethods( "BeforeClass" );
+			//Sort the befores array
+			befores.sort(compare);
 			//this is a deviation from the java approach as we don't have the same type of method information
 			var statement:IAsyncStatement = new RunBeforesClass( befores, testClass );
 			return statement;
@@ -190,7 +194,8 @@ package org.flexunit.runners {
 		 */
 		protected function withAfterClasses():IAsyncStatement {
 			var afters:Array = testClass.getMetaDataMethods( "AfterClass" );
-
+			//Sort the afters array
+			afters.sort(compare);
 			var statement:IAsyncStatement = new RunAftersClass( afters, testClass );
 			return statement;
 		}		
@@ -270,7 +275,8 @@ package org.flexunit.runners {
 			sorter.apply(child);
 		}
 		
-		private function compare(o1:Object, o2:Object):int {
+		//Applies the sorter to an array
+		protected function compare(o1:Object, o2:Object):int {
 			return sorter.compare(describeChild(o1), describeChild(o2));
 		};
 
@@ -340,11 +346,11 @@ package org.flexunit.runners {
 			throw new NoTestsRemainException();
 		}
 		
-		public function sort(sorter:Sorter):void {
-			//Determine if the runner has already specified a Sorter besides the default NULL Sorter,
-			//if it has, ignore the new Sorter.  This is to prevent a potential problem with a parent Runner
-			//overwriting a child's non-default Sorter.
-			if(Sorter.NULL == this.sorter) {
+		public function sort(sorter:ISorter):void {
+			//Determine if the runner has already specified a ISorter besides the default NULL Sorter,
+			//if it has, ignore the new ISorter.  This is to prevent a potential problem with a parent Runner
+			//overwriting a child's non-default ISorter.
+			if(MetadataSorter.NULL == this.sorter) {
 				this.sorter = sorter;
 			}
 		}

@@ -302,6 +302,8 @@ package org.flexunit.runners {
 		 */
 		protected function withBefores( method:FrameworkMethod, target:Object ):IAsyncStatement {
 			var befores:Array = testClass.getMetaDataMethods( "Before" );
+			//Sort the befores array
+			befores.sort(compare);
 			return new RunBefores( befores, target );
 		}
 	
@@ -314,6 +316,8 @@ package org.flexunit.runners {
 		 */
 		protected function withAfters( method:FrameworkMethod, target:Object ):IAsyncStatement {
 			var afters:Array = testClass.getMetaDataMethods( "After" );
+			//Sort the afters array
+			afters.sort(compare);
 			return new RunAfters( afters, target);
 		}
 	}
