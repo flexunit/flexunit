@@ -124,18 +124,25 @@ package org.flexunit.flexui.data
 		    apply method then breaks out. */
          if ( error != null )
          {
-            _stackTrace = formatStack( error.stackTrace.replace( "<", "&lt;" ).replace( ">", "&gt;" ) );
-
-            for ( var i : int = 0 ; i < patterns.length; i++ )
-            {
-               var pattern : AbstractPattern = AbstractPattern( patterns[ i ] );
-
-               if( pattern.match( error.message ) )
-               {
-                  pattern.apply( this );
-                  break;
-               } 
-            }
+			if ( error.stackTrace != null )
+			{
+	           _stackTrace = formatStack( error.stackTrace.replace( "<", "&lt;" ).replace( ">", "&gt;" ) );
+	
+	           for ( var i : int = 0 ; i < patterns.length; i++ )
+	           {
+	              var pattern : AbstractPattern = AbstractPattern( patterns[ i ] );
+	
+	              if( pattern.match( error.message ) )
+	              {
+	                 pattern.apply( this );
+	                 break;
+	              } 
+	           }
+			}
+			else
+			{
+				_stackTrace = '';
+			}
          }
       }
 
