@@ -104,7 +104,8 @@ package org.flexunit.runners {
 
 		public function get description():IDescription {
 			//TODO: Have an issue here, this is trying to use a createSuiteDescription which needs metadata
-			var description:IDescription = Description.createSuiteDescription( name, testClass.metadata?testClass.metadata[ 0 ]:null );
+			//this might be an issue here as I am now passing metaDatthrough all of the time.. not sure if anyone was counting on a null
+			var description:IDescription = Description.createSuiteDescription( name, testClass.metadata ); //?testClass.metadata[ 0 ]:null );
 			var filtered:Array = getFilteredChildren();
 			var child:*;
 

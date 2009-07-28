@@ -55,7 +55,7 @@ package org.flexunit.runner {
 
 		private var _children:Array;
 		private var _displayName:String = "";
-		private var _metadata:XML;
+		private var _metadata:XMLList;
 		private var _isInstance:Boolean = false;
 		
 		/**
@@ -111,13 +111,13 @@ package org.flexunit.runner {
 		 * @return the metadata as XML that is attached to this description node, 
 		 * or null if none exists
 		 */
-		public function getMetadata( type:String ):XML {			
-			return _metadata;
+		public function getMetadata( type:String ):XML {
+			//Extract specific needed node by type
+			return _metadata[0];
 		}
 
 		public function getAllMetadata():XMLList {
-			trace("Method not yet implemented");
-			return new XMLList();
+			return _metadata;
 		}
 
 		public function get isInstance():Boolean {
@@ -163,7 +163,7 @@ package org.flexunit.runner {
 		 * @param metaData 
 		 * @return a <code>Description</code> named <code>name</code>
 		 */
-		public static function createSuiteDescription( suiteClassOrName:*, metaData:XML=null ):IDescription {
+		public static function createSuiteDescription( suiteClassOrName:*, metaData:XMLList=null ):IDescription {
 			var description:Description;
 			if ( suiteClassOrName is String ) {
 				description = new Description( suiteClassOrName, metaData );
@@ -183,12 +183,12 @@ package org.flexunit.runner {
 		 * @param metadata meta-data about the test, for downstream interpreters
 		 * @return a <code>Description</code> named <code>name</code>
 		 */
-		public static function createTestDescription( testClassOrInstance:Class, name:String, metadata:XML=null ):IDescription {
+		public static function createTestDescription( testClassOrInstance:Class, name:String, metadata:XMLList=null ):IDescription {
 			var description:Description = new Description( getQualifiedClassName( testClassOrInstance) + '.' + name, metadata );
 			return description;
 		}
 
-		public function Description( displayName:String, metadata:XML, isInstance:Boolean=false ) {
+		public function Description( displayName:String, metadata:XMLList, isInstance:Boolean=false ) {
 			//_testClassOrInstance = testClassOrInstance;
 			_displayName = displayName;
 			_isInstance = isInstance;

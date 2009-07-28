@@ -136,7 +136,7 @@ package org.flexunit.runners {
 
 		override protected function describeChild( child:* ):IDescription {
 			var method:FrameworkMethod = FrameworkMethod( child );
-			return Description.createTestDescription( testClass.asClass, method.name, method.metadata[ 0 ] );
+			return Description.createTestDescription( testClass.asClass, method.name, method.metadata );
 		}
 
 		override protected function get children():Array {
