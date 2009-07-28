@@ -26,7 +26,8 @@
  * @version    
  **/ 
 package org.flexunit.runner.notification {
-	import org.flexunit.runner.Description;
+	import flash.system.Capabilities;
+	
 	import org.flexunit.runner.IDescription;
 	
 	/**
@@ -84,7 +85,14 @@ package org.flexunit.runner.notification {
 		 * @return the printed form of the exception
 		 */
 		public function get stackTrace():String {
-			return exception.getStackTrace();
+			if ( Capabilities.isDebugger )
+			{
+				return exception.getStackTrace();
+			}
+			else
+			{
+				return '';
+			}
 		}
 	
 		/**

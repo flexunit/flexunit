@@ -158,7 +158,7 @@ package org.flexunit.runner.notification.async
 			message = escape.toString();
 
 			escape.setChildren( stackTrace );
-			stackTrace = stackTrace.toString();
+			if ( stackTrace != null ) stackTrace = stackTrace.toString();
 						
 			//message+ "</messageInfo>"+ stackTrace+ "</stackTraceInfo>"+
 			var xml : String =
