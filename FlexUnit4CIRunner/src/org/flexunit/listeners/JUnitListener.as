@@ -249,7 +249,15 @@ package org.flexunit.listeners
 		{
 			var descriptor : Descriptor = getDescriptorFromDescription( failure.description );
 			var type : String = failure.testHeader;
-			var message : String = failure.description + failure.stackTrace;
+			var message : String;
+			if ( failure.stackTrace != null )
+			{
+				message = failure.description + failure.stackTrace;
+			}
+			else
+			{
+				message = String(failure.description);
+			}
 					
 			var xml : XML =
 				<failure type={ "" }>
