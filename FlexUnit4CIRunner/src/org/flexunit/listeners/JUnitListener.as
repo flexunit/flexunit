@@ -4,25 +4,25 @@ package org.flexunit.listeners
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
-	import flash.net.XMLSocket;	
+	import flash.net.XMLSocket;
+	import flash.system.fscommand;
 	
 	import mx.logging.ILogger;
 	import mx.logging.Log;
 	
-	import org.flexunit.runner.Descriptor;
-	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.Result;
+	import org.flexunit.runner.Descriptor;
 	import org.flexunit.runner.notification.Failure;
+	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.notification.RunListener;
-
-
+	
 	public class JUnitListener extends RunListener
 	{
 		private var logger:ILogger = Log.getLogger("org.flexunit.internals.listeners.JUnitListener");
 		
 		private static const END_OF_TEST_RUN : String = "<endOfTestRun/>";
 		private static const END_OF_TEST_ACK : String ="<endOfTestRunAck/>";
-
+		
 		private var lastFailedTest:IDescription;
 		
 		private var successes:Array = new Array();
@@ -48,9 +48,9 @@ package org.flexunit.listeners
 		//--------------------------------------------------------------------------
 		/*override public function testStarted( description:Description ):void
 		{
-			var descriptor : Descriptor = getDescriptorFromDescription( description );
-			var report : TestSuiteReport = getReportForTestSuite( descriptor.path + "." + descriptor.suite );
-			report.tests++;
+		var descriptor : Descriptor = getDescriptorFromDescription( description );
+		var report : TestSuiteReport = getReportForTestSuite( descriptor.path + "." + descriptor.suite );
+		report.tests++;
 		}*/
 		
 		override public function testFinished( description:IDescription ):void 
@@ -62,7 +62,7 @@ package org.flexunit.listeners
 			 */
 			if(!lastFailedTest || description.displayName != lastFailedTest.displayName) {
 				var descriptor : Descriptor = getDescriptorFromDescription( description );
-			
+				
 				var report : TestSuiteReport = getReportForTestSuite( descriptor.path + "." + descriptor.suite );
 				report.tests++;
 				report.methods.push( descriptor );	
@@ -101,23 +101,23 @@ package org.flexunit.listeners
 		{
 			socket = new XMLSocket ();
 			socket.addEventListener( DataEvent.DATA, dataHandler );
-	      	socket.addEventListener( Event.CONNECT, handleConnect );
+			socket.addEventListener( Event.CONNECT, handleConnect );
 			socket.addEventListener( IOErrorEvent.IO_ERROR, errorHandler );
 			socket.addEventListener( SecurityErrorEvent.SECURITY_ERROR, errorHandler );
-   	   		socket.addEventListener( Event.CLOSE, errorHandler );
-   	   		
- 	   		socket.connect( server, port );
+			socket.addEventListener( Event.CLOSE, errorHandler );
+			
+			socket.connect( server, port );
 		}
 		
 		private function handleConnect(event:Event):void
 		{
 			logger.info("socket connection stablished successfully");
+			trace("socket connection stablished successfully");
 			
 			createXMLReports( );
 			
 			// Send the end of reports terminator.
 			socket.send( END_OF_TEST_RUN );
-			exit();
 		}
 		
 		private function errorHandler(event:Event):void
@@ -126,9 +126,9 @@ package org.flexunit.listeners
 			throw new Error("unable to connect to flex builder to send results: " + event.type);
 		}
 		
-
-
-
+		
+		
+		
 		
 		private function getDescriptorFromDescription(description:IDescription ):Descriptor
 		{
@@ -172,8 +172,8 @@ package org.flexunit.listeners
 		}
 		
 		/*
-		 * Internal methods
-		 */
+		* Internal methods
+		*/
 		private function createXMLReports () : void
 		{
 			/**
@@ -201,14 +201,14 @@ package org.flexunit.listeners
 			var failures : uint = testSuiteReport.failures;
 			var tests : uint = testSuiteReport.tests;
 			var time : Number = testSuiteReport.time;
-				
+			
 			var xml : XML =
 				<testsuite
 					errors={ errors }						 
-					failures={ failures }
-					name={ name }
-					tests={ tests }
-					time={ time } > </testsuite>; 
+				failures={ failures }
+				name={ name }
+				tests={ tests }
+				time={ time } > </testsuite>; 
 			
 			for each ( var result : * in testSuiteReport.methods )
 			{
@@ -231,13 +231,13 @@ package org.flexunit.listeners
 			var classname : String = descriptor.path + "." + descriptor.suite;
 			var name : String = descriptor.method;
 			var time : Number = 0; 
-					
+			
 			var xml : XML =
 				<testcase
 					classname={ classname }
-					name={ name }
-					time={ time } />;
-					
+				name={ name }
+				time={ time } />;
+			
 			return isDescriptor ? xml : xml.appendChild( createFailure( Failure(result)));
 		}
 		
@@ -258,12 +258,12 @@ package org.flexunit.listeners
 			{
 				message = String(failure.description);
 			}
-					
+			
 			var xml : XML =
 				<failure type={ "" }>
-					{ message }
+				{ message }
 				</failure>;
-					
+			
 			return xml;
 		}
 		
@@ -275,12 +275,12 @@ package org.flexunit.listeners
 		private function dataHandler( event : DataEvent ) : void
 		{
 			var data : String = event.data;
-
+			
 			// If we received an acknowledgement finish-up.			
 			if ( data == END_OF_TEST_ACK )
 			{
 				exit();
-   			}
+			}
 		}
 		
 		/**
@@ -290,6 +290,7 @@ package org.flexunit.listeners
 		{
 			// Close the socket.
 			socket.close();
+			fscommand("quit");
 		}
 	}
 }
