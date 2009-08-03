@@ -42,6 +42,7 @@ package org.flexunit.flexui.data
       public var qualifiedClassName : String;
       public var testSuccessful : Boolean;
       public var testIsFailure : Boolean;
+      public var testIgnored : Boolean;
 
       /**
        * @return the class name from the qualified class name

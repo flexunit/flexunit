@@ -82,7 +82,7 @@
                      classResults.text = StringUtil.substitute( 
                         FlexUnitLabels.PASSED_TESTS_NUMBER_MESSAGE,
                         _model.testCaseSelected.passedTestsNumber,
-                        _model.testCaseSelected.testsNumber );
+                        _model.testCaseSelected.testsNumber-_model.testCaseSelected.ignoredNumber );
                   }
                }
                               

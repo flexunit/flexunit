@@ -44,6 +44,7 @@ package org.flexunit.flexui.controls
       public static const ALL : String = "All results";
       public static const EMPTY : String = "Empty tests";
       public static const FAILURES_AND_ERRORS : String = "Failures & errors";
+      public static const IGNORED_TESTS : String = "Ignored Tests";
       public static const FILTER_PROMPT : String = "Type filter";
       public static const FILTER_TOOLTIP : String = "You can filter either on methods names, or expected values or actual values";
       public static const ASSERTIONS_SLIDER_TOOLTIP : String = "Display between {0} and {1} assertions";
@@ -75,6 +76,7 @@ package org.flexunit.flexui.controls
       public static const TIME_TAKEN : String = "Time taken";
       public static const ERRORS : String = "Errors";
       public static const FAILURES : String = "Failures";
+      public static const IGNORED : String = "Ignored";
       
       /* CHART */
       public static const CHART_TITLE : String = "Tests number per assertions number";

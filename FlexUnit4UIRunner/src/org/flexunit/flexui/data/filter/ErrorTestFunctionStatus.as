@@ -35,7 +35,7 @@ package org.flexunit.flexui.data.filter
    {
       public function isTestFunctionVisible( test : TestFunctionRowData ) : Boolean
       {
-         return ! test.testSuccessful;
+         return test.testIsFailure;
       }
       
       public function get label() : String

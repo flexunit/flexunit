@@ -270,14 +270,18 @@ package org.flexunit.flexui.controls.left.itemRenderer
 
       private function getStatusImage( testRow : AbstractRowData ) : Class
       {
-         if ( testRow.testSuccessful )
-         {
-            return testRow.passIcon;
-         }
-         else
-         {
-            return testRow.failIcon;
-         }
+		if ( testRow.testIgnored ) {
+			return null;	  
+		}
+
+		if ( testRow.testSuccessful )
+		{
+			return testRow.passIcon;
+		}
+		else
+		{
+			return testRow.failIcon;
+		}
       }
    }
 }

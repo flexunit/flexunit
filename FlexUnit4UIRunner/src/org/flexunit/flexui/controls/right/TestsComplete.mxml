@@ -83,6 +83,11 @@
             errors.text = _model.totalErrors.toString();
          }
 
+         public function updateTotalIgnoredUI() : void
+         {
+            ignored.text = _model.totalIgnored.toString();
+         }
+
          public function updateRunDuration() : void
          {
            /*// TODO: [XB] reactivate  var average : Number = Assert.totalAssertionsMade / _model.numTestsRun;
@@ -175,6 +180,19 @@
 
          <mx:Label
             id="failures"
+            styleName="flexUnitFormItemValue"
+            width="100%"
+            />
+
+      </mx:FormItem>
+
+      <mx:FormItem
+         styleName="flexUnitFormItemLabel"
+         label="{ FlexUnitLabels.IGNORED }"
+         width="100%">
+
+         <mx:Label
+            id="ignored"
             styleName="flexUnitFormItemValue"
             width="100%"
             />

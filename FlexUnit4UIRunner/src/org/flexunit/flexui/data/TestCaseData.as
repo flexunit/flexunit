@@ -28,12 +28,12 @@
 */
 package org.flexunit.flexui.data
 {
-   import org.flexunit.flexui.data.filter.ITestFunctionStatus;
-   import org.flexunit.flexui.data.filter.TestfFunctionStatuses;
-   
    import mx.collections.ArrayCollection;
    import mx.collections.IList;
    import mx.collections.ListCollectionView;
+   
+   import org.flexunit.flexui.data.filter.ITestFunctionStatus;
+   import org.flexunit.flexui.data.filter.TestfFunctionStatuses;
 
    public class TestCaseData extends AbstractRowData
    {
@@ -49,6 +49,7 @@ package org.flexunit.flexui.data
 
       private var _testsNumber : int;
       private var _testsPassedNumber : int;
+	  private var _ignoredNumber:int;
 
       public function TestCaseData( testFunction : TestFunctionRowData )
       {
@@ -58,6 +59,7 @@ package org.flexunit.flexui.data
          testSuccessful = true;
          _testsNumber = 0;
          _testsPassedNumber = 0;
+		 _ignoredNumber = 0;
       }
 
       public function get children() : IList
@@ -79,6 +81,11 @@ package org.flexunit.flexui.data
       {
          return true;
       }
+
+	  public function get ignoredNumber() : int
+	  {
+		  return _ignoredNumber;
+	  }
 
       public function get testsNumber() : int
       {
@@ -109,14 +116,20 @@ package org.flexunit.flexui.data
       public function addTest( testFunctionToAdd : TestFunctionRowData ) : void
       {
          testFunctionToAdd.parentTestCaseSummary = this;
-         if ( ! testFunctionToAdd.testSuccessful )
-         {
-            testSuccessful = false;
-         }
-         else
-         {
-            _testsPassedNumber++;
-         }
+		 
+		 if ( !testFunctionToAdd.testIgnored ) {
+			 if ( !testFunctionToAdd.testSuccessful )
+			 {
+				 testSuccessful = false;
+			 }
+			 else
+			 {
+				 _testsPassedNumber++;
+			 }
+		 } else {
+			 _ignoredNumber++;
+		 }
+		 
          _testsNumber++;
          testFunctions.addItem( testFunctionToAdd );
       }

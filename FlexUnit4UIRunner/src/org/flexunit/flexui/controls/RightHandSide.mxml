@@ -107,6 +107,11 @@
             testsComplete.updateTotalErrorUI();
          }
 
+         public function updateTotalIgnoredUI() : void
+         {
+            testsComplete.updateTotalIgnoredUI();
+         }
+
          private function handleSelectedTestCaseFormResize() : void
          {
             stacktraceContainer.setStyle(

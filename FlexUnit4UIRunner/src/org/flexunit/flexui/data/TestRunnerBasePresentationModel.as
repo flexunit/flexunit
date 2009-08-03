@@ -32,12 +32,13 @@ package org.flexunit.flexui.data
    import flash.events.EventDispatcher;
    import flash.utils.getTimer;
    
-   import org.flexunit.flexui.event.TestRunnerBasePresentationModelProperyChangedEvent;
+   import flexunit.framework.Assert;
    
    import mx.collections.ArrayCollection;
    import mx.collections.IList;
    import mx.collections.ListCollectionView;
    
+   import org.flexunit.flexui.event.TestRunnerBasePresentationModelProperyChangedEvent;
    import org.flexunit.runner.Descriptor;
    import org.flexunit.runner.IDescription;
    import org.flexunit.runner.notification.Failure;
@@ -46,6 +47,7 @@ package org.flexunit.flexui.data
    [Event( name="testSuiteRunDurationChanged", type="flash.events.Event")]
    [Event( name="totalErrorsChanged",          type="flash.events.Event")]
    [Event( name="totalFailuresChanged",        type="flash.events.Event")]
+   [Event( name="totalIgnoredChanged",        type="flash.events.Event")]
    [Event( name="progressChanged",             type="flash.events.Event")]
    [Event( name="filterChanged",               type="flash.events.Event")]
    [Event( name="filterEnableChanged",         type="flash.events.Event")]
@@ -58,6 +60,7 @@ package org.flexunit.flexui.data
 
       private var _totalErrors : int;
       private var _totalFailures : int;
+      private var _totalIgnored:int;
       private var _numTestsRun : int;
 
       private var _testSuiteStartTime : int;
@@ -132,6 +135,11 @@ package org.flexunit.flexui.data
          return _totalErrors;
       }
 
+      public function get totalIgnored() : int
+      {
+         return _totalIgnored;
+      }
+
       public function get suiteDurationFormatted() : String
       {
          return ( ( _testSuiteEndTime - _testSuiteStartTime ) / 1000 ) + " seconds";
@@ -176,6 +184,13 @@ package org.flexunit.flexui.data
                TestRunnerBasePresentationModelProperyChangedEvent.TOTAL_ERRORS_CHANGED );
       }
 
+      public function addIgnore() : void
+      {
+         _totalIgnored++;
+
+         dispatchPropertyChanged(
+               TestRunnerBasePresentationModelProperyChangedEvent.TOTAL_IGNORED_CHANGED );
+      }
       public function launchTests() : void
       {
          _testsRunning = true;
@@ -195,6 +210,8 @@ package org.flexunit.flexui.data
 
          dispatchPropertyChanged(
                TestRunnerBasePresentationModelProperyChangedEvent.TOTAL_FAILURES_CHANGED );
+         dispatchPropertyChanged(
+               TestRunnerBasePresentationModelProperyChangedEvent.TOTAL_IGNORED_CHANGED );
          dispatchPropertyChanged(
                TestRunnerBasePresentationModelProperyChangedEvent.TEST_SUITE_RUN_DURATION_CHANGED );
          dispatchPropertyChanged(
@@ -226,20 +243,28 @@ package org.flexunit.flexui.data
 		
       public function addTestRowToHierarchicalList(
                   description : IDescription, 
-                  failure : Failure ) : TestFunctionRowData
+                  failure : Failure, ignored:Boolean=false ) : TestFunctionRowData
       {
          var rowToAdd : TestFunctionRowData = new TestFunctionRowData();
          var parentRow : TestCaseData;
          var descriptor : Descriptor = getDescriptorFromDescription( description );
 
+		 //rowToAdd.assertionsMade = Assert.assetionsMade;
          rowToAdd.label = descriptor.method;
          rowToAdd.qualifiedClassName = descriptor.suite;
          rowToAdd.testMethodName = descriptor.method;
          rowToAdd.error = failure;
          
-         rowToAdd.testSuccessful = failure != null ? false : true;
-         rowToAdd.testIsFailure = failure != null ? true : false;
-         
+         if ( ignored ) {
+         	rowToAdd.testIgnored = ignored;
+         	rowToAdd.testSuccessful = false;
+         	rowToAdd.testIsFailure = false;
+         } else {
+	         rowToAdd.testSuccessful = failure != null ? false : true;
+	         rowToAdd.testIsFailure = failure != null ? true : false;
+	         rowToAdd.testIgnored = ignored;
+         }
+
          parentRow = findTestCaseParentRowInAllTests( rowToAdd );
 
          if ( parentRow && parentRow.testFunctions as IList )
