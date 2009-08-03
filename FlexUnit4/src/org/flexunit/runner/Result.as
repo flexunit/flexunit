@@ -111,7 +111,7 @@ import org.flexunit.runner.IDescription;
 use namespace classInternal;
 
 class Listener extends RunListener {
-	private var fIgnoreDuringExecution:Boolean = false;
+	protected var ignoreDuringExecution:Boolean = false;
 	
 	override public function testRunStarted( description:IDescription ):void {
 		result._startTime = getTimer();
@@ -123,11 +123,11 @@ class Listener extends RunListener {
 	}
 
 	override public function testFinished( description:IDescription ):void {
-		if (!fIgnoreDuringExecution) {
+		if (!ignoreDuringExecution) {
 			result._runCount++;
 		}
 		
-		fIgnoreDuringExecution = false;
+		ignoreDuringExecution = false;
 	}
 
 	override public function testFailure( failure:Failure ):void {
@@ -136,6 +136,6 @@ class Listener extends RunListener {
 
 	override public function testIgnored( description:IDescription ):void {
 		result._ignoreCount++;
-		fIgnoreDuringExecution = false;
+		ignoreDuringExecution = false;
 	}
 }

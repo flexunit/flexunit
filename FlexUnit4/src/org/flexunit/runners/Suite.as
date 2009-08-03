@@ -28,12 +28,13 @@
 package org.flexunit.runners {
 	import flex.lang.reflect.Klass;
 	
+	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
+	import org.flexunit.runner.manipulation.FieldSorter;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runners.model.IRunnerBuilder;
 	import org.flexunit.token.AsyncTestToken;
-	import org.flexunit.internals.runners.InitializationError;
 	
 //TODO: How do references to older JUnits compare to older FlexUnits?	
 	/**
@@ -63,11 +64,16 @@ package org.flexunit.runners {
 			var klassInfo:Klass = new Klass( suite );
 			var classRef:Class;
 			var classArray:Array = new Array();
+			
+			var fieldSorter:FieldSorter = new FieldSorter( klassInfo.fields );
+			fieldSorter.sort();
+			
+			var fields:Array = fieldSorter.fields; 
 
-			for ( var i:int=0; i<klassInfo.fields.length; i++ ) {
-				if ( !klassInfo.fields[ i ].isStatic ) {
+			for ( var i:int=0; i<fields.length; i++ ) {
+				if ( !fields[ i ].isStatic ) {
 					try {
-						classRef = klassInfo.fields[i].type;
+						classRef = fields[i].type;
 						classArray.push( classRef ); 
 					} catch ( e:Error ) {
 						//Not sure who we should inform here yet. We will need someway of capturing the idea that this

@@ -32,6 +32,7 @@ package flex.lang.reflect {
 		private var _fieldXML:XML;
 		private var _definedBy:Class;
 		private var _elementType:Class;
+		private var _metaData:XMLList;
 
 		private var _name:String;
 		public function get name():String {
@@ -76,6 +77,14 @@ package flex.lang.reflect {
 			return _elementType;
 		}
 
+		public function get metadata():XMLList {
+			if ( !_metaData ) {
+				_metaData = MetadataTools.nodeMetaData( _fieldXML );	
+			}
+			
+			return _metaData;
+		}
+		
 		public function hasMetaData( name:String ):Boolean {
 			return MetadataTools.nodeHasMetaData( _fieldXML, name );
 		}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <actionScriptProperties mainApplicationPath="FlexUnit4.as" projectUUID="f888fea9-2343-4479-bdde-04e3e224d1b7" version="6">
-  <compiler additionalCompilerArguments="-keep-as3-metadata=RunWith,BeforeClass,AfterClass,Before,After,Suite,Test,Ignore,Filter,Sort,Theory,DataPoint,DataPoints,ArrayElementType -define=CONFIG::useFlexClasses,true" autoRSLOrdering="true" copyDependentFiles="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+  <compiler additionalCompilerArguments="-keep-as3-metadata=RunWith,BeforeClass,AfterClass,Before,After,Suite,Test,TestCase,Ignore,Filter,Sort,Theory,DataPoint,DataPoints,ArrayElementType -define=CONFIG::useFlexClasses,true" autoRSLOrdering="true" copyDependentFiles="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="1">
       <libraryPathEntry kind="4" path="">

@@ -30,7 +30,7 @@ package org.flexunit.runners.model {
 	
 	import flex.lang.reflect.Klass;
 	import flex.lang.reflect.Method;
-
+	
 	/**
 	 * Wraps a class to be run, providing method validation and annotation searching
 	 */

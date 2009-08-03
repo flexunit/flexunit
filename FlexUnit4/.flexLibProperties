@@ -103,9 +103,7 @@
     <classEntry path="org.flexunit.runner.RunnerLocator"/>
     <classEntry path="org.flexunit.runner.manipulation.Filter"/>
     <classEntry path="org.flexunit.runner.manipulation.IFilterable"/>
-    <classEntry path="org.flexunit.runner.manipulation.MethodSorter"/>
     <classEntry path="org.flexunit.runner.manipulation.NoTestsRemainException"/>
-    <classEntry path="org.flexunit.runner.manipulation.Sortable"/>
     <classEntry path="org.flexunit.runner.manipulation.Sorter"/>
     <classEntry path="org.flexunit.runner.notification.Failure"/>
     <classEntry path="org.flexunit.runner.notification.IAsyncStartupRunListener"/>
@@ -131,6 +129,7 @@
     <classEntry path="org.flexunit.token.AsyncTestToken"/>
     <classEntry path="org.flexunit.token.ChildResult"/>
     <classEntry path="org.flexunit.utils.ClassNameUtil"/>
+    <classEntry path="org.flexunit.runner.manipulation.FieldSorter"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

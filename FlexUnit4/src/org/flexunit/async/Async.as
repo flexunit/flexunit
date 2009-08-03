@@ -54,7 +54,7 @@ package org.flexunit.async
 		public static function handleEvent( testCase:Object, target:IEventDispatcher, eventName:String, eventHandler:Function, timeout:int=500, passThroughData:Object = null, timeoutHandler:Function = null ):void {
 			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
 			var handler:Function;
-
+                   
 			handler = asyncHandlingStatement.asyncHandler( eventHandler, timeout, passThroughData, timeoutHandler );
 			target.addEventListener( eventName, handler, false, 0, true );  
 		} 

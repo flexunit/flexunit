@@ -27,6 +27,7 @@
  **/ 
 package org.flexunit.runners {
 	import flash.events.EventDispatcher;
+	import flash.utils.Dictionary;
 	
 	import org.flexunit.internals.AssumptionViolatedException;
 	import org.flexunit.internals.events.ExecutionCompleteEvent;
@@ -79,7 +80,11 @@ package org.flexunit.runners {
 		
 		private var _testClass:TestClass;
 		private var filterRef:Filter = null;
-		private var sorter:ISorter = MetadataSorter.NULL;
+		private var sorter:ISorter = MetadataSorter.META;
+		private var filteredChildren:Array;
+		private var childrenFiltered:Boolean = false;
+		
+		private var cachedDescription:IDescription;
 		
 		/**
 		 * Constructs a new {@code ParentRunner} that will run {@code @TestClass}
@@ -105,18 +110,23 @@ package org.flexunit.runners {
 		}
 
 		public function get description():IDescription {
-			//TODO: Have an issue here, this is trying to use a createSuiteDescription which needs metadata
-			//this might be an issue here as I am now passing metaDatthrough all of the time.. not sure if anyone was counting on a null
-			var description:IDescription = Description.createSuiteDescription( name, testClass.metadata ); //?testClass.metadata[ 0 ]:null );
-			var filtered:Array = getFilteredChildren();
-			var child:*;
-
-			for ( var i:int=0; i<filtered.length; i++ ) {
-				child = filtered[ i ];
-				description.addChild( describeChild( child ) );
+			
+			if( !cachedDescription ) {
+				//TODO: Have an issue here, this is trying to use a createSuiteDescription which needs metadata
+				//this might be an issue here as I am now passing metaDatthrough all of the time.. not sure if anyone was counting on a null
+				var description:IDescription = Description.createSuiteDescription( name, testClass.metadata ); //?testClass.metadata[ 0 ]:null );
+				var filtered:Array = getFilteredChildren();
+				var child:*;
+	
+				for ( var i:int=0; i<filtered.length; i++ ) {
+					child = filtered[ i ];
+					description.addChild( describeChild( child ) );
+				}
+				
+				cachedDescription = description;
 			}
 
-			return description;
+			return cachedDescription;
 		}
 
 		/**
@@ -251,24 +261,29 @@ package org.flexunit.runners {
 		}
 
 		private function getFilteredChildren():Array {
-			var filtered:Array = new Array();
-			var child:*;
-
-			for ( var i:int=0; i<children.length; i++ ) {
-				child = children[ i ];
-				if ( shouldRun( child ) ) {
-					try {
-						filterChild( child );
-						sortChild( child );
-						filtered.push( child );
-					} catch ( error:Error ) {
-						
+			if(!childrenFiltered) {
+				var filtered:Array = new Array();
+				var child:*;
+	
+				for ( var i:int=0; i<children.length; i++ ) {
+					child = children[ i ];
+					if ( shouldRun( child ) ) {
+						try {
+							filterChild( child );
+							sortChild( child );
+							filtered.push( child );
+						} catch ( error:Error ) {
+							
+						}
 					}
 				}
+				
+				filtered.sort(compare);
+				filteredChildren = filtered;
+				childrenFiltered = true;
 			}
-			
-			filtered.sort(compare);
-			return filtered;
+		
+			return filteredChildren;
 		}
 
 		private function sortChild( child:* ):void {
@@ -335,7 +350,11 @@ package org.flexunit.runners {
 		}
 
 		public function filter( filter:Filter ):void {
+			if(filter == this.filterRef)
+				return;
+			
 			this.filterRef = filter;
+			childrenFiltered = false;
 
 			for ( var i:int=0; i<children.length; i++ ) {
 				if ( shouldRun( children[ i ] ) ) {
@@ -347,18 +366,17 @@ package org.flexunit.runners {
 		}
 		
 		public function sort(sorter:ISorter):void {
-			//Determine if the runner has already specified a ISorter besides the default NULL Sorter,
+			//Determine if the runner has already specified a ISorter besides the default META Sorter,
 			//if it has, ignore the new ISorter.  This is to prevent a potential problem with a parent Runner
 			//overwriting a child's non-default ISorter.
-			if(MetadataSorter.NULL == this.sorter) {
+			if(MetadataSorter.META == this.sorter) {
 				this.sorter = sorter;
+				childrenFiltered = false;
 			}
 		}
 
 		public function toString():String {
 			return "ParentRunner";
 		}
-
-
 	}
 }

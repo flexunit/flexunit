@@ -26,7 +26,6 @@
  * @version    
  **/ 
 package org.flexunit.runner.manipulation {
-	import flex.lang.reflect.Method;
 	import flex.lang.reflect.utils.MetadataTools;
 	
 	import org.flexunit.runner.IDescription;
@@ -35,7 +34,12 @@ package org.flexunit.runner.manipulation {
 		/**
 		 * NULL is a <code>Sorter</code> that leaves elements in an undefined order
 		 */
-		public static var NULL:Sorter = new Sorter(defaultSortFunction);
+		public static var NULL:Sorter = new Sorter(none);
+		public static var META:Sorter = new Sorter(defaultSortFunction);
+		
+		private static function none( o1:IDescription, o2:IDescription ):int {
+			return 0;
+		}
 		
 		private static function getOrderValueFrom( object:IDescription ):Number {
 			var order:Number = 0;		
@@ -65,11 +69,11 @@ package org.flexunit.runner.manipulation {
 			}
 			
 			if ( !o1.getAllMetadata() ) {
-				return -1;
+				return 1;
 			}
 			
 			if ( !o2.getAllMetadata() ) {
-				return 1;
+				return -1;
 			}
 			
 			a = getOrderValueFrom( o1 );

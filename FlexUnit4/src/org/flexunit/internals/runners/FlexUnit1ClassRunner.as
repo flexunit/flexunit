@@ -162,8 +162,13 @@ package org.flexunit.internals.runners {
 			return new OldTestClassAdaptingListener(notifier, token );
 		}
 		
+		private var cachedDescription:IDescription;
 		public function get description():IDescription {
-			return makeDescription( test );
+			if ( !cachedDescription ) {
+				cachedDescription = makeDescription( test );
+			}
+
+			return cachedDescription;
 		}
 	
 		private function makeDescription( test:Test ):IDescription {

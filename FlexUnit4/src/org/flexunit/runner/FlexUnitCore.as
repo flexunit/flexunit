@@ -30,12 +30,6 @@ package org.flexunit.runner {
 	import flash.events.EventDispatcher;
 	import flash.utils.*;
 	
-	//import mx.logging.ILogger;
-	//import mx.logging.ILoggingTarget;
-	//import mx.logging.Log;
-	//import mx.logging.LogEventLevel;
-	//import mx.logging.targets.TraceTarget;
-
 	import org.flexunit.IncludeFlexClasses;
 	import org.flexunit.experimental.theories.Theories;
 	import org.flexunit.internals.TextListener;
@@ -87,7 +81,7 @@ package org.flexunit.runner {
 		private var theory:Theories;
 
 		public function get version():String {
-			return "4.0.0a";
+			return "4.0.0b2";
 		}
 
 		private function dealWithArgArray( ar:Array, foundClasses:Array, missingClasses:Array ):void {
