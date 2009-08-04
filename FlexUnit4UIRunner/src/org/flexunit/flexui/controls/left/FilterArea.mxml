@@ -72,7 +72,7 @@
 
          public function onAllTestsEnd() : void
          {
-            resultTypeComboBox.selectedIndex = 2;
+            resultTypeComboBox.selectedIndex = 1;
             
             resultTypeComboBox.invalidateProperties();            
             
