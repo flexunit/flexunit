@@ -48,8 +48,8 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
      */
 	public class TestAsynchronous {
 		protected var timer:Timer;
-		protected static var SHORT_TIME:int = 100;
-		protected static var LONG_TIME:int = 250;
+		protected static var SHORT_TIME:int = 30;
+		protected static var LONG_TIME:int = 500;
 
 		[Before]
 		public function setUp():void {
