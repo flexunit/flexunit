@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<actionScriptProperties mainApplicationPath="flexUnitUIRunner.as" version="3">
+<actionScriptProperties mainApplicationPath="FlexUnit4UIRunner.as" version="3">
 <compiler additionalCompilerArguments="" copyDependentFiles="false" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderPath="bin" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
 <compilerSourcePath>
 <compilerSourcePathEntry kind="1" linkType="1" path="tests"/>
@@ -23,7 +23,7 @@
 <sourceAttachmentPath/>
 </compiler>
 <applications>
-<application path="flexUnitUIRunner.as"/>
+<application path="FlexUnit4UIRunner.as"/>
 </applications>
 <modules/>
 <buildCSSFiles/>

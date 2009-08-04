@@ -37,7 +37,7 @@ package org.flexunit.flexui.data.filter
       
       public static function toArray() : Array
       {
-         return [ ALL, EMPTY, ERRORS_AND_FAILURES, IGNORED ];
+         return [ ALL, ERRORS_AND_FAILURES, IGNORED ];
       }
    }
 }

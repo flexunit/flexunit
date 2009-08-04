@@ -35,6 +35,8 @@ package org.flexunit.flexui.controls
    {      
       /* TITLES */
       public static const FLEXUNIT_RUNNER : String = "FlexUnit Runner";
+	  public static const FLEXUNIT : String = "FlexUnit";
+	  public static const RUNNER : String = "Runner";
       public static const POWERED_BY_ADOBE_CONSULTING : String = "powered by Adobe Consulting";
       public static const TEST_CASES : String = "TEST CASES";
       public static const TEST_SUITE : String = "TEST SUITE";

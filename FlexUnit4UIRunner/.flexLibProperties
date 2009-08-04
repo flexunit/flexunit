@@ -245,6 +245,6 @@
 <resourceEntry destPath="skins/VScrollBar_thumbDownSkin.png" sourcePath="skins/VScrollBar_thumbDownSkin.png"/>
 </includeResources>
 <namespaceManifests>
-<namespaceManifestEntry manifest="flexUnitUIRunner-manifest.xml" namespace="http://www.adobe.com/2009/flexUnitUIRunner"/>
+<namespaceManifestEntry manifest="FlexUnit4UIRunner-manifest.xml" namespace="http://www.adobe.com/2009/flexUnitUIRunner"/>
 </namespaceManifests>
 </flexLibProperties>
