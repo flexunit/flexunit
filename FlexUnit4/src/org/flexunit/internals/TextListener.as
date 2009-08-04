@@ -28,7 +28,9 @@
 package org.flexunit.internals {
 	import mx.formatters.NumberFormatter;
 	import mx.logging.ILogger;
+	import mx.logging.ILoggingTarget;
 	import mx.logging.Log;
+	import mx.logging.targets.TraceTarget;
 	
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.Result;
@@ -38,6 +40,24 @@ package org.flexunit.internals {
 	public class TextListener extends RunListener {
 		private var logger:ILogger;
 		private static var nf:NumberFormatter;
+
+		protected static function buildILoggingTarget( level:int ):ILoggingTarget {
+			var traceTarget:TraceTarget = new TraceTarget();
+			traceTarget.level = level; //LogEventLevel.DEBUG;
+			
+			traceTarget.includeDate = true;
+			traceTarget.includeTime = true;
+			traceTarget.includeCategory = true;
+			traceTarget.includeLevel = true;
+			
+			return traceTarget;
+		}
+
+		public static function getDefaultTextListener( logLevel:int ):TextListener {
+			Log.addTarget( buildILoggingTarget( logLevel ) );
+			
+			return new TextListener( Log.getLogger("FlexUnit4") );
+		}
 
 		public function TextListener( logger:ILogger ) {
 			super();

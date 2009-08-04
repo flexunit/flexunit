@@ -4,6 +4,7 @@ package org.flexunit
 	import org.flexunit.async.ITestResponder;
 	import org.flexunit.async.TestResponder;
 	import org.flexunit.events.AsyncResponseEvent;
+	import org.flexunit.internals.TextListener;
 	import org.fluint.sequence.ISequenceAction;
 	import org.fluint.sequence.ISequencePend;
 	import org.fluint.sequence.ISequenceStep;
@@ -36,5 +37,7 @@ package org.flexunit
 		private var flu10:SequenceWaiter;
 		private var flu11:TestEnvironment;
 		private var flu12:UIImpersonator;
+		
+		private var flu13:TextListener;
 	}
 }

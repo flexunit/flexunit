@@ -68,8 +68,6 @@ package org.flexunit.runner {
 		}
 		
 		private var notifier:IRunNotifier;
-		//private var logTarget:ILoggingTarget;
-		//private var logger:ILogger;
 		private var asyncListenerWatcher:AsyncListenerWatcher;
 		
 		private static const RUN_LISTENER:String = "runListener";
@@ -80,7 +78,7 @@ package org.flexunit.runner {
 		//Just keep theories linked in until we decide how to deal with it
 		private var theory:Theories;
 
-		public function get version():String {
+		public static function get version():String {
 			return "4.0.0b2";
 		}
 
@@ -235,28 +233,11 @@ package org.flexunit.runner {
 			
 		}
 		
-/*		protected function buildILoggingTarget():ILoggingTarget {
-			var traceTarget:TraceTarget = new TraceTarget();
-			traceTarget.level = LogEventLevel.DEBUG;
-			
-            traceTarget.includeDate = true;
-            traceTarget.includeTime = true;
-            traceTarget.includeCategory = true;
-            traceTarget.includeLevel = true;
-			
-			return traceTarget;
-		}
-*/
 		/**
 		 * Create a new <code>FlexUnitCore</code> to run tests.
 		 */
 		public function FlexUnitCore() {
 			notifier = new RunNotifier();
-			
-			//logTarget = buildILoggingTarget();
-			//Log.addTarget(logTarget);
-			
-			//logger = Log.getLogger("FlexUnit4"); 
 			
 			asyncListenerWatcher = new AsyncListenerWatcher( notifier, null );
 			//asyncListenerWatcher.addEventListener( AsyncListenerWatcher.ALL_LISTENERS_READY, handleAllListenersReady, false, 0, true );

@@ -321,7 +321,7 @@ package org.flexunit.internals.runners.statements {
 		}
 
 		public function failOnComplete( event:Event, passThroughData:Object ):void {
-			sendComplete( new Error( "Unexpected event received" ) );
+			sendComplete( new Error( "Unexpected event received " + event?event:'' ) );
 		}
 
 		public function handleNextExecuteComplete( result:ChildResult ):void {

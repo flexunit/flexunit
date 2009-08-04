@@ -222,7 +222,7 @@ package org.flexunit.runner.notification.async
 		protected function sendResults(msg:String):void{
 			if(socket.connected){
 				socket.send( msg );
-				trace(msg);
+				//trace(msg);
 			}
 			
 		}
