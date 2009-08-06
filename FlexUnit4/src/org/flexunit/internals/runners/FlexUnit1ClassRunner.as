@@ -26,6 +26,8 @@
  * @version    
  **/ 
 package org.flexunit.internals.runners {
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
@@ -57,6 +59,7 @@ package org.flexunit.internals.runners {
 		private var totalTestCount:int = 0;
 		private var numTestsRun:int = 0;
 		private var filterRef:Filter = null;
+		private var testCompletedToken : AsyncTestToken;
 
 		public function FlexUnit1ClassRunner( klassOrTest:* ) {
 			super();
@@ -151,11 +154,22 @@ package org.flexunit.internals.runners {
 		protected function handleTestComplete( result:ChildResult ):void {
 			//trace( numTestsRun + ' ' + totalTestCount );
 			if ( ++numTestsRun == totalTestCount ) {
-				var error:Error = result.error;
-				var token:AsyncTestToken = result.token;
-	
-				token.parentToken.sendResult();
+				testCompletedToken = result.token;
+				
+				// FlexUnit 0.9 has a timer set up in TestSuiteTestListener executed 
+				// 5ms after each test execution to clean up the static property listenerStack.
+				// We have to add this 5ms delay here as well otherwise the parentToken would be executed
+				// before the TestSuiteTestListener timer and would mess things up.
+				var timer : Timer = new Timer ( 5, 1 );
+				timer.addEventListener( TimerEvent.TIMER,handleAllTestsComplete,false, 0, false );
+				timer.start();
 			}
+		}
+		
+		private function handleAllTestsComplete( event : TimerEvent ) : void
+		{
+			(event.target as Timer).removeEventListener( TimerEvent.TIMER, handleAllTestsComplete );
+			testCompletedToken.parentToken.sendResult();
 		}
 
 		public static function createAdaptingListener( notifier:IRunNotifier, token:AsyncTestToken ):TestListener {
@@ -240,19 +254,16 @@ class OldTestClassAdaptingListener implements TestListener {
 	}
 
 	public function endTest( test:Test ):void {
-		//trace("End Test");
 		notifier.fireTestFinished(asDescription(test));
 		token.sendResult();
 	}
 
 	public function startTest( test:Test ):void {
-		//trace("Start Test");
 		notifier.fireTestStarted(asDescription(test));
 	}
 
 	// Implement junit.framework.TestListener
 	public function addError( test:Test, error:Error ):void {
-		//trace("Add Error");
 		var failure:Failure = new Failure(asDescription(test), error );
 		notifier.fireTestFailure(failure);
 	}
