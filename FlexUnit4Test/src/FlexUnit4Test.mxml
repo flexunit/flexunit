@@ -7,6 +7,11 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import suite.cases.FlunitTest;
+			import suite.cases.NestedAsync;
+			import mx.logging.LogEventLevel;
+			import org.flexunit.internals.TextListener;
+			import org.flexunit.internals.TraceListener;
 			import org.flexunit.listeners.UIListener;
 			import flexUnitTests.flexUnit4.suites.frameworkSuite.FlexUnit4Suite;
 			//import org.flexunit.listeners.JUnitListener;
@@ -14,18 +19,27 @@
 			import org.flexunit.runner.Request;
 
 			import org.flexunit.runner.FlexUnitCore;
+			import suite.cases.FlunitTest;
+
 			private var core:FlexUnitCore;
 
 			public function runMe():void {
 
 				core = new FlexUnitCore();
 
-				//Listeners for CI systems or plugins 
+				//Listeners for CI systems or Flash Builder Plugins 
 				//core.addListener( new JUnitListener());
-				core.addListener( new XMLListener( "FlexUnit4Test" ) );
+				//core.addListener( new XMLListener( "FlexUnit4Test" ) );
+
+				//Listener for outputting to the trace console via the Flex logging class, Flex Only
+				//core.addListener( TextListener.getDefaultTextListener( LogEventLevel.DEBUG ) );
+
+				//Listener for outputting to the trace console via the trace method, ActionScript or Flex
+				//core.addListener( new TraceListener() );
 
 				//Listener for the UI
 				core.addListener( new UIListener( uiListener ));
+
 				core.run( FlexUnit4Suite );
 
 				//The run method can take a single class or suite
@@ -36,7 +50,7 @@
 				
 				//It can take a comma separated list of the previous choices
 				//core.run( FrameworkSuite, TestAssert, Request.method( TestAssert, "testFail" ) );
-				
+
 				//It can take an array
 				//var ar:Array = new Array();
 				//ar.push( Request.method( TestAssert, "testFail" ) );
