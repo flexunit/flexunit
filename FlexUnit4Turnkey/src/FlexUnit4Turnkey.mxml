@@ -21,9 +21,18 @@
 
 				core = new FlexUnitCore();
 
-				//Listener for the UI, optional
+				//Listeners for CI systems or Flash Builder Plugins 
+				//core.addListener( new JUnitListener());
+				//core.addListener( new XMLListener( "FlexUnit4Test" ) );
+
+				//Listener for outputting to the trace console via the Flex logging class, Flex Only
+				//core.addListener( TextListener.getDefaultTextListener( LogEventLevel.DEBUG ) );
+
+				//Listener for outputting to the trace console via the trace method, ActionScript or Flex
+				//core.addListener( new TraceListener() );
+
+				//Listener for the UI
 				core.addListener( new UIListener( uiListener ));
-				//core.addListener( new XMLListener() );
 				
 				//This run statements executes the unit tests for the FlexUnit4 framework 
 				//the Hamcrest matchers and some of the tests shown in the FlexUnit in 360 seconds blog post
