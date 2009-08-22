@@ -7,8 +7,6 @@
 	
 	<mx:Script>
 		<![CDATA[
-			import suite.cases.FlunitTest;
-			import suite.cases.NestedAsync;
 			import mx.logging.LogEventLevel;
 			import org.flexunit.internals.TextListener;
 			import org.flexunit.internals.TraceListener;
@@ -19,7 +17,6 @@
 			import org.flexunit.runner.Request;
 
 			import org.flexunit.runner.FlexUnitCore;
-			import suite.cases.FlunitTest;
 
 			private var core:FlexUnitCore;
 
