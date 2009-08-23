@@ -29,6 +29,8 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.helper.MySpecialResponder;
+	
 	import mx.core.mx_internal;
 	import mx.rpc.AsyncToken;
 	import mx.rpc.IResponder;
@@ -37,7 +39,6 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 	import mx.rpc.events.ResultEvent;
 	
 	import org.flexunit.Assert;
-	import org.flexunit.AssertionError;
 	import org.flexunit.async.Async;
 	import org.flexunit.async.AsyncLocator;
 	import org.flexunit.async.TestResponder;
@@ -242,7 +243,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 	    }
 
 		[Test(async)]
-	    public function testAyncResponderResultWithTestResponder() : void {
+	    public function testAsyncResponderResultWithTestResponder() : void {
 			var someVO:Object = new Object();
 			someVO.myName = 'Mike Labriola';
 			someVO.yourAddress = '1@2.com';
@@ -257,7 +258,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 		}
 
 		[Test(async)]
-	    public function testAyncResponderFaultWithTestResponder() : void {
+	    public function testAsyncResponderFaultWithTestResponder() : void {
 			var someVO:Object = new Object();
 			someVO.myName = 'Mike Labriola';
 			someVO.yourAddress = '1@2.com';
@@ -272,7 +273,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 		}
 
 		[Test(async)]
-	    public function testAyncResponderResultWithIResponder() : void {
+	    public function testAsyncResponderResultWithIResponder() : void {
 			var someVO:Object = new Object();
 			someVO.myName = 'Mike Labriola';
 			someVO.yourAddress = '1@2.com';
@@ -287,7 +288,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 		}
 
 		[Test(async)]
-	    public function testAyncResponderFaultWithIResponder() : void {
+	    public function testAsyncResponderFaultWithIResponder() : void {
 			var someVO:Object = new Object();
 			someVO.myName = 'Mike Labriola';
 			someVO.yourAddress = '1@2.com';
@@ -301,6 +302,30 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 				    
 		}
 
+		[Test(async)]
+		public function testAsyncResponderResultWithExternalResponder() : void {
+			var specialResponder:MySpecialResponder = new MySpecialResponder( specialResponderResultHandler, specialResponderFaultHandler );
+
+			var responder:MySpecialResponder = Async.asyncResponder( this, specialResponder, 50 ) as MySpecialResponder;
+			var token:AsyncToken = new AsyncToken( null );
+			token.addResponder( responder );
+			
+			var result:ResultEvent = new ResultEvent( ResultEvent.RESULT, false, false, {myString:'abc123'}, token, null );			
+			token.mx_internal::applyResult( result );
+		}
+		
+		[Test(async,expects="flexunit.framework.AssertionFailedError")]
+		public function testAsyncResponderFaultWithExternalResponder() : void {
+			var specialResponder:MySpecialResponder = new MySpecialResponder( specialResponderResultHandler, specialResponderFaultHandler );
+			
+			var responder:MySpecialResponder = Async.asyncResponder( this, specialResponder, 50 ) as MySpecialResponder;
+			var token:AsyncToken = new AsyncToken( null );
+			token.addResponder( responder );
+			
+			var fault:FaultEvent = new FaultEvent( FaultEvent.FAULT );	
+			token.mx_internal::applyFault( fault );
+		}
+		
 		/** Helper methods for the tests above beyond this point
 		 * 
 		 * 
@@ -408,6 +433,17 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 
 		protected function handleUnintendedFault( info:Object, passThroughData:Object ):void {
 			Assert.fail("Responder threw a fault when result was expected");
+		}
+
+		protected function specialResponderResultHandler( data:Object ):void {
+			Assert.assertNotNull( data );
+			Assert.assertNotNull( data.result );
+			Assert.assertNotNull( data.result.myString );
+			Assert.assertEquals( data.result.myString, 'abc123' );
+		}
+		
+		protected function specialResponderFaultHandler( info:Object ):void {
+			Assert.fail("Reached the Fault Handler");
 		}
 	}
 

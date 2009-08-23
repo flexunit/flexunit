@@ -48,14 +48,11 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite
      * @private
      */
 	public class FlexUnit4Suite {
-		[TestCase(order=2)]
 		public var testAssert:TestAssert;
 		
-		[TestCase(order=4)]
 		public var testIgnore:TestIgnore;
 		public var testDouble:TestDoubleMetaData;
 
-		[TestCase(order=5)]
 		public var testMethodOrder:TestMethodOrder;
 		public var testBeforeAfterOrder:TestBeforeAfterOrder;
 		public var testBeforeAfterClassOrder:TestBeforeAfterClassOrder;
@@ -69,9 +66,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite
 		public var testBindingUse:TestBindingUse;
 		public var theory:TheorySuite;
 		
-		[Suite(order=1)]
 		public var hamcrest:HamcrestSuite;
-		[Suite(order=7)]
 		public var flexUnit1Tests:AllFrameworkTests;
 	}
 }
