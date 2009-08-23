@@ -47,6 +47,10 @@ package org.flexunit.runner.manipulation {
 			var metadataNodes:XMLList = object.getAllMetadata();
 			var metadata:XML;
 			
+			if ( metadataNodes.length() == 0 ) {
+				trace("Stop");				
+			}
+			
 			for ( var i:int=0; i<metadataNodes.length(); i++ ) {
 				metadata = metadataNodes[ i ];
 				
@@ -64,20 +68,20 @@ package org.flexunit.runner.manipulation {
 			var a:Number;
 			var b:Number; 
 			
-			if ( !o1.getAllMetadata() && !o2.getAllMetadata() ) {
-				return 0;
-			}
+			var o1Meta:XMLList = o1.getAllMetadata();
+			var o2Meta:XMLList = o2.getAllMetadata();
 			
-			if ( !o1.getAllMetadata() ) {
-				return 1;
+			if ( o1Meta ) { 
+				a = getOrderValueFrom( o1 );
+			} else {
+				a = 0;
 			}
-			
-			if ( !o2.getAllMetadata() ) {
-				return -1;
+
+			if ( o2Meta ) {
+				b = getOrderValueFrom( o2 );
+			} else {
+				b = 0;
 			}
-			
-			a = getOrderValueFrom( o1 );
-			b = getOrderValueFrom( o2 );
 			
 			if (a < b)
 				return -1;

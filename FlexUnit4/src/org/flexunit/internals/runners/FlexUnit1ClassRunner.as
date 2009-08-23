@@ -186,16 +186,25 @@ package org.flexunit.internals.runners {
 		}
 	
 		private function makeDescription( test:Test ):IDescription {
+			var name:String;
+			var description:IDescription;
+			var n:int;
+			var tests:Array;
+			var testClass:Class;
+			
 			if ( test is TestCase ) {
 				var tc:TestCase = TestCase( test );
-				//return null;
-				return Description.createTestDescription(getClassFromTest( tc ), tc.className );
+
+				testClass = getClassFromTest( tc );
+				description = Description.createTestDescription(testClass, tc.methodName );
+				
+				return description;
 			} else if ( test is TestSuite ) {
 				var ts:TestSuite = TestSuite( test );
-				var name:String = ts.className == null ? "" : ts.className;
-				var description:IDescription = Description.createSuiteDescription(name);
-				var n:int = ts.testCount();
-				var tests:Array = ts.getTests();
+				name = ts.className == null ? "" : ts.className;
+				description = Description.createSuiteDescription(name);
+				n = ts.testCount();
+				tests = ts.getTests();
 				for ( var i:int = 0; i < n; i++)
 					description.addChild( makeDescription( tests[i] ) );
 

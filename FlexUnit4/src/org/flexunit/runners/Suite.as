@@ -65,10 +65,11 @@ package org.flexunit.runners {
 			var classRef:Class;
 			var classArray:Array = new Array();
 			
-			var fieldSorter:FieldSorter = new FieldSorter( klassInfo.fields );
-			fieldSorter.sort();
+			//Experimental, not needed at this time
+			//var fieldSorter:FieldSorter = new FieldSorter( klassInfo.fields );
+			//fieldSorter.sort();
 			
-			var fields:Array = fieldSorter.fields; 
+			var fields:Array = klassInfo.fields; 
 
 			for ( var i:int=0; i<fields.length; i++ ) {
 				if ( !fields[ i ].isStatic ) {

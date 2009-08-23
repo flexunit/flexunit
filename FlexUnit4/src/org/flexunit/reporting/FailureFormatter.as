@@ -25,7 +25,7 @@ package org.flexunit.reporting {
 			
 			if ( message ) {
 				escape.setChildren( message );
-				escaped = escape.toString();
+				escaped = escape.children()[0].toXMLString();
 			}
 
 			return escaped;

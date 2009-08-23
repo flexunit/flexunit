@@ -122,23 +122,37 @@ package org.flexunit.internals.runners {
 		private function makeDescription( test:* ):IDescription {
 			var klassInfo:Klass;
 			var clazz:Class;
+			var name:String;
+			var description:IDescription;
+			var n:int;
+			var tests:ICollectionView;
+			var cursor:IViewCursor;
 
  			if ( test is TestCase ) {
 				var tc:TestCase = TestCase( test );
 				clazz = getClassFromTest( tc );
 				klassInfo = new Klass( clazz );
-				return Description.createTestDescription( klassInfo.asClass, klassInfo.name );
-
+				description = Description.createTestDescription( klassInfo.asClass, klassInfo.name );
+				n = tc.getTestCount();
+				
+				tests = tc.getTests();
+				cursor = tests.createCursor();
+				while ( !cursor.afterLast ) {
+					description.addChild( makeDescription( cursor.current ) );
+					cursor.moveNext();
+				}					
+				
+				return description;
 			} else if ( test is TestSuite ) {
 				var ts:TestSuite = TestSuite( test );
 				clazz = getClassFromTest( ts );
 				klassInfo = new Klass( clazz );
 
-				var name:String = klassInfo.name;
-				var description:IDescription = Description.createSuiteDescription(name);
-				var n:int = ts.getTestCount();
-				var tests:ICollectionView = ts.getTests();
-				var cursor:IViewCursor = tests.createCursor();
+				name = klassInfo.name;
+				description = Description.createSuiteDescription(name);
+				n = ts.getTestCount();
+				tests = ts.getTests();
+				cursor = tests.createCursor();
 
 				while ( !cursor.afterLast ) {
 					description.addChild( makeDescription( cursor.current ) );
@@ -146,16 +160,24 @@ package org.flexunit.internals.runners {
 				}
 
 				return description;
-			} 
+			} else if ( test is XML ) {
+				//We have a single method here
+				return Description.createTestDescription( this.testClass, test.@name  );
+			}
 
 			return Description.EMPTY;		
 		}
 	
+		private var appliedFilter:Filter; 
 		public function filter( filter:Filter ):void {
-			if ( test is IFilterable ) {
-				//var adapter:IFilterable = IFilterable( test );
-				//adapter.filter(filter);
+			if ( filter ) {
+				appliedFilter = filter;
+				Object( test ).filter = filterWithIFilter;
 			}
+		}
+		
+		protected function filterWithIFilter( item:Object ):Boolean {
+			return appliedFilter.shouldRun( makeDescription( item ) );
 		}
 	
 /* 		public void sort(Sorter sorter) {

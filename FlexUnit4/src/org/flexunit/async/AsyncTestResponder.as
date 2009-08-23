@@ -28,13 +28,11 @@
 package org.flexunit.async {
 	import flash.events.EventDispatcher;
 	
-	import mx.rpc.IResponder;
-	
 	import org.flexunit.events.AsyncResponseEvent;
 	
 	[Event(name="responderFired",type="net.digitalprimates.fluint.events.AsyncResponseEvent")]
 
-	public class AsyncTestResponder extends EventDispatcher implements IResponder {
+	public class AsyncTestResponder extends EventDispatcher implements IAsyncTestResponder {
 		private var originalResponder:*;		
 		
 		public function fault( info:Object ):void {

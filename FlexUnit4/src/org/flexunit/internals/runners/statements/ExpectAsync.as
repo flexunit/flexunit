@@ -29,13 +29,13 @@ package org.flexunit.internals.runners.statements {
 	import flash.events.Event;
 	
 	import mx.events.PropertyChangeEvent;
-	
 	import mx.rpc.IResponder;
 	
 	import org.flexunit.Assert;
 	import org.flexunit.async.AsyncHandler;
 	import org.flexunit.async.AsyncLocator;
 	import org.flexunit.async.AsyncTestResponder;
+	import org.flexunit.async.IAsyncTestResponder;
 	import org.flexunit.async.ITestResponder;
 	import org.flexunit.events.AsyncEvent;
 	import org.flexunit.events.AsyncResponseEvent;
@@ -105,11 +105,30 @@ package org.flexunit.internals.runners.statements {
 		CONFIG::useFlexClasses
 		public function asyncResponder( responder:*, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):IResponder { 
 
+			var asyncResponder:IAsyncTestResponder;
+
 			if ( !( ( responder is IResponder ) || ( responder is ITestResponder ) ) ) {
 				throw new Error( "Object provided to responder parameter of asyncResponder is not a IResponder or ITestResponder" );
 			}
 
-			var asyncResponder:AsyncTestResponder = new AsyncTestResponder( responder );
+			/**If the user passes use an IAsyncTestResponder of their own, then we do not need to wrap it in our own AsyncTestResponder class
+			 * This allows the use of a different type of responder than our standard, however, it is the responsibility of the IAsyncTestResponder
+			 * we are passed to dispatch the requisite AsyncResponseEvent events in response to a result or fault.
+			 * 
+			 * In your own code, you can therefore do something like:
+			 * 
+			 * asyncResponder( IResponder, timeout );
+			 * 
+			 * OR
+			 * 
+			 * asyncResponder( mySpecialResponder implements IAsyncTestResponder, timeout );
+			 * 
+			 * */
+			if ( responder is IAsyncTestResponder ) {
+				asyncResponder = responder;
+			} else {
+				asyncResponder = new AsyncTestResponder( responder );
+			}
 
 			var asyncHandler:AsyncHandler = new AsyncHandler( this, handleAsyncTestResponderEvent, timeout, passThroughData, timeoutHandler )
 			asyncHandler.addEventListener( AsyncHandler.EVENT_FIRED, handleAsyncEventFired, false, 0, true );

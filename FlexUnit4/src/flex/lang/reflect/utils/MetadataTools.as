@@ -233,7 +233,7 @@ package flex.lang.reflect.utils
 					
 					if ( String( arg.@value ).length > 0 ) {
 						value = arg.@value;
-					}
+					} 
 				}
 			}
 			
