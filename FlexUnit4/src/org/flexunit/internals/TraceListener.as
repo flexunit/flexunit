@@ -26,6 +26,7 @@
  * @version    
  **/ 
 package org.flexunit.internals {
+	import org.flexunit.reporting.FailureFormatter;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.Result;
 	import org.flexunit.runner.notification.Failure;
@@ -48,7 +49,11 @@ package org.flexunit.internals {
 		}
 	
 		override public function testFailure( failure:Failure ):void {
-			trace( failure.description.displayName + " E" );
+			if ( FailureFormatter.isError( failure.exception ) ) {
+				trace( failure.description.displayName + " E" );
+			} else {
+				trace( failure.description.displayName + " F" );
+			}
 		}
 	
 		override public function testIgnored( description:IDescription ):void {

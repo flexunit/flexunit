@@ -32,6 +32,7 @@ package org.flexunit.internals {
 	import mx.logging.Log;
 	import mx.logging.targets.TraceTarget;
 	
+	import org.flexunit.reporting.FailureFormatter;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.Result;
 	import org.flexunit.runner.notification.Failure;
@@ -83,7 +84,11 @@ package org.flexunit.internals {
 		}
 	
 		override public function testFailure( failure:Failure ):void {
-			logger.warn( failure.description.displayName + " E" );
+			if ( FailureFormatter.isError( failure.exception ) ) {
+				logger.error( failure.description.displayName + " E" );
+			} else {
+				logger.warn( failure.description.displayName + " F" );
+			}
 		}
 	
 		override public function testIgnored( description:IDescription ):void {

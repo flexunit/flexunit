@@ -35,8 +35,7 @@ package org.flexunit.runner.notification {
 	 * exception that was thrown while running it. In most cases the {@link org.flexunit.runner.Description}
 	 * will be of a single test. However, if problems are encountered while constructing the
 	 * test
-	 *  //TODO: no org.flexunit.BeforeClass is there an equivalent?
-	 *  (for example, if a {@link org.junit.BeforeClass} method is not static), it may describe
+	 *  (for example, if a {@link org.junit.BeforeClass} method is static), it may describe
 	 * something other than a single test.
 	 */
 	public class Failure {

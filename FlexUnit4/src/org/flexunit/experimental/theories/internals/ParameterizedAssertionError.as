@@ -26,7 +26,9 @@
  * @version    
  **/ 
 package org.flexunit.experimental.theories.internals {
-	public class ParameterizedAssertionError extends Error {
+	import org.flexunit.AssertionError;
+
+	public class ParameterizedAssertionError extends AssertionError {
 		public var targetException:Error;
 		public function ParameterizedAssertionError( targetException:Error, methodName:String, ...params ) {
 			this.targetException = targetException;

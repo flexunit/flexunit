@@ -34,6 +34,7 @@ package org.flexunit.runner.notification.async
 	import flash.events.SecurityErrorEvent;
 	import flash.net.XMLSocket;
 	
+	import org.flexunit.reporting.FailureFormatter;
 	import org.flexunit.runner.Descriptor;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.Result;
@@ -68,7 +69,7 @@ package org.flexunit.runner.notification.async
 		
 		private var lastFailedTest:IDescription;
 		
-		private var msgQueue:Array = new Array();
+		//private var msgQueue:Array = new Array();
 		private var projectName:String;
 		private var contextName:String;
 
@@ -127,7 +128,7 @@ package org.flexunit.runner.notification.async
 			if(!lastFailedTest || description.displayName != lastFailedTest.displayName){
 				var desc:Descriptor = getDescriptorFromDescription(description);
 				sendResults("<testCase name='"+desc.method+"' testSuite='"+desc.suite+"'  status='"+SUCCESS+"'/>");
-				msgQueue.push( "<testCase name='"+desc.method+"' testSuite='"+desc.suite+"'  status='"+SUCCESS+"'/>");
+				//msgQueue.push( "<testCase name='"+desc.method+"' testSuite='"+desc.suite+"'  status='"+SUCCESS+"'/>");
 			}
 		}
 
@@ -139,7 +140,7 @@ package org.flexunit.runner.notification.async
 			// called on ignored test
 			var desc:Descriptor = getDescriptorFromDescription(description);
 			sendResults("<testCase name='"+desc.method+"' testSuite='"+desc.suite+"'  status='"+IGNORE+"'/>");
-			msgQueue.push("<testCase name='"+desc.method+"' testSuite='"+desc.suite+"'  status='"+IGNORE+"'/>");
+			//msgQueue.push("<testCase name='"+desc.method+"' testSuite='"+desc.suite+"'  status='"+IGNORE+"'/>");
 		}
 	
 	
@@ -148,29 +149,51 @@ package org.flexunit.runner.notification.async
 			lastFailedTest = failure.description;
 			var descriptor:Descriptor = getDescriptorFromDescription(failure.description);
 			var type : String = failure.description.displayName
-			var message : String = failure.message;
-			var stackTrace : String = failure.stackTrace;
+			var message : String = FailureFormatter.xmlEscapeMessage( failure.message );
+			var stackTrace : String = FailureFormatter.xmlEscapeMessage( failure.stackTrace );
 			var methodName : String = descriptor.method;
-
-			var escape:XML = <escape/>;
-			
-			escape.setChildren( message );
-			message = escape.toString();
-
-			escape.setChildren( stackTrace );
-			if ( stackTrace != null ) stackTrace = stackTrace.toString();
 						
-			//message+ "</messageInfo>"+ stackTrace+ "</stackTraceInfo>"+
-			var xml : String =
-				"<testCase name='"+descriptor.method+"' testSuite='"+descriptor.suite+"'  status='"+FAILURE+"'>"+
-					"<failure type='"+ type +"' >"+
-						"<messageInfo>"+message+ "</messageInfo>"+  
-						"<stackTraceInfo>" +stackTrace+ "</stackTraceInfo>"+ 
-					 "</failure>"+
-				"</testCase>";
-			sendResults(xml);
-			msgQueue.push(xml);	
+			var xmlString:String;
+			xmlString = createMessage( FailureFormatter.isError( failure.exception ), methodName, descriptor.suite, type, message, stackTrace );
+			
+			sendResults( xmlString );
 		}
+		
+		private function createMessage( isError:Boolean, methodName:String, suite:String, type:String, message:String, stackTrace:String ):String {
+			var xmlString:String;
+			if ( isError ) {
+				xmlString = createFailureMessage( methodName, suite, type, message, stackTrace );
+			} else {
+				xmlString = createFailureMessage( methodName, suite, type, message, stackTrace );
+			}
+				
+			return xmlString;
+		}
+
+		private function createFailureMessage( methodName:String, suite:String, type:String, message:String, stackTrace:String ):String {
+			var xml : String =
+				"<testCase name='"+methodName+"' testSuite='"+suite+"'  status='"+FAILURE+"'>"+
+				"<failure type='"+ type +"' >"+
+				"<messageInfo>"+message+ "</messageInfo>"+  
+				"<stackTraceInfo>" +stackTrace+ "</stackTraceInfo>"+ 
+				"</failure>"+
+				"</testCase>";
+
+			return xml;
+		}
+
+		private function createErrorMessage( methodName:String, suite:String, type:String, message:String, stackTrace:String ):String {
+			var xml : String =
+				"<testCase name='"+methodName+"' testSuite='"+suite+"'  status='"+ERROR+"'>"+
+				"<error type='"+ type +"' >"+
+				"<messageInfo>"+message+ "</messageInfo>"+  
+				"<stackTraceInfo>" +stackTrace+ "</stackTraceInfo>"+ 
+				"</error>"+
+				"</testCase>";
+			
+			return xml;
+		}
+
 		/*
 		 * Internal methods
 		 */
@@ -209,10 +232,10 @@ package org.flexunit.runner.notification.async
 	
 		protected function printResults( result:Result ):void{
 			//logger.info("printResults");
-			for(var i:int=0;i<msgQueue.length;i++){
+/*			for(var i:int=0;i<msgQueue.length;i++){
 				sendResults(msgQueue[i]);
 			}
-		}
+*/		}
 	
 		protected function printFooter( result:Result ):void {
 		//	logger.warn(END_OF_TEST_RUN);
