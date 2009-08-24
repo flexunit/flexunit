@@ -62,6 +62,7 @@ package org.flexunit.listeners
 		private static const END_OF_TEST_RUN : String = "<endOfTestRun/>";
 		
 		private var socket:XMLSocket;
+		
 		[Inspectable]
 		public var port : uint;
 		
@@ -70,14 +71,8 @@ package org.flexunit.listeners
 		
 		private var lastFailedTest:IDescription;
 		
-		private var projectName:String;
-		private var contextName:String;
-		
-		public function CIListener(port : uint = DEFAULT_PORT, server :
-								   String = DEFAULT_SERVER) {
-			/* this.projectName = projectName;
-			this.contextName = contextName; */
-			
+		public function CIListener(port : uint = DEFAULT_PORT, server : String = DEFAULT_SERVER) 
+		{
 			this.port = port;
 			this.server = server;
 			
@@ -87,6 +82,7 @@ package org.flexunit.listeners
 			socket.addEventListener( IOErrorEvent.IO_ERROR, errorHandler);
 			socket.addEventListener( SecurityErrorEvent.SECURITY_ERROR,errorHandler);
 			socket.addEventListener( Event.CLOSE,errorHandler);
+			
 			try
 			{
 				socket.connect( server, port );
@@ -97,54 +93,63 @@ package org.flexunit.listeners
 		}
 		
 		[Bindable(event="listenerReady")]
-		public function get ready():Boolean {
+		public function get ready():Boolean 
+		{
 			return _ready;
 		}
 		
-		private function getTestCount( description:IDescription ):int {
+		private function getTestCount( description:IDescription ):int 
+		{
 			return description.testCount;
 		}
 		
-		public function testRunStarted( description:IDescription ):void{
-			// Currently it is not necessary to send any message for the start of a run.
-			//  However, if desired this can be used for a special message.
-			sendResults("<testsuite totalTestCount='" + getTestCount( description ) + "'  projectName='" + projectName + "' contextName='" + contextName +"' />");
+		public function testRunStarted( description:IDescription ):void
+		{
+			//Since description tells us nothing about failure, error, and skip counts, this is 
+		   //computed by the Ant task as the process executes and no work is needed to signify
+		   //the start of a test run.
 		}
 		
-		public function testRunFinished( result:Result ):void {
+		public function testRunFinished( result:Result ):void 
+		{
 			sendResults(END_OF_TEST_RUN);
 		}
 		
-		public function testStarted( description:IDescription ):void {
+		public function testStarted( description:IDescription ):void 
+		{
 			// called before each test
 		}
 		
-		public function testFinished( description:IDescription ):void {
+		public function testFinished( description:IDescription ):void 
+		{
 			// called after each test
 			if(!lastFailedTest || description.displayName != lastFailedTest.displayName){
 				var desc:Descriptor = getDescriptorFromDescription(description);
-				sendResults("<testcase classname='"+desc.suite+"'name='"+desc.method+"' time='0.000'  status='"+SUCCESS+"'/>");
+				sendResults("<testcase classname='"+desc.suite+"' name='"+desc.method+"' time='0.000'  status='"+SUCCESS+"'/>");
 			}
 		}
 		
-		public function testAssumptionFailure( failure:Failure ):void {
+		public function testAssumptionFailure( failure:Failure ):void 
+		{
 			// called on assumptionFail
 		}
 		
-		public function testIgnored( description:IDescription ):void {
+		public function testIgnored( description:IDescription ):void 
+		{
 			// called on ignored test if we want to send ignore to ant.
 			var descriptor:Descriptor = getDescriptorFromDescription(description);
 
 			var xml:String =
-				"<testcase classname='"+descriptor.suite+"'name='"+descriptor.method+"' time='0.000'  status='"+IGNORE+"'>"+
-				"<skipped message='Ignored Test'/>"+
-				"</testcase>";
+				"<testcase classname='"+descriptor.suite+"' name='"+descriptor.method+"' time='0.000' status='"+IGNORE+"'>"
+				+ "<skipped />"
+				+ "</testcase>";
 
 			sendResults( xml );
 		}
 		
 		
-		public function testFailure( failure:Failure ):void {
+		public function testFailure( failure:Failure ):void 
+		{
 			// called on a test failure
 			lastFailedTest = failure.description;
 			var descriptor:Descriptor =
@@ -161,30 +166,33 @@ package org.flexunit.listeners
  
 			var xml : String = null;
 			
-			if(FailureFormatter.isError(failure.exception)) {
+			if(FailureFormatter.isError(failure.exception)) 
+			{
 				xml =
-					"<testcase classname='"+descriptor.suite+"'name='"+descriptor.method+"' time='0.000'  status='"+ERROR+"'>"+
-					"<error message='" + message + "' type='"+ type +"' >"+
-					"<stackTraceInfo>" +stackTrace+ "</stackTraceInfo>"+
-					"</error>"+
-					"</testcase>";
+					"<testcase classname='"+descriptor.suite+"' name='"+descriptor.method+"' time='0.000'  status='"+ERROR+"'>"
+					+ "<error message='" + message + "' type='"+ type +"' >"
+					+ "<stackTraceInfo>" +stackTrace+ "</stackTraceInfo>"
+					+ "</error>"
+					+ "</testcase>";
 			}
-			else {
+			else 
+			{
 				xml =
-					"<testcase classname='"+descriptor.suite+"'name='"+descriptor.method+"' time='0.000'  status='"+FAILURE+"'>"+
-					"<failure message='" + message + "' type='"+ type +"' >"+
-					"<stackTraceInfo>" +stackTrace+ "</stackTraceInfo>"+
-					"</failure>"+
-					"</testcase>";
+					"<testcase classname='"+descriptor.suite+"' name='"+descriptor.method+"' time='0.000'  status='"+FAILURE+"'>"
+					+ "<failure message='" + message + "' type='"+ type +"' >"
+					+ "<stackTraceInfo>" +stackTrace+ "</stackTraceInfo>"
+					+ "</failure>"
+					+ "</testcase>";
 			}
 			
 			sendResults(xml);
 		}
+		
 		/*
 		* Internal methods
 		*/
-		
-		private function getDescriptorFromDescription(description:IDescription ):Descriptor{
+		private function getDescriptorFromDescription(description:IDescription ):Descriptor
+		{
 			// reads relavent data from descriptor
 			/**
 			 * JAdkins - 7/27/07 - FXU-53 - Listener was returning a null value for the test class
@@ -195,10 +203,13 @@ package org.flexunit.listeners
 			var descriptor:Descriptor = new Descriptor();
 			var descriptionArray:Array = description.displayName.split("::");
 			var classMethod:String;
-			if ( descriptionArray.length > 1 ) {
+			if ( descriptionArray.length > 1 ) 
+			{
 				descriptor.path = descriptionArray[0];
 				classMethod =  descriptionArray[1];
-			} else {
+			} 
+			else 
+			{
 				classMethod =  descriptionArray[0];
 			}
 			var classMethodArray:Array = classMethod.split(".");
@@ -208,20 +219,24 @@ package org.flexunit.listeners
 			return descriptor;
 		}
 		
-		protected function sendResults(msg:String):void{
-			if(socket.connected){
+		protected function sendResults(msg:String):void
+		{
+			if(socket.connected)
+			{
 				socket.send( msg );				
 			}
 			
-			//trace(msg);
+			trace(msg);
 		}
 		
-		private function handleConnect(event:Event):void{
+		private function handleConnect(event:Event):void
+		{
 			_ready = true;
 			dispatchEvent( new Event( AsyncListenerWatcher.LISTENER_READY ) );
 		}
 
-		private function errorHandler(event:Event):void{
+		private function errorHandler(event:Event):void
+		{
 			dispatchEvent( new Event( AsyncListenerWatcher.LISTENER_FAILED ) );
 		}
 
