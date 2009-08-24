@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+   xmlns:demo="org.flexunit.demo.*"
+   width="100%"
+   height="100%" 
+   layout="vertical">
+   
+   <mx:Script>
+      <![CDATA[
+         import mx.controls.Alert;
+         import mx.events.DynamicEvent;
+         
+         private function showUserText(event : DynamicEvent) : void {
+            Alert.show(event.userText);
+         }
+      ]]>
+   </mx:Script>
+   
+   <demo:EchoPanel id="echoPanel"
+      width="400"
+      height="100"
+      userEnteredText="showUserText(event);" />
+</mx:Application>

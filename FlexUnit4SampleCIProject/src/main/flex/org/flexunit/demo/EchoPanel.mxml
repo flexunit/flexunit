@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" 
+   layout="vertical"
+   title="Echo Panel" 
+   width="100%" 
+   height="100%"
+   horizontalAlign="center">
+   
+   <mx:Metadata>
+      [Event(name="userEnteredText", type="mx.events.DynamicEvent")]
+   </mx:Metadata>
+   
+   <mx:Script>
+      <![CDATA[
+         import mx.events.DynamicEvent;
+         
+         private function sendEvent(event : MouseEvent) : void {
+            var textEvent : DynamicEvent = new DynamicEvent("userEnteredText");
+            textEvent.userText = userText.text;
+            
+            dispatchEvent(textEvent);
+         }
+      ]]>
+   </mx:Script>
+   
+   <mx:Form>
+      <mx:HBox>
+         <mx:Label text="Enter some text:" />
+         <mx:TextInput id="userText" width="150" />
+         <mx:Button id="echoButton" label="Echo!" click="sendEvent(event);" />
+      </mx:HBox>
+   </mx:Form>
+</mx:Panel>

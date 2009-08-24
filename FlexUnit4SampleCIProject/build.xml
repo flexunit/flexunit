@@ -1,0 +1,94 @@
+<!-- 
+	This is intended to be a simple build file, created a suggestion for the necessary steps need to utilize the FlexUnit4 Ant task.
+	For the most detail when running this build, call "ant -v clean package".  The build uses a simple lifecycle of: 
+	
+	init->compile->test->package
+	
+	The end goal is to produce a zip of a website you could deploy for your application.  This build is not intended to be an example
+	for how to use Ant or the Flex SDK Ant tasks.  This is just one possible way to utilize the FlexUnit4 Ant tasks. 
+ -->
+<project name="FlexUnit4SampleProject" basedir="." default="package">
+	<!-- setup a prefix for all environment variables -->
+	<property environment="env" />
+	
+	<!-- Setup paths for build -->
+	<property name="main.src.loc" location="${basedir}/src/main/flex" />
+	<property name="test.src.loc" location="${basedir}/src/test/flex" />
+	<property name="lib.loc" location="${basedir}/libs" />
+	<property name="bin.loc" location="${basedir}/bin" />
+	<property name="report.loc" location="${basedir}/report" />
+	<property name="dist.loc" location="${basedir}/dist" />
+
+	<!-- Setup Flex and FlexUnit ant tasks -->
+	<!-- You can set this directly so mxmlc will work correctly, or set FLEX_HOME as an environment variable and use as below -->
+	<property name="FLEX_HOME" location="${env.FLEX_HOME}" />
+	<taskdef resource="flexTasks.tasks" classpath="${lib.loc}/flexTasks.jar" />
+	<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks.jar" />
+
+	<target name="clean">
+		<!-- Remove all directories created during the build process -->
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${bin.loc}" defaultexcludes="false">
+				<include name="**/*" />
+			</fileset>
+			<fileset dir="${report.loc}" defaultexcludes="false">
+				<include name="**/*" />
+			</fileset>
+			<fileset dir="${dist.loc}" defaultexcludes="false">
+				<include name="**/*" />
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="init">
+		<!-- Create directories needed for the build process -->
+		<mkdir dir="${bin.loc}" />
+		<mkdir dir="${report.loc}" />
+		<mkdir dir="${dist.loc}" />
+	</target>
+
+	<target name="compile" depends="init">
+		<!-- Compile Main.mxml as a SWF -->
+		<mxmlc file="${main.src.loc}/Main.mxml" output="${bin.loc}/Main.swf">
+			<library-path dir="${lib.loc}" append="true">
+				<include name="*.swc" />
+			</library-path>
+			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
+			<compiler.headless-server>true</compiler.headless-server>
+		</mxmlc>
+	</target>
+
+	<target name="test" depends="compile">
+		<!-- Compile TestRunner.mxml as a SWF -->
+		<mxmlc file="${test.src.loc}/TestRunner.mxml" output="${bin.loc}/TestRunner.swf">
+			<source-path path-element="${main.src.loc}" />
+			<library-path dir="${lib.loc}" append="true">
+				<include name="*.swc" />
+			</library-path>
+			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
+			<compiler.headless-server>true</compiler.headless-server>
+		</mxmlc>
+
+		<!-- Execute TestRunner.swf as FlexUnit tests and publish reports -->
+		<flexunit swf="bin/TestRunner.swf" toDir="${report.loc}" haltonfailure="false" verbose="true" localTrusted="true" />
+
+		<!-- Generate readable JUnit-style reports -->
+		<junitreport todir="${report.loc}">
+			<fileset dir="${report.loc}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${report.loc}/html" />
+		</junitreport>
+	</target>
+
+	<target name="package" depends="test">
+		<!-- Assemble final website -->
+		<copy file="${bin.loc}/Main.swf" todir="${dist.loc}" />
+		<html-wrapper swf="Main" template="express-installation" output="${dist.loc}" height="100%" width="100%" />
+
+		<!-- Zip up final website -->
+		<zip destfile="${dist.loc}/${ant.project.name}.zip">
+			<fileset dir="${dist.loc}" />
+		</zip>
+	</target>
+</project>

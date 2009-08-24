@@ -1,0 +1,186 @@
+<!-- 
+   Please keep in mind there is no direct support in the lifecycle hooks for testing in the Flex-Mojos plugin as of version 
+   3.3.0, so we have to call out to Ant to compile our test SWF and utilize the FlexUnit Ant task.  Additionally we have to 
+   physically copy our dependencies to a lib directory for Ant to work as expected.  This goes against what Maven suggests
+   as good practice, we just wanted to show an option for FlexUnit4 integration.   
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+   <modelVersion>4.0.0</modelVersion>
+
+   <groupId>org.flexunit</groupId>
+   <artifactId>demo</artifactId>
+   <version>1.0.0</version>
+   <packaging>swf</packaging>
+   <name>FlexUnit4 Demo</name>
+
+   <properties>
+      <flex.sdk.version>3.3.0.4852</flex.sdk.version>
+      <!-- Turn off Flex-Mojos unit testing support since it does not yet support FlexUnit4 -->
+      <maven.test.skip>true</maven.test.skip>
+   </properties>
+
+   <build>
+      <sourceDirectory>src/main/flex</sourceDirectory>
+      <testSourceDirectory>src/test/flex</testSourceDirectory>
+      <plugins>
+         <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+               <!-- Copy all library swc's we're dependent upon into a lib folder so we can use Ant -->
+               <execution>
+                  <id>copy-dependencies</id>
+                  <phase>generate-sources</phase>
+                  <goals>
+                     <goal>copy-dependencies</goal>
+                  </goals>
+                  <configuration>
+                     <includeTypes>swc</includeTypes>
+                     <outputDirectory>${basedir}/lib</outputDirectory>
+                     <overWriteIfNewer>true</overWriteIfNewer>
+                     <excludeGroupIds>
+                        com.adobe.flex.framework
+                     </excludeGroupIds>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+         <plugin>
+            <groupId>org.sonatype.flexmojos</groupId>
+            <artifactId>flexmojos-maven-plugin</artifactId>
+            <version>3.3.0</version>
+            <extensions>true</extensions>
+            <configuration>
+               <headlessServer>true</headlessServer>
+               <verboseStacktraces>true</verboseStacktraces>
+            </configuration>
+            <dependencies>
+               <!-- Nice POM bundle available per SDK on Sonatype thanks to Flex-Mojos -->
+               <dependency>
+                  <groupId>com.adobe.flex</groupId>
+                  <artifactId>compiler</artifactId>
+                  <version>${flex.sdk.version}</version>
+                  <type>pom</type>
+               </dependency>
+            </dependencies>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.3</version>
+            <executions>
+               <!-- Clean up lib directory used by Ant when asked to clean -->
+               <execution>
+                  <id>clean-dependencies</id>
+                  <phase>clean</phase>
+                  <configuration>
+                     <tasks>
+                        <delete dir="${basedir}/lib" failonerror="false">
+                           <include name="**/*" />
+                        </delete>
+                     </tasks>
+                  </configuration>
+                  <goals>
+                     <goal>run</goal>
+                  </goals>
+               </execution>
+               <execution>
+                  <id>flexunit4-test-compile</id>
+                  <phase>test-compile</phase>
+                  <configuration>
+                     <tasks>
+                        <!-- You can set this directly so mxmlc will work correctly, or set FLEX_HOME as an environment variable and use as below -->
+                        <property name="FLEX_HOME" location="${env.FLEX_HOME}" />
+                        <taskdef resource="flexTasks.tasks" />
+                     
+                        <!-- Compile TestRunner.mxml as a SWF -->
+                        <mxmlc file="${project.build.testSourceDirectory}/TestRunner.mxml" output="${project.build.testOutputDirectory}/TestRunner.swf">
+                           <source-path path-element="${project.build.sourceDirectory}" />
+                           <library-path dir="${basedir}/lib" append="true">
+                              <include name="*.swc" />
+                           </library-path>
+                           <compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
+                           <compiler.headless-server>true</compiler.headless-server>
+                        </mxmlc>
+                     </tasks>
+                  </configuration>
+                  <goals>
+                     <goal>run</goal>
+                  </goals>
+               </execution>
+               <execution>
+                  <id>flexunit4-test-run</id>
+                  <phase>test</phase>
+                  <configuration>
+                     <tasks>
+                        <!-- Execute TestRunner.swf as FlexUnit tests and publish reports -->
+                        <!-- 
+                           Flex-Mojos will update the FlashPlayer trusted cache for you automagically so you don't have to have flexunit do so.
+                           Also haltonfailure should be marked true to keep with the convention in Maven that the build fails if tests fail. 
+                        -->
+                        <taskdef resource="flexUnitTasks.tasks" />
+                        
+                        <flexunit swf="${project.build.testOutputDirectory}/TestRunner.swf" 
+                           toDir="${project.build.directory}/surefire-reports" 
+                           haltonfailure="true" 
+                           verbose="true" 
+                           localTrusted="false" />
+                     </tasks>
+                  </configuration>
+                  <goals>
+                     <goal>run</goal>
+                  </goals>
+               </execution>
+            </executions>
+            <dependencies>
+               <!-- You will need to manually install all of the artifacts below in your local Maven repository or shared repository if you have one -->
+               <dependency>
+                  <groupId>com.adobe.flex</groupId>
+                  <artifactId>flexTasks</artifactId>
+                  <version>${flex.sdk.version}</version>
+               </dependency>
+               <dependency>
+                  <groupId>org.flexunit</groupId>
+                  <artifactId>anttasks</artifactId>
+                  <version>4.0.0</version>
+               </dependency>
+            </dependencies>
+         </plugin>
+      </plugins>
+   </build>
+
+   <dependencies>
+      <!-- Nice POM bundle available per SDK on Sonatype thanks to Flex-Mojos -->
+      <dependency>
+         <groupId>com.adobe.flex.framework</groupId>
+         <artifactId>flex-framework</artifactId>
+         <version>${flex.sdk.version}</version>
+         <type>pom</type>
+      </dependency>
+      <!-- You will need to manually install all of the artifacts below in your local Maven repository or shared repository if you have one -->
+      <dependency>
+         <groupId>org.flexunit</groupId>
+         <artifactId>flexunit</artifactId>
+         <version>4.0.0</version>
+         <type>swc</type>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.flexunit</groupId>
+         <artifactId>uirunner</artifactId>
+         <version>4.0.0</version>
+         <type>swc</type>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.flexunit</groupId>
+         <artifactId>cilistener</artifactId>
+         <version>4.0.0</version>
+         <type>swc</type>
+         <scope>test</scope>
+      </dependency>
+   </dependencies>
+
+</project>
