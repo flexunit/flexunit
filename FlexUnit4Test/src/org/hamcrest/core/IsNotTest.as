@@ -1,19 +1,23 @@
-package org.hamcrest.core {
+package org.hamcrest.core
+{
 
     import org.hamcrest.*;
     import org.hamcrest.object.equalTo;
 
-    public class IsNotTest extends AbstractMatcherTestCase {
+    public class IsNotTest extends AbstractMatcherTestCase
+    {
 
-		[Test]
-        public function testEvaluatesToTheLogicalNegationOfAnotherMatcher():void {
+        [Test]
+        public function evaluatesToTheLogicalNegationOfAnotherMatcher():void
+        {
 
             assertMatches("should match", not(equalTo("A")), "B");
             assertDoesNotMatch("should not match", not(equalTo("B")), "B");
         }
 
-		[Test]
-        public function testProvidesConvenientShortcutForNotEqualTo():void {
+        [Test]
+        public function providesConvenientShortcutForNotEqualTo():void
+        {
 
             assertMatches("should match", not("A"), "B");
             assertMatches("should match", not("B"), "A");

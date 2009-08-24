@@ -1,14 +1,17 @@
-package org.hamcrest.core {
+package org.hamcrest.core
+{
 
     import flexunit.framework.*;
 
     import org.hamcrest.*;
     import org.hamcrest.object.equalTo;
 
-    public class AnyOfTest extends AbstractMatcherTestCase {
+    public class AnyOfTest extends AbstractMatcherTestCase
+    {
 
-		[Test]
-        public function testEvaluatesToTheTheLogicalDisjunctionOfTwoOtherMatchers():void {
+        [Test]
+        public function evaluatesToTheTheLogicalDisjunctionOfTwoOtherMatchers():void
+        {
 
             assertThat("good", anyOf(equalTo("bad"), equalTo("good")));
             assertThat("good", anyOf(equalTo("good"), equalTo("good")));
@@ -17,15 +20,19 @@ package org.hamcrest.core {
             assertThat("good", not(anyOf(equalTo("bad"), equalTo("bad"))));
         }
 
-		[Test]
-        public function testEvaluatesToTheTheLogicalDisjunctionOfManyOtherMatchers():void {
+        [Test]
+        public function evaluatesToTheTheLogicalDisjunctionOfManyOtherMatchers():void
+        {
 
-            assertThat("good", anyOf(equalTo("bad"), equalTo("good"), equalTo("bad"), equalTo("bad"), equalTo("bad")));
-            assertThat("good", not(anyOf(equalTo("bad"), equalTo("bad"), equalTo("bad"), equalTo("bad"), equalTo("bad"))));
+            assertThat("good", anyOf(equalTo("bad"), equalTo("good"), equalTo("bad"), equalTo("bad"),
+                equalTo("bad")));
+            assertThat("good", not(anyOf(equalTo("bad"), equalTo("bad"), equalTo("bad"), equalTo("bad"),
+                equalTo("bad"))));
         }
 
-		[Test]
-        public function testHasAReadableDescription():void {
+        [Test]
+        public function hasAReadableDescription():void
+        {
             assertDescription("(\"good\" or \"bad\" or \"ugly\")",
                 anyOf(equalTo("good"), equalTo("bad"), equalTo("ugly")));
         }

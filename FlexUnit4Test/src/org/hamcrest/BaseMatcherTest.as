@@ -1,14 +1,15 @@
-package org.hamcrest {
-	import org.flexunit.Assert;
-	
+package org.hamcrest
+{
 
-    public class BaseMatcherTest {
+    public class BaseMatcherTest extends AbstractMatcherTestCase
+    {
 
-		[Test]
-        public function testDescribesItselfWithToStringMethod():void {
+        [Test]
+        public function describesItselfWithToStringMethod():void
+        {
 
             var matcher:BaseMatcher = new BaseMatcherForTesting();
-            Assert.assertEquals("SOME DESCRIPTION", matcher.toString());
+            assertEquals("SOME DESCRIPTION", matcher.toString());
         }
     }
 }
@@ -16,9 +17,11 @@ package org.hamcrest {
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
-internal class BaseMatcherForTesting extends BaseMatcher {
+internal class BaseMatcherForTesting extends BaseMatcher
+{
 
-    override public function describeTo(description:Description):void {
+    override public function describeTo(description:Description):void
+    {
         description.appendText("SOME DESCRIPTION");
     }
 }

@@ -40,7 +40,8 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestMethodOrder;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestSynchronousSetUpTearDown;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite.TheorySuite;
-	import flexUnitTests.hamcrest.HamcrestSuite;
+	
+	import org.hamcrest.HamcrestSuite;
 	
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]

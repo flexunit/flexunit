@@ -1,77 +1,82 @@
-package org.hamcrest {
+package org.hamcrest
+{
 
     import org.hamcrest.object.equalTo;
     import org.hamcrest.text.startsWith;
 
-	import org.flexunit.Assert;
+    public class MatcherAssertTest extends AbstractMatcherTestCase
+    {
 
-    public class MatcherAssertTest  {
-
-		[Test]
-        public function testIncludesDescriptionOfTestedValueInErrorMessage():void {
+        [Test]
+        public function includesDescriptionOfTestedValueInErrorMessage():void
+        {
 
             var expected:String = "expected";
             var actual:String = "actual";
             var expectedMessage:String = "identifier\nExpected: \"expected\"\n     but: was \"actual\"";
 
-            try {
+            try
+            {
                 assertThat("identifier", actual, equalTo(expected));
-                Assert.fail("should have failed");
+                fail("should have failed");
             }
-            catch (error:AssertionError) {
-                trace("testIncludesDescriptionOfTestedValueInErrorMessage");
-                trace(">", error.message);
-                Assert.assertTrue(startsWith(expectedMessage).matches(error.message));
+            catch (error:AssertionError)
+            {
+                assertTrue(startsWith(expectedMessage).matches(error.message));
             }
         }
 
-		[Test]
-        public function testDescriptionCanBeElided():void {
+        [Test]
+        public function descriptionCanBeElided():void
+        {
 
             var expected:String = "expected";
             var actual:String = "actual";
             var expectedMessage:String = "Expected: \"expected\"\n     but: was \"actual\"";
 
-            try {
+            try
+            {
                 assertThat(actual, equalTo(expected));
-                Assert.fail("should have failed");
+                fail("should have failed");
             }
-            catch (error:AssertionError) {
-                trace("testDescriptionCanBeElided")
-                trace(">", error.message);
-                trace(startsWith(expectedMessage).matches(error.message));
-
-                Assert.assertTrue(startsWith(expectedMessage).matches(error.message));
+            catch (error:AssertionError)
+            {
+                assertTrue(startsWith(expectedMessage).matches(error.message));
             }
         }
 
-		[Test]
-        public function testCanTestBooleanDirectly():void {
+        [Test]
+        public function canTestBooleanDirectly():void
+        {
 
             assertThat("success reason message", true);
 
-            try {
+            try
+            {
                 assertThat("failing reason message", false);
-                Assert.fail("should have failed");
+                fail("should have failed");
             }
-            catch (error:AssertionError) {
-                Assert.assertEquals("failing reason message", error.message);
+            catch (error:AssertionError)
+            {
+                assertEquals("failing reason message", error.message);
             }
         }
 
-		[Ignore("Not ready for primetime")]
-		[Test]
-        public function tetIncludedsMismatchDescription():void {
+        [Test]
+        public function includesMismatchDescription():void
+        {
 
             var matcher:Matcher = new MatcherForTestingAssertThat();
-            var expectedMessage:String = "\nExpected: something cool\n     but: was: not cool"
+            var expectedMessage:String = "Expected: something cool\n     but: not cool"
 
-            try {
+            try
+            {
                 assertThat("value", matcher);
-                Assert.fail("should have failed");
+                fail("should have failed");
             }
-            catch (error:AssertionError) {
-                Assert.assertEquals(expectedMessage, error.message);
+            catch (error:AssertionError)
+            {
+                assertEquals(expectedMessage, error.message);
             }
         }
     }
@@ -80,17 +85,21 @@ package org.hamcrest {
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
-internal class MatcherForTestingAssertThat extends BaseMatcher {
+internal class MatcherForTestingAssertThat extends BaseMatcher
+{
 
-    override public function matches(item:Object):Boolean {
+    override public function matches(item:Object):Boolean
+    {
         return false;
     }
 
-    override public function describeTo(description:Description):void {
+    override public function describeTo(description:Description):void
+    {
         description.appendText("something cool");
     }
 
-    override public function describeMismatch(item:Object, mismatchDescription:Description):void {
+    override public function describeMismatch(item:Object, mismatchDescription:Description):void
+    {
         mismatchDescription.appendText("not cool");
     }
 }

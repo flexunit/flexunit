@@ -1,13 +1,17 @@
-package org.hamcrest {
+package org.hamcrest
+{
 
-    public class TypeSafeMatcherTest extends AbstractMatcherTestCase {
+    public class TypeSafeMatcherTest extends AbstractMatcherTestCase
+    {
 
-		[Test]
-        public function testClassMatchesSafelyIfTypesMatch():void {
+        [Test]
+        public function classMatchesSafelyIfTypesMatch():void
+        {
 
             var called:Boolean = false;
 
-            var matcher:TypeSafeMatcher = new TypeSafeMatcherForTesting(String, function(item:Object):Boolean {
+            var matcher:TypeSafeMatcher = new TypeSafeMatcherForTesting(String, function(item:Object):Boolean
+                {
                     called = true;
                     return true;
                 });
@@ -21,16 +25,19 @@ package org.hamcrest {
 
 import org.hamcrest.TypeSafeMatcher;
 
-internal class TypeSafeMatcherForTesting extends TypeSafeMatcher {
+internal class TypeSafeMatcherForTesting extends TypeSafeMatcher
+{
 
     private var _fn:Function;
 
-    public function TypeSafeMatcherForTesting(type:Class, fn:Function) {
+    public function TypeSafeMatcherForTesting(type:Class, fn:Function)
+    {
         super(type);
         _fn = fn;
     }
 
-    override public function matchesSafely(item:Object):Boolean {
+    override public function matchesSafely(item:Object):Boolean
+    {
         return _fn(item);
     }
 }

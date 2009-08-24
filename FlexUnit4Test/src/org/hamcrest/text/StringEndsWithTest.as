@@ -1,45 +1,56 @@
-package org.hamcrest.text {
+package org.hamcrest.text
+{
 
     import org.hamcrest.*;
     import org.hamcrest.core.*;
-    
+
     import org.flexunit.Assert;
 
-    public class StringEndsWithTest extends AbstractMatcherTestCase {
+    public class StringEndsWithTest extends AbstractMatcherTestCase
+    {
 
         private static const EXCERPT:String = "EXCERPT";
+
         private var stringEndsWith:Matcher;
 
-		[Before]
-        public function setUp():void {
+        [Before]
+        public function setUp():void
+        {
             stringEndsWith = endsWith(EXCERPT);
         }
 
-		[Test]
-        public function testEvaluatesToTrueIfArgumentContainsSpecifiedSubstring():void {
-            Assert.assertFalse("should be false if excerpt at beginning",
-                stringEndsWith.matches(EXCERPT + "END"));
-            Assert.assertTrue("should be true if excerpt at end",
-                stringEndsWith.matches("START" + EXCERPT));
-            Assert.assertFalse("should be false if excerpt in middle",
-                stringEndsWith.matches("START" + EXCERPT + "END"));
-            Assert.assertTrue("should be true if excerpt is at end and repeated",
-                stringEndsWith.matches(EXCERPT + EXCERPT));
+        [Test]
+        public function evaluatesToTrueIfArgumentContainsSpecifiedSubstring():void
+        {
+            assertDoesNotMatch("should be false if excerpt at beginning",
+                stringEndsWith, EXCERPT + "END");
 
-            Assert.assertFalse("should be false if excerpt is not in string",
-                stringEndsWith.matches("Something else"));
-            Assert.assertFalse("should be false if part of excerpt is at end of string",
-                stringEndsWith.matches(EXCERPT.substring(0, EXCERPT.length - 2)));
+            assertMatches("should be true if excerpt at end",
+                stringEndsWith, "START" + EXCERPT);
+
+            assertDoesNotMatch("should be false if excerpt in middle",
+                stringEndsWith, "START" + EXCERPT + "END");
+
+            assertMatches("should be true if excerpt is at end and repeated",
+                stringEndsWith, EXCERPT + EXCERPT);
+
+            assertDoesNotMatch("should be false if excerpt is not in string",
+                stringEndsWith, "Something else");
+
+            assertDoesNotMatch("should be false if part of excerpt is at end of string",
+                stringEndsWith, EXCERPT.substring(0, EXCERPT.length - 2));
         }
 
-    	[Test]
-        public function testEvaluatesToTrueIfArgumentIsEqualToSubstring():void {
-            Assert.assertTrue("should be true if excerpt is entire string",
-                stringEndsWith.matches(EXCERPT));
+        [Test]
+        public function evaluatesToTrueIfArgumentIsEqualToSubstring():void
+        {
+            assertMatches("should be true if excerpt is entire string",
+                stringEndsWith, EXCERPT);
         }
 
-		[Test]
-        public function testHasAReadableDescription():void {
+        [Test]
+        public function hasAReadableDescription():void
+        {
             assertDescription("a string ending with \"EXCERPT\"", stringEndsWith);
         }
     }
