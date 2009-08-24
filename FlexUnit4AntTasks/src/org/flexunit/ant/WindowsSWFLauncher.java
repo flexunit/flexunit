@@ -16,9 +16,11 @@ public class WindowsSWFLauncher extends SWFLauncher
 
    protected void runTests(String swf) throws Exception
    {
+      String nativeSwfPath = swf.replace("/", "\\");
+      
       // Ideally we want to launch the SWF in the player so we can close
       // it, not so easy in a browser. We let 'rundll32' do the work based
       // on the extension of the file passed in.
-      Runtime.getRuntime().exec(WINDOWS_CMD + swf);
+      Runtime.getRuntime().exec(WINDOWS_CMD + nativeSwfPath);
    }
 }
