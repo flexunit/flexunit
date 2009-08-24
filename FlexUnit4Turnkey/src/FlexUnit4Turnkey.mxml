@@ -5,11 +5,11 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.hamcrest.HamcrestSuite;
 			import suite.cases.BasicMathTest;
 			import org.flexunit.runner.notification.async.XMLListener;
 			import suite.FlexUnitIn360;
 			import flexUnitTests.flexUnit1.framework.AllFrameworkTests;
-			import flexUnitTests.hamcrest.HamcrestSuite;
 			import flexUnitTests.flexUnit4.suites.frameworkSuite.FlexUnit4Suite;
 			import org.flexunit.listeners.UIListener;
 			import org.flexunit.runner.Request;
@@ -22,7 +22,7 @@
 				core = new FlexUnitCore();
 
 				//Listeners for CI systems or Flash Builder Plugins 
-				//core.addListener( new JUnitListener());
+				//core.addListener( new CIListener());
 				//core.addListener( new XMLListener( "FlexUnit4Test" ) );
 
 				//Listener for outputting to the trace console via the Flex logging class, Flex Only
@@ -36,7 +36,7 @@
 				
 				//This run statements executes the unit tests for the FlexUnit4 framework 
 				//the Hamcrest matchers and some of the tests shown in the FlexUnit in 360 seconds blog post
-				core.run( FlexUnit4Suite, HamcrestSuite, FlexUnitIn360  );
+				core.run( FlexUnit4Suite, HamcrestSuite, FlexUnitIn360 );
 				
 				//If you are interested, the original FlexUnit1 unit tests are available in
 				//a suite named AllFrameworkTests. Just add this one to the list in core.run()
