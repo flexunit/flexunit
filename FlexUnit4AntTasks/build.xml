@@ -1,0 +1,48 @@
+<project name="FlexUnitAntTasks" basedir="." default="package">
+   <!-- Setup paths for build -->
+   <property name="src.loc" location="${basedir}/src" />
+   <property name="lib.loc" location="${basedir}/lib" />
+   <property name="bin.loc" location="${basedir}/bin" />
+   <property name="dist.loc" location="${basedir}/dist" />
+
+   <target name="clean">
+      <delete includeemptydirs="true">
+         <fileset dir="${bin.loc}" defaultexcludes="false">
+            <include name="**/*" />
+         </fileset>
+      </delete>
+      <delete includeemptydirs="true">
+         <fileset dir="${dist.loc}" defaultexcludes="false">
+            <include name="**/*" />
+         </fileset>
+      </delete>
+   </target>
+
+   <target name="init">
+      <mkdir dir="${bin.loc}" />
+      <mkdir dir="${dist.loc}" />
+   </target>
+
+   <target name="compile" depends="init">
+      <javac target="1.5" source="1.5" fork="true" memoryMaximumSize="256m" srcdir="${src.loc}" failonerror="yes" verbose="false" nowarn="true" destdir="${bin.loc}">
+         <classpath>
+            <fileset dir="${lib.loc}">
+               <include name="**/*.jar" />
+            </fileset>
+         </classpath>
+      </javac>
+   </target>
+
+   <target name="package" depends="compile">
+      <copy file="${src.loc}/flexUnitTasks.tasks" todir="${bin.loc}" />
+      
+      <unjar src="${lib.loc}/dom4j-1.6.1.jar" dest="${bin.loc}" />
+      <unjar src="${lib.loc}/jaxen-1.1-beta-6.jar" dest="${bin.loc}" />
+
+      <jar destfile="${dist.loc}/flexUnitTasks.jar">
+         <fileset dir="${bin.loc}">
+            <include name="**/*" />
+         </fileset>
+      </jar>
+   </target>
+</project>
