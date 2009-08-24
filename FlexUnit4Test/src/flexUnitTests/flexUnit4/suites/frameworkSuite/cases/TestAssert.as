@@ -24,8 +24,6 @@
  **/ 
 package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 {
-	import flexunit.framework.AssertionFailedError;
-	
 	import mx.collections.errors.ItemPendingError;
 	
 	import org.flexunit.Assert;

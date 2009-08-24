@@ -3,6 +3,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite {
 	import org.flexunit.assumeThat;
 	import org.flexunit.experimental.theories.Theories;
 	import org.hamcrest.number.lessThan;
+	import org.hamcrest.object.IsEqualMatcher;
 	import org.hamcrest.object.instanceOf;
 	
 	[RunWith("org.flexunit.experimental.theories.Theories")]
