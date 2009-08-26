@@ -33,8 +33,10 @@ package org.flexunit.listeners
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
+	import flash.events.TimerEvent;
 	import flash.net.XMLSocket;
 	import flash.system.fscommand;
+	import flash.utils.Timer;
 	
 	import org.flexunit.reporting.FailureFormatter;
 	import org.flexunit.runner.Descriptor;
@@ -70,6 +72,7 @@ package org.flexunit.listeners
 		public var server : String; //this is local host. same machine
 		
 		private var lastFailedTest:IDescription;
+		private var timeOut:Timer;
 		
 		public function CIListener(port : uint = DEFAULT_PORT, server : String = DEFAULT_SERVER) 
 		{
@@ -83,13 +86,22 @@ package org.flexunit.listeners
 			socket.addEventListener( SecurityErrorEvent.SECURITY_ERROR,errorHandler);
 			socket.addEventListener( Event.CLOSE,errorHandler);
 			
+/*			timeOut = new Timer( 2000, 1 );
+			timeOut.addEventListener(TimerEvent.TIMER_COMPLETE, declareBroken, false, 0, true );
+			timeOut.start();
+*/
 			try
 			{
 				socket.connect( server, port );
+				timeOut.stop();
 			} catch (e:Error) {
 				//This needs to be more than a trace
 				trace (e.message);
 			}
+		}
+		
+		private function declareBroken( event:TimerEvent ):void {
+			errorHandler( new Event( 'broken') );
 		}
 		
 		[Bindable(event="listenerReady")]
@@ -191,7 +203,7 @@ package org.flexunit.listeners
 		/*
 		* Internal methods
 		*/
-		private function getDescriptorFromDescription(description:IDescription ):Descriptor
+		private function getDescriptorFromDescription( description:IDescription ):Descriptor
 		{
 			// reads relavent data from descriptor
 			/**
@@ -237,7 +249,14 @@ package org.flexunit.listeners
 
 		private function errorHandler(event:Event):void
 		{
-			dispatchEvent( new Event( AsyncListenerWatcher.LISTENER_FAILED ) );
+			if ( !ready ) {
+				//If we are not yet ready and received this, just inform the core so it can move on
+				dispatchEvent( new Event( AsyncListenerWatcher.LISTENER_FAILED ) );
+			} else {
+				//If on the other hand we were ready once, then the core is counting on us... so, if something goes
+				//wrong now, we are likely hung up. For now we are simply going to bail out of this process
+				exit();
+			}
 		}
 
 		private function dataHandler( event : DataEvent ) : void
