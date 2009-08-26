@@ -86,10 +86,10 @@ package org.flexunit.listeners
 			socket.addEventListener( SecurityErrorEvent.SECURITY_ERROR,errorHandler);
 			socket.addEventListener( Event.CLOSE,errorHandler);
 			
-/*			timeOut = new Timer( 2000, 1 );
+			timeOut = new Timer( 2000, 1 );
 			timeOut.addEventListener(TimerEvent.TIMER_COMPLETE, declareBroken, false, 0, true );
 			timeOut.start();
-*/
+
 			try
 			{
 				socket.connect( server, port );
