@@ -58,7 +58,7 @@ package org.flexunit.listeners
 		private var successes:Array = new Array();
 		private var ignores:Array = new Array();
 		
-		private var _ready:Boolean = true;
+		private var _ready:Boolean = false;
 		
 		private static const END_OF_TEST_ACK : String ="<endOfTestRunAck/>";
 		private static const END_OF_TEST_RUN : String = "<endOfTestRun/>";

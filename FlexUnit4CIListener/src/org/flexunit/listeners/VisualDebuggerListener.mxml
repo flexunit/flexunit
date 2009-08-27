@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="setupConnection(event)" implements="org.flexunit.runner.notification.IAsyncStartupRunListener">
+	<mx:Script>
+		<![CDATA[
+			import flash.events.DataEvent;
+			import flash.events.Event;
+			import flash.events.EventDispatcher;
+			import flash.events.IOErrorEvent;
+			import flash.events.SecurityErrorEvent;
+			import flash.events.TimerEvent;
+			import flash.net.XMLSocket;
+			import flash.system.fscommand;
+			import flash.utils.Timer;
+			
+			import org.flexunit.reporting.FailureFormatter;
+			import org.flexunit.runner.Descriptor;
+			import org.flexunit.runner.IDescription;
+			import org.flexunit.runner.Result;
+			import org.flexunit.runner.notification.Failure;
+			import org.flexunit.runner.notification.IAsyncStartupRunListener;
+			import org.flexunit.runner.notification.async.AsyncListenerWatcher;
+			
+			[Bindable]
+			public var dataIn:String = "";
+			
+			[Bindable]
+			public var dataOut:String = "";
+			
+			public function showInDataIn( str:String ):void {
+				dataIn += '\n';
+				dataIn += str;
+			}
+			
+			public function showInDataOut( str:String ):void {
+				dataOut += '\n';
+				dataOut += str;
+			}
+			
+			private static const DEFAULT_PORT : uint = 1024;
+			private static const DEFAULT_SERVER : String = "127.0.0.1";
+			private static const SUCCESS:String = "success";
+			private static const ERROR:String = "error";
+			private static const FAILURE:String = "failure";
+			private static const IGNORE:String = "ignore";
+			
+			private var successes:Array = new Array();
+			private var ignores:Array = new Array();
+			
+			private var _ready:Boolean = false;
+			
+			private static const END_OF_TEST_ACK : String ="<endOfTestRunAck/>";
+			private static const END_OF_TEST_RUN : String = "<endOfTestRun/>";
+			private static const START_OF_TEST_RUN_ACK : String = "<startOfTestRunAck/>";
+			
+			private var socket:XMLSocket;
+			
+			[Inspectable]
+			public var port : uint;
+			
+			[Inspectable]
+			public var server : String; //this is local host. same machine
+			
+			private var lastFailedTest:IDescription;
+			private var timeOut:Timer;
+			
+			public function setupConnection(event:Event):void 
+			{
+				this.port = DEFAULT_PORT;
+				this.server = DEFAULT_SERVER;
+				
+				socket = new XMLSocket ();
+				socket.addEventListener( DataEvent.DATA, dataHandler );
+				socket.addEventListener( Event.CONNECT, handleConnect );
+				socket.addEventListener( IOErrorEvent.IO_ERROR, errorHandler);
+				socket.addEventListener( SecurityErrorEvent.SECURITY_ERROR,errorHandler);
+				socket.addEventListener( Event.CLOSE,errorHandler);
+				
+				timeOut = new Timer( 2000, 1 );
+				timeOut.addEventListener(TimerEvent.TIMER_COMPLETE, declareBroken, false, 0, true );
+				timeOut.start();
+				
+				try
+				{
+					showInDataIn( "Attempting Connection" );
+					showInDataOut( "Attempting Connection" );
+					socket.connect( server, port );
+					timeOut.stop();
+				} catch (e:Error) {
+					//This needs to be more than a trace
+					trace (e.message);
+					showInDataIn( e.message );
+				}
+			}
+			
+			private function declareBroken( event:TimerEvent ):void {
+				showInDataIn( "Timeout Occured, Declaring listener broken" );
+				errorHandler( new Event( 'broken') );
+			}
+			
+			[Bindable(event="listenerReady")]
+			public function get ready():Boolean 
+			{
+				return _ready;
+			}
+			
+			private function setStatusReady():void {
+				showInDataIn( "Listner ready to send data" );
+				_ready = true;
+				dispatchEvent( new Event( AsyncListenerWatcher.LISTENER_READY ) );
+			}
+			
+			private function getTestCount( description:IDescription ):int 
+			{
+				return description.testCount;
+			}
+			
+			public function testRunStarted( description:IDescription ):void
+			{
+				//Since description tells us nothing about failure, error, and skip counts, this is 
+				//computed by the Ant task as the process executes and no work is needed to signify
+				//the start of a test run.
+			}
+			
+			public function testRunFinished( result:Result ):void 
+			{
+				sendResults(END_OF_TEST_RUN);
+			}
+			
+			public function testStarted( description:IDescription ):void 
+			{
+				// called before each test
+			}
+			
+			public function testFinished( description:IDescription ):void 
+			{
+				// called after each test
+				if(!lastFailedTest || description.displayName != lastFailedTest.displayName){
+					var desc:Descriptor = getDescriptorFromDescription(description);
+					sendResults("<testcase classname='"+desc.suite+"' name='"+desc.method+"' time='0.000'  status='"+SUCCESS+"'/>");
+				}
+			}
+			
+			public function testAssumptionFailure( failure:Failure ):void 
+			{
+				// called on assumptionFail
+			}
+			
+			public function testIgnored( description:IDescription ):void 
+			{
+				// called on ignored test if we want to send ignore to ant.
+				var descriptor:Descriptor = getDescriptorFromDescription(description);
+				
+				var xml:String =
+					"<testcase classname='"+descriptor.suite+"' name='"+descriptor.method+"' time='0.000' status='"+IGNORE+"'>"
+					+ "<skipped />"
+					+ "</testcase>";
+				
+				sendResults( xml );
+			}
+			
+			
+			public function testFailure( failure:Failure ):void 
+			{
+				// called on a test failure
+				lastFailedTest = failure.description;
+				var descriptor:Descriptor =
+					getDescriptorFromDescription(failure.description);
+				var type : String = failure.description.displayName
+				var message : String = failure.message;
+				var stackTrace : String = failure.stackTrace;
+				var methodName : String = descriptor.method;
+				
+				if ( stackTrace != null ) stackTrace = stackTrace.toString();
+				
+				stackTrace = FailureFormatter.xmlEscapeMessage( stackTrace );
+				message = FailureFormatter.xmlEscapeMessage( message );
+				
+				var xml : String = null;
+				
+				if(FailureFormatter.isError(failure.exception)) 
+				{
+					xml =
+						"<testcase classname='"+descriptor.suite+"' name='"+descriptor.method+"' time='0.000'  status='"+ERROR+"'>"
+						+ "<error message='" + message + "' type='"+ type +"' >"
+						+ "<stackTraceInfo>" +stackTrace+ "</stackTraceInfo>"
+						+ "</error>"
+						+ "</testcase>";
+				}
+				else 
+				{
+					xml =
+						"<testcase classname='"+descriptor.suite+"' name='"+descriptor.method+"' time='0.000'  status='"+FAILURE+"'>"
+						+ "<failure message='" + message + "' type='"+ type +"' >"
+						+ "<stackTraceInfo>" +stackTrace+ "</stackTraceInfo>"
+						+ "</failure>"
+						+ "</testcase>";
+				}
+				
+				sendResults(xml);
+			}
+			
+			/*
+			* Internal methods
+			*/
+			private function getDescriptorFromDescription( description:IDescription ):Descriptor
+			{
+				// reads relavent data from descriptor
+				/**
+				 * JAdkins - 7/27/07 - FXU-53 - Listener was returning a null value for the test class
+				 * causing no data to be returned.  If length of array is greater than 1, then class is
+				 * not in the default package.  If array length is 1, then test class is default package
+				 * and formats accordingly.
+				 **/
+				var descriptor:Descriptor = new Descriptor();
+				var descriptionArray:Array = description.displayName.split("::");
+				var classMethod:String;
+				if ( descriptionArray.length > 1 ) 
+				{
+					descriptor.path = descriptionArray[0];
+					classMethod =  descriptionArray[1];
+				} 
+				else 
+				{
+					classMethod =  descriptionArray[0];
+				}
+				var classMethodArray:Array = classMethod.split(".");
+				descriptor.suite = ( descriptor.path == "" ) ?  classMethodArray[0] :
+					descriptor.path + "::" + classMethodArray[0];
+				descriptor.method = classMethodArray[1];
+				return descriptor;
+			}
+			
+			protected function sendResults(msg:String):void
+			{
+				if(socket.connected)
+				{
+					socket.send( msg );	
+					showInDataOut( msg );
+				}
+				
+				trace(msg);
+			}
+			
+			private function handleConnect(event:Event):void
+			{
+				showInDataIn( "Socket Connected" );
+				//This is a good start, but we are no longer considering this a valid
+				//time to begin sending results
+				//We are going to wait until we get some data first
+				//_ready = true;
+				//dispatchEvent( new Event( AsyncListenerWatcher.LISTENER_READY ) );
+			}
+			
+			private function errorHandler(event:Event):void
+			{
+				showInDataIn( "Socket Error Occurred " + event  );
+				showInDataIn( "Listener Ready Status " + ready  );
+				if ( !ready ) {
+					//If we are not yet ready and received this, just inform the core so it can move on
+					dispatchEvent( new Event( AsyncListenerWatcher.LISTENER_FAILED ) );
+				} else {
+					//If on the other hand we were ready once, then the core is counting on us... so, if something goes
+					//wrong now, we are likely hung up. For now we are simply going to bail out of this process
+					exit();
+				}
+			}
+			
+			private function dataHandler( event : DataEvent ) : void
+			{
+				var data : String = event.data;
+				
+				showInDataIn( "Received Data " + data );
+				
+				// If we received an acknowledgement on startup, the java server is read and we can start sending.			
+				if ( data == START_OF_TEST_RUN_ACK ) {
+					setStatusReady();
+				} else if ( data == END_OF_TEST_ACK ) {
+					// If we received an acknowledgement finish-up.
+					exit();
+				}
+			}
+			
+			/**
+			 * Exit the test runner and close the player.
+			 */
+			private function exit() : void
+			{
+				// Close the socket.
+				socket.close();
+				fscommand("quit");
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:VBox width="100%" height="100%">
+		<mx:Label text="Data In"/>
+		<mx:TextArea width="100%" height="100%" text="{dataIn}"/>
+	</mx:VBox>	
+	<mx:VBox width="100%" height="100%">
+		<mx:Label text="Data Out"/>
+		<mx:TextArea width="100%" height="100%" text="{dataOut}"/>
+	</mx:VBox>	
+</mx:HBox>
