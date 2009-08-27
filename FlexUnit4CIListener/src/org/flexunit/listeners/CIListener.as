@@ -62,6 +62,7 @@ package org.flexunit.listeners
 		
 		private static const END_OF_TEST_ACK : String ="<endOfTestRunAck/>";
 		private static const END_OF_TEST_RUN : String = "<endOfTestRun/>";
+		private static const START_OF_TEST_RUN_ACK : String = "<startOfTestRunAck/>";
 		
 		private var socket:XMLSocket;
 		
@@ -109,7 +110,12 @@ package org.flexunit.listeners
 		{
 			return _ready;
 		}
-		
+
+		private function setStatusReady():void {
+			_ready = true;
+			dispatchEvent( new Event( AsyncListenerWatcher.LISTENER_READY ) );
+		}
+
 		private function getTestCount( description:IDescription ):int 
 		{
 			return description.testCount;
@@ -243,8 +249,11 @@ package org.flexunit.listeners
 		
 		private function handleConnect(event:Event):void
 		{
-			_ready = true;
-			dispatchEvent( new Event( AsyncListenerWatcher.LISTENER_READY ) );
+			//This is a good start, but we are no longer considering this a valid
+			//time to begin sending results
+			//We are going to wait until we get some data first
+			//_ready = true;
+			//dispatchEvent( new Event( AsyncListenerWatcher.LISTENER_READY ) );
 		}
 
 		private function errorHandler(event:Event):void
@@ -262,10 +271,12 @@ package org.flexunit.listeners
 		private function dataHandler( event : DataEvent ) : void
 		{
 			var data : String = event.data;
-			
-			// If we received an acknowledgement finish-up.			
-			if ( data == END_OF_TEST_ACK )
-			{
+
+			// If we received an acknowledgement on startup, the java server is read and we can start sending.			
+			if ( data == START_OF_TEST_RUN_ACK ) {
+				setStatusReady();
+			} else if ( data == END_OF_TEST_ACK ) {
+				// If we received an acknowledgement finish-up.
 				exit();
 			}
 		}
