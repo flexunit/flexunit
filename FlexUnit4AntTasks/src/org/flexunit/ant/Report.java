@@ -1,0 +1,182 @@
+package org.flexunit.ant;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.MessageFormat;
+
+import org.apache.tools.ant.BuildException;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
+
+public class Report
+{
+   private static final String FAILURE = "failure";
+   private static final String ERROR = "error";
+   private static final String IGNORE = "ignore";
+
+   private static final String TEST_SUITE = "testsuite";
+   private static final String NAME_ATTRIBUTE_LABEL = "name";
+   private static final String FAILURE_ATTRIBUTE_LABEL = "failures";
+   private static final String ERROR_ATTRIBUTE_LABEL = "errors";
+   private static final String IGNORE_ATTRIBUTE_LABEL = "skipped";
+   private static final String TIME_ATTRIBUTE_LABEL = "time";
+   private static final String TESTS_ATTRIBUTE_LABEL = "tests";
+
+   private static final String FILENAME_PREFIX = "TEST-";
+   private static final String FILENAME_EXTENSION = ".xml";
+
+   // Exception messages
+   private static final String FAILED_TEST = "FlexUnit test {0} in suite {1} failed.";
+   private static final String ERRORED_TEST = "FlexUnit test {0} in suite {1} had errors.";
+   private static final String IGNORED_TEST = "FlexUnit test {0} in suite {1} was ignored.";
+   private static final String TEST_INFO = " Suite: {0} - Tests run: {1}, Failures: {2}, Errors: {3}";
+   private static final String ERROR_SAVING_REPORT = "Error saving report.";
+
+   // XML attribute labels
+   private static final String NAME_ATTRIBUTE = "@name";
+   private static final String STATUS_ATTRIBUTE = "@status";
+
+   private boolean useLogging;
+   private Suite suite;
+   private Document document;
+
+   public Report(boolean useLogging, Suite suite)
+   {
+      this.useLogging = useLogging;
+      this.suite = suite;
+      
+      // Create a new XML document
+      document = DocumentHelper.createDocument();
+      
+      // Add the test suite attributes to the document
+      document.addElement(TEST_SUITE)
+         .addAttribute(NAME_ATTRIBUTE_LABEL, suite.getName())
+         .addAttribute(TESTS_ATTRIBUTE_LABEL, String.valueOf(suite.getTests()))
+         .addAttribute(FAILURE_ATTRIBUTE_LABEL, String.valueOf(suite.getFailures()))
+         .addAttribute(ERROR_ATTRIBUTE_LABEL, String.valueOf(suite.getErrors()))
+         .addAttribute(IGNORE_ATTRIBUTE_LABEL, String.valueOf(suite.getSkips()))
+         .addAttribute(TIME_ATTRIBUTE_LABEL, String.valueOf(suite.getTime()));
+   }
+
+   /**
+    * Adds the test to the suite report given an XML test document
+    */
+   public void addTest(Document test)
+   {
+      // Add to the number of tests in this suite
+      suite.addTest();
+
+      // Add the test to the report document
+      Element root = test.getRootElement();
+      document.getRootElement().add(root);
+      
+      // Check for special status adjustments to make to suite
+      checkForStatus(test);
+   }
+
+   /**
+    * Updates counts for failed, error, and ignore on suite as well as logs what failed if
+    * told to use logging.
+    * 
+    * @param test Test XML document
+    */
+   private void checkForStatus(Document test)
+   {
+      // Get the root element and pull the test name and status
+      final Element root = test.getRootElement();
+      final String name = root.valueOf(NAME_ATTRIBUTE);
+      final String status = root.valueOf(STATUS_ATTRIBUTE);
+
+      String format = null;
+      if (status.equals(FAILURE))
+      {
+         format = FAILED_TEST;
+         suite.addFailure();
+      }
+      else if (status.equals(ERROR))
+      {
+         format = ERRORED_TEST;
+         suite.addError();
+      }
+      else if (status.equals(IGNORE))
+      {
+         format = IGNORED_TEST;
+         suite.addSkip();
+      }
+
+      // Creates the fail message for use with verbose
+      if (useLogging && format != null)
+      {
+         final String message = MessageFormat.format(format, new Object[] { name, suite });
+         log(message);
+      }
+   }
+
+   /**
+    * Determines if any failures (errors or failures) have occurred in this report.
+    */
+   public boolean hasFailures()
+   {
+      return (suite.getErrors() > 0 || suite.getFailures() > 0);
+   }
+   
+   /**
+    * Write the report XML document out to file
+    * 
+    * @param reportDir Directory to hold report file.
+    */
+   public void save(File reportDir) throws BuildException
+   {
+      try
+      {
+         // Open the file matching the parameter suite
+         final File file = new File(reportDir, FILENAME_PREFIX + suite + FILENAME_EXTENSION);
+
+         // Retrieve the root element and adjust the failures and test attributes
+         Element root = document.getRootElement();
+         root.addAttribute(FAILURE_ATTRIBUTE_LABEL, String.valueOf(suite.getFailures()));
+         root.addAttribute(ERROR_ATTRIBUTE_LABEL, String.valueOf(suite.getErrors()));
+         root.addAttribute(TESTS_ATTRIBUTE_LABEL, String.valueOf(suite.getTests()));
+         root.addAttribute(IGNORE_ATTRIBUTE_LABEL, String.valueOf(suite.getSkips()));
+
+         // Write the updated suite
+         final OutputFormat format = OutputFormat.createPrettyPrint();
+         final XMLWriter writer = new XMLWriter(new FileOutputStream(file), format);
+         writer.write(document);
+         writer.close();
+      }
+      catch (Exception e)
+      {
+         throw new BuildException(ERROR_SAVING_REPORT, e);
+      }
+   }
+   
+   private void log(String message)
+   {
+      System.out.println(message);
+   }
+   
+   public String getSummary()
+   {
+      String summary = "";
+      
+      try
+      {
+         summary = MessageFormat.format(TEST_INFO, new Object[] { 
+               new String(suite.getName()), 
+               new Integer(suite.getTests()), 
+               new Integer(suite.getFailures()), 
+               new Integer(suite.getErrors()) 
+            });
+      }
+      catch (Exception e)
+      {
+         // ignore
+      }
+      
+      return summary;
+   }
+}
