@@ -162,7 +162,7 @@ package org.flexunit.runner.notification.async
 		private function createMessage( isError:Boolean, methodName:String, suite:String, type:String, message:String, stackTrace:String ):String {
 			var xmlString:String;
 			if ( isError ) {
-				xmlString = createFailureMessage( methodName, suite, type, message, stackTrace );
+				xmlString = createErrorMessage( methodName, suite, type, message, stackTrace );
 			} else {
 				xmlString = createFailureMessage( methodName, suite, type, message, stackTrace );
 			}
