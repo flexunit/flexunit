@@ -1,7 +1,7 @@
 package org.flexunit.reporting {
-	import flexunit.framework.AssertionFailedError;
+	import flash.utils.getQualifiedClassName;
 	
-	import net.digitalprimates.fluint.assertion.AssertionFailedError;
+	import flexunit.framework.AssertionFailedError;
 	
 	import org.flexunit.AssertionError;
 	import org.hamcrest.AssertionError;
@@ -14,7 +14,7 @@ package org.flexunit.reporting {
 			   ( ( error is org.flexunit.AssertionError ) ||
 				 ( error is org.hamcrest.AssertionError ) ||
 				 ( error is flexunit.framework.AssertionFailedError ) ||
-				 ( error is net.digitalprimates.fluint.assertion.AssertionFailedError ) );
+				 ( getQualifiedClassName( error ) == "net.digitalprimates.fluint.assertion::AssertionFailedError" ) );
 
 			return !failure;
 		}

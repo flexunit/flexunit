@@ -39,7 +39,7 @@ package org.flexunit.async {
 	 * The TestCase pends on this event or the 'timerExpired' event before 
 	 * moving on to the next test method or asynchronous event.
 	 */
-	[Event(name="eventFired",type="net.digitalprimates.fluint.events.AsyncEvent")]
+	[Event(name="eventFired",type="org.flexunit.events.AsyncEvent")]
 
 	/** 
 	 * The 'timerExpired' event is fired when the event specified in the 

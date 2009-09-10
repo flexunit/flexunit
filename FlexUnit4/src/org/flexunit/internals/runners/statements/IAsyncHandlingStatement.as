@@ -49,6 +49,7 @@ package org.flexunit.internals.runners.statements
 		
 		function failOnComplete( event:Event, passThroughData:Object ):void;
 		function pendUntilComplete( event:Event, passThroughData:Object=null ):void;
+
 		function handleNextSequence( event:Event, sequenceRunner:SequenceRunner ):void;
 	}
 }
