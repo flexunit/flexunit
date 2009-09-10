@@ -158,9 +158,13 @@ package org.flexunit.internals.runners {
 				
 				// FlexUnit 0.9 has a timer set up in TestSuiteTestListener executed 
 				// 5ms after each test execution to clean up the static property listenerStack.
-				// We have to add this 5ms delay here as well otherwise the parentToken would be executed
+				// We have to add this 100ms delay here as well otherwise the parentToken would be executed
 				// before the TestSuiteTestListener timer and would mess things up.
-				var timer : Timer = new Timer ( 5, 1 );
+				// We are delaying 100ms and not less since this might be ~2 frames. Since this timer is
+				// created before than the timer in TestSuiteTestListener, due to Flash Player behaviour,
+				// if the timers are executed in the same frame and even thouh the time of the second one is 
+				// smaller the first added timer will be executed first
+				var timer : Timer = new Timer ( 100, 1 );
 				timer.addEventListener( TimerEvent.TIMER,handleAllTestsComplete,false, 0, false );
 				timer.start();
 			}
