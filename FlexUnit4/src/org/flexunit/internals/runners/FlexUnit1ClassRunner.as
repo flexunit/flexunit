@@ -76,7 +76,7 @@ package org.flexunit.internals.runners {
 
 		protected function describeChild( child:* ):IDescription {
 			var method:FrameworkMethod = FrameworkMethod( child );
-			return Description.createTestDescription( klassOrTest, method.name, method.metadata?method.metadata[ 0 ]:null );
+			return Description.createTestDescription( klassOrTest, method.name, method.metadata);
 		}
 		
 		private function shouldRun( item:* ):Boolean {

@@ -65,6 +65,8 @@ package org.flexunit.runners.model {
 			try {
 				//TODO, verify this works the same way in AS
 				return localRunners(children);
+			} catch (e:Error){
+				trace(e.toString());
 			} finally {
 				removeParent(parent);
 			}
