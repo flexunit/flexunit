@@ -7,7 +7,7 @@ package org.flexunit.ant;
 public class WindowsSWFLauncher extends SWFLauncher
 {
    private static final String WINDOWS_CMD = "rundll32 url.dll,FileProtocolHandler ";
-   private final String localTrustedDirectory = "C:\\WINDOWS\\system32\\Macromed\\Flash\\FlashPlayerTrust\\";
+   private final String localTrustedDirectory = System.getenv("windir") + "\\system32\\Macromed\\Flash\\FlashPlayerTrust\\";
 
    public String getLocalTrustedDirectory()
    {

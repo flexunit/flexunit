@@ -12,29 +12,38 @@ public abstract class SWFLauncher
 
    public void launch(String swf, boolean localTrusted) throws Exception
    {
-      String trustFileName = getLocalTrustedDirectory() + TRUST_FILENAME;
-      
       if (localTrusted)
       {
-         File swfFile = new File(swf);
-         createLocalTrustedFile(trustFileName, swfFile.getAbsolutePath());
+         createLocalTrustedFile(swf);
       }
       else
       {
-         deleteLocalTrustedFile(trustFileName);
+         deleteLocalTrustedFile();
       }
       
       runTests(swf);
    }
    
-   protected void createLocalTrustedFile(String trustFilename, String swf) throws Exception
+   protected void createLocalTrustedFile(String swf) throws Exception
    {
       try
       {
-         System.out.println("Creating local trusted file");
+         //create the appropriate FP trust directory is it doesn't exist
+         File trustDir = new File(getLocalTrustedDirectory());
+         if(!trustDir.exists())
+         {
+            trustDir.mkdir();
+         }
+         
+         //Write out trust file
+         String trustFilename = getLocalTrustedDirectory() + TRUST_FILENAME;
+         String swfDir = new File(swf).getParentFile().getAbsolutePath();
+         
          FileWriter writer = new FileWriter(trustFilename);
-         writer.write(swf);
+         writer.write(swfDir);
          writer.close();
+         
+         System.out.println("Created local trusted file");
       }
       catch (Exception e)
       {
@@ -43,13 +52,18 @@ public abstract class SWFLauncher
       }
    }
 
-   protected void deleteLocalTrustedFile(String trustFilename) throws Exception
+   protected void deleteLocalTrustedFile() throws Exception
    {
       try
       {
-         System.out.println("Deleting local trusted file");
+         String trustFilename = getLocalTrustedDirectory() + TRUST_FILENAME;
+         
          File file = new File(trustFilename);
-         file.delete();
+         if(file.exists())
+         {
+            file.delete();
+            System.out.println("Deleted local trusted file");
+         }
       }
       catch (Exception e)
       {

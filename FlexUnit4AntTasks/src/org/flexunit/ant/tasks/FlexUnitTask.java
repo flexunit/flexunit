@@ -205,7 +205,7 @@ public class FlexUnitTask extends Task
    private Future<Object> setupClientConnection()
    {
       // Start a thread to accept a client connection.
-      Callable<Object> operation = new FlexUnitSocketThread(port, socketTimeout, verbose, reportDir, reports);
+      Callable<Object> operation = new FlexUnitSocketThread(port, socketTimeout, verbose, reportDir, reports, !isLocalTrusted);
       ExecutorService executor = Executors.newSingleThreadExecutor();
       return executor.submit(operation);
    }

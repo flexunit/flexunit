@@ -30,41 +30,43 @@ public class FlexUnitSocketThread implements Callable<Object>
    private static final String END_OF_TEST_RUN = "<endOfTestRun/>";
    private static final String END_OF_TEST_RUN_ACK = "<endOfTestRunAck/>";
    private static final char NULL_BYTE = '\u0000';
-   
+
    // Domain and policy request formats
    private static final String POLICY_FILE_REQUEST = "<policy-file-request/>";
    private static final String DOMAIN_POLICY = "<cross-domain-policy><allow-access-from domain=\"*\" to-ports=\"{0}\" /></cross-domain-policy>";
 
    // XML attribute labels
    private static final String SUITE_ATTRIBUTE = "@classname";
-   
+
    private boolean useLogging;
    private int port;
    private int socketTimeout;
    private File reportDir;
-   
+   private boolean waitForPolicyFile;
+
    private ServerSocket serverSocket = null;
    private Socket clientSocket = null;
    private InputStream in = null;
    private OutputStream out = null;
    private Map<String, Report> reports;
-   
-   public FlexUnitSocketThread(int port, int socketTimeout, boolean useLogging, File reportDir, Map<String, Report> reports)
+
+   public FlexUnitSocketThread(int port, int socketTimeout, boolean useLogging, File reportDir, Map<String, Report> reports, boolean waitForPolicyFile)
    {
       this.port = port;
       this.socketTimeout = socketTimeout;
       this.useLogging = useLogging;
       this.reportDir = reportDir;
       this.reports = reports;
+      this.waitForPolicyFile = waitForPolicyFile;
    }
-   
+
    public Object call() throws Exception
    {
       try
       {
          openServerSocket();
          openClientSocket();
-         sendTestRunStartAcknowledgement();
+         prepareClientSocket();
          handleClientConnection();
       }
       catch (BuildException buildException)
@@ -75,7 +77,7 @@ public class FlexUnitSocketThread implements Callable<Object>
          }
          catch (IOException e)
          {
-            //coudl not stop test run
+            // coudl not stop test run
             throw buildException;
          }
       }
@@ -94,14 +96,15 @@ public class FlexUnitSocketThread implements Callable<Object>
             closeClientSocket();
             closeServerSocket();
          }
-         catch (IOException e) {
+         catch (IOException e)
+         {
             throw new BuildException("could not close client/server socket");
          }
       }
-      
+
       return null;
    }
-   
+
    /**
     * Creates a connection on the specified socket. Waits {socketTimeout}
     * seconds for a client connection before throwing an error
@@ -118,10 +121,10 @@ public class FlexUnitSocketThread implements Callable<Object>
          log("opened server socket");
       }
    }
-   
+
    /**
-    * Creates the client connection. This method will pause until the
-    * connection is made or the timout limit is reached.
+    * Creates the client connection. This method will pause until the connection
+    * is made or the timout limit is reached.
     * 
     * Once a connection is established opens the in and out buffer.
     * 
@@ -140,7 +143,7 @@ public class FlexUnitSocketThread implements Callable<Object>
       in = new BufferedInputStream(clientSocket.getInputStream());
       out = new BufferedOutputStream(clientSocket.getOutputStream());
    }
-   
+
    private void sendTestRunStartAcknowledgement() throws IOException
    {
       out.write(START_OF_TEST_RUN_ACK.getBytes());
@@ -152,7 +155,7 @@ public class FlexUnitSocketThread implements Callable<Object>
          log("start of test run");
       }
    }
-   
+
    /**
     * Closes the client connection and all buffers, ignoring any errors
     */
@@ -176,7 +179,7 @@ public class FlexUnitSocketThread implements Callable<Object>
          clientSocket.close();
       }
    }
-   
+
    /**
     * Closes the server socket. Ignores any errors if unable to close
     */
@@ -187,58 +190,80 @@ public class FlexUnitSocketThread implements Callable<Object>
          serverSocket.close();
       }
    }
-   
+
+   /**
+    * Decides whether to send a policy request or a start ack
+    */
+   private void prepareClientSocket() throws IOException
+   {
+      // if it's a policy request, make sure the first thing we send is a policy response
+      if (waitForPolicyFile)
+      {
+         String request = readNextTokenFromSocket();
+         if (request.equals(POLICY_FILE_REQUEST))
+         {
+            sendPolicyFile();
+            resetClientConnection();
+         }
+      }
+
+      //tell client to start the testing process
+      sendTestRunStartAcknowledgement();
+   }
+
+   /**
+    * Reads tokens from the socket input stream based on NULL_BYTE as a delimiter
+    * @return
+    * @throws IOException
+    */
+   private String readNextTokenFromSocket() throws IOException
+   {
+      StringBuffer buffer = new StringBuffer();
+      int piece = -1;
+
+      while ((piece = in.read()) != NULL_BYTE)
+      {
+         if (piece == -1)
+         {
+            return null;
+         }
+
+         final char chr = (char) piece;
+         buffer.append(chr);
+      }
+
+      return buffer.toString();
+   }
+
    /**
     * Used to iterate and interpret byte sent over the socket.
     */
    private void handleClientConnection() throws IOException
    {
-      StringBuffer buffer = new StringBuffer();
-      int piece = -1;
+      String request = null;
 
-      while ((piece = in.read()) != -1)
+      while ((request = readNextTokenFromSocket()) != null)
       {
-         final char chr = (char) piece;
-
-         // read buffer until a null byte
-         if (chr == NULL_BYTE)
+         // If the string is a failure, process the report
+         if (request.endsWith(END_OF_FAILURE) || request.endsWith(END_OF_SUCCESS) || request.endsWith(END_OF_IGNORE))
          {
-            // Convert to string
-            final String data = buffer.toString();
-            buffer = new StringBuffer();
-
-            // If the string is a policy request, send the request and retry connection
-            if (data.equals(POLICY_FILE_REQUEST))
-            {
-               sendPolicyFile();
-               resetClientConnection();
-            }
-
-            // If the string is a failure, process the report
-            else if (data.endsWith(END_OF_FAILURE) || data.endsWith(END_OF_SUCCESS) || data.endsWith(END_OF_IGNORE))
-            {
-               processTestReport(data);
-            }
-
-            // If the string is the end of the test run, close connection and verify build status
-            else if (data.startsWith(END_OF_TEST_RUN))
-            {
-               sendTestRunEndAcknowledgement();
-               return;
-            }
-            else
-            {
-               throw new BuildException("command [" + data + "] not understood");
-            }
+            processTestReport(request);
          }
-         // Otherwise append the character and continue
+
+         // If the string is the end of the test run, close connection and
+         // verify build status
+         else if (request.startsWith(END_OF_TEST_RUN))
+         {
+            sendTestRunEndAcknowledgement();
+            return;
+         }
          else
          {
-            buffer.append(chr);
+            throw new BuildException("command [" + request + "] not understood");
          }
       }
    }
-   
+
    /**
     * Send domain policy
     * 
@@ -254,7 +279,7 @@ public class FlexUnitSocketThread implements Callable<Object>
          log("sent policy file");
       }
    }
-   
+
    /**
     * Resets the client connection.
     */
@@ -263,7 +288,7 @@ public class FlexUnitSocketThread implements Callable<Object>
       closeClientSocket();
       openClientSocket();
    }
-   
+
    /**
     * Process the test report.
     * 
@@ -274,25 +299,25 @@ public class FlexUnitSocketThread implements Callable<Object>
    {
       // Convert the string report into an XML document
       Document test = parseReport(xml);
-      
+
       // Find the name of the suite
       String suiteName = test.getRootElement().valueOf(SUITE_ATTRIBUTE);
-      
+
       // Convert all instances of :: for file support
       suiteName = suiteName.replaceAll("::", ".");
 
-      if(!reports.containsKey(suiteName))
+      if (!reports.containsKey(suiteName))
       {
          reports.put(suiteName, new Report(useLogging, new Suite(suiteName)));
       }
-      
-      //Fetch report, add test, and write to disk
+
+      // Fetch report, add test, and write to disk
       Report report = reports.get(suiteName);
       report.addTest(test);
-      
+
       report.save(reportDir);
    }
-   
+
    /**
     * Parse the parameter String and returns it as a document
     * 
@@ -314,7 +339,7 @@ public class FlexUnitSocketThread implements Callable<Object>
          throw new BuildException("Error parsing report.", e);
       }
    }
-   
+
    /**
     * Sends the end of test run to the listener to close the connection
     * 
@@ -331,7 +356,7 @@ public class FlexUnitSocketThread implements Callable<Object>
          log("end of test run");
       }
    }
-   
+
    /**
     * Shorthand console message
     * 
