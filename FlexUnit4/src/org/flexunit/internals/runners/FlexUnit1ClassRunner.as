@@ -72,6 +72,12 @@ package org.flexunit.internals.runners {
 				//in this case, we need to make a suite
 				this.test = createTestSuiteWithFilter( filterRef );
 			}
+			
+			if ( klassOrTest is TestSuite ) {
+				if ( TestSuite( klassOrTest ).testArrayList.isEmpty() ) {
+					throw new InitializationError("Empty test Suite!");
+				}
+			}
 		}
 
 		protected function describeChild( child:* ):IDescription {
@@ -144,11 +150,7 @@ package org.flexunit.internals.runners {
 
 			totalTestCount = test.countTestCases();
 
-			try {
-				test.runWithResult(result);
-			} catch (e:Error ) {
-				trace("error");
-			}
+			test.runWithResult(result);
 		}
 		
 		protected function handleTestComplete( result:ChildResult ):void {
