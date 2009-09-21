@@ -1,7 +1,9 @@
 package org.flexunit.ant.tasks;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -10,40 +12,42 @@ import java.util.concurrent.Future;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
-import org.flexunit.ant.FlexUnitLauncher;
+import org.flexunit.ant.FlexUnitSocketServer;
 import org.flexunit.ant.FlexUnitSocketThread;
 import org.flexunit.ant.Report;
+import org.flexunit.ant.launcher.FlexUnitLauncher;
 
 public class FlexUnitTask extends Task
 {
    private static final String TRUE = "true";
+   private static final String DEFAULT_REPORT_PATH = ".";
+   private static final String DEFAULT_SNAPSHOT_FILENAME = "snapshot.jpg";
+   private static final int FLOOR_FOR_PORT = 1;
+   private static final int SHORTEST_SOCKET_TIMEOUT = 5000; //ms
+   private static final List<String> VALID_PLAYERS = Arrays.asList(new String[]{"flash", "air"});
+   private static final List<String> VALID_XCOMMANDS = Arrays.asList(new String[]{"xvfb", "xvnc"});
 
    // Suite building variables
    private Map<String, Report> reports;
 
-   // attributes from ant task def
-   private boolean verbose;
-   private int port;
-   private int socketTimeout; 
-   private boolean failOnTestFailure;
-   private boolean isLocalTrusted;
-   private String failureProperty;
-   private String swf;
-   private File reportDir;
-   
-   @SuppressWarnings("unused")
-   private boolean modules = false;
+   // attributes from ant task def along with defaults
+   private boolean verbose = false;
+   private int port = 1024;
+   private int socketTimeout = 60000; //milliseconds 
+   private boolean failOnTestFailure = false;
+   private boolean isLocalTrusted = false;
+   private String failureProperty = "flexunit.failed";
+   private String player = "flash";
+   private boolean headless = false;
+   private String xcommand = "xvfb";
+   private boolean snapshot = false;
+   private File snapshotFile = null;
+   private String swf = null;
+   private File reportDir = null;
 
    public FlexUnitTask()
    {
       this.reports = new HashMap<String, Report>();
-      
-      this.verbose = true;
-      this.port = 1024;
-      this.socketTimeout = 60000;  // milliseconds
-      this.failOnTestFailure = true;
-      this.isLocalTrusted = false;
-      this.failureProperty = "flexunit.failed";
    }
    
    /**
@@ -130,9 +134,29 @@ public class FlexUnitTask extends Task
       this.verbose = verbose;
    }
 
-   public void setModules(final boolean mod)
+   public void setPlayer(String player)
    {
-      modules = mod;
+      this.player = player;
+   }
+
+   public void setHeadless(boolean headless)
+   {
+      this.headless = headless;
+   }
+
+   public void setXcommand(String xcommand)
+   {
+      this.xcommand = xcommand;
+   }
+
+   public void setSnapshot(boolean snapshot)
+   {
+      this.snapshot = snapshot;
+   }
+
+   public void setSnapshotFile(String filename)
+   {
+      this.snapshotFile = getProject().resolveFile(filename);
    }
 
    /**
@@ -140,18 +164,13 @@ public class FlexUnitTask extends Task
     */
    public void execute() throws BuildException
    {
-      // Check a SWF was specified.
-      if (swf == null || swf.length() == 0 || !getProject().resolveFile(swf).exists())
-      {
-         throw new BuildException("The 'swf' property value [" + swf + "] could not be found.");
-      }
-      
-      createReportDirectory();
+      validateInputs();
+      generateDefaultValues();
 
       try
       {
          //setup callable thread
-         Future<Object> future = setupClientConnection();
+         Future<Object> future = setupSocketThread();
          
          //launch FlashPlayer and test SWF
          launchTestSuite();
@@ -160,25 +179,79 @@ public class FlexUnitTask extends Task
          future.get();
          
          //print summaries and check for failure
-         finalizeReports();
+         analyzeReports();
       }
       catch (Exception e) {
          throw new BuildException(e);
       }
    }
+   
+   /**
+    * Validates all attribute values of the task
+    */
+   private void validateInputs()
+   {
+      // Check a SWF was specified.
+      if (swf == null || swf.length() == 0 || !getProject().resolveFile(swf).exists())
+      {
+         throw new BuildException("The provided 'swf' property value [" + swf + "] could not be found.");
+      }
+      
+      if(port < FLOOR_FOR_PORT)
+      {
+         throw new BuildException("The provided 'port' property value [" + port + "] must be great than " + FLOOR_FOR_PORT + ".");
+      }
+      
+      if(socketTimeout < SHORTEST_SOCKET_TIMEOUT)
+      {
+         throw new BuildException("The provided 'timeout' property value [" + socketTimeout + "] must be great than " + SHORTEST_SOCKET_TIMEOUT + ".");
+      }
+      
+      if(reportDir != null && !reportDir.exists())
+      {
+         log("Provided report directory path [" + reportDir.getPath() + "] does not exist.");
+      }
+      
+      if(!VALID_PLAYERS.contains(player))
+      {
+         throw new BuildException("The provided 'player' property value [" + player + "] must be either of the following values: " + VALID_PLAYERS.toString() + ".");
+      }
+      
+      if(headless)
+      {
+         if(!VALID_XCOMMANDS.contains(xcommand))
+         {
+            throw new BuildException("The provided 'xcommand' property value [" + xcommand + "] must be either of the following values: " + VALID_XCOMMANDS.toString() + ".");
+         }
+         
+         if(snapshotFile != null && !snapshotFile.getParentFile().exists())
+         {
+            log("Provided path specified in 'snapshotFile' [" + snapshotFile.getPath() + "] cannot be created; the parent directory does not exist.");
+         }
+      }
+   }
 
    /**
-    * Creates the report directory. If none specified, creates in the root
-    * directory.
+    * Generates default values for members' values which are not directly provided by the user.
     */
-   private void createReportDirectory()
+   private void generateDefaultValues()
    {
-      if (reportDir == null)
+      //create report directory if needed
+      if (reportDir == null || !reportDir.exists())
       {
-         reportDir = getProject().resolveFile(".");
+         reportDir = getProject().resolveFile(DEFAULT_REPORT_PATH);
+         log("Using default reporting dir [" + reportDir.getAbsolutePath() + "]");
       }
 
+      //create directory just to be sure it exists, already existing dirs will not be overwritten
       reportDir.mkdir();
+      
+      //generate snapshot file handle
+      if(headless && snapshot && (snapshotFile == null || !snapshotFile.getParentFile().exists()))
+      {
+         snapshotFile = getProject().resolveFile(reportDir.getAbsoluteFile() + "/" + DEFAULT_SNAPSHOT_FILENAME);
+         log("Using default snapshot file path [" + snapshotFile.getAbsolutePath() + "]");
+      }
    }
    
    /**
@@ -186,7 +259,7 @@ public class FlexUnitTask extends Task
     */
    private void launchTestSuite()
    {
-      final FlexUnitLauncher browser = new FlexUnitLauncher();
+      final FlexUnitLauncher browser = new FlexUnitLauncher(headless, player, xcommand, snapshot, snapshotFile, verbose);
 
       try
       {
@@ -202,11 +275,18 @@ public class FlexUnitTask extends Task
     * Create a server socket for receiving the test reports from FlexUnit. We
     * read and write the test reports inside of a Thread.
     */
-   private Future<Object> setupClientConnection()
+   private Future<Object> setupSocketThread()
    {
-      // Start a thread to accept a client connection.
-      Callable<Object> operation = new FlexUnitSocketThread(port, socketTimeout, verbose, reportDir, reports, !isLocalTrusted);
+      //Create server for use by thread
+      FlexUnitSocketServer server = new FlexUnitSocketServer(port, socketTimeout, verbose, !isLocalTrusted);
+      
+      //Get handle to specialized object to run in separate thread.
+      Callable<Object> operation = new FlexUnitSocketThread(server, verbose, reportDir, reports);
+      
+      //Get handle to service to run object in thread.
       ExecutorService executor = Executors.newSingleThreadExecutor();
+      
+      //Run object in thread and return Future.
       return executor.submit(operation);
    }
 
@@ -216,7 +296,7 @@ public class FlexUnitTask extends Task
     * including the name of the suite, number of tests run and number of tests failed,
     * ignores any errors.  If any tests failed during the test run, the build is halted.
     */
-   private void finalizeReports()
+   private void analyzeReports()
    {
       for (Report report : reports.values())
       {
@@ -248,6 +328,7 @@ public class FlexUnitTask extends Task
     */
    public void log(final String message)
    {
+      super.log(message);
       System.out.println(message);
    }
 }
