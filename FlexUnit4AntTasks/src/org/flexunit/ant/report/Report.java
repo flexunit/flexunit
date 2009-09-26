@@ -1,4 +1,4 @@
-package org.flexunit.ant;
+package org.flexunit.ant.report;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,6 +10,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
+import org.flexunit.ant.LoggingUtil;
 
 public class Report
 {
@@ -32,20 +33,18 @@ public class Report
    private static final String FAILED_TEST = "FlexUnit test {0} in suite {1} failed.";
    private static final String ERRORED_TEST = "FlexUnit test {0} in suite {1} had errors.";
    private static final String IGNORED_TEST = "FlexUnit test {0} in suite {1} was ignored.";
-   private static final String TEST_INFO = " Suite: {0} - Tests run: {1}, Failures: {2}, Errors: {3}";
+   private static final String TEST_INFO = "Suite: {0}\nTests run: {1}, Failures: {2}, Errors: {3}, Skipped: {4}, Time elapsed: {5} sec";
    private static final String ERROR_SAVING_REPORT = "Error saving report.";
 
    // XML attribute labels
    private static final String NAME_ATTRIBUTE = "@name";
    private static final String STATUS_ATTRIBUTE = "@status";
 
-   private boolean useLogging;
-   private Suite suite;
+   protected Suite suite;
    private Document document;
 
-   public Report(boolean useLogging, Suite suite)
+   public Report(Suite suite)
    {
-      this.useLogging = useLogging;
       this.suite = suite;
       
       // Create a new XML document
@@ -108,10 +107,10 @@ public class Report
       }
 
       // Creates the fail message for use with verbose
-      if (useLogging && format != null)
+      if (format != null)
       {
          final String message = MessageFormat.format(format, new Object[] { name, suite });
-         log(message);
+         LoggingUtil.log(message);
       }
    }
 
@@ -154,11 +153,6 @@ public class Report
       }
    }
    
-   private void log(String message)
-   {
-      System.out.println(message);
-   }
-   
    public String getSummary()
    {
       String summary = "";
@@ -169,7 +163,9 @@ public class Report
                new String(suite.getName()), 
                new Integer(suite.getTests()), 
                new Integer(suite.getFailures()), 
-               new Integer(suite.getErrors()) 
+               new Integer(suite.getErrors()),
+               new Integer(suite.getSkips()),
+               new Double(suite.getTime())
             });
       }
       catch (Exception e)

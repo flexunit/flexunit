@@ -1,4 +1,4 @@
-package org.flexunit.ant;
+package org.flexunit.ant.report;
 
 public class Suite
 {

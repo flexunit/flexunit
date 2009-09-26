@@ -1,8 +1,8 @@
 package org.flexunit.ant.tasks;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -10,40 +10,44 @@ import java.util.concurrent.Future;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
-import org.flexunit.ant.FlexUnitLauncher;
+import org.flexunit.ant.FlexUnitSocketServer;
 import org.flexunit.ant.FlexUnitSocketThread;
-import org.flexunit.ant.Report;
+import org.flexunit.ant.LoggingUtil;
+import org.flexunit.ant.launcher.FlexUnitLauncher;
+import org.flexunit.ant.report.Reports;
 
 public class FlexUnitTask extends Task
 {
    private static final String TRUE = "true";
+   private static final String DEFAULT_REPORT_PATH = ".";
+   private static final String DEFAULT_SNAPSHOT_FILENAME = "snapshot.jpg";
+   private static final int FLOOR_FOR_PORT = 1;
+   private static final int SHORTEST_SOCKET_TIMEOUT = 5000; //ms
+   private static final List<String> VALID_PLAYERS = Arrays.asList(new String[]{"flash", "air"});
+   private static final List<String> VALID_XCOMMANDS = Arrays.asList(new String[]{"xvfb", "xvnc"});
 
    // Suite building variables
-   private Map<String, Report> reports;
+   private Reports reports;
 
-   // attributes from ant task def
-   private boolean verbose;
-   private int port;
-   private int socketTimeout; 
-   private boolean failOnTestFailure;
-   private boolean isLocalTrusted;
-   private String failureProperty;
-   private String swf;
-   private File reportDir;
-   
-   @SuppressWarnings("unused")
-   private boolean modules = false;
+   // attributes from ant task def along with defaults
+   private boolean verbose = false;
+   private int port = 1024;
+   private int socketTimeout = 60000; //milliseconds
+   private int serverBufferSize = 262144; //bytes
+   private boolean failOnTestFailure = false;
+   private boolean isLocalTrusted = false;
+   private String failureProperty = "flexunit.failed";
+   private String player = "flash";
+   private boolean headless = false;
+   private String xcommand = "xvfb";
+   private boolean snapshot = false;
+   private File snapshotFile = null;
+   private File swf = null;
+   private File reportDir = null;
 
    public FlexUnitTask()
    {
-      this.reports = new HashMap<String, Report>();
-      
-      this.verbose = true;
-      this.port = 1024;
-      this.socketTimeout = 60000;  // milliseconds
-      this.failOnTestFailure = true;
-      this.isLocalTrusted = false;
-      this.failureProperty = "flexunit.failed";
+      this.reports = new Reports();
    }
    
    /**
@@ -77,6 +81,14 @@ public class FlexUnitTask extends Task
    {
       socketTimeout = timeout;
    }
+   
+   /**
+    * The buffer size the {@FlexUnitSocketServer} uses for its inbound data stream.
+    */
+   public void setBuffer(int size)
+   {
+      serverBufferSize = size;
+   }
 
    /**
     * The SWF for the FlexUnit tests to run.
@@ -86,7 +98,7 @@ public class FlexUnitTask extends Task
     */
    public void setSWF(final String testSWF)
    {
-      swf = testSWF;
+      swf = getProject().resolveFile(testSWF);
    }
 
    /**
@@ -128,11 +140,32 @@ public class FlexUnitTask extends Task
    public void setVerbose(final boolean verbose)
    {
       this.verbose = verbose;
+      LoggingUtil.VERBOSE = verbose;
    }
 
-   public void setModules(final boolean mod)
+   public void setPlayer(String player)
    {
-      modules = mod;
+      this.player = player;
+   }
+
+   public void setHeadless(boolean headless)
+   {
+      this.headless = headless;
+   }
+
+   public void setXcommand(String xcommand)
+   {
+      this.xcommand = xcommand;
+   }
+
+   public void setSnapshot(boolean snapshot)
+   {
+      this.snapshot = snapshot;
+   }
+
+   public void setSnapshotFile(String filename)
+   {
+      this.snapshotFile = getProject().resolveFile(filename);
    }
 
    /**
@@ -140,18 +173,13 @@ public class FlexUnitTask extends Task
     */
    public void execute() throws BuildException
    {
-      // Check a SWF was specified.
-      if (swf == null || swf.length() == 0 || !getProject().resolveFile(swf).exists())
-      {
-         throw new BuildException("The 'swf' property value [" + swf + "] could not be found.");
-      }
+      validateInputs();
+      generateDefaultValues();
       
-      createReportDirectory();
-
       try
       {
          //setup callable thread
-         Future<Object> future = setupClientConnection();
+         Future<Object> future = setupSocketThread();
          
          //launch FlashPlayer and test SWF
          launchTestSuite();
@@ -160,25 +188,106 @@ public class FlexUnitTask extends Task
          future.get();
          
          //print summaries and check for failure
-         finalizeReports();
+         analyzeReports();
       }
       catch (Exception e) {
          throw new BuildException(e);
       }
    }
+   
+   /**
+    * Validates all attribute values of the task
+    */
+   private void validateInputs()
+   {
+      LoggingUtil.log("Validating task attributes ...");
+      
+      // Check a SWF was specified.
+      if (swf == null || !swf.exists())
+      {
+         throw new BuildException("The provided 'swf' property value [" + swf.getPath() + "] could not be found.");
+      }
+      
+      if(port < FLOOR_FOR_PORT)
+      {
+         throw new BuildException("The provided 'port' property value [" + port + "] must be great than " + FLOOR_FOR_PORT + ".");
+      }
+      
+      if(socketTimeout < SHORTEST_SOCKET_TIMEOUT)
+      {
+         throw new BuildException("The provided 'timeout' property value [" + socketTimeout + "] must be great than " + SHORTEST_SOCKET_TIMEOUT + ".");
+      }
+      
+      if(reportDir != null && !reportDir.exists())
+      {
+         LoggingUtil.log("Provided report directory path [" + reportDir.getPath() + "] does not exist.");
+      }
+      
+      if(!VALID_PLAYERS.contains(player))
+      {
+         throw new BuildException("The provided 'player' property value [" + player + "] must be either of the following values: " + VALID_PLAYERS.toString() + ".");
+      }
+      
+      if(headless)
+      {
+         if(!VALID_XCOMMANDS.contains(xcommand))
+         {
+            throw new BuildException("The provided 'xcommand' property value [" + xcommand + "] must be either of the following values: " + VALID_XCOMMANDS.toString() + ".");
+         }
+         
+         if(snapshotFile != null && !snapshotFile.getParentFile().exists())
+         {
+            LoggingUtil.log("Provided path specified in 'snapshotFile' [" + snapshotFile.getPath() + "] cannot be created; the parent directory does not exist.");
+         }
+      }
+   }
 
    /**
-    * Creates the report directory. If none specified, creates in the root
-    * directory.
+    * Generates default values for members' values which are not directly provided by the user.
     */
-   private void createReportDirectory()
+   private void generateDefaultValues()
    {
-      if (reportDir == null)
+      LoggingUtil.log("Generating default values ...");
+      
+      //create report directory if needed
+      if (reportDir == null || !reportDir.exists())
       {
-         reportDir = getProject().resolveFile(".");
+         reportDir = getProject().resolveFile(DEFAULT_REPORT_PATH);
+         LoggingUtil.log("Using default reporting dir [" + reportDir.getAbsolutePath() + "]");
       }
 
+      //create directory just to be sure it exists, already existing dirs will not be overwritten
       reportDir.mkdir();
+      
+      //generate snapshot file handle
+      if(snapshotFile == null || !snapshotFile.getParentFile().exists())
+      {
+         snapshotFile = getProject().resolveFile(reportDir.getAbsoluteFile() + "/" + DEFAULT_SNAPSHOT_FILENAME);
+         LoggingUtil.log("Using default snapshot file path [" + snapshotFile.getAbsolutePath() + "]");
+      }
+      
+      //show the resulting defaults and provided values
+      logInputValues();
+   }
+   
+   /**
+    * Logs the values of all attributes on the task
+    */
+   private void logInputValues()
+   {
+      LoggingUtil.log("Using the following settings:");
+      LoggingUtil.log("\thaltonfailure: [" + failOnTestFailure + "]");
+      LoggingUtil.log("\theadless: [" + headless + "]");
+      LoggingUtil.log("\tlocalTrusted: [" + isLocalTrusted + "]");
+      LoggingUtil.log("\tplayer: [" + player + "]");
+      LoggingUtil.log("\tport: [" + port + "]");
+      LoggingUtil.log("\tsnapshot: [" + snapshot + "]");
+      LoggingUtil.log("\tsnapshotFile: [" + (snapshotFile != null ? snapshotFile.getAbsolutePath() : null) + "]");
+      LoggingUtil.log("\tswf: [" + swf + "]");
+      LoggingUtil.log("\ttimeout: [" + socketTimeout + "ms]");
+      LoggingUtil.log("\ttoDir: [" + reportDir.getAbsolutePath() + "]");
+      LoggingUtil.log("\tverbose: [" + verbose + "]");
+      LoggingUtil.log("\txcommand: [" + xcommand + "]");
    }
    
    /**
@@ -186,11 +295,11 @@ public class FlexUnitTask extends Task
     */
    private void launchTestSuite()
    {
-      final FlexUnitLauncher browser = new FlexUnitLauncher();
+      final FlexUnitLauncher browser = new FlexUnitLauncher(getProject(), isLocalTrusted, headless, player, xcommand, snapshot, snapshotFile);
 
       try
       {
-         browser.runTests(swf, isLocalTrusted);
+         browser.runTests(swf);
       }
       catch (Exception e)
       {
@@ -202,11 +311,20 @@ public class FlexUnitTask extends Task
     * Create a server socket for receiving the test reports from FlexUnit. We
     * read and write the test reports inside of a Thread.
     */
-   private Future<Object> setupClientConnection()
+   private Future<Object> setupSocketThread()
    {
-      // Start a thread to accept a client connection.
-      Callable<Object> operation = new FlexUnitSocketThread(port, socketTimeout, verbose, reportDir, reports, !isLocalTrusted);
+      LoggingUtil.log("Setting up server process ...");
+      
+      //Create server for use by thread
+      FlexUnitSocketServer server = new FlexUnitSocketServer(port, socketTimeout, serverBufferSize, !isLocalTrusted);
+      
+      //Get handle to specialized object to run in separate thread.
+      Callable<Object> operation = new FlexUnitSocketThread(server, reportDir, reports);
+      
+      //Get handle to service to run object in thread.
       ExecutorService executor = Executors.newSingleThreadExecutor();
+      
+      //Run object in thread and return Future.
       return executor.submit(operation);
    }
 
@@ -216,38 +334,21 @@ public class FlexUnitTask extends Task
     * including the name of the suite, number of tests run and number of tests failed,
     * ignores any errors.  If any tests failed during the test run, the build is halted.
     */
-   private void finalizeReports()
+   private void analyzeReports()
    {
-      for (Report report : reports.values())
-      {
-         if(verbose)
-         {
-            log(report.getSummary());
-         }
-         
-         // If the report shows failures
-         if (report.hasFailures())
-         {
-            // This run is now a failed run
-            getProject().setNewProperty(failureProperty, TRUE);
-         }
-      }
+      LoggingUtil.log("Analyzing reports ...");
       
-      String property = getProject().getProperty(failureProperty);
-      if(failOnTestFailure && property != null && property.equals(TRUE))
-      {
-         throw new BuildException("FlexUnit tests failed during the test run.");
-      }
-   }
+      //print out all report summaries
+      LoggingUtil.log("\n" + reports.getSummary(), true);
 
-   /**
-    * Shorthand console message
-    * 
-    * @param message
-    *           String to print
-    */
-   public void log(final String message)
-   {
-      System.out.println(message);
+      if (reports.hasFailures())
+      {
+         getProject().setNewProperty(failureProperty, TRUE);
+         
+         if(failOnTestFailure)
+         {
+            throw new BuildException("FlexUnit tests failed during the test run.");
+         }
+      }
    }
 }
