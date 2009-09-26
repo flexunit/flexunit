@@ -107,7 +107,7 @@ public class FlexUnitSocketServer
       clientSocket = serverSocket.accept();
 
       LoggingUtil.log("Client connected.");
-      LoggingUtil.log("Setting inbound buffer size to " + inboundBufferSize + " bytes.");
+      LoggingUtil.log("Setting inbound buffer size to [" + inboundBufferSize + "] bytes.");
       
       inboundStream = new BufferedInputStream(clientSocket.getInputStream(), inboundBufferSize);
       outboundStream = new BufferedOutputStream(clientSocket.getOutputStream());
