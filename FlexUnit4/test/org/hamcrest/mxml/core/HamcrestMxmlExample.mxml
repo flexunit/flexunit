@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas 
+    height="300"
+    width="400"
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    >
+
+    <security>
+        <Security 
+            property="editable"
+            target="{ this }"
+            >
+            <AnyOf>
+                <AllOf>
+                    <MazdaUser />
+                    <SecurityObject 
+                        value="{ DealerInformationSecurity.IDS_PERSONNEL_ADVANCED }"
+                        />
+                </AllOf>
+                <AllOf>
+                    <DealerUser 
+                        targetDealership="{ model.currentDealership }"
+                        />
+                    <SecurityObject 
+                        value="{ DealerInformationSecurity.IDS_PERSONNEL_ADVANCED }"
+                        />
+                </AllOf>
+            </AnyOf>
+        </Security>
+    </security>
+
+    <Not>
+        <BaseMatcher 
+            id="exampleMatcher"
+            description=""
+            matched="false"
+            mismatchDescription=""
+            target="{ actualValue }"
+            />
+
+        <mx:Label 
+            text="{ exampleMatcher.mismatchDescription }"
+            visible="{ !exampleMatcher.matched }"
+            />
+
+        <AllOf>
+            <Anything />
+            <DescribedAs 
+                description=""
+                values=""
+                >
+                <Anything />
+            </DescribedAs>
+            <IsA 
+                type=""
+                />
+            <Not>
+                <Anything />
+            </Not>
+        </AllOf>
+        <AnyOf>
+            <Anything />
+        </AnyOf>
+        <DateAfter 
+            date=""
+            />
+        <DateBefore 
+            date=""
+            />
+        <DateBetween 
+            endDate=""
+            startDate=""
+            />
+        <DateEqual 
+            date=""
+            />
+        <CloseTo 
+            value=""
+            delta=""
+            />
+        <GreaterThan 
+            value=""
+            />
+        <GreaterThanOrEqualTo 
+            value=""
+            />
+        <LessThan 
+            value=""
+            />
+        <LessThanOrEqualTo 
+            value=""
+            />
+        <EqualTo 
+            value=""
+            />
+        <HasProperty 
+            property=""
+            />
+        <HasPropertyWithValue 
+            value=""
+            property=""
+            />
+        <InstanceOf 
+            type=""
+            />
+        <NullValue />
+        <NotNullValue />
+        <Same />
+        <ContainsString />
+        <EndsWith />
+        <StartsWith />
+        <Matches 
+            expression=""
+            flags=""
+            />
+    </Not>
+</mx:Canvas>
