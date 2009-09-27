@@ -1,0 +1,107 @@
+<project name="FlexUnit4" basedir="." default="package">
+	<property environment="env" />
+
+	<!-- Configuration -->
+	<property name="build.number" value="4.0.0" />
+	<property name="build.artifact.name" value="flexunit-${build.number}.swc" />
+	<property name="build.useFlex" value="true" />
+	<property name="test.application.name" value="TestRunner.mxml" />
+	<property name="test.artifact.name" value="TestRunner.swf" />
+	
+	<!-- Setup paths for build -->
+	<property name="main.src.loc" location="${basedir}/src" />
+	<property name="test.src.loc" location="${basedir}/test" />
+	<property name="lib.loc" location="${basedir}/libs" />
+	<property name="bin.loc" location="${basedir}/bin" />
+	<property name="report.loc" location="${basedir}/report" />
+	<property name="dist.loc" location="${basedir}/dist" />
+
+	<!-- Setup Flex Ant Resources -->
+	<property name="FLEX_HOME" location="${env.FLEX_HOME}" />
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+	<taskdef resource="flexUnitTasks.tasks" />
+
+	<target name="clean">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${bin.loc}" defaultexcludes="false">
+				<include name="**/*" />
+			</fileset>
+			<fileset dir="${report.loc}" defaultexcludes="false">
+				<include name="**/*" />
+			</fileset>
+			<fileset dir="${dist.loc}" defaultexcludes="false">
+				<include name="**/*" />
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="init">
+		<echo message="Project: ${ant.project.name}" />
+		<echo message="SDK: ${FLEX_HOME}" />
+		<echo message="Use Flex: ${build.useFlex}" />
+		<echo message="" />
+		
+		<mkdir dir="${bin.loc}" />
+		<mkdir dir="${report.loc}" />
+		<mkdir dir="${dist.loc}" />
+	</target>
+
+	<target name="compile" depends="init">
+		<!-- Create properties file from .flexLibProperties -->
+		<xslt in="${basedir}/.flexLibProperties" out="${bin.loc}/flexLib.properties" style="${basedir}/flexLibProperties.xsl" />
+		
+		<!-- Pull in class file list for compc -->
+		<property file="${bin.loc}/flexLib.properties" />
+
+		<!-- Compile swc -->
+		<compc include-classes="${main.src.class-list}" output="${bin.loc}/${build.artifact.name}">
+			<source-path path-element="${main.src.loc}" />
+			<library-path dir="${lib.loc}" append="true">
+				<include name="*.swc" />
+			</library-path>
+			<compiler.keep-as3-metadata>RunWith,BeforeClass,AfterClass,Before,After,Suite,Test,TestCase,Ignore,Filter,Sort,Theory,DataPoint,DataPoints,ArrayElementType</compiler.keep-as3-metadata>
+			<define name="CONFIG::useFlexClasses" value="${build.useFlex}" />
+			<compiler.external-library-path dir="${FLEX_HOME}/frameworks/libs" append="true">
+				<include name="flex.swc" />
+				<include name="framework.swc" />
+				<include name="rpc.swc" />
+				<include name="utilities.swc" />
+			</compiler.external-library-path>
+			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
+			<compiler.headless-server>true</compiler.headless-server>
+		</compc>
+	</target>
+
+	<target name="test" depends="compile">
+		<mxmlc file="${test.src.loc}/TestRunner.mxml" output="${bin.loc}/${test.artifact.name}">
+			<library-path dir="${lib.loc}" append="true">
+				<include name="*.swc" />
+			</library-path>
+			<library-path dir="${bin.loc}" append="true">
+				<include name="${build.artifact.name}" />
+			</library-path>
+			<compiler.keep-as3-metadata>RunWith,BeforeClass,AfterClass,Before,After,Suite,Test,TestCase,Ignore,Filter,Sort,Theory,DataPoint,DataPoints,ArrayElementType</compiler.keep-as3-metadata>
+			<define name="CONFIG::useFlexClasses" value="${build.useFlex}" />
+			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
+			<compiler.headless-server>true</compiler.headless-server>
+		</mxmlc>
+
+		<flexunit swf="${bin.loc}/${test.artifact.name}" 
+			toDir="${report.loc}" 
+			haltonfailure="true" 
+			verbose="true" 
+			localTrusted="true" />
+
+		<junitreport todir="${report.loc}">
+			<fileset dir="${report.loc}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${report.loc}/html" />
+		</junitreport>
+	</target>
+
+	<target name="package" depends="test">
+		<copy file="${bin.loc}/${build.artifact.name}" tofile="${dist.loc}/${build.artifact.name}" />
+		<echo message="Do asdoc gen here!" />
+	</target>
+</project>
