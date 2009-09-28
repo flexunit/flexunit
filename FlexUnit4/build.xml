@@ -3,8 +3,8 @@
 
 	<!-- Configuration -->
 	<property name="build.number" value="4.0.0" />
-	<property name="build.artifact.name" value="flexunit-${build.number}.swc" />
 	<property name="build.useFlex" value="true" />
+	<property name="build.artifact.name" value="flexunit-${build.number}.swc" />
 	<property name="test.application.name" value="TestRunner.mxml" />
 	<property name="test.artifact.name" value="TestRunner.swf" />
 	
@@ -12,8 +12,9 @@
 	<property name="main.src.loc" location="${basedir}/src" />
 	<property name="test.src.loc" location="${basedir}/test" />
 	<property name="lib.loc" location="${basedir}/libs" />
-	<property name="bin.loc" location="${basedir}/bin" />
+	<property name="bin.loc" location="${basedir}/ant-bin" />
 	<property name="report.loc" location="${basedir}/report" />
+	<property name="doc.loc" location="${basedir}/docs/asdocs" />
 	<property name="dist.loc" location="${basedir}/dist" />
 
 	<!-- Setup Flex Ant Resources -->
@@ -32,6 +33,9 @@
 			<fileset dir="${dist.loc}" defaultexcludes="false">
 				<include name="**/*" />
 			</fileset>
+			<fileset dir="${doc.loc}" defaultexcludes="false">
+				<include name="**/*" />
+			</fileset>
 		</delete>
 	</target>
 
@@ -44,6 +48,7 @@
 		<mkdir dir="${bin.loc}" />
 		<mkdir dir="${report.loc}" />
 		<mkdir dir="${dist.loc}" />
+		<mkdir dir="${doc.loc}" />
 	</target>
 
 	<target name="compile" depends="init">
@@ -72,7 +77,20 @@
 		</compc>
 	</target>
 
-	<target name="test" depends="compile">
+	<target name="package" depends="compile">
+		<copy file="${bin.loc}/${build.artifact.name}" tofile="${dist.loc}/${build.artifact.name}" />
+		<!-- <asdoc output="${doc.loc}">
+			<doc-sources path-element="${main.src.loc}" />
+			<source-path path-element="${main.src.loc}" />
+			<library-path dir="${lib.loc}" append="true">
+				<include name="*.swc" />
+			</library-path>
+			<compiler.keep-as3-metadata>RunWith,BeforeClass,AfterClass,Before,After,Suite,Test,TestCase,Ignore,Filter,Sort,Theory,DataPoint,DataPoints,ArrayElementType</compiler.keep-as3-metadata>
+			<define name="CONFIG::useFlexClasses" value="${build.useFlex}" />
+		</asdoc> -->
+	</target>
+	
+	<target name="test">
 		<mxmlc file="${test.src.loc}/TestRunner.mxml" output="${bin.loc}/${test.artifact.name}">
 			<library-path dir="${lib.loc}" append="true">
 				<include name="*.swc" />
@@ -98,10 +116,5 @@
 			</fileset>
 			<report format="frames" todir="${report.loc}/html" />
 		</junitreport>
-	</target>
-
-	<target name="package" depends="test">
-		<copy file="${bin.loc}/${build.artifact.name}" tofile="${dist.loc}/${build.artifact.name}" />
-		<echo message="Do asdoc gen here!" />
 	</target>
 </project>
