@@ -301,12 +301,12 @@ package org.flexunit.runners {
 		}
 
 		private var currentEachNotifier:EachTestNotifier;
-		public function run( notifier:IRunNotifier, parentToken:AsyncTestToken ):void {
+		public function run( notifier:IRunNotifier, previousToken:AsyncTestToken ):void {
 			var testNotifier:EachTestNotifier = new EachTestNotifier(notifier, description );
 			var resendError:Error;
 			
 			var token:AsyncTestToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
-			token.parentToken = parentToken;
+			token.previousToken = previousToken;
 			token.addNotificationMethod( handleRunnerComplete );
 			token[ EACH_NOTIFIER ] = testNotifier;
 
@@ -325,7 +325,7 @@ package org.flexunit.runners {
 			}
 			
 			if ( resendError ) {
-				parentToken.sendResult( resendError );
+				previousToken.sendResult( resendError );
 			}
 		}
 		
@@ -342,7 +342,7 @@ package org.flexunit.runners {
 				eachNotifier.addFailure( error );
 			}
 			
-			token.parentToken.sendResult();
+			token.previousToken.sendResult();
 		}
 
 		private function shouldRun( item:* ):Boolean {
