@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.runner {
@@ -33,19 +33,19 @@ package org.flexunit.runner {
 	import mx.utils.ObjectUtil;
 	
 	/**
-	 * <p>A <code>Description</code> describes a test which is to be run or has been run. <code>Descriptions</code> 
+	 * A <code>Description</code> describes a test which is to be run or has been run. <code>Descriptions</code> 
 	 * can be atomic (a single test) or compound (containing children tests). <code>Descriptions</code> are used
 	 * to provide feedback about the tests that are about to run (for example, the tree view
-	 * visible in many IDEs) or tests that have been run (for example, the failures view).</p>
+	 * visible in many IDEs) or tests that have been run (for example, the failures view).
 	 * 
 	 * <p><code>Descriptions</code> are implemented as a single class rather than a Composite because
 	 * they are entirely informational. They contain no logic aside from counting their tests.</p>
 	 * 
-	 *  //TODO: Link to appropriate flexunit directories or remove links if N/A
+	 * <p>TODO: Link to appropriate flexunit directories or remove links if N/A</p>
 	 * 
-	 * <p>In the past, we used the raw {@link junit.framework.TestCase}s and {@link junit.framework.TestSuite}s
+	 * <p>In the past, we used the raw junit.framework.TestCases and junit.framework.TestSuites
 	 * to display the tree of tests. This was no longer viable in JUnit 4 because atomic tests no longer have 
-	 * a superclass below {@link Object}. We needed a way to pass a class and name together. Description 
+	 * a superclass below Object. We needed a way to pass a class and name together. Description 
 	 * emerged from this.</p>
 	 * 
 	 * @see org.flexunit.runner.Request
@@ -141,7 +141,7 @@ package org.flexunit.runner {
 			children.push( description );
 		}
 		
-			/**
+		/**
 		 * @return a copy of this description, with no children (on the assumption that some of the
 		 * children will be added back)
 		 */
@@ -181,7 +181,7 @@ package org.flexunit.runner {
 		 * Create a <code>Description</code> of a single test named <code>name</code> in the class <code>testClassOrDescription</code>.
 		 * Generally, this will be a leaf <code>Description</code>.
 		 * @param testClassOrInstance the class of the test
-		 * @param name the name of the test (a method name for test annotated with {@link org.junit.Test})
+		 * @param name the name of the test (a method name for test annotated with org.junit.Test)
 		 * @param metadata meta-data about the test, for downstream interpreters
 		 * @return a <code>Description</code> named <code>name</code>
 		 */

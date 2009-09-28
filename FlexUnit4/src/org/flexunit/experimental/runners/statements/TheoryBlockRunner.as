@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.experimental.runners.statements {

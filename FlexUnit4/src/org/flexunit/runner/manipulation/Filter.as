@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.runner.manipulation {
@@ -33,14 +33,14 @@ package org.flexunit.runner.manipulation {
 	 * The canonical case of filtering is when you want to run a single test method in a class. Rather
 	 * than introduce runner API just for that one case, FlexUnit provides a general filtering mechanism.
 	 * If you want to filter the tests to be run, extend <code>Filter</code> and apply an instance of
-	 * your filter to the {@link org.flexunit.runner.Request} before running it (see 
-	 * {@link org.junit.runner.FlexUnitCore#run(Request)}. 
+	 * your filter to the <code>org.flexunit.runner.Request</code> before running it (see 
+	 * <code>org.junit.runner.FlexUnitCore#run(Request)</code>. 
 	 * 
 	 * //TODO: IRunner is an interface, there is no pre-existing implementing class, does the following 
 	 * //still apply? Is there a RunWith equivalent
 	 * Alternatively, apply a <code>Filter</code> to 
-	 * a {@link org.junit.runner.Runner} before running tests (for example, in conjunction with 
-	 * {@link org.junit.runner.RunWith}.
+	 * a org.junit.runner.Runner before running tests (for example, in conjunction with 
+	 * org.junit.runner.RunWith.
 	 */
 	public class Filter {
 
@@ -60,7 +60,7 @@ package org.flexunit.runner.manipulation {
 		public var describe:Function; //describe():String
 
 		/**
-		 * Invoke with a {@link org.flexunit.runner.IRunner} to cause all tests it intends to run
+		 * Invoke with a <code> org.flexunit.runner.IRunner</code> to cause all tests it intends to run
 		 * to first be checked with the filter. Only those that pass the filter will be run.
 		 * @param child the runner to be filtered by the receiver
 		 * @throws NoTestsRemainException if the receiver removes all tests

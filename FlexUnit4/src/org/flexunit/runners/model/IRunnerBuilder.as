@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.runners.model {
@@ -37,8 +37,8 @@ package org.flexunit.runners.model {
 	 * imagine a custom IRunner that builds suites based on a list of classes in a text file:
 	 * 
 	 * <pre>
-	 * \@RunWith(TextFileSuite.class)
-	 * \@SuiteSpecFile("mysuite.txt")
+	 * RunWith(TextFileSuite.class)
+	 * SuiteSpecFile("mysuite.txt")
 	 * class MySuite {}
 	 * </pre>
 	 * 

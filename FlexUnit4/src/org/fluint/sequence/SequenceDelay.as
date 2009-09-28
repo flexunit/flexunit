@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008 J&uuml;rgen Failenschmid
+ * Copyright (c) 2008 Jurgen Failenschmid
  * 
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -22,10 +22,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author J&uuml;rgen Failenschmid
+ * @author Jurgen Failenschmid
  * @see http://code.google.com/p/fluint/wiki/Sequences Test sequences
  * 
- * @modified Michael Labriola <labriola@digitalprimates.net>
+ * @modified Michael Labriola 
  * @purpose changes for FlexUnit 4 integration
  **/ 
 package org.fluint.sequence {
@@ -36,7 +36,7 @@ package org.fluint.sequence {
 	/**
 	 * A sequence step that delays the sequence for a given time period.
 	 * 
-  	 * @author J&uuml;rgen Failenschmid
+  	 * @author Jurgen Failenschmid
      * @see http://code.google.com/p/fluint/wiki/Sequences Test sequences 
 	 */
 	

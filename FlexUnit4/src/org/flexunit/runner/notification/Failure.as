@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.runner.notification {
@@ -32,10 +32,10 @@ package org.flexunit.runner.notification {
 	
 	/**
 	 * A <code>Failure</code> holds a description of the failed test and the
-	 * exception that was thrown while running it. In most cases the {@link org.flexunit.runner.Description}
+	 * exception that was thrown while running it. In most cases the <code> org.flexunit.runner.Description</code>
 	 * will be of a single test. However, if problems are encountered while constructing the
 	 * test
-	 *  (for example, if a {@link org.junit.BeforeClass} method is static), it may describe
+	 *  (for example, if a org.junit.BeforeClass method is static), it may describe
 	 * something other than a single test.
 	 */
 	public class Failure {
@@ -44,7 +44,7 @@ package org.flexunit.runner.notification {
 
 		/**
 		 * Constructs a <code>Failure</code> with the given description and exception.
-		 * @param description a {@link org.flexunit.runner.Description} of the test that failed
+		 * @param description a <code> org.flexunit.runner.Description</code> of the test that failed
 		 * @param exception the exception that was thrown while running the test
 		 */
 		public function Failure( description:IDescription, exception:Error ) {

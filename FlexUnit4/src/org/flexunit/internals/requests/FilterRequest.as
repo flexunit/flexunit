@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.internals.requests {
@@ -34,7 +34,7 @@ package org.flexunit.internals.requests {
 	import org.flexunit.runner.manipulation.NoTestsRemainException;
 
 	/**
-	 * A filtered {@link Request}.
+	 * A filtered <code>Request</code>.
 	 */
 	public class FilterRequest extends Request {
 		private var request:IRequest;
@@ -42,8 +42,8 @@ package org.flexunit.internals.requests {
 
 		/**
 		 * Creates a filtered Request
-		 * @param classRequest an {@link IRequest} describing your Tests
-		 * @param filter {@link Filter} to apply to the Tests described in 
+		 * @param classRequest an <code>IRequest</code> describing your Tests
+		 * @param filter <code>Filter</code> to apply to the Tests described in 
 		 * <code>classRequest</code>
 		 */
 		public function FilterRequest( classRequest:IRequest, filter:Filter ) {
@@ -53,7 +53,6 @@ package org.flexunit.internals.requests {
 		}
 		
 		//TODO: Unsure of meaning and applicability of @inheritDoc
-		/** @inheritDoc */
 		override public function get iRunner():IRunner {
 			try {
 				var runner:IRunner = request.iRunner;

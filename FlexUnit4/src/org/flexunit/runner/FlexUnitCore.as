@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.runner {
@@ -49,9 +49,9 @@ package org.flexunit.runner {
 	 * <code>FlexUnitCore</code> is a facade for running tests. It supports running JUnit 4 tests, 
 	 * JUnit 3.8.x tests, and mixtures. To run tests from the command line, run 
 	 * <code>java org.junit.runner.JUnitCore TestClass1 TestClass2 ...</code>.
-	 * For one-shot test runs, use the static method {@link #runClasses(Class[])}. 
+	 * For one-shot test runs, use the static method <code> #runClasses(Class[])</code>. 
 	 * If you want to add special listeners,
-	 * create an instance of {@link org.junit.runner.JUnitCore} first and use it to run the tests.
+	 * create an instance of <code> org.junit.runner.JUnitCore</code> first and use it to run the tests.
 	 * 
 	 * @see org.flexunit.runner.Result
 	 * @see org.flexunit.runner.notification.RunListener
@@ -114,7 +114,7 @@ package org.flexunit.runner {
 		/**
 		 * Run all the tests contained in <code>args</code>.
 		 * @param request the request describing tests
-		 * @return a {@link Result} describing the details of the test run and the failed tests.
+		 * @return a <code> Result</code> describing the details of the test run and the failed tests.
 		 */
 		public function run( ...args ):Result {
 			var foundClasses:Array = new Array();
@@ -138,9 +138,9 @@ package org.flexunit.runner {
 		/**  //TODO: No main to link to, what should be linked instead, if anything?
 		 * Run the tests contained in <code>args</code>. Write feedback while the tests
 		 * are running and write stack traces for all failed tests after all tests complete. This is
-		 * similar to {@link #main(String[])}, but intended to be used programmatically.
+		 * similar to <code> #main(String[])</code>, but intended to be used programmatically.
 		 * @param args Array in which to find tests
-		 * @return a {@link Result} describing the details of the test run and the failed tests.
+		 * @return a <code> Result</code> describing the details of the test run and the failed tests.
 		 */
 		public function runClasses( ...args ):void {
 			runRequest( Request.classes.apply( this, args ) );

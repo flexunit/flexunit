@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.runners {
@@ -65,14 +65,14 @@ package org.flexunit.runners {
  *  //TODO: Does not define by a data type like in the java version
  *  //how do the matchups described below happen, or not, instead?
  *  with children defined by objects of some data
- * type {@code T}. (For {@link BlockJUnit4ClassRunner}, {@code T} is
- * {@link Method} . For {@link Suite}, {@code T} is {@link Class}.)
+ * type {@code T}. (For <code> BlockJUnit4ClassRunner</code>, {@code T} is
+ * <code> Method</code> . For <code> Suite</code>, {@code T} is <code> Class</code>.)
  * 
  *  Subclasses
  * must implement finding the children of the node, describing each child, and
  * running each child. ParentRunner will filter and sort children, handle
- * {@code @BeforeClass} and {@code @AfterClass} methods, create a composite
- * {@link Description}, and run children sequentially.
+ * {@code BeforeClass} and {@code AfterClass} methods, create a composite
+ * <code> Description</code>, and run children sequentially.
  */
 
 	public class ParentRunner implements IRunner, ISortable {
@@ -87,7 +87,7 @@ package org.flexunit.runners {
 		private var cachedDescription:IDescription;
 		
 		/**
-		 * Constructs a new {@code ParentRunner} that will run {@code @TestClass}
+		 * Constructs a new {@code ParentRunner} that will run {@code TestClass}
 		 * @throws InitializationError //TODO: does it throw an InitializationError?
 		 */
 		public function ParentRunner( klass:Class ) {
@@ -103,7 +103,7 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Returns a {@link TestClass} object wrapping the class to be executed.
+		 * Returns a <code> TestClass</code> object wrapping the class to be executed.
 		 */
 		protected function get testClass():TestClass {
 			return _testClass;
@@ -137,8 +137,8 @@ package org.flexunit.runners {
 		}
 	
 		/**
-		 * Returns a {@link Description} for {@code child}, which can be assumed to
-		 * be an element of the list returned by {@link ParentRunner#children()}
+		 * Returns a <code> Description</code> for {@code child}, which can be assumed to
+		 * be an element of the list returned by <code> ParentRunner#children()</code>
 		 */
 		protected function describeChild( child:* ):IDescription {
 			return null
@@ -146,7 +146,7 @@ package org.flexunit.runners {
 
 		/**
 		 * Runs the test corresponding to {@code child}, which can be assumed to be
-		 * an element of the list returned by {@link ParentRunner#children()}.
+		 * an element of the list returned by <code> ParentRunner#children()</code>.
 		 * Subclasses are responsible for making sure that relevant test events are
 		 * reported through {@code notifier}
 		 */
@@ -158,15 +158,15 @@ package org.flexunit.runners {
 		 * Constructs an {@code IStatement} to run all of the tests in the test class. Override to add pre-/post-processing. 
 		 * Here is an outline of the implementation:
 		 * <ul>
-		 * <li>Call {@link #runChild(Object, RunNotifier)} on each object returned by {@link #children()} (subject to any imposed filter and sort).</li>
-		 * <li>ALWAYS run all non-overridden {@code @BeforeClass} methods on this class
+		 * <li>Call <code> #runChild(Object, RunNotifier)} on each object returned by <code> #children()</code> (subject to any imposed filter and sort).</li>
+		 * <li>ALWAYS run all non-overridden {@code BeforeClass} methods on this class
 		 * and superclasses before the previous step; if any throws an
 		 * Exception, stop execution and pass the exception on.
-		 * <li>ALWAYS run all non-overridden {@code @AfterClass} methods on this class
+		 * <li>ALWAYS run all non-overridden {@code AfterClass} methods on this class
 		 * and superclasses before any of the previous steps; all AfterClass methods are
 		 * always executed: exceptions thrown by previous steps are combined, if
 		 * necessary, with exceptions from AfterClass methods into a
-		 * {@link MultipleFailureException}.
+		 * <code> MultipleFailureException</code>.
 		 * </ul>
 		 * @param notifier
 		 * @return {@code IStatement}
@@ -182,7 +182,7 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Returns an {@link IStatement}: run all non-overridden {@code @BeforeClass} methods on this class
+		 * Returns an <code> IStatement</code>: run all non-overridden {@code BeforeClass} methods on this class
 		 * and superclasses before executing {@code statement}; if any throws an
 		 * Exception, stop execution and pass the exception on.
 		 */
@@ -196,11 +196,11 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Returns an {@link IStatement}: run all non-overridden {@code @AfterClass} methods on this class
+		 * Returns an <code> IStatement</code>: run all non-overridden {@code AfterClass} methods on this class
 		 * and superclasses before executing {@code statement}; all AfterClass methods are
 		 * always executed: exceptions thrown by previous steps are combined, if
 		 * necessary, with exceptions from AfterClass methods into a
-		 * {@link MultipleFailureException}.
+		 * <code> MultipleFailureException</code>.
 		 */
 		protected function withAfterClasses():IAsyncStatement {
 			var afters:Array = testClass.getMetaDataMethods( "AfterClass" );
@@ -219,9 +219,9 @@ package org.flexunit.runners {
 
 		/**
 		 * Adds to {@code errors} a throwable for each problem noted with the test class 
-		 * (available from {@link #testClass()}).
+		 * (available from <code> #testClass()</code>).
 		 * Default implementation adds an error for each method annotated with
-		 * {@code @BeforeClass} or {@code @AfterClass} that is not
+		 * {@code BeforeClass} or {@code AfterClass} that is not
 		 * {@code public static void} with no arguments.
 		 */
 		protected function collectInitializationErrors( errors:Array ):void {
@@ -250,8 +250,8 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Returns an {@link IStatement}: Call {@link #runChild(Object, RunNotifier)}
-		 * on each object returned by {@link #children()} (subject to any imposed
+		 * Returns an <code> IStatement</code>: Call <code> #runChild(Object, RunNotifier)</code>
+		 * on each object returned by <code> #children()</code> (subject to any imposed
 		 * filter and sort)
 		 */
 		protected function childrenInvoker( notifier:IRunNotifier ):IAsyncStatement {

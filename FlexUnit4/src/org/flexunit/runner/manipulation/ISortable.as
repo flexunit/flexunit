@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.runner.manipulation
@@ -37,7 +37,7 @@ package org.flexunit.runner.manipulation
 	{
 		/**
 		 * Sorts the tests using <code>sorter</code>
-		 * @param sorter the {@link Sorter} to use for sorting the tests
+		 * @param sorter the <code> Sorter</code> to use for sorting the tests
 		 */
 		function sort(sorter:ISorter):void;
 	}

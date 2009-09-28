@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.runner.notification {
@@ -33,8 +33,8 @@ package org.flexunit.runner.notification {
 	/**
 	 * If you write custom runners, you may need to notify FlexUnit of your progress running tests.
 	 * Do this by invoking the <code>RunNotifier</code> passed to your implementation of
-	 * {@link org.flexunit.runner.Runner#run(RunNotifier)}. Future evolution of this class is likely to 
-	 * move {@link #fireTestRunStarted(Description)} and {@link #fireTestRunFinished(Result)}
+	 * <code> org.flexunit.runner.Runner#run(RunNotifier)</code>. Future evolution of this class is likely to 
+	 * move <code> #fireTestRunStarted(Description)</code> and <code> #fireTestRunFinished(Result)</code>
 	 * to a separate class since they should only be called once per run.
 	 */
 	public class RunNotifier implements IRunNotifier {
@@ -105,7 +105,7 @@ package org.flexunit.runner.notification {
 		 * 
 		 * @param failure
 		 *            the description of the test that failed and the
-		 *            {@link AssumptionViolatedException} thrown
+		 *            <code> AssumptionViolatedException</code> thrown
 		 */
 		public function fireTestAssumptionFailed( failure:Failure ):void {
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
@@ -132,7 +132,7 @@ package org.flexunit.runner.notification {
 		}
 		/**
 		 * Invoke to tell listeners that an atomic test finished. Always invoke 
-		 * {@link #fireTestFinished(Description)} if you invoke {@link #fireTestStarted(Description)} 
+		 * <code> #fireTestFinished(Description)</code> if you invoke <code> #fireTestStarted(Description)</code> 
 		 * as listeners are likely to expect them to come in pairs.
 		 * @param description the description of the test that finished
 		 */

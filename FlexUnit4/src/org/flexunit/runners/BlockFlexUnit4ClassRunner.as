@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.runners {
@@ -58,7 +58,7 @@ package org.flexunit.runners {
  * that are slight changes to the default behavior, however:
  * 
  * <ul>
- * <li>It has a much simpler implementation based on {@link Statement}s,
+ * <li>It has a much simpler implementation based on <code> Statement</code>s,
  * allowing new operations to be inserted into the appropriate point in the
  * execution flow.
  * 
@@ -149,7 +149,7 @@ package org.flexunit.runners {
 
 	/**
 	 * Returns the methods that run tests. Default implementation 
-	 * returns all methods annotated with {@code @Test} on this 
+	 * returns all methods annotated with {@code Test} on this 
 	 * class and superclasses that are not overridden.
 	 */
 		protected function computeTestMethods():Array {
@@ -164,8 +164,8 @@ package org.flexunit.runners {
 		}
 
 	/**
-	 * Adds to {@code errors} for each method annotated with {@code @Test},
-	 * {@code @Before}, or {@code @After} that is not a public, void instance
+	 * Adds to {@code errors} for each method annotated with {@code Test},
+	 * {@code Before}, or {@code After} that is not a public, void instance
 	 * method with no arguments.
 	 */
 		protected function validateInstanceMethods( errors:Array ):void {
@@ -178,7 +178,7 @@ package org.flexunit.runners {
 		}
 
 	/**
-	 * Adds to {@code errors} for each method annotated with {@code @Test}that
+	 * Adds to {@code errors} for each method annotated with {@code Test}that
 	 * is not a public, void instance method with no arguments.
 	 */
 		protected function validateTestMethods( errors:Array ):void {
@@ -208,20 +208,20 @@ package org.flexunit.runners {
 		 * <ul>
 		 * <li>Invoke {@code method} on {@code test}, and
 		 * throw any exceptions thrown by either operation.
-		 * <li>HOWEVER, if {@code method}'s {@code @Test} annotation has the {@code
+		 * <li>HOWEVER, if {@code method}'s {@code Test} annotation has the {@code
 		 * expecting} attribute, return normally only if the previous step threw an
 		 * exception of the correct type, and throw an exception otherwise.
-		 * <li>HOWEVER, if {@code method}'s {@code @Test} annotation has the {@code
+		 * <li>HOWEVER, if {@code method}'s {@code Test} annotation has the {@code
 		 * timeout} attribute, throw an exception if the previous step takes more
 		 * than the specified number of milliseconds.
-		 * <li>ALWAYS run all non-overridden {@code @Before} methods on this class
+		 * <li>ALWAYS run all non-overridden {@code Before} methods on this class
 		 * and superclasses before any of the previous steps; if any throws an
 		 * Exception, stop execution and pass the exception on.
-		 * <li>ALWAYS run all non-overridden {@code @After} methods on this class
+		 * <li>ALWAYS run all non-overridden {@code After} methods on this class
 		 * and superclasses before any of the previous steps; all After methods are
 		 * always executed: exceptions thrown by previous steps are combined, if
 		 * necessary, with exceptions from After methods into a
-		 * {@link MultipleFailureException}.
+		 * <code> MultipleFailureException</code>.
 		 * </ul>
 		 * 
 		 * This can be overridden in subclasses, either by overriding this method,
@@ -249,14 +249,14 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Returns an {@link IStatement} that invokes {@code method} on {@code test}
+		 * Returns an <code> IStatement</code> that invokes <code>method</code> on <code>test</code>
 		 */
 		protected function methodInvoker( method:FrameworkMethod, test:Object ):IAsyncStatement {
 			return new InvokeMethod(method, test);
 		}
 
 		/**
-		 * Returns an {@link IStatement}: if {@code method}'s {@code @Test} annotation
+		 * Returns an <code> IStatement</code>: if <code>method</code>'s <code>Test</code> annotation
 		 * has the {@code expecting} attribute, return normally only if {@code next}
 		 * throws an exception of the correct type, and throw an exception
 		 * otherwise.
@@ -267,8 +267,8 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Returns an {@link IStatement}: if {@code method}'s {@code @Test} annotation
-		 * has the {@code timeout} attribute, throw an exception if {@code next}
+		 * Returns an <code> IStatement</code>: if <code>method</code>'s <code> Test</code> annotation
+		 * has the <code>timeout</code> attribute, throw an exception if <code>next</code>
 		 * takes more than the specified number of milliseconds.
 		 */
 		protected function withPotentialTimeout( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
@@ -296,7 +296,7 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Returns an {@link IStatement}: run all non-overridden {@code @Before}
+		 * Returns an <code> IStatement</code>: run all non-overridden {@code Before}
 		 * methods on this class and superclasses before running {@code statement}; if
 		 * any throws an Exception, stop execution and pass the exception on.
 		 */
@@ -308,11 +308,11 @@ package org.flexunit.runners {
 		}
 	
 		/**
-		 * Returns an {@link IStatement}: run all non-overridden {@code @After}
+		 * Returns an <code> IStatement</code>: run all non-overridden {@code After}
 		 * methods on this class and superclasses before running {@code next}; all
 		 * After methods are always executed: exceptions thrown by previous steps
 		 * are combined, if necessary, with exceptions from After methods into a
-		 * {@link MultipleFailureException}.
+		 * <code> MultipleFailureException</code>.
 		 */
 		protected function withAfters( method:FrameworkMethod, target:Object ):IAsyncStatement {
 			var afters:Array = testClass.getMetaDataMethods( "After" );

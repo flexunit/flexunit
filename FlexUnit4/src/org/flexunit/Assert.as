@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit
@@ -100,7 +100,7 @@ package org.flexunit
 	
 		/**
 		 * Asserts that a condition is true. If it isn't it throws an
-		 * {@link AssertionFailedError} with the given message.
+		 * <code> AssertionFailedError</code> with the given message.
 		 * 
 		 * @param rest
 		 * 			array of length one or two. Contains the value to be
@@ -127,7 +127,7 @@ package org.flexunit
 	
 		/**
 		 * Asserts that a condition is false. If it isn't it throws an
-		 * {@link AssertionFailedError} with the given message.
+		 * <code> AssertionFailedError</code> with the given message.
 		 * 
 		 * @param rest
 		 * 			array of length one or two. Contains the value to be
@@ -154,13 +154,13 @@ package org.flexunit
 	
 	//TODO:  (<code>null</code> okay) needs removal?
 		/**
-		 * Asserts that an object is null. If it is not, an {@link AssertionFailedError}
+		 * Asserts that an object is null. If it is not, an <code> AssertionFailedError</code>
 		 * is thrown with the given message.
 		 * 
 		 * @param rest
 		 * 			array of length one or two. Contains the Object to be
 		 * 			null checked. If the length is two the first index contains
-		 *          the identifying message for the {@link AssertionFailedError} 
+		 *          the identifying message for the <code> AssertionFailedError</code>
 		 * 			(<code>null</code> okay)
 		 */
 		public static function assertNull(... rest):void
@@ -183,13 +183,13 @@ package org.flexunit
 	
 	//TODO:  (<code>null</code> okay) needs removal?
 		/**
-		 * Asserts that an object isn't null. If it is an {@link AssertionFailedError} is
+		 * Asserts that an object isn't null. If it is an <code> AssertionFailedError</code> is
 		 * thrown with the given message.
 		 * 
 		 * @param rest
 		 * 			array of length one or two. Contains the Object to be
 		 * 			null checked. If length is two the first index contains 
-		 * 			the identifying message for the {@link AssertionFailedError} 
+		 * 			the identifying message for the <code> AssertionFailedError</code>
 		 * 			(<code>null</code> okay)
 		 */
 		public static function assertNotNull(... rest):void
@@ -214,7 +214,7 @@ package org.flexunit
 		 * Fails a test with the given message.
 		 * 
 		 * @param failMessage
-		 *            the identifying message for the {@link AssertionFailedError} (<code>null</code>
+		 *            the identifying message for the <code> AssertionFailedError</code> (<code>null</code>
 		 *            okay)
 		 * @see AssertionFailedError
 		 */

@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.runners.model {
@@ -36,8 +36,8 @@ package org.flexunit.runners.model {
 	/**
 	 * Represents a method on a test class to be invoked at the appropriate point in
 	 * test execution. These methods are usually marked with an annotation (such as
-	 * {@code @Test}, {@code @Before}, {@code @After}, {@code @BeforeClass}, {@code
-	 * @AfterClass}, etc.)
+	 * {@code Test}, {@code Before}, {@code After}, {@code BeforeClass}, {@code
+	 * AfterClass}, etc.)
 	 */
 	public class FrameworkMethod extends EventDispatcher {
 		
@@ -124,8 +124,8 @@ package org.flexunit.runners.model {
 		}
 		
 		/**
-		 * Returns the result of invoking this method on {@code target} with
-		 * parameters {@code params}. {@link InvocationTargetException}s thrown are
+		 * Returns the result of invoking this method on <code>target</code> with
+		 * parameters {@code params}. <code> InvocationTargetException</code>s thrown are
 		 * unwrapped, and their causes rethrown.
 		 */
 		public function invokeExplosivelyAsync( parentToken:AsyncTestToken, target:Object, ...params ):void {

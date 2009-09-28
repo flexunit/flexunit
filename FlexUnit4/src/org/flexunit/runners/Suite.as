@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.runners {
@@ -40,8 +40,8 @@ package org.flexunit.runners {
 	/**
  	* Using <code>Suite</code> as a runner allows you to manually
  	* build a suite containing tests from many classes. It is the JUnit 4 equivalent of the JUnit 3.8.x
- 	* static {@link junit.framework.Test} <code>suite()</code> method. To use it, annotate a class
- 	* with <code>@RunWith(Suite.class)</code> and <code>@SuiteClasses(TestClass1.class, ...)</code>.
+ 	* static junit.framework.Test <code>suite()</code> method. To use it, annotate a class
+ 	* with <code>RunWith(Suite.class)</code> and <code>SuiteClasses(TestClass1.class, ...)</code>.
  	* When you run this class, it will run all the tests in all the suite classes.
  	*/
 	public class Suite extends ParentRunner {

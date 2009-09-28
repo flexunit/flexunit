@@ -59,7 +59,7 @@ package org.fluint.sequence {
 		 * {text:'blah',enabled:false}</code></p>
 		 * 
 		 * <p>
-		 * Would set the text property to 'blah' and the enabled property to false.
+		 * Would set the text property to 'blah' and the enabled property to false.</p>
 		 */
 		public function get props():Object {
 			return _props;

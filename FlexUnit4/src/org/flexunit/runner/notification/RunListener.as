@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.runner.notification {
@@ -102,14 +102,14 @@ package org.flexunit.runner.notification {
 		 * 
 		 * @param failure
 		 *            describes the test that failed and the
-		 *            {@link AssumptionViolatedException} that was thrown
+		 *            <code> AssumptionViolatedException</code> that was thrown
 		 */
 		public function testAssumptionFailure( failure:Failure ):void {
 		}
 	
 		/**
 		 * Called when a test will not be run, generally because a test method is annotated 
-		 * with {@link org.junit.Ignore}.
+		 * with <code> org.junit.Ignore</code>.
 		 * 
 		 * @param description describes the test that will not be run
 		 */

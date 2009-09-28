@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.runner
@@ -31,11 +31,11 @@ package org.flexunit.runner
 	import org.flexunit.token.AsyncTestToken;
 	
 	/**
-	 * A <code>Runner</code> runs tests and notifies a {@link org.flexunit.runner.notification.RunNotifier}
+	 * A <code>Runner</code> runs tests and notifies a <code> org.flexunit.runner.notification.RunNotifier</code>
 	 * of significant events as it does so. You will need to subclass <code>Runner</code>
 	 * to invoke a custom runner. When creating a custom runner, 
 	 * in addition to implementing the abstract methods here you must
-	 * also provide a constructor that takes as an argument the {@link Class} containing
+	 * also provide a constructor that takes as an argument the <code> Class</code> containing
 	 * the tests.
 	 * <p/>
 	 * The default runner implementation guarantees that the instances of the test case

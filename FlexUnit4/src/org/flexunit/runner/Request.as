@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.runner {
@@ -38,18 +38,18 @@ package org.flexunit.runner {
 	use namespace classInternal;
 	
 	/**
+	 * TODO - I assume that the immediately following paragraph can simply be deleted, but I want to make
+	 * sure before doing so.
+	 *
 	 * <p>A <code>Request</code> is an abstract description of tests to be run.
-	 *  //TODO: I assume that the immediately following paragraph can simply be deleted, but I want to make
-	 * //sure before doing so. 
-	 *  Older versions of 
-	 * JUnit did not need such a concept--tests to be run were described either by classes containing
-	 * tests or a tree of {@link  org.junit.Test}s. However, we want to support filtering and sorting,
+	 * Older versions of JUnit did not need such a concept-tests to be run were described either by classes containing
+	 * tests or a tree of org.junit.Tests. However, we want to support filtering and sorting,
 	 * so we need a more abstract specification than the tests themselves and a richer
 	 * specification than just the classes.</p>
 	 * 
-	 * <p>The flow when FlexUnit runs tests is that a <code>Request</code> specifies some tests to be run ->
-	 * a {@link org.flexunit.runner.Runner} is created for each class implied by the <code>Request</code> -> 
-	 * the {@link org.flexunit.runner.Runner} returns a detailed {@link org.flexunit.runner.Description} 
+	 * <p>The flow when FlexUnit runs tests is that a <code>Request</code> specifies some tests to be run
+	 * a org.flexunit.runner.Runner is created for each class implied by the <code>Request</code> 
+	 * the org.flexunit.runner.Runner returns a detailed org.flexunit.runner.Description 
 	 * which is a tree structure of the tests to be run.</p>
 	 */
 	public class Request implements IRequest {
@@ -67,8 +67,8 @@ package org.flexunit.runner {
 		}
 
 		/**
-		 * Returns an {@link IRunner} for this Request
-		 * @return corresponding {@link IRunner} for this Request
+		 * Returns an <code> IRunner</code> for this Request
+		 * @return corresponding <code> IRunner</code> for this Request
 		 */
 		public function get iRunner():IRunner {
 			return _runner;
@@ -82,7 +82,7 @@ package org.flexunit.runner {
 		/**
 		 * Returns a Request that only contains those tests that should run when
 		 * <code>filter</code> is applied
-		 * @param filter The {@link Filter} to apply to this Request
+		 * @param filter The <code> Filter</code> to apply to this Request
 		 * @return the filtered Request
 		 */
 		protected function filterWithFilter( filter:Filter ):Request {
@@ -90,9 +90,9 @@ package org.flexunit.runner {
 		}
 		
 		/**
-		 * Returns a Request that only runs contains tests whose {@link Description}
+		 * Returns a Request that only runs contains tests whose <code> Description</code>
 		 * equals <code>desiredDescription</code>
-		 * @param desiredDescription {@link Description} of those tests that should be run
+		 * @param desiredDescription <code> Description</code> of those tests that should be run
 		 * @return the filtered Request
 		 */
 		protected function filterWithDescription( desiredDescription:IDescription ):Request {
@@ -131,7 +131,6 @@ package org.flexunit.runner {
 		}
 		
 		/**
-		 *
 		 * @param comparator definition of the order of the tests in this Request
 		 * @return a Request with ordered Tests
 		 */

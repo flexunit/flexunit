@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit
@@ -42,7 +42,7 @@ package org.flexunit
 	 * For example:
 	 * <pre>
 	 * // only provides information if database is reachable.
-	 * \@Test public void calculateTotalSalary() {
+	 * Test public void calculateTotalSalary() {
 	 *    DBConnection dbc = Database.connect();
 	 *    assumeNotNull(dbc);
 	 *    // ...
@@ -86,7 +86,7 @@ package org.flexunit
 		     *   
 		     * @param <T> the static type accepted by the matcher (this can flag obvious compile-time problems such as {@code assumeThat(1, is("a"))}
 		     * @param actual the computed value being compared
-		     * @param matcher an expression, built of {@link Matcher}s, specifying allowed values
+		     * @param matcher an expression, built of <code> Matcher</code>s, specifying allowed values
 		     * 
 		     * @see org.hamcrest.CoreMatchers
 		     * @see org.junit.matchers.JUnitMatchers
@@ -101,7 +101,7 @@ package org.flexunit
 		 * 
 		 * For example:
 		 * <pre>
-		 * \@Test public void parseDataFile() {
+		 * Test public void parseDataFile() {
 		 *   DataFile file;
 		 *   try {
 		 *     file = DataFile.open("sampledata.txt");

@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.runner.manipulation
@@ -34,7 +34,7 @@ package org.flexunit.runner.manipulation
 	
 	/**
 	 * A <code>Sorter</code> orders tests. In general you will not need
-	 * to use a <code>Sorter</code> directly. Instead, use {@link org.junit.runner.Request#sortWith(Function)}.
+	 * to use a <code>Sorter</code> directly. Instead, use <code> org.junit.runner.Request#sortWith(Function)</code>.
 	 * 
 	 * 
 	 */
@@ -45,7 +45,7 @@ package org.flexunit.runner.manipulation
 		/**
 		 * Creates a <code>Sorter</code> that uses <code>compare function</code>
 		 * to sort tests
-		 * @param comparator the {@link Function} to use when sorting tests
+		 * @param comparator the <code> Function</code> to use when sorting tests
 		 */
 		public function Sorter(comparator:Function) {
 			this.comparator = comparator;

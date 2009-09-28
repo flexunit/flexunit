@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.runner {
@@ -52,7 +52,7 @@ package org.flexunit.runner {
 		}
 
 		/**
-		 * @return the {@link Failure}s describing tests that failed and the problems they encountered
+		 * @return the <code> Failure</code>s describing tests that failed and the problems they encountered
 		 */
 		public function get failures():Array {
 			return _failures;

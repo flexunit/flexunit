@@ -22,21 +22,21 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Michael Labriola <labriola@digitalprimates.net>
+ * @author     Michael Labriola 
  * @version    
  **/ 
 package org.flexunit.runner.manipulation
 {
 	
 	/**
-	 * IRunners that allow filtering should implement this interface. Implement {@link #filter(Filter)}
+	 * IRunners that allow filtering should implement this interface. Implement <code>#filter(Filter)</code>
 	 * to remove tests that don't pass the filter.
 	 */
 	public interface IFilterable {
 		
 		/**
 		 * Remove tests that don't pass the parameter <code>filter</code>.
-		 * @param filter the {@link Filter} to apply
+		 * @param filter the <code> Filter</code> to apply
 		 * @throws NoTestsRemainException if all tests are filtered out
 		 */
 		function filter( filter:Filter ):void;	
