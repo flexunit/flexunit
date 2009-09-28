@@ -97,7 +97,6 @@
 			<library-path dir="${bin.loc}" append="true">
 				<include name="${build.artifact.name}" />
 			</library-path>
-			<compiler.keep-as3-metadata>RunWith,BeforeClass,AfterClass,Before,After,Suite,Test,TestCase,Ignore,Filter,Sort,Theory,DataPoint,DataPoints,ArrayElementType</compiler.keep-as3-metadata>
 			<define name="CONFIG::useFlexClasses" value="${build.useFlex}" />
 			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
 			<compiler.headless-server>true</compiler.headless-server>
