@@ -89,7 +89,7 @@
 	</target>
 
 	<target name="test">
-		<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks.jar" />
+		<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks-${build.number}.jar" />
 		
 		<mxmlc file="${test.src.loc}/TestRunner.mxml" output="${bin.loc}/${test.artifact.name}">
 			<library-path dir="${lib.loc}" append="true">
