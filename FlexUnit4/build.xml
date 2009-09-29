@@ -80,7 +80,7 @@
 		<copy file="${bin.loc}/${build.artifact.name}" tofile="${dist.loc}/${build.artifact.name}" />
 		<java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
 			<arg line="+flexlib '${FLEX_HOME}/frameworks'" />
-			<arg line="-doc-sources '${main.src.loc}'" />
+			<arg line="-doc-classes ${main.src.class-list}" />
 			<arg line="-source-path+='${main.src.loc}'" />
 			<arg line="-output '${doc.loc}'" />
 			<arg line="-library-path+='${lib.loc}'" />
