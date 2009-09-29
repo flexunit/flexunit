@@ -16,7 +16,6 @@
 	<!-- Setup Flex Ant Resources -->
 	<property name="FLEX_HOME" location="${env.FLEX_HOME}" />
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
-	<taskdef resource="flexUnitTasks.tasks" />
 
 	<target name="clean">
 		<delete includeemptydirs="true" failonerror="false">

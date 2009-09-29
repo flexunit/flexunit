@@ -4,7 +4,7 @@
 	<!-- Configuration -->
 	<property name="build.number" value="4.0.0" />
 	<property name="build.useFlex" value="true" />
-	<property name="build.artifact.name" value="cilistener-${build.number}.swc" />
+	<property name="build.artifact.name" value="flexunit-cilistener-${build.number}.swc" />
 
 	<!-- Setup paths for build -->
 	<property name="main.src.loc" location="${basedir}/src" />
@@ -16,7 +16,6 @@
 	<!-- Setup Flex Ant Resources -->
 	<property name="FLEX_HOME" location="${env.FLEX_HOME}" />
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
-	<taskdef resource="flexUnitTasks.tasks" />
 
 	<target name="clean">
 		<delete includeemptydirs="true" failonerror="false">
@@ -48,9 +47,6 @@
 		<compc output="${bin.loc}/${build.artifact.name}">
 			<include-sources dir="${main.src.loc}" includes="*" append="true" />
 			<source-path path-element="${main.src.loc}" />
-			<!-- <library-path dir="${lib.loc}" append="true">
-				<include name="*.swc" />
-			</library-path> -->
 			<define name="CONFIG::useFlexClasses" value="${build.useFlex}" />
 			<compiler.external-library-path dir="${lib.loc}" append="true">
 				<include name="*.swc" />

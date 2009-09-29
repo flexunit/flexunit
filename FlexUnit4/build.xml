@@ -1,4 +1,4 @@
-<project name="FlexUnit4" basedir="." default="package">
+<project name="FlexUnit4Library" basedir="." default="package">
 	<property environment="env" />
 
 	<!-- Configuration -->
@@ -20,7 +20,6 @@
 	<!-- Setup Flex Ant Resources -->
 	<property name="FLEX_HOME" location="${env.FLEX_HOME}" />
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
-	<taskdef resource="flexUnitTasks.tasks" />
 
 	<target name="clean">
 		<delete includeemptydirs="true" failonerror="false">
@@ -90,6 +89,8 @@
 	</target>
 
 	<target name="test">
+		<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks.jar" />
+		
 		<mxmlc file="${test.src.loc}/TestRunner.mxml" output="${bin.loc}/${test.artifact.name}">
 			<library-path dir="${lib.loc}" append="true">
 				<include name="*.swc" />
