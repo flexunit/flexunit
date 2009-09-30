@@ -36,7 +36,7 @@
 
 	<target name="cilistener" depends="library">
 		<copy todir="${cilistener.loc}/libs" overwrite="true">
-			<fileset dir="${library.loc}/dist">
+			<fileset dir="${library.loc}/target">
 				<include name="*.swc" />
 			</fileset>
 		</copy>
@@ -49,7 +49,7 @@
 
 	<target name="uirunner" depends="library">
 		<copy todir="${uirunner.loc}/libs" overwrite="true">
-			<fileset dir="${library.loc}/dist">
+			<fileset dir="${library.loc}/target">
 				<include name="*.swc" />
 			</fileset>
 		</copy>
@@ -62,21 +62,21 @@
 
 	<target name="package" depends="anttasks,library,cilistener,uirunner">
 		<zip destfile="${basedir}/${build.artifact.name}">
-			<zipfileset dir="${anttasks.loc}/docs" prefix="flexunit/docs/anttasks" />
-			<zipfileset dir="${library.loc}/docs/asdocs" prefix="flexunit/docs/flexunit" />
-			<zipfileset dir="${cilistener.loc}/docs" prefix="flexunit/docs/cilistener" />
-			<zipfileset dir="${uirunner.loc}/docs" prefix="flexunit/docs/uirunner" />
+			<zipfileset dir="${anttasks.loc}/target/docs" prefix="flexunit/docs/anttasks" />
+			<zipfileset dir="${library.loc}/target/docs" prefix="flexunit/docs/flexunit" />
+			<zipfileset dir="${cilistener.loc}/target/docs" prefix="flexunit/docs/cilistener" />
+			<zipfileset dir="${uirunner.loc}/target/docs" prefix="flexunit/docs/uirunner" />
 
-			<zipfileset dir="${anttasks.loc}/dist" prefix="flexunit">
+			<zipfileset dir="${anttasks.loc}/target" prefix="flexunit">
 				<include name="*.jar" />
 			</zipfileset>
-			<zipfileset dir="${library.loc}/dist" prefix="flexunit">
+			<zipfileset dir="${library.loc}/target" prefix="flexunit">
 				<include name="*.swc" />
 			</zipfileset>
-			<zipfileset dir="${cilistener.loc}/dist" prefix="flexunit">
+			<zipfileset dir="${cilistener.loc}/target" prefix="flexunit">
 				<include name="*.swc" />
 			</zipfileset>
-			<zipfileset dir="${uirunner.loc}/dist" prefix="flexunit">
+			<zipfileset dir="${uirunner.loc}/target" prefix="flexunit">
 				<include name="*.swc" />
 			</zipfileset>
 		</zip>
