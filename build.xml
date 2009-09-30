@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+Since we're eating our own dogfood here, our build process is a bit non-standard.  Currently,
+we run package on all projects, then execute our unit tests, then run report on all projects
+and then package up the final zip.  Ideally the call to this script would be:
+
+	ant -v clean package
+
+which should call the following targets
+
+	clean->init->anttasks->library->cilistener->uirunner->test->report->package
+-->
 <project name="FlexUnit4" basedir="." default="test">
 	<property environment="env" />
 
@@ -60,7 +72,44 @@
 		</ant>
 	</target>
 
-	<target name="package" depends="anttasks,library,cilistener,uirunner">
+	<target name="test" depends="anttasks,library,cilistener,uirunner">
+		<copy todir="${library.loc}/libs" overwrite="true">
+			<fileset dir="${anttasks.loc}/dist">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${cilistener.loc}/dist">
+				<include name="*.swc" />
+			</fileset>
+			<fileset dir="${uirunner.loc}/dist">
+				<include name="*.swc" />
+			</fileset>
+		</copy>
+
+		<ant dir="${library.loc}" target="test" inheritall="false">
+			<property name="build.number" value="${build.number}" />
+			<property name="build.useFlex" value="${build.useFlex}" />
+		</ant>
+	</target>
+
+	<target name="report" depends="test">
+		<ant dir="${anttasks.loc}" target="report" inheritall="false">
+			<property name="build.number" value="${build.number}" />
+		</ant>
+		<ant dir="${library.loc}" target="report" inheritall="false">
+			<property name="build.number" value="${build.number}" />
+			<property name="build.useFlex" value="${build.useFlex}" />
+		</ant>
+		<ant dir="${cilistener.loc}" target="report" inheritall="false">
+			<property name="build.number" value="${build.number}" />
+			<property name="build.useFlex" value="${build.useFlex}" />
+		</ant>
+		<ant dir="${uirunner.loc}" target="report" inheritall="false">
+			<property name="build.number" value="${build.number}" />
+			<property name="build.useFlex" value="${build.useFlex}" />
+		</ant>
+	</target>
+
+	<target name="package" depends="report">
 		<zip destfile="${basedir}/${build.artifact.name}">
 			<zipfileset dir="${anttasks.loc}/target/docs" prefix="flexunit/docs/anttasks" />
 			<zipfileset dir="${library.loc}/target/docs" prefix="flexunit/docs/flexunit" />
@@ -80,21 +129,5 @@
 				<include name="*.swc" />
 			</zipfileset>
 		</zip>
-	</target>
-
-	<target name="test" depends="package">
-		<copy todir="${library.loc}/libs" overwrite="true">
-			<fileset dir="${anttasks.loc}/dist">
-				<include name="*.jar" />
-			</fileset>
-			<fileset dir="${cilistener.loc}/dist">
-				<include name="*.swc" />
-			</fileset>
-			<fileset dir="${uirunner.loc}/dist">
-				<include name="*.swc" />
-			</fileset>
-		</copy>
-
-		<ant dir="${library.loc}" target="test" inheritall="false" />
 	</target>
 </project>

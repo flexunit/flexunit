@@ -1,3 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Do not set dependency between package and test|report targets, allow parent build script to manage relationship.
+If you are using the build file directly, below is the suggested call:
+
+	ant -v clean package test report
+-->
 <project name="FlexUnit4CIListener" basedir="." default="package">
 	<property environment="env" />
 
@@ -10,6 +17,8 @@
 	<property name="main.src.loc" location="${basedir}/src" />
 	<property name="lib.loc" location="${basedir}/libs" />
 	<property name="bin.loc" location="${basedir}/target/bin" />
+	<property name="report.xunit.loc" location="${basedir}/target/report/xunit" />
+	<property name="report.pmd.loc" location="${basedir}/target/report/pmd" />
 	<property name="doc.loc" location="${basedir}/target/docs" />
 	<property name="dist.loc" location="${basedir}/target" />
 
@@ -35,6 +44,8 @@
 		<mkdir dir="${bin.loc}" />
 		<mkdir dir="${dist.loc}" />
 		<mkdir dir="${doc.loc}" />
+		<mkdir dir="${report.xunit.loc}" />
+		<mkdir dir="${report.pmd.loc}" />
 	</target>
 
 	<target name="compile" depends="init">
@@ -58,6 +69,15 @@
 
 	<target name="package" depends="compile">
 		<copy file="${bin.loc}/${build.artifact.name}" tofile="${dist.loc}/${build.artifact.name}" />
+	</target>
+
+	<target name="test" />
+	
+	<target name="report">
+		<taskdef name="flexPmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" />
+					
+		<flexPmd sourceDirectory="${main.src.loc}" outputDirectory="${report.pmd.loc}" />
+		
 		<java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
 			<arg line="+flexlib '${FLEX_HOME}/frameworks'" />
 			<arg line="-doc-sources '${main.src.loc}'" />
@@ -67,6 +87,4 @@
 			<arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
 		</java>
 	</target>
-
-	<target name="test" />
 </project>

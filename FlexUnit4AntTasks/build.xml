@@ -1,3 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+Do not set dependency between package and test|report targets, allow parent build script to manage relationship.
+If you are using the build file directly, below is the suggested call:
+
+	ant -v clean package test report
+-->
 <project name="FlexUnitAntTasks" basedir="." default="package">
 	<!-- Configuration -->
 	<property name="build.number" value="4.0.0" />
@@ -7,6 +15,8 @@
 	<property name="main.src.loc" location="${basedir}/src" />
 	<property name="lib.loc" location="${basedir}/lib" />
 	<property name="bin.loc" location="${basedir}/target/bin" />
+	<property name="report.xunit.loc" location="${basedir}/target/report/xunit" />
+	<property name="report.pmd.loc" location="${basedir}/target/report/pmd" />
 	<property name="dist.loc" location="${basedir}/target" />
 	<property name="doc.loc" location="${basedir}/target/docs" />
 
@@ -22,6 +32,8 @@
 		<mkdir dir="${bin.loc}" />
 		<mkdir dir="${dist.loc}" />
 		<mkdir dir="${doc.loc}" />
+		<mkdir dir="${report.xunit.loc}" />
+		<mkdir dir="${report.pmd.loc}" />
 	</target>
 
 	<target name="compile" depends="init">
@@ -46,7 +58,26 @@
 				<include name="**/*" />
 			</fileset>
 		</jar>
+	</target>
 
+	<target name="test" />
+
+	<target name="report">
+		<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" />
+		
+		<pmd>
+			<formatter type="xml" toFile="${report.pmd.loc}/pmd.xml"/>
+			<ruleset>basic</ruleset>
+			<ruleset>imports</ruleset>
+			<ruleset>javabeans</ruleset>
+			<ruleset>coupling</ruleset>
+			<ruleset>design</ruleset>
+			<ruleset>unusedcode</ruleset>
+			<fileset dir="${main.src.loc}">
+				<include name="**/*.java" />
+			</fileset>
+		</pmd>
+		
 		<javadoc destdir="${doc.loc}" packagenames="org.flexunit.ant.*" sourcepath="${main.src.loc}" access="private" Author="true" version="true" Use="true" noindex="true" Windowtitle="FlexUnit Ant Tasks " Doctitle="FlexUnit Ant Tasks" failonerror="true" />
 	</target>
 </project>

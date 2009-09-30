@@ -1,3 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Do not set dependency between package and test|report targets, allow parent build script to manage relationship.
+If you are using the build file directly, below is the suggested call:
+
+	ant -v clean package test report
+-->
 <project name="FlexUnit4UIRunner" basedir="." default="package">
 	<property environment="env" />
 
@@ -11,6 +18,8 @@
 	<property name="main.src.loc" location="${basedir}/src" />
 	<property name="lib.loc" location="${basedir}/libs" />
 	<property name="bin.loc" location="${basedir}/target/bin" />
+	<property name="report.xunit.loc" location="${basedir}/target/report/xunit" />
+	<property name="report.pmd.loc" location="${basedir}/target/report/pmd" />
 	<property name="doc.loc" location="${basedir}/target/docs" />
 	<property name="dist.loc" location="${basedir}/target" />
 
@@ -40,21 +49,21 @@
 
 	<target name="compile" depends="init">
 		<java jar="${FLEX_HOME}/lib/compc.jar" fork="true" failonerror="true">
-	        <arg line="+flexlib '${FLEX_HOME}/frameworks'" />
-	        <arg line="-external-library-path+='${FLEX_HOME}/frameworks/libs/flex.swc','${FLEX_HOME}/frameworks/libs/framework.swc','${FLEX_HOME}/frameworks/libs/rpc.swc','${FLEX_HOME}/frameworks/libs/utilities.swc'" />
+			<arg line="+flexlib '${FLEX_HOME}/frameworks'" />
+			<arg line="-external-library-path+='${FLEX_HOME}/frameworks/libs/flex.swc','${FLEX_HOME}/frameworks/libs/framework.swc','${FLEX_HOME}/frameworks/libs/rpc.swc','${FLEX_HOME}/frameworks/libs/utilities.swc'" />
 			<arg line="-external-library-path+='${lib.loc}/flexunit-${build.number}.swc'" />
-	        <arg line="-namespace ${build.namespace} '${main.src.loc}/FlexUnit4UIRunner-manifest.xml'" />
-	        <arg line="-output '${bin.loc}/${build.artifact.name}'" />
-	        <arg line="-source-path+='${main.src.loc}'" />
+			<arg line="-namespace ${build.namespace} '${main.src.loc}/FlexUnit4UIRunner-manifest.xml'" />
+			<arg line="-output '${bin.loc}/${build.artifact.name}'" />
+			<arg line="-source-path+='${main.src.loc}'" />
 			<arg line="-include-namespaces ${build.namespace}" />
-	        <arg line="-include-classes org.flexunit.listeners.UIListener" />
+			<arg line="-include-classes org.flexunit.listeners.UIListener" />
 			<arg line="-include-stylesheet css/FlexUnit.css '${main.src.loc}/css/FlexUnit.css'" />
 			<arg line="-include-stylesheet css/FlexUnitComponents.css '${main.src.loc}/css/FlexUnitComponents.css'" />
 			<arg line="-include-file font/fonts.swf '${main.src.loc}/fonts/fonts.swf'" />
 			<arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
 			<arg line="-verbose-stacktraces=true" />
 			<arg line="-headless-server=true" />
-	    </java>
+		</java>
 		<!-- <compc output="${bin.loc}/${build.artifact.name}">
 			<include-stylesheet name="css/FlexUnit.css" path="${main.src.loc}/css/FlexUnit.css" />
 			<include-stylesheet name="css/FlexUnitComponents.css" path="${main.src.loc}/css/FlexUnitComponents.css" />
@@ -79,6 +88,15 @@
 
 	<target name="package" depends="compile">
 		<copy file="${bin.loc}/${build.artifact.name}" tofile="${dist.loc}/${build.artifact.name}" />
+	</target>
+
+	<target name="test" />
+
+	<target name="report">
+		<taskdef name="flexPmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" />
+
+		<flexPmd sourceDirectory="${main.src.loc}" outputDirectory="${report.pmd.loc}" />
+
 		<java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
 			<arg line="+flexlib '${FLEX_HOME}/frameworks'" />
 			<arg line="-doc-sources '${main.src.loc}'" />
@@ -88,6 +106,4 @@
 			<arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
 		</java>
 	</target>
-
-	<target name="test" />
 </project>
