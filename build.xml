@@ -74,13 +74,13 @@ which should call the following targets
 
 	<target name="test" depends="anttasks,library,cilistener,uirunner">
 		<copy todir="${library.loc}/libs" overwrite="true">
-			<fileset dir="${anttasks.loc}/dist">
+			<fileset dir="${anttasks.loc}/target">
 				<include name="*.jar" />
 			</fileset>
-			<fileset dir="${cilistener.loc}/dist">
+			<fileset dir="${cilistener.loc}/target">
 				<include name="*.swc" />
 			</fileset>
-			<fileset dir="${uirunner.loc}/dist">
+			<fileset dir="${uirunner.loc}/target">
 				<include name="*.swc" />
 			</fileset>
 		</copy>
