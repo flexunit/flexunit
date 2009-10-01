@@ -37,8 +37,8 @@ public class Report
    private static final String ERROR_SAVING_REPORT = "Error saving report.";
 
    // XML attribute labels
-   private static final String NAME_ATTRIBUTE = "@name";
-   private static final String STATUS_ATTRIBUTE = "@status";
+   private static final String NAME_ATTRIBUTE = "name";
+   private static final String STATUS_ATTRIBUTE = "status";
 
    protected Suite suite;
    private Document document;
@@ -86,8 +86,8 @@ public class Report
    {
       // Get the root element and pull the test name and status
       final Element root = test.getRootElement();
-      final String name = root.valueOf(NAME_ATTRIBUTE);
-      final String status = root.valueOf(STATUS_ATTRIBUTE);
+      final String name = root.attributeValue(NAME_ATTRIBUTE);
+      final String status = root.attributeValue(STATUS_ATTRIBUTE);
 
       String format = null;
       if (status.equals(FAILURE))

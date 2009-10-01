@@ -23,7 +23,7 @@ public class FlexUnitSocketThread implements Callable<Object>
    private static final String END_OF_IGNORE = "<skipped /></testcase>";
 
    // XML attribute labels
-   private static final String SUITE_ATTRIBUTE = "@classname";
+   private static final String SUITE_ATTRIBUTE = "classname";
 
    private File reportDir;
 
@@ -101,7 +101,7 @@ public class FlexUnitSocketThread implements Callable<Object>
       Document test = parseReport(xml);
 
       // Find the name of the suite
-      String suiteName = test.getRootElement().valueOf(SUITE_ATTRIBUTE);
+      String suiteName = test.getRootElement().attributeValue(SUITE_ATTRIBUTE);
 
       // Convert all instances of :: for file support
       suiteName = suiteName.replaceAll("::", ".");
