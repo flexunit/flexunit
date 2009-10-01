@@ -63,7 +63,21 @@ If you are using the build file directly, below is the suggested call:
 			<library-path dir="${lib.loc}" append="true">
 				<include name="*.swc" />
 			</library-path>
-			<compiler.keep-as3-metadata>RunWith,BeforeClass,AfterClass,Before,After,Suite,Test,TestCase,Ignore,Filter,Sort,Theory,DataPoint,DataPoints,ArrayElementType</compiler.keep-as3-metadata>
+			<keep-as3-metadata name="RunWith" />
+			<keep-as3-metadata name="BeforeClass" />
+			<keep-as3-metadata name="AfterClass" />
+			<keep-as3-metadata name="Before" />
+			<keep-as3-metadata name="After" />
+			<keep-as3-metadata name="Suite" />
+			<keep-as3-metadata name="Test" />
+			<keep-as3-metadata name="TestCase" />
+			<keep-as3-metadata name="Ignore" />
+			<keep-as3-metadata name="Filter" />
+			<keep-as3-metadata name="Sort" />
+			<keep-as3-metadata name="Theory" />
+			<keep-as3-metadata name="DataPoint" />
+			<keep-as3-metadata name="DataPoints" />
+			<keep-as3-metadata name="ArrayElementType" />
 			<define name="CONFIG::useFlexClasses" value="${build.useFlex}" />
 			<compiler.external-library-path dir="${FLEX_HOME}/frameworks/libs" append="true">
 				<include name="flex.swc" />
@@ -101,15 +115,18 @@ If you are using the build file directly, below is the suggested call:
 			<fileset dir="${report.xunit.loc}">
 				<include name="TEST-*.xml" />
 			</fileset>
-			<report format="frames" todir="${report.loc}/html" />
+			<report format="frames" todir="${report.xunit.loc}/html" />
 		</junitreport>
 	</target>
-	
+
 	<target name="report">
 		<taskdef name="flexPmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" />
-				
+
 		<flexPmd sourceDirectory="${main.src.loc}" outputDirectory="${report.pmd.loc}" />
-		
+
+		<!-- Pull in class file list to use with asdoc -->
+		<property file="${bin.loc}/flexLib.properties" />
+
 		<java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
 			<arg line="+flexlib '${FLEX_HOME}/frameworks'" />
 			<arg line="-doc-classes ${main.src.class-list}" />
