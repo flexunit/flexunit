@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="500" height="400"  headerHeight="30"  headerColors="0x0000FF" title="FlexUnit Test Run"  verticalAlign="middle" horizontalAlign="center" initialize="{initializeLocalizeString()}" >
+	
+	<mx:Metadata>
+		[ResourceBundle("FlexUnitTestRunner")]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+			import org.flexunit.internals.listeners.XMLListener;
+			import suite.cases.MySuite;
+			import org.flexunit.runner.FlexUnitCore;
+		
+			import mx.core.Application;
+			import flexunit.framework.AssertionFailedError;
+			import flexunit.framework.Test;
+			import flexunit.framework.TestListener;
+			import flexunit.framework.TestResult;
+			import mx.resources.IResourceManager;
+			import mx.resources.ResourceManager;
+			import mx.resources.ResourceBundle;
+			
+			private var socketBasedRunner:FlexUnitTestRunner;
+			private var completionListenerFuncitonFromCallingApplicaiton:Function = null;
+			
+			[Bindable]
+			private static var testOverMessage:String;
+			[Bindable]
+			private static var totalTestRunCountLabel:String;
+			[Bindable]
+			private static var testRunningLabel:String;
+			[Bindable]
+			private static var seeResultInFlexBuilderLabel:String;
+			[Bindable]
+			private static var dontCloseWindowMessage:String;
+			[Bindable]
+			private static var automaticallyWindowMaynotCloseMessage:String;
+			[Bindable]
+			private static var closeTheWindowMessage:String;
+			[Bindable]
+			private static var closeTheBrowserButtonLabel:String;
+			private var core:FlexUnitCore;
+			private var listener:XMLListener; 	
+			
+			private var functionString1:String = "function(){"+
+											"var windowObject = window.self;"+
+											"windowObject.opener = window.self;" +
+											"windowObject.close(); }" ;
+		
+			private var functionString:String = "function(){window.close();}" ;
+			
+			
+			public function initializeLocalizeString():void
+			{
+				trace("initializeLocalizeString");
+				var resorceManager:IResourceManager= ResourceManager.getInstance();
+				
+				testOverMessage=resorceManager.getString("FlexUnitTestRunner","testOverMessage");
+				totalTestRunCountLabel=resorceManager.getString("FlexUnitTestRunner","totalTestRunCountLabel");
+				testRunningLabel=resorceManager.getString("FlexUnitTestRunner","testRunningLabel");
+				seeResultInFlexBuilderLabel = resorceManager.getString("FlexUnitTestRunner","seeResultInFlexBuilderLabel");   
+				dontCloseWindowMessage=resorceManager.getString("FlexUnitTestRunner","dontCloseWindowMessage");
+				automaticallyWindowMaynotCloseMessage=resorceManager.getString("FlexUnitTestRunner","automaticallyWindowMaynotCloseMessage");
+				closeTheWindowMessage=resorceManager.getString("FlexUnitTestRunner","closeTheWindowMessage");
+				closeTheBrowserButtonLabel=resorceManager.getString("FlexUnitTestRunner","closeTheBrowserButtonLabel");
+			}
+		
+			public function run (test : *, projectName:String="", contextName:String="", onComplete : Function = null ):TestResult
+			{
+				trace("run");
+				/*socketBasedRunner = new FlexUnitTestRunner();
+				completionListenerFuncitonFromCallingApplicaiton = onComplete;
+				return socketBasedRunner.run(test,projectName,contextName,completionLister);*/
+			//	var core:FlexUnitCore = new FlexUnitCore();
+			//	core.run( MySuite );
+			//	return null;
+				core = new FlexUnitCore();
+				listener = new XMLListener( this );
+				addEventListener(Event.CONNECT, handleConnect );
+				addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
+				addEventListener(SecurityErrorEvent.SECURITY_ERROR,errorHandler);
+	   	   		addEventListener(Event.CLOSE,errorHandler);
+	   	   		return null;
+			}
+			private function errorHandler(event:Event):void{
+				trace("handle error");
+			}
+			private function handleConnect(event:Event):void{
+				trace("handle Connect");
+					core.addListener(listener);
+					core.run( MySuite );	
+			}
+			public function completionLister():void
+			{
+				trace("completionLister");
+			/*	var totalTestsRun :int = socketBasedRunner.getTotalTestsRun();
+				//closeBrowserAction.enabled = true;
+				l1.text = testOverMessage;
+				l11.visible = true;
+				l11.includeInLayout = true;
+				l11.text = totalTestRunCountLabel + totalTestsRun;
+				l3.visible = false;
+				l3.includeInLayout = false;
+				l4.visible = true;
+				l4.includeInLayout = true;
+				l5.visible = true;
+				l5.includeInLayout = true;
+				if(completionListenerFuncitonFromCallingApplicaiton != null)
+					completionListenerFuncitonFromCallingApplicaiton();*/
+			}
+			
+			 
+			private function closeFunction():void
+			{
+				Application.application.hasOwnProperty("applicationID")
+				{
+						if(ExternalInterface.available)
+							var result:Object=  ExternalInterface.call(functionString);
+				}
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:VBox  horizontalAlign="centre">
+		<mx:Label  id="l1" height="50" text='{testRunningLabel}' fontSize="20" horizontalCenter="true"/>
+		<mx:Label  id="l11" height="50" text="" fontSize="15" horizontalCenter="true" color="0xFF0000"   visible="false" includeInLayout="false" />
+		<mx:Label id="l2"  height="50"  text='{seeResultInFlexBuilderLabel}' />
+		<mx:Label  id="l3" height="50"   color="0xFF0000" text='{dontCloseWindowMessage}' fontSize="15" horizontalCenter="true"/>
+		<mx:Label  id="l5" height="50"  color="0x000000"  visible="false" includeInLayout="false" text='{automaticallyWindowMaynotCloseMessage}' fontSize="10" horizontalCenter="true"/>
+		<mx:Label  id="l4" height="50"   color="0x00FF00"  visible="false" includeInLayout="false" text='{closeTheWindowMessage}' fontSize="15" horizontalCenter="true"/>
+
+	</mx:VBox>
+	<!--<mx:Button id="closeBrowserAction" label='{closeTheBrowserButtonLabel}' enabled="false" height="100" click="{closeFunction()}" /> -->
+</mx:Panel>
