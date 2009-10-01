@@ -55,7 +55,7 @@ If you are using the build file directly, below is the suggested call:
 		<property file="${bin.loc}/flexLib.properties" />
 
 		<!-- Compile swc -->
-		<java jar="${FLEX_HOME}/lib/compc.jar" fork="true" failonerror="true">
+		<java jar="${FLEX_HOME}/lib/compc.jar" fork="false" failonerror="true" >
 			<arg line="+flexlib '${FLEX_HOME}/frameworks'" />
 			<arg line="-external-library-path+='${FLEX_HOME}/frameworks/libs/flex.swc','${FLEX_HOME}/frameworks/libs/framework.swc','${FLEX_HOME}/frameworks/libs/rpc.swc','${FLEX_HOME}/frameworks/libs/utilities.swc'" />
 			<arg line="-external-library-path+='${lib.loc}/flexunit-${build.number}.swc'" />
