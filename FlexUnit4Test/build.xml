@@ -14,7 +14,7 @@ dependency which would be more difficult to manage from a build perspective.
 	<property name="test.artifact.name" value="TestRunner.swf" />
 
 	<!-- Setup paths for build -->
-	<property name="test.src.loc" location="${basedir}/test" />
+	<property name="test.src.loc" location="${basedir}/src" />
 	<property name="lib.loc" location="${basedir}/libs" />
 	<property name="bin.loc" location="${basedir}/target/bin" />
 	<property name="report.xunit.loc" location="${basedir}/target/report/xunit" />
