@@ -27,7 +27,7 @@
  **/ 
 
 package org.flexunit.token {
-	import org.flexunit.async.AsyncTestResponder;
+	
 	
 	dynamic public class AsyncTestToken {
 		private var methodsEntries:Array;
@@ -77,12 +77,17 @@ package org.flexunit.token {
 		
 		public function toString():String {
 			var output:String = "";
+			var numEntries:int = 0;
 			
 			if ( debugClassName ) {
 				output += ( debugClassName + ": " );
 			}
 			
-			output += ( methodsEntries.length + " listeners" );
+			if ( methodsEntries ) {
+				numEntries = methodsEntries.length;
+			}
+			
+			output += ( numEntries + " listeners" );
 			
 			return output; 
 		}
