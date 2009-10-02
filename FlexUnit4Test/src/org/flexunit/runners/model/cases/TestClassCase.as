@@ -46,6 +46,7 @@ package org.flexunit.runners.model.cases
 		}
 		
 		//TODO: Is there a way to test the get metadata for a null klassInfo?  Right now klassInfo will always return a non-null value.
+		[Ignore("We have a Flex 4/Flex 3 compatibility issue here")]
 		[Test(description="Ensure that get metadata returns the expected metadata")]
 		public function getMetadataTest():void {
 			var metadata:XMLList = testClass.metadata;
