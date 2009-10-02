@@ -32,7 +32,6 @@ package org.flexunit.runner {
 	
 	import org.flexunit.IncludeFlexClasses;
 	import org.flexunit.experimental.theories.Theories;
-	import org.flexunit.internals.TextListener;
 	import org.flexunit.runner.notification.Failure;
 	import org.flexunit.runner.notification.IAsyncStartupRunListener;
 	import org.flexunit.runner.notification.IRunListener;
@@ -124,8 +123,6 @@ package org.flexunit.runner {
 			
 			dealWithArgArray( args, foundClasses, missingClasses );
 
-			//var listener:IRunListener = new TextListener( logger );
-			//addListener( listener );
 			var result:Result = runClasses.apply( this, foundClasses );
 			
 			for ( var i:int=0; i<missingClasses.length; i++ ) {
