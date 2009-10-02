@@ -53,11 +53,8 @@ If you are using the build file directly, below is the suggested call:
 		<property file="${bin.loc}/flexLib.properties" />
 
 		<!-- Compile swc -->
-		<compc include-classes="${main.src.class-list}" output="${bin.loc}/${build.artifact.name}">
+		<compc include-classes="${main.src.class-list}" link-report="${bin.loc}/link-report.xml" output="${bin.loc}/${build.artifact.name}">
 			<source-path path-element="${main.src.loc}" />
-			<library-path dir="${lib.loc}" append="true">
-				<include name="*.swc" />
-			</library-path>
 			<keep-as3-metadata name="RunWith" />
 			<keep-as3-metadata name="BeforeClass" />
 			<keep-as3-metadata name="AfterClass" />
@@ -74,6 +71,9 @@ If you are using the build file directly, below is the suggested call:
 			<keep-as3-metadata name="DataPoints" />
 			<keep-as3-metadata name="ArrayElementType" />
 			<define name="CONFIG::useFlexClasses" value="${build.useFlex}" />
+			<compiler.external-library-path dir="${lib.loc}" append="true">
+				<include name="*.swc" />
+			</compiler.external-library-path>
 			<compiler.external-library-path dir="${FLEX_HOME}/frameworks/libs" append="true">
 				<include name="flex.swc" />
 				<include name="framework.swc" />
@@ -85,7 +85,21 @@ If you are using the build file directly, below is the suggested call:
 		</compc>
 	</target>
 
-	<target name="package" depends="compile">
+	<target name="as3-linker-check">
+		<!-- Create properties file from .flexLibProperties -->
+		<xslt in="${bin.loc}/link-report.xml" out="${bin.loc}/flex-dependencies.txt" style="${basedir}/link-report.xsl" />
+
+		<fail message="Build contains depedencies on the Flex framework, but is being built for AS3.">
+			<condition>
+				<and>
+					<equals arg1="${build.useFlex}" arg2="false" casesensitive="false" trim="true" />
+					<length file="${bin.loc}/flex-dependencies.txt" when="greater" length="0" />
+				</and>
+			</condition>
+		</fail>
+	</target>
+
+	<target name="package" depends="compile,as3-linker-check">
 		<copy file="${bin.loc}/${build.artifact.name}" tofile="${dist.loc}/${build.artifact.name}" />
 	</target>
 
