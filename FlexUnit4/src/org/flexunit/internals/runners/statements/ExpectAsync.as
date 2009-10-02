@@ -27,6 +27,7 @@
  **/ 
 package org.flexunit.internals.runners.statements {
 	import flash.events.Event;
+	import flash.utils.Dictionary;
 	
 	import mx.events.PropertyChangeEvent;
 	import mx.rpc.IResponder;
@@ -57,6 +58,7 @@ package org.flexunit.internals.runners.statements {
 		
 		private var testComplete:Boolean;
 		private var pendingAsyncCalls:Array;
+		private var asyncFailureConditions:Dictionary;
 
 		private var methodBodyExecuting:Boolean = false;
 		
@@ -83,6 +85,26 @@ package org.flexunit.internals.runners.statements {
 		private function removeAsyncEventListeners( asyncHandler:AsyncHandler ):void {
 			asyncHandler.removeEventListener( AsyncHandler.EVENT_FIRED, handleAsyncEventFired, false );
 			asyncHandler.removeEventListener( AsyncHandler.TIMER_EXPIRED, handleAsyncTimeOut, false );
+		}
+
+		private function removeAsyncErrorEventListeners( asyncHandler:AsyncHandler ):void {
+			asyncHandler.removeEventListener( AsyncHandler.EVENT_FIRED, handleAsyncErrorFired, false );
+			asyncHandler.removeEventListener( AsyncHandler.TIMER_EXPIRED, handleAsyncTimeOut, false );
+		}
+		
+		//This needs to be cleaned up and revised... just a prototype
+		public function asyncErrorConditionHandler( eventHandler:Function, timeout:int=0, passThroughData:Object = null, timeoutHandler:Function = null ):Function {
+			if ( testComplete ) {
+				sendComplete( new Error("Test Completed, but additional async event added") );
+			}
+
+			var asyncHandler:AsyncHandler = new AsyncHandler( this, eventHandler, timeout, passThroughData, timeoutHandler )
+			asyncHandler.addEventListener( AsyncHandler.EVENT_FIRED, handleAsyncErrorFired, false, 0, true );
+			//asyncHandler.addEventListener( AsyncHandler.TIMER_EXPIRED, handleAsyncTimeOut, false, 0, true );
+
+			asyncFailureConditions[ asyncHandler ] = true; 
+
+			return asyncHandler.handleEvent;
 		}
 		
 		public function asyncHandler( eventHandler:Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):Function { 
@@ -145,6 +167,14 @@ package org.flexunit.internals.runners.statements {
 			for ( var i:int=0; i<pendingAsyncCalls.length; i++ ) {
 				removeAsyncEventListeners( pendingAsyncCalls[ i ] as AsyncHandler );
 			}
+			
+			pendingAsyncCalls = new Array();
+			
+			for ( var handler:* in asyncFailureConditions ) {
+				removeAsyncErrorEventListeners( handler as AsyncHandler );
+			} 
+			
+			asyncFailureConditions = new Dictionary( true );
 		}
 
 		private function handleAsyncTimeOut( event:Event ):void {
@@ -162,8 +192,7 @@ package org.flexunit.internals.runners.statements {
 			}
 
 			//Remove all future pending items
-			removeAllAsyncEventListeners();
-			pendingAsyncCalls = new Array();
+			removeAllAsyncEventListeners();			
 /**
 			var methodResult:TestMethodResult = testMonitor.getTestMethodResult( registeredMethod );
 			if ( methodResult && ( !methodResult.traceInformation ) ) {
@@ -197,6 +226,10 @@ package org.flexunit.internals.runners.statements {
 					originalResponder.fault( event.data );					
 				}
 			}
+		}
+		
+		private function handleAsyncErrorFired( event:AsyncEvent ):void {
+			sendComplete( new Error( "Failing due to Async Event " + event?event:'' ) );
 		}
 
 		private function handleAsyncEventFired( event:AsyncEvent ):void {
@@ -310,7 +343,6 @@ package org.flexunit.internals.runners.statements {
 				testComplete = true;
 				AsyncLocator.cleanUpCallableForTest( objectUnderTest );
 				removeAllAsyncEventListeners();
-				pendingAsyncCalls = new Array();
 				parentToken.sendResult( error );			
 			}
 		}
@@ -374,6 +406,7 @@ package org.flexunit.internals.runners.statements {
 			myToken.addNotificationMethod( handleNextExecuteComplete );
 			
 			pendingAsyncCalls = new Array();
+			asyncFailureConditions = new Dictionary( true );
 		}
 	}
 }

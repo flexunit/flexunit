@@ -38,6 +38,7 @@ package org.flexunit.internals.runners.statements
 		function get bodyExecuting():Boolean;
 
 		function asyncHandler( eventHandler:Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):Function; 
+		function asyncErrorConditionHandler( eventHandler:Function, timeout:int=0, passThroughData:Object = null, timeoutHandler:Function = null ):Function;
 		
 		// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
 		// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
