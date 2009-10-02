@@ -41,7 +41,6 @@
     <classEntry path="org.flexunit.internals.AssumptionViolatedException"/>
     <classEntry path="org.flexunit.internals.FlexUnitSystem"/>
     <classEntry path="org.flexunit.internals.RealSystem"/>
-    <classEntry path="org.flexunit.internals.TextListener"/>
     <classEntry path="org.flexunit.internals.TraceListener"/>
     <classEntry path="org.flexunit.internals.builders.AllDefaultPossibilitiesBuilder"/>
     <classEntry path="org.flexunit.internals.builders.FlexUnit1Builder"/>
