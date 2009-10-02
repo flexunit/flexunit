@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-Do not set dependency between package and test|report targets, allow parent build script to manage relationship.
-If you are using the build file directly, below is the suggested call:
-
-	ant -v clean package test report
--->
 <project name="FlexUnit4CIListener" basedir="." default="package">
 	<property environment="env" />
 
@@ -67,12 +61,13 @@ If you are using the build file directly, below is the suggested call:
 		</compc>
 	</target>
 
-	<target name="package" depends="compile">
+	<target name="test" depends="compile" />
+	
+	<target name="package" depends="test">
 		<copy file="${bin.loc}/${build.artifact.name}" tofile="${dist.loc}/${build.artifact.name}" />
 	</target>
 
-	<target name="test" />
-	
+	<!-- Generate static code analysis with PMD and asdocs -->
 	<target name="report">
 		<taskdef name="flexPmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" />
 					

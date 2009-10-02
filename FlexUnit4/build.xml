@@ -5,22 +5,18 @@ If you are using the build file directly, below is the suggested call:
 
 	ant -v clean package test report
 -->
-<project name="FlexUnit4Library" basedir="." default="package">
+<project name="FlexUnit4Core" basedir="." default="package">
 	<property environment="env" />
 
 	<!-- Configuration -->
 	<property name="build.number" value="4.0.0" />
 	<property name="build.useFlex" value="true" />
 	<property name="build.artifact.name" value="flexunit-${build.number}.swc" />
-	<property name="test.application.name" value="TestRunner.mxml" />
-	<property name="test.artifact.name" value="TestRunner.swf" />
 
 	<!-- Setup paths for build -->
 	<property name="main.src.loc" location="${basedir}/src" />
-	<property name="test.src.loc" location="${basedir}/test" />
 	<property name="lib.loc" location="${basedir}/libs" />
 	<property name="bin.loc" location="${basedir}/target/bin" />
-	<property name="report.xunit.loc" location="${basedir}/target/report/xunit" />
 	<property name="report.pmd.loc" location="${basedir}/target/report/pmd" />
 	<property name="doc.loc" location="${basedir}/target/docs" />
 	<property name="dist.loc" location="${basedir}/target" />
@@ -44,7 +40,6 @@ If you are using the build file directly, below is the suggested call:
 		<echo message="" />
 
 		<mkdir dir="${bin.loc}" />
-		<mkdir dir="${report.xunit.loc}" />
 		<mkdir dir="${report.pmd.loc}" />
 		<mkdir dir="${dist.loc}" />
 		<mkdir dir="${doc.loc}" />
@@ -92,31 +87,6 @@ If you are using the build file directly, below is the suggested call:
 
 	<target name="package" depends="compile">
 		<copy file="${bin.loc}/${build.artifact.name}" tofile="${dist.loc}/${build.artifact.name}" />
-	</target>
-
-	<target name="test">
-		<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks-${build.number}.jar" />
-
-		<mxmlc file="${test.src.loc}/TestRunner.mxml" output="${bin.loc}/${test.artifact.name}">
-			<library-path dir="${lib.loc}" append="true">
-				<include name="*.swc" />
-			</library-path>
-			<library-path dir="${bin.loc}" append="true">
-				<include name="${build.artifact.name}" />
-			</library-path>
-			<define name="CONFIG::useFlexClasses" value="${build.useFlex}" />
-			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
-			<compiler.headless-server>true</compiler.headless-server>
-		</mxmlc>
-
-		<flexunit swf="${bin.loc}/${test.artifact.name}" toDir="${report.xunit.loc}" haltonfailure="true" verbose="true" localTrusted="true" />
-
-		<junitreport todir="${report.xunit.loc}">
-			<fileset dir="${report.xunit.loc}">
-				<include name="TEST-*.xml" />
-			</fileset>
-			<report format="frames" todir="${report.xunit.loc}/html" />
-		</junitreport>
 	</target>
 
 	<target name="report">

@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-Do not set dependency between package and test|report targets, allow parent build script to manage relationship.
-If you are using the build file directly, below is the suggested call:
-
-	ant -v clean package test report
--->
 <project name="FlexUnit4UIRunner" basedir="." default="package">
 	<property environment="env" />
 
@@ -18,7 +12,6 @@ If you are using the build file directly, below is the suggested call:
 	<property name="main.src.loc" location="${basedir}/src" />
 	<property name="lib.loc" location="${basedir}/libs" />
 	<property name="bin.loc" location="${basedir}/target/bin" />
-	<property name="report.xunit.loc" location="${basedir}/target/report/xunit" />
 	<property name="report.pmd.loc" location="${basedir}/target/report/pmd" />
 	<property name="doc.loc" location="${basedir}/target/docs" />
 	<property name="dist.loc" location="${basedir}/target" />
@@ -68,34 +61,15 @@ If you are using the build file directly, below is the suggested call:
 			<arg line="-verbose-stacktraces=true" />
 			<arg line="-headless-server=true" />
 		</java>
-		<!-- <compc output="${bin.loc}/${build.artifact.name}">
-			<include-stylesheet name="css/FlexUnit.css" path="${main.src.loc}/css/FlexUnit.css" />
-			<include-stylesheet name="css/FlexUnitComponents.css" path="${main.src.loc}/css/FlexUnitComponents.css" />
-			<include-classes class="org.flexunit.listeners.UIListener" />
-			<in uri="${build.namespace}" />
-			<source-path path-element="${main.src.loc}" />
-			<namespace uri="${build.namespace}" manifest="${main.src.loc}/FlexUnit4UIRunner-manifest.xml" />
-			<define name="CONFIG::useFlexClasses" value="${build.useFlex}" />
-			<compiler.external-library-path dir="${lib.loc}" append="true">
-				<include name="*.swc" />
-			</compiler.external-library-path>
-			<compiler.external-library-path dir="${FLEX_HOME}/frameworks/libs" append="true">
-				<include name="flex.swc" />
-				<include name="framework.swc" />
-				<include name="rpc.swc" />
-				<include name="utilities.swc" />
-			</compiler.external-library-path>
-			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
-			<compiler.headless-server>true</compiler.headless-server>
-		</compc> -->
 	</target>
 
-	<target name="package" depends="compile">
+	<target name="test" depends="compile"/>
+	
+	<target name="package" depends="test">
 		<copy file="${bin.loc}/${build.artifact.name}" tofile="${dist.loc}/${build.artifact.name}" />
 	</target>
 
-	<target name="test" />
-
+	<!-- Generate static code analysis with PMD and asdocs -->
 	<target name="report">
 		<taskdef name="flexPmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" />
 

@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- 
-Do not set dependency between package and test|report targets, allow parent build script to manage relationship.
-If you are using the build file directly, below is the suggested call:
-
-	ant -v clean package test report
--->
 <project name="FlexUnitAntTasks" basedir="." default="package">
 	<!-- Configuration -->
 	<property name="build.number" value="4.0.0" />
@@ -47,7 +40,9 @@ If you are using the build file directly, below is the suggested call:
 		</javac>
 	</target>
 
-	<target name="package" depends="compile">
+	<target name="test" depends="compile" />
+
+	<target name="package" depends="test">
 		<copy file="${main.src.loc}/flexUnitTasks.tasks" todir="${bin.loc}" />
 
 		<unjar src="${lib.loc}/dom4j-1.6.1.jar" dest="${bin.loc}" />
@@ -59,9 +54,8 @@ If you are using the build file directly, below is the suggested call:
 			</fileset>
 		</jar>
 	</target>
-
-	<target name="test" />
-
+	
+	<!-- Generate static code analysis with PMD and javadocs -->
 	<target name="report">
 		<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" />
 		

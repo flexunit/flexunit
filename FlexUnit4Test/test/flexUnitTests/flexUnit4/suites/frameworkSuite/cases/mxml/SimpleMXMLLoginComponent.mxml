@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" title="Please Login" height="168">
+	<mx:Metadata>
+		[Event('loginRequested')]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.validators.Validator;
+			protected function handleCancelClick( event:Event ):void {
+				usernameTI.text = '';
+				passwordTI.text = '';
+			}
+			
+			protected function handleLoginClick( event:Event ):void {
+				var results:Array = Validator.validateAll( validators );
+				
+				if ( results.length == 0 ) {
+					dispatchEvent( new Event( 'loginRequested' ) );	
+				}
+			}
+			
+			public function get username():String {
+				return usernameTI.text;
+			}
+
+			public function get password():String {
+				return passwordTI.text;
+			}
+			
+			public function setSomeValue( value:String ):void {
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:Array id="validators">
+		<mx:StringValidator id="sv1" required="true" minLength="1" maxLength="8" source="{usernameTI}" property="text"/>
+		<mx:StringValidator id="sv2" required="true" minLength="6" maxLength="10" source="{passwordTI}" property="text"/>
+	</mx:Array>
+
+	<mx:Form width="100%">
+		<mx:FormItem label="Username" required="true">
+			<mx:TextInput id="usernameTI"/>
+		</mx:FormItem>
+		<mx:FormItem  label="Password" required="true">
+			<mx:TextInput id="passwordTI" displayAsPassword="true"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:HBox width="100%" horizontalAlign="center">
+		<mx:Button id="loginBtn" label="Login" click="handleLoginClick( event )"/>
+		<mx:Button id="cancelBtn" label="Cancel" click="handleCancelClick( event )"/>
+	</mx:HBox>
+</mx:Panel>
