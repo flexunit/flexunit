@@ -6,7 +6,7 @@
 	</xsl:template>
 	<xsl:template match="report/scripts">
 		<xsl:for-each select="script">
-			<xsl:if test="dep[contains(@id, 'mx.')]">
+			<xsl:if test="dep[contains(@id, 'mx.') and not(contains(@id, 'mx.utils:'))]">
 				<xsl:copy-of select="." />
 			</xsl:if>
 		</xsl:for-each>
