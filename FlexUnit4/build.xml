@@ -55,6 +55,9 @@ If you are using the build file directly, below is the suggested call:
 		<!-- Compile swc -->
 		<compc include-classes="${main.src.class-list}" link-report="${bin.loc}/link-report.xml" output="${bin.loc}/${build.artifact.name}">
 			<source-path path-element="${main.src.loc}" />
+			<library-path dir="${lib.loc}" append="true">
+				<include name="*.swc" />
+			</library-path>
 			<keep-as3-metadata name="RunWith" />
 			<keep-as3-metadata name="BeforeClass" />
 			<keep-as3-metadata name="AfterClass" />
@@ -71,9 +74,6 @@ If you are using the build file directly, below is the suggested call:
 			<keep-as3-metadata name="DataPoints" />
 			<keep-as3-metadata name="ArrayElementType" />
 			<define name="CONFIG::useFlexClasses" value="${build.useFlex}" />
-			<compiler.external-library-path dir="${lib.loc}" append="true">
-				<include name="*.swc" />
-			</compiler.external-library-path>
 			<compiler.external-library-path dir="${FLEX_HOME}/frameworks/libs" append="true">
 				<include name="flex.swc" />
 				<include name="framework.swc" />
