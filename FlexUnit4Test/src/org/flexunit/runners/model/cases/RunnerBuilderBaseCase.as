@@ -1,7 +1,5 @@
 package org.flexunit.runners.model.cases
 {
-	import mx.events.Request;
-	
 	import org.flexunit.Assert;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.mocks.RequestMock;
