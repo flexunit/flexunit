@@ -78,7 +78,7 @@ dependency which would be more difficult to manage from a build perspective.
 		<parallel>
 			<!-- Launch CoverageViewer to generate coverage report -->
 			<sequential>
-				<exec executable="${FLEX_COVER_VIEWER}" dir="${bin.loc}">
+				<exec executable="${FLEX_COVER_VIEWER}" dir="${bin.loc}" spawn="true">
 					<arg line="-output '${report.flexcover.loc}/${instrument.report}'" />
 					<arg line="'${lib.loc}/${instrument.metadata}'" />
 				</exec>
