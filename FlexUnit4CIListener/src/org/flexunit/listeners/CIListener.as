@@ -48,8 +48,8 @@ package org.flexunit.listeners
 	
 	public class CIListener extends EventDispatcher implements IAsyncStartupRunListener
 	{
-		private static const DEFAULT_PORT : uint = 1024;
-		private static const DEFAULT_SERVER : String = "127.0.0.1";
+		protected static const DEFAULT_PORT : uint = 1024;
+		protected static const DEFAULT_SERVER : String = "127.0.0.1";
 		private static const SUCCESS:String = "success";
 		private static const ERROR:String = "error";
 		private static const FAILURE:String = "failure";
@@ -277,6 +277,8 @@ package org.flexunit.listeners
 				setStatusReady();
 			} else if ( data == END_OF_TEST_ACK ) {
 				// If we received an acknowledgement finish-up.
+				// Close the socket.
+				socket.close();
 				exit();
 			}
 		}
@@ -284,10 +286,8 @@ package org.flexunit.listeners
 		/**
 		 * Exit the test runner and close the player.
 		 */
-		private function exit() : void
+		protected function exit() : void
 		{
-			// Close the socket.
-			socket.close();
 			fscommand("quit");
 		}
 	}

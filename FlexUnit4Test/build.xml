@@ -10,18 +10,21 @@ dependency which would be more difficult to manage from a build perspective.
 	<!-- Configuration -->
 	<property name="build.number" value="4.0.0" />
 	<property name="build.useFlex" value="true" />
-	<property name="test.application.name" value="TestRunner.mxml" />
 	<property name="test.artifact.name" value="TestRunner.swf" />
+	<property name="instrument.metadata" value="flexunit-instrument-${build.number}.cvm" />
+	<property name="instrument.report" value="flexunit-instrument-${build.number}.cvr" />
 
 	<!-- Setup paths for build -->
 	<property name="test.src.loc" location="${basedir}/src" />
 	<property name="lib.loc" location="${basedir}/libs" />
 	<property name="bin.loc" location="${basedir}/target/bin" />
 	<property name="report.xunit.loc" location="${basedir}/target/report/xunit" />
+	<property name="report.flexcover.loc" location="${basedir}/target/report/flexcover" />
 	<property name="dist.loc" location="${basedir}/target" />
 
 	<!-- Setup Flex Ant Resources -->
 	<property name="FLEX_HOME" location="${env.FLEX_HOME}" />
+	<property name="FLEX_COVER_VIEWER" location="${env.FLEX_COVER_VIEWER}" />
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 
 	<target name="clean">
@@ -34,35 +37,70 @@ dependency which would be more difficult to manage from a build perspective.
 
 	<target name="init">
 		<echo message="Project: ${ant.project.name}" />
-		<echo message="SDK: ${FLEX_HOME}" />
+		<echo message="Flex SDK: ${FLEX_HOME}" />
 		<echo message="Use Flex: ${build.useFlex}" />
 		<echo message="" />
 
+		<!-- Create paths -->
 		<mkdir dir="${bin.loc}" />
 		<mkdir dir="${report.xunit.loc}" />
+		<mkdir dir="${report.flexcover.loc}" />
 		<mkdir dir="${dist.loc}" />
 	</target>
 
-	<target name="test" depends="init">
-		<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks-${build.number}.jar" />
-
-		<mxmlc file="${test.src.loc}/TestRunner.mxml" output="${bin.loc}/${test.artifact.name}">
+	<target name="test-compile" depends="init">
+		<!-- Are we running the deafult test runner or Flex Cover's runner? -->
+		<condition property="test.application.name" value="InstrumentTestRunner.mxml" else="TestRunner.mxml">
+			<available file="${lib.loc}/${instrument.metadata}" />
+		</condition>
+		
+		<!-- Build test swf -->
+		<mxmlc file="${test.src.loc}/${test.application.name}" output="${bin.loc}/${test.artifact.name}">
 			<library-path dir="${lib.loc}" append="true">
 				<include name="*.swc" />
-			</library-path>
-			<library-path dir="${bin.loc}" append="true">
-				<include name="${build.artifact.name}" />
 			</library-path>
 			<define name="CONFIG::useFlexClasses" value="${build.useFlex}" />
 			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
 			<compiler.headless-server>true</compiler.headless-server>
 		</mxmlc>
+	</target>
 
-		<flexunit swf="${bin.loc}/${test.artifact.name}" toDir="${report.xunit.loc}" haltonfailure="true" verbose="true" localTrusted="false" />
+	<target name="test-only" depends="test-compile" unless="build.instrument">
+		<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks-${build.number}.jar" />
+		
+		<!-- Run FlexUnit Ant Task -->
+		<flexunit swf="${bin.loc}/${test.artifact.name}" toDir="${report.xunit.loc}" haltonfailure="false" verbose="true" localTrusted="false" />
+	</target>
 
+	<target name="test-and-instrument" depends="test-compile" if="build.instrument">
+		<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks-${build.number}.jar" />
+		
+		<parallel>
+			<!-- Launch CoverageViewer to generate coverage report -->
+			<sequential>
+				<exec executable="${FLEX_COVER_VIEWER}" dir="${bin.loc}" spawn="true">
+					<arg line="-output '${report.flexcover.loc}/${instrument.report}'" />
+					<arg line="'${lib.loc}/${instrument.metadata}'" />
+				</exec>
+				<waitfor checkevery="3" checkeveryunit="second">
+					<available file="${report.flexcover.loc}/${instrument.report}" />
+				</waitfor>
+			</sequential>
+			<!-- Launch FlexUnit tests after a short delay -->
+			<sequential>
+				<sleep seconds="15" />
+				<flexunit swf="${bin.loc}/${test.artifact.name}" toDir="${report.xunit.loc}" haltonfailure="false" verbose="true" localTrusted="false" />
+			</sequential>
+		</parallel>
+	</target>
+
+	<target name="test" depends="test-only,test-and-instrument" />
+
+	<target name="report">
+		<!-- generate html reports based on test data -->
 		<junitreport todir="${report.xunit.loc}">
 			<fileset dir="${report.xunit.loc}">
-				<include name="TEST-*.xml" />
+				<include name="TEST-*.xml" />s
 			</fileset>
 			<report format="frames" todir="${report.xunit.loc}/html" />
 		</junitreport>
