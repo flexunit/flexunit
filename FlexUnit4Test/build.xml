@@ -53,7 +53,7 @@ dependency which would be more difficult to manage from a build perspective.
 		<condition property="test.application.name" value="InstrumentTestRunner.mxml" else="TestRunner.mxml">
 			<available file="${lib.loc}/${instrument.metadata}" />
 		</condition>
-
+		
 		<!-- Build test swf -->
 		<mxmlc file="${test.src.loc}/${test.application.name}" output="${bin.loc}/${test.artifact.name}">
 			<library-path dir="${lib.loc}" append="true">
@@ -67,28 +67,31 @@ dependency which would be more difficult to manage from a build perspective.
 
 	<target name="test-only" depends="test-compile" unless="build.instrument">
 		<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks-${build.number}.jar" />
-
+		
 		<!-- Run FlexUnit Ant Task -->
 		<flexunit swf="${bin.loc}/${test.artifact.name}" toDir="${report.xunit.loc}" haltonfailure="false" verbose="true" localTrusted="false" />
 	</target>
 
 	<target name="test-and-instrument" depends="test-compile" if="build.instrument">
 		<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks-${build.number}.jar" />
-
-		<!-- Launch CoverageViewer to generate coverage report -->
-		<exec executable="${FLEX_COVER_VIEWER}" dir="${bin.loc}" spawn="true">
-			<arg line="-output '${report.flexcover.loc}/${instrument.report}'" />
-			<arg line="'${lib.loc}/${instrument.metadata}'" />
-		</exec>
 		
-		<sleep seconds="30" />
-		
-		<!-- Launch FlexUnit tests after a short delay -->
-		<flexunit swf="${bin.loc}/${test.artifact.name}" toDir="${report.xunit.loc}" haltonfailure="false" verbose="true" localTrusted="false" />
-		
-		<waitfor checkevery="3" checkeveryunit="second">
-			<available file="${report.flexcover.loc}/${instrument.report}" />
-		</waitfor>
+		<parallel>
+			<!-- Launch CoverageViewer to generate coverage report -->
+			<sequential>
+				<exec executable="${FLEX_COVER_VIEWER}" dir="${bin.loc}">
+					<arg line="-output '${report.flexcover.loc}/${instrument.report}'" />
+					<arg line="'${lib.loc}/${instrument.metadata}'" />
+				</exec>
+				<waitfor checkevery="3" checkeveryunit="second">
+					<available file="${report.flexcover.loc}/${instrument.report}" />
+				</waitfor>
+			</sequential>
+			<!-- Launch FlexUnit tests after a short delay -->
+			<sequential>
+				<sleep seconds="30" />
+				<flexunit swf="${bin.loc}/${test.artifact.name}" toDir="${report.xunit.loc}" haltonfailure="false" verbose="true" localTrusted="false" />
+			</sequential>
+		</parallel>
 	</target>
 
 	<target name="test" depends="test-only,test-and-instrument" />
