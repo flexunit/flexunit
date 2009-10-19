@@ -72,9 +72,11 @@
 				<xsl:value-of select="@name" />
 			</xsl:attribute>
 			<xsl:attribute name="filename">
-				<xsl:variable name="safeSourcePath" select="replace($sourcePath, '\\', '/')" />
-				<xsl:variable name="safePathname" select="replace(@pathname, '\\', '/')" />
-				<xsl:value-of select="substring(replace($safePathname, $safeSourcePath, ''), 2)" />
+				<xsl:variable name="safeSourcePath" select="lower-case(replace($sourcePath, '\\', '/'))" />
+				<xsl:variable name="safePathname" select="lower-case(replace(@pathname, '\\', '/'))" />
+				<xsl:if test="compare($safeSourcePath, substring($safePathname, 1, string-length($safeSourcePath))) = 0">
+					<xsl:value-of select="substring(@pathname, string-length($safeSourcePath) + 2, string-length(@pathname))" />
+				</xsl:if>
 			</xsl:attribute>
 			<xsl:attribute name="line-rate">
 				<xsl:value-of select="@lineCoverage" />
