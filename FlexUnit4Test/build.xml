@@ -16,6 +16,7 @@ dependency which would be more difficult to manage from a build perspective.
 	<property name="instrument.report.cobertura" value="coverage.xml" />
 
 	<!-- Setup paths for build -->
+	<property name="main.src.loc" location="${basedir}/../FlexUnit4/src" />
 	<property name="test.src.loc" location="${basedir}/src" />
 	<property name="lib.loc" location="${basedir}/libs" />
 	<property name="bin.loc" location="${basedir}/target/bin" />
@@ -95,13 +96,14 @@ dependency which would be more difficult to manage from a build perspective.
 							<include name="*.jar" />
 						</fileset>
 					</classpath>
+					<param name="sourcePath" expression="${main.src.loc}" />
 					<param name="timestamp" expression="${instrument.timestamp}" />
 					<param name="version" expression="0.81" />
 				</xslt>
 			</sequential>
 			<!-- Launch FlexUnit tests after a short delay -->
 			<sequential>
-				<sleep seconds="45" />
+				<sleep seconds="30" />
 				<flexunit swf="${bin.loc}/${test.artifact.name}" toDir="${report.xunit.loc}" haltonfailure="false" verbose="true" localTrusted="false" />
 			</sequential>
 		</parallel>

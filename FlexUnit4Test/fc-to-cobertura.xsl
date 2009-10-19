@@ -4,6 +4,8 @@
 	<xsl:output indent="yes" omit-xml-declaration="no" method="xml" />
 	<xsl:param name="timestamp" />
 	<xsl:param name="version" />
+	<xsl:param name="sourcePath" />
+	
 	<xsl:template match="/">
 		<xsl:apply-templates select="applicationCoverage" />
 	</xsl:template>
@@ -35,7 +37,11 @@
 			<xsl:attribute name="timestamp">
 				<xsl:value-of select="$timestamp" />
 			</xsl:attribute>
-			<sources />
+			<sources>
+				<source>
+					<xsl:value-of select="$sourcePath" />
+				</source>
+			</sources>
 			<packages>
 				<xsl:apply-templates select="package" />
 			</packages>
@@ -66,7 +72,7 @@
 				<xsl:value-of select="@name" />
 			</xsl:attribute>
 			<xsl:attribute name="filename">
-				<xsl:value-of select="@pathname" />
+				<xsl:value-of select="substring(replace(@pathname, $sourcePath, ''), 2)" />
 			</xsl:attribute>
 			<xsl:attribute name="line-rate">
 				<xsl:value-of select="@lineCoverage" />
