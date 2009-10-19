@@ -72,7 +72,7 @@
 				<xsl:value-of select="@name" />
 			</xsl:attribute>
 			<xsl:attribute name="filename">
-				<xsl:value-of select="substring(replace(@pathname, $sourcePath, ''), 2)" />
+				<xsl:value-of select="substring(replace(@pathname, replace($sourcePath, '\\', '\\\\'), ''), 2)" />
 			</xsl:attribute>
 			<xsl:attribute name="line-rate">
 				<xsl:value-of select="@lineCoverage" />
