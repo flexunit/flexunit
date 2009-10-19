@@ -12,7 +12,8 @@ dependency which would be more difficult to manage from a build perspective.
 	<property name="build.useFlex" value="true" />
 	<property name="test.artifact.name" value="TestRunner.swf" />
 	<property name="instrument.metadata" value="flexunit-instrument-${build.number}.cvm" />
-	<property name="instrument.report" value="flexunit-instrument-${build.number}.cvr" />
+	<property name="instrument.report.flexcover" value="flexunit-instrument-${build.number}.cvr" />
+	<property name="instrument.report.cobertura" value="coverage.xml" />
 
 	<!-- Setup paths for build -->
 	<property name="test.src.loc" location="${basedir}/src" />
@@ -76,19 +77,31 @@ dependency which would be more difficult to manage from a build perspective.
 		<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks-${build.number}.jar" />
 		
 		<parallel>
-			<!-- Launch CoverageViewer to generate coverage report -->
+			<!-- Use CoverageViewer to generate coverage report and translate to Cobertura format -->
 			<sequential>
 				<exec executable="${FLEX_COVER_VIEWER}" dir="${bin.loc}" spawn="true">
-					<arg line="-output '${report.flexcover.loc}/${instrument.report}'" />
+					<arg line="-output '${report.flexcover.loc}/${instrument.report.flexcover}'" />
 					<arg line="'${lib.loc}/${instrument.metadata}'" />
 				</exec>
 				<waitfor checkevery="3" checkeveryunit="second">
-					<available file="${report.flexcover.loc}/${instrument.report}" />
+					<available file="${report.flexcover.loc}/${instrument.report.flexcover}" />
 				</waitfor>
+				<tstamp>
+					<format property="instrument.timestamp" pattern="MM/dd/yyyy HH:mm:ss.SSS"/>
+				</tstamp>
+				<xslt in="${report.flexcover.loc}/${instrument.report.flexcover}" out="${report.flexcover.loc}/${instrument.report.cobertura}" style="${basedir}/fc-to-cobertura.xsl">
+					<classpath>
+						<fileset dir="${lib.loc}">
+							<include name="*.jar" />
+						</fileset>
+					</classpath>
+					<param name="timestamp" expression="${instrument.timestamp}" />
+					<param name="version" expression="0.81" />
+				</xslt>
 			</sequential>
 			<!-- Launch FlexUnit tests after a short delay -->
 			<sequential>
-				<sleep seconds="30" />
+				<sleep seconds="45" />
 				<flexunit swf="${bin.loc}/${test.artifact.name}" toDir="${report.xunit.loc}" haltonfailure="false" verbose="true" localTrusted="false" />
 			</sequential>
 		</parallel>
