@@ -38,9 +38,11 @@
 				<xsl:value-of select="$timestamp" />
 			</xsl:attribute>
 			<sources>
-				<source>
-					<xsl:value-of select="$sourcePath" />
-				</source>
+				<xsl:for-each select="tokenize(string($sourcePath), ',')">
+					<source>
+						<xsl:value-of select="." />
+					</source> 
+				</xsl:for-each>
 			</sources>
 			<packages>
 				<xsl:apply-templates select="package" />
@@ -72,11 +74,14 @@
 				<xsl:value-of select="@name" />
 			</xsl:attribute>
 			<xsl:attribute name="filename">
-				<xsl:variable name="safeSourcePath" select="lower-case(replace($sourcePath, '\\', '/'))" />
-				<xsl:variable name="safePathname" select="lower-case(replace(@pathname, '\\', '/'))" />
-				<xsl:if test="compare($safeSourcePath, substring($safePathname, 1, string-length($safeSourcePath))) = 0">
-					<xsl:value-of select="substring(@pathname, string-length($safeSourcePath) + 2, string-length(@pathname))" />
-				</xsl:if>
+				<xsl:variable name="path" select="@pathname" />
+				<xsl:for-each select="tokenize(string($sourcePath), ',')">
+					<xsl:variable name="safeSourcePath" select="lower-case(replace(., '\\', '/'))" />
+					<xsl:variable name="safePathname" select="lower-case(replace($path, '\\', '/'))" />
+					<xsl:if test="compare($safeSourcePath, substring($safePathname, 1, string-length($safeSourcePath))) = 0">
+						<xsl:value-of select="substring($path, string-length($safeSourcePath) + 2, string-length($path))" />
+					</xsl:if>
+				</xsl:for-each>
 			</xsl:attribute>
 			<xsl:attribute name="line-rate">
 				<xsl:value-of select="@lineCoverage" />
