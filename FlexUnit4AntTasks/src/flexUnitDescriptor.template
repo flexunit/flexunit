@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/1.5">
+	<id>FlexUnit4AdlWrapper</id>
+	<filename>FlexUnit4AdlWrapper</filename>
+	<name>FlexUnit4 Adl Wrapper</name>
+	<version>1.0.0</version>
+	<description>Wrapper application for use with the FlexUnit4 Ant task.</description>
+	<initialWindow>
+		<title>FlexUnit4 Adl Wrapper</title>
+		<content>@ADL_SWF@</content>
+		<visible>true</visible> 
+        <minimizable>true</minimizable> 
+        <maximizable>false</maximizable> 
+        <resizable>false</resizable> 
+        <width>320</width> 
+        <height>240</height> 
+	</initialWindow>
+</application>

@@ -22,11 +22,12 @@ public class FlexUnitTaskHarness extends TestCase
       fixture.setToDir("test");
       fixture.setVerbose(true);
       fixture.setFailureproperty("failedtests");
-      fixture.setPlayer("flash");
+      fixture.setPlayer("air");
       fixture.setHeadless(false);
       fixture.setXcommand("xvfb");
       fixture.setSnapshot(true);
       fixture.setSnapshotFile("screen.jpg");
+      fixture.getProject().setProperty("FLEX_HOME", System.getenv("FLEX_HOME"));
    }
 
    public void testExecute()
