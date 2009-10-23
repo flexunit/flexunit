@@ -31,8 +31,8 @@ to contribute to our CI process.
 	<property name="cilistener.loc" location="${basedir}/FlexUnit4CIListener" />
 	<property name="cilistener.artifact" value="flexunit-cilistener-${build.number}.swc" />
 	<property name="tests.loc" location="${basedir}/FlexUnit4Test" />
-	<property name="uirunner.loc" location="${basedir}/FlexUnit4UIRunner" />
-	<property name="uirunner.artifact" value="flexunit-uirunner-${build.number}.swc" />
+	<property name="uirunner.loc" location="${basedir}/FlexUnit4UIListener" />
+	<property name="uirunner.artifact" value="flexunit-uilistener-${build.number}.swc" />
 
 	<!-- Cleans up all projects -->
 	<target name="clean">
