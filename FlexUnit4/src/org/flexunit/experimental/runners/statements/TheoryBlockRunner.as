@@ -35,40 +35,76 @@ package org.flexunit.experimental.runners.statements {
 	import org.flexunit.runners.model.FrameworkMethod;
 	
 	use namespace classInternal;
-
+	
+	/**
+	 * The runner used for an indiviudal theory method with assigned parameter values.
+	 */
 	public class TheoryBlockRunner extends BlockFlexUnit4ClassRunner {
 		private var complete:Assignments;
 		private var anchor:TheoryAnchor;
 		private var klassInfo:Klass;
-
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param klass The class that contains the theory
+		 * @param anchor The anchor associated with the theory method
+		 * @param complete Contains the parameters used for the theory method
+		 */
 		public function TheoryBlockRunner( klass:Class, anchor:TheoryAnchor, complete:Assignments ) {
 			super(klass);
 			this.anchor = anchor;
 			this.complete = complete;
 			this.klassInfo = new Klass( klass );
 		}
-	
+		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function collectInitializationErrors( errors:Array ):void {
 			// do nothing
 		}		
-	
+		
+		/**
+		 * Creates a <code>MethodCompleteWithParamsStatement</code> that is used to execute the theory method for
+		 * a specific set of <code>Assignments</code>
+		 * 
+		 * @inheritDoc
+		 */
 		override protected function methodInvoker( method:FrameworkMethod, test:Object ):IAsyncStatement {
 			return new MethodCompleteWithParamsStatement( method, anchor, complete, test );
 		}
-	
+		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function createTest():Object {
 			return klassInfo.constructor.newInstanceApply( complete.getConstructorArguments( anchor.nullsOk() ) );
 		}
 		
+		/**
+		 * Retrieves an object that implements a <code>IAsyncStatement</code> for a specific theory test method that will run
+		 * a theory with a subset of potential parameters that the theory can be run with
+		 * 
+		 * @param method The <code>FrameworkMethod</code> theory to test
+		 * 
+		 * @return an object that implements a <code>IAsyncStatement</code> for a specific theory test
+		 */
 		public function getMethodBlock( method:FrameworkMethod ):IAsyncStatement {
 			return methodBlock( method );
 		}
-	
+		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function methodBlock( method:FrameworkMethod ):IAsyncStatement {
 			var statement:IAsyncStatement = super.methodBlock( method );
 			return new TheoryBlockRunnerStatement( statement, anchor, complete ); 
 		}
-	
+		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function withDecoration( method:FrameworkMethod, test:Object ):IAsyncStatement {
 			var statement:IAsyncStatement = methodInvoker( method, test );
 			statement = withPotentialAsync( method, test, statement );

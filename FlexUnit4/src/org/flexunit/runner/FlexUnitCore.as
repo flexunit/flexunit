@@ -136,17 +136,28 @@ package org.flexunit.runner {
 		 * Run the tests contained in <code>args</code>. Write feedback while the tests
 		 * are running and write stack traces for all failed tests after all tests complete. This is
 		 * similar to <code> #main(String[])</code>, but intended to be used programmatically.
-		 * @param args Array in which to find tests
-		 * @return a <code> Result</code> describing the details of the test run and the failed tests.
+		 * @param args The Array in which to find tests
 		 */
 		public function runClasses( ...args ):void {
 			runRequest( Request.classes.apply( this, args ) );
 		}
-
+		
+		/**  //TODO: No main to link to, what should be linked instead, if anything?
+		 * Run the tests contained in <code>Request</code>. Write feedback while the tests
+		 * are running and write stack traces for all failed tests after all tests complete. This is
+		 * similar to <code> #main(String[])</code>, but intended to be used programmatically.
+		 * @param request The Request describing the tests
+		 */
 		public function runRequest( request:Request ):void {
 			runRunner( request.iRunner )
 		}
 		
+		/**  //TODO: No main to link to, what should be linked instead, if anything?
+		 * Run the tests contained in <code>IRunner</code>. Write feedback while the tests
+		 * are running and write stack traces for all failed tests after all tests complete. This is
+		 * similar to <code> #main(String[])</code>, but intended to be used programmatically.
+		 * @param runner IRunner in which to find tests
+		 */
 		public function runRunner( runner:IRunner ):void {
 			if ( asyncListenerWatcher.allListenersReady ) {
 				beginRunnerExecution( runner );
@@ -158,6 +169,9 @@ package org.flexunit.runner {
 			}
 		}
 		
+		/**
+		 * Starts the execution of the <code>IRunner</code>
+		 */
 		protected function beginRunnerExecution( runner:IRunner ):void {
 			var result:Result = new Result();
 			var runListener:RunListener = result.createListener();
@@ -182,6 +196,9 @@ package org.flexunit.runner {
 			}
 		}
 		
+		/**
+		 * All tests have finished execution
+		 */
 		private function handleRunnerComplete( result:ChildResult ):void {
 			var runListener:RunListener = result.token[ RUN_LISTENER ];
 

@@ -26,18 +26,33 @@
  * @version    
  **/ 
 package org.flexunit.async {
+	/**
+	 * A respoder for tests
+	 */
 	public class TestResponder extends Object implements ITestResponder {
 		private var resultFunction:Function;
 		private var faultFunction:Function;
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function fault( info:Object, passThroughData:Object ):void {
 			faultFunction( info, passThroughData );
 		}
-
+		
+		/**
+		 * @inheritDoc
+		 */
 		public function result( data:Object, passThroughData:Object ):void {
 			resultFunction( data, passThroughData );
 		}
-
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param result A <code>Function</code> that handles results and expects an info and passThroughData parameter
+		 * @param fault A <code>Function</code> that handles faults and expects a data and passThroughData parameter
+		 */
 		public function TestResponder( result:Function, fault:Function ) {
 			resultFunction = result;
 			faultFunction = fault;

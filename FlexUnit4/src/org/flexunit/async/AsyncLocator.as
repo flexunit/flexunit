@@ -34,20 +34,35 @@ package org.flexunit.async {
 	public class AsyncLocator {
 		private static var asyncHandlerMap:Dictionary = new Dictionary();
 		
+		/**
+		 * Registers the (@link IAsyncHandlingStatement) with a particular testCase.
+		 * @param (@link IAsyncHandlingStatement) the AsyncHandlingStatement to be registered
+		 * @param object
+		 */
 		public static function registerStatementForTest( expectAsyncInstance:IAsyncHandlingStatement, testCase:Object ):void {
 			asyncHandlerMap[ testCase ] = expectAsyncInstance;
 		} 
 		
+		/**
+		 * Retrieves the (@link IAsyncHandlingStatement) for a particular testCase.  If no AsyncHandlingStatement has been registered
+		 * for the testCase, an (@link AssertionError) will be thrown
+		 * @param testCase
+		 */
 		public static function getCallableForTest( testCase:Object ):IAsyncHandlingStatement {
 			var handler:IAsyncHandlingStatement = asyncHandlerMap[ testCase ];
 			
+			//If no handler was obtained from the dictionary, the test case was never marked as asynchronous, throw an AssertionError
 			if ( !handler ) {
 				throw new AssertionError("Cannot add asynchronous functionality to methods defined by Test,Before or After that are not marked async");	
 			}
 
 			return handler;
 		} 
-
+		
+		/**
+		 * Removes the (@link IAsyncHandlingStatement) for a particular testCase.
+		 * @param testCase
+		 */
 		public static function cleanUpCallableForTest( testCase:Object ):void {
 			delete asyncHandlerMap[ testCase ];
 		} 

@@ -34,7 +34,12 @@ package org.flexunit.internals.builders {
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runners.model.IRunnerBuilder;
 	import org.flexunit.runners.model.RunnerBuilderBase;
-
+	
+	/**
+	 * Builds a runner that is specificed in the metadata for a specific test class.
+	 * 
+	 * Example: Suite, Theory, ect.
+	 */
 	public class MetaDataBuilder extends RunnerBuilderBase {
 		public static const RUN_WITH:String = "RunWith";
 		private static const CLASS_NOT_FOUND:String = "classNotFound";
@@ -42,18 +47,37 @@ package org.flexunit.internals.builders {
 		private static const UNSPECIFIED:String = "unspecified";
 		
 		private var suiteBuilder:IRunnerBuilder;
-
+		
+		/**
+		 * Returns an <code>IRunner</code> for the given test class based on the test class' metadata
+		 * 
+		 * @param testClass The test class that includes the runner metadata
+		 * 
+		 * @return an <code>IRunner</code> for the given test class if it has proper metadata and is successfully built; otherwise,
+		 * returns a null value
+		 */
 		override public function runnerForClass( testClass:Class ):IRunner {
 			var klassInfo:Klass = new Klass( testClass );
-
+			
+			//Determine if the testClass references a runner in its metadata
 			if ( klassInfo.hasMetaData( RUN_WITH ) ) {
+				//Get the definition for the runner class
 				var runWithValue:String = klassInfo.getMetaData( RUN_WITH ); 
 				return buildRunner( runWithValue, testClass);
 			}
 			
 			return null;
 		}
-
+		
+		/**
+		 * Builds an <code>IRunner</code> based on a runner class name for the provided test class
+		 * 
+		 * @param runnerClassName The name of the runner to be used for the provided test class
+		 * @param testClass The test class to provide to the builder
+		 * 
+		 * @return an <code>IRunner</code> for the given test class if it has proper metadata and is successfully built; otherwise,
+		 * returns a null value
+		 */
 		public function buildRunner( runnerClassName:String, testClass:Class ):IRunner {
 			try {
 				//Need to check if it actually implements IRunner
@@ -78,7 +102,7 @@ package org.flexunit.internals.builders {
  
  			return null;
 		}
-
+		
 		private function buildWithSecondSignature( runnerClass:Class, testClass:Class, runnerClassName:String ):IRunner {
 			try {
 				return new runnerClass( testClass, suiteBuilder );
@@ -93,8 +117,18 @@ package org.flexunit.internals.builders {
 			return null;
 		}
 		
+		/**
+		 * Creates an <code>InitializationError</code> for a specific reason cause by a potential runner class
+		 * 
+		 * @param reason The reason that the initialization error occured
+		 * @param runnerClassName The name of the runner class that caused the initialization issue
+		 * 
+		 * @return an <code>InitializationError</code>
+		 */
 		private function createInitializationError( reason:String, runnerClassName:String ):InitializationError {
 			var error:InitializationError;
+			
+			//Determine why the runner failed to correctly build
 			switch ( reason ) {
 				case CLASS_NOT_FOUND: 
 					error = new InitializationError( "Custom runner class " + runnerClassName + " should be linked into project and implement IRunner. Further it needs to have a constructor which either just accepts the class, or the class and a builder." );
@@ -111,7 +145,12 @@ package org.flexunit.internals.builders {
 
 			return error;	
 		}
-
+		
+		/** 
+		 * Constructor. 
+		 * 
+		 * @param suiteBuilder An <code>IRunnerBuilder</code>
+		 */
 		public function MetaDataBuilder( suiteBuilder:IRunnerBuilder ) {
 			super();
 			this.suiteBuilder = suiteBuilder;

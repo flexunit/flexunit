@@ -27,6 +27,9 @@
  **/ 
 package org.flexunit.runner
 {
+	/**
+	 * Describes an <code>IDescription</code> based on its path, suite, and method
+	 */
 	public class Descriptor
 	{
 		public var path:String;

@@ -29,14 +29,29 @@ package org.flexunit.runner
 {
 	import flash.utils.Dictionary;
 	
+	/**
+	 * A <code>RunnerLocator</code> either registers or
+	 * retrieves an <code>IRunner</code> for a particular test.
+	 * 
+	 */
 	public class RunnerLocator {
 
 		private var d:Dictionary = new Dictionary( true );
-
+		
+		/**
+		 * Registers the (@link IRunner) with a particular test.
+		 * @param test
+		 * @param runner the (@link IRunner) to be registered
+		 */
 		public function registerRunnerForTest( test:Object, runner:IRunner ):void {
 			d[ test ] = runner;
 		}	
 		
+		/**
+		 * Retrieves the (@link IRunner) for a particular test.  If no runner has been registered
+		 * for the test, a null value is returned.
+		 * @param test
+		 */
 		public function getRunnerForTest( test:Object ):IRunner {
 			return d[ test ] as IRunner;
 		} 	

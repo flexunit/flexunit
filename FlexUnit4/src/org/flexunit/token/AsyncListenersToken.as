@@ -29,13 +29,19 @@
 package org.flexunit.token {
 	import org.flexunit.runner.IRunner;
 	
+	/**
+	 * Responsible for indicating the status of <code>IAsyncRunListener</code>
+	 */
 	public class AsyncListenersToken {
 		private var methodsEntries:Array;
 		private var _error:Error;
 		private var debugClassName:String;
 		private var _token:AsyncTestToken;
 		private var _runner:IRunner;
-
+		
+		/**
+		 * Returns an instance of the <code>IRunner</code> associated with the AsyncListenersToken
+		 */
 		public function get runner():IRunner {
 			return _runner;
 		}
@@ -43,7 +49,14 @@ package org.flexunit.token {
 		public function set runner( value:IRunner ):void {
 			_runner = value;	
 		}
-
+		
+		/**
+		 * Addes a notification method to an Array of notification methods
+		 * 
+		 * @param method The notification method to add
+		 * 
+		 * @return the current instance of the AsyncListenersToken
+		 */
 		public function addNotificationMethod( method:Function ):AsyncListenersToken {
 			if (methodsEntries == null)
 				methodsEntries = [];
@@ -52,7 +65,10 @@ package org.flexunit.token {
 
 			return this;
 		}
-
+		
+		/**
+		 * Calls each notification method and passes the current <code>IRunner</code> to that method
+		 */
 		public function sendReady():void {
 			if ( methodsEntries ) {
  				for ( var i:int=0; i<methodsEntries.length; i++ ) {
@@ -61,6 +77,9 @@ package org.flexunit.token {
  			}
 		}
 		
+		/**
+		 * Calls each notification method and passes the current <code>IRunner</code> to that method
+		 */
 		public function sendComplete():void {
 			if ( methodsEntries ) {
  				for ( var i:int=0; i<methodsEntries.length; i++ ) {
@@ -69,6 +88,9 @@ package org.flexunit.token {
  			}
 		}
 		
+		/**
+		 * Constructor.
+		 */
 		public function AsyncListenersToken() {
 		}
 	}

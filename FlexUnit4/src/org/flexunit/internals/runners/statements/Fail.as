@@ -29,14 +29,25 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.internals.runners.statements.AsyncStatementBase;
 	import org.flexunit.internals.runners.statements.IAsyncStatement;
 	import org.flexunit.token.AsyncTestToken;
-
+	
+	/**
+	 * Responsible for throwing an failure error
+	 */
 	public class Fail extends AsyncStatementBase implements IAsyncStatement {
 		private var error:Error;
-
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param error The <code>Error</code> to be thrown
+		 */
 		public function Fail( error:Error ) {
 			this.error = error;
 		}
-
+		
+		/**
+		 * Throws an error
+		 */
 		public function evaluate( previousToken:AsyncTestToken ):void {
 			throw error;
 		}

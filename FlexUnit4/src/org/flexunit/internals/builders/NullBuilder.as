@@ -28,7 +28,10 @@
 package org.flexunit.internals.builders
 {
 	import org.flexunit.runners.model.RunnerBuilderBase;
-
+	
+	/**
+	 * Builds a null runner for a test class.  It will not run a test class.
+	 */
 	public class NullBuilder extends RunnerBuilderBase
 	{
 		public function NullBuilder()

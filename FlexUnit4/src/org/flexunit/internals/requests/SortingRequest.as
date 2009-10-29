@@ -32,11 +32,20 @@ package org.flexunit.internals.requests
 	import org.flexunit.runner.Request;
 	import org.flexunit.runner.manipulation.Sorter;
 	
+	/**
+	 * A <code>Request</code> that sorts the ordering in a test class.
+	 */
 	public class SortingRequest extends Request
 	{
 		private var request:IRequest;
 		private var comparator:Function;
 		
+		/**
+		 * Creates a sorted Request
+		 * @param request an <code>IRequest</code> describing your Tests
+		 * @param comparator <code>Function</code> to apply to the Tests described in 
+		 * <code>request</code>
+		 */
 		public function SortingRequest(request:IRequest, comparator:Function)
 		{
 			super();
@@ -44,6 +53,7 @@ package org.flexunit.internals.requests
 			this.comparator = comparator;
 		}
 		
+		//TODO: Unsure of meaning and applicability of @inheritDoc
 		public override function get iRunner():IRunner {
 			var runner:IRunner = request.iRunner;
 			new Sorter(comparator).apply(runner);

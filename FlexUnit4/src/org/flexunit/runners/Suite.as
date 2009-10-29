@@ -31,7 +31,6 @@ package org.flexunit.runners {
 	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
-	import org.flexunit.runner.manipulation.FieldSorter;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runners.model.IRunnerBuilder;
 	import org.flexunit.token.AsyncTestToken;
@@ -46,28 +45,35 @@ package org.flexunit.runners {
  	*/
 	public class Suite extends ParentRunner {
 		private var _runners:Array;
-			
+		
+		/**
+		 * @inhertDoc
+		 */
 		override protected function get children():Array {
 			return _runners;
 		}
-
+		
+		/**
+		 * @inhertDoc
+		 */
 		override protected function describeChild( child:* ):IDescription {
 			return IRunner( child ).description;
 		}
-
+		
+		/**
+		 * @inhertDoc
+		 */
 		override protected function runChild( child:*, notifier:IRunNotifier, childRunnerToken:AsyncTestToken ):void {
 			IRunner( child ).run( notifier, childRunnerToken );
 		}
-
-
+		
+		/**
+		 * Returns an array of class in a given suite
+		 */
 		private static function getSuiteClasses( suite:Class ):Array {
 			var klassInfo:Klass = new Klass( suite );
 			var classRef:Class;
 			var classArray:Array = new Array();
-			
-			//Experimental, not needed at this time
-			//var fieldSorter:FieldSorter = new FieldSorter( klassInfo.fields );
-			//fieldSorter.sort();
 			
 			var fields:Array = klassInfo.fields; 
 

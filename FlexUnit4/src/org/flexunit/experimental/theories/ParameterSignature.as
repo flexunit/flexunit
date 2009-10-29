@@ -32,20 +32,44 @@ package org.flexunit.experimental.theories {
 	
 	import org.flexunit.runners.model.FrameworkMethod;
 	
+	/**
+	 * The signautre for a specific parameter in a theory method.
+	 */
 	public class ParameterSignature {
 
 		private var _type:Class;
 		private var _metaDataList:XMLList;
-
+		
+		/**
+		 * Creates an Array of <code>ParameterSignature<code>s for each parameter in a theory method
+		 * 
+		 * @param method The current theory method
+		 * 
+		 * @return an Array containing the <code>ParameterSignature<code> for each parameter in the method
+		 */
  		public static function signaturesByMethod( method:Method ):Array {
  			//trace("yo");
 			return signatures( method.parameterTypes, method.metadata );
 		}
-	
+		
+		/**
+		 * Creates an Array of <code>ParameterSignature<code>s for each parameter in a theory constructor
+		 * 
+		 * @param constructor The current theory constructor
+		 * 
+		 * @return an Array containing the <code>ParameterSignature<code> for each parameter in the constructor
+		 */
 		public static function signaturesByContructor( constructor:Constructor ):Array {
 			return signatures( constructor.parameterTypes, null );
 		}
-	
+		
+		/**
+		 * Creates an Array of <code>ParameterSignature<code>s for each parameter in the parameter types array
+		 * 
+		 * @param parameterTypes An Array consisting of the types of parameters in a given signature
+		 * 
+		 * @return an Array containing the <code>ParameterSignature<code> for each parameter in the signautre
+		 */
 		private static function signatures( parameterTypes:Array, metadataList:XMLList ):Array {
 			var sigs:Array = new Array();
 			for ( var i:int= 0; i < parameterTypes.length; i++) {
@@ -53,27 +77,61 @@ package org.flexunit.experimental.theories {
 			}
 			return sigs;
 		}
-	
+		
+		/**
+		 * Determine if the type of the parameter matches the provided candidate type
+		 * 
+		 * @param candidate A Class that represents a potential provided parameter
+		 * 
+		 * @return a Boolean value indicating whether the current parameter can accept a parameter of a provided tpye
+		 */
 		public function canAcceptType( candidate:Class ):Boolean {
 			return ( type == candidate );
 		}
-	
+		
+		/**
+		 * Returns the type of the <code>ParameterSignature</code>
+		 */
 		public function get type():Class {
 			return _type;
 		}
-	
+		
+		/**
+		 * Determine if the provided field has a type of Array and if the element type of the field matches the type in this <code>ParameterSignature</code>
+		 * 
+		 * @param field The current field to check
+		 * 
+		 * @return a Boolean value indicating whether the current parameter can accept the element type 
+		 * supplied in the potential field
+		 */
 		public function canAcceptArrayType( field:Field ):Boolean {
 			return ( field.type == Array ) && canAcceptType( field.elementType ); 
 		}
-
+		
+		/**
+		 * Determine if the provided framework method produces a type of Array and if the element type of the framework method's method 
+		 * matches the type in this <code>ParameterSignature</code>
+		 * 
+		 * @param frameworkMethod The current framework method
+		 * 
+		 * @return a Boolean value indicating whether the current parameter can accept the element type 
+		 * supplied in the framework method's method
+		 */
 		public function canAcceptArrayTypeMethod( frameworkMethod:FrameworkMethod ):Boolean {
 			return ( frameworkMethod.producesType( Array ) && canAcceptType( frameworkMethod.method.elementType ) );
 		}
-
+		
+		/**
+		 * Determine if there is a name attribute in the metadata that matches the supplied type
+		 * 
+		 * @param type The name to check for in the metadata
+		 * 
+		 * @return a Boolean value indicating whether there is metadata that has a name that matches the supplied type
+		 */
 		public function hasMetadata( type:String ):Boolean {
 			return getAnnotation(type) != null;
 		}
-
+		
  		public function findDeepAnnotation( type:String ):XML {
 			var metaDataList2:XMLList = _metaDataList.copy();
 			return privateFindDeepAnnotation( metaDataList2, type, 3);
@@ -98,7 +156,15 @@ package org.flexunit.experimental.theories {
  */	
 			return null;
 		}
-
+		
+		/**
+		 * Determine if there is a name attribute in the metadata that matches the supplied type
+		 * 
+		 * @param type The name to check for in the metadata
+		 * 
+		 * @return an XML that is the metadata that has a name attribute that matches the provided type.  If no name match is found,
+		 * a value of null is returned
+		 */
 		public function getAnnotation( type:String ):XML {
 			for ( var i:int=0;i<_metaDataList.length(); i++ ) {
 				if ( _metaDataList[ i ].@name == type ) {
@@ -112,7 +178,13 @@ package org.flexunit.experimental.theories {
  		public function toString():String {
 			return "ParameterSignature ( type:" + type + ", metadata:" + _metaDataList + " )";
 		}
-
+		
+		/**
+		 * Constructor,
+		 * 
+		 * @param type The Class of the parameter
+		 * @param metaDataList Associated metadata for the method the parameter is associated with
+		 */
 		public function ParameterSignature( type:Class, metaDataList:XMLList ) {
 			this._type= type;
 			this._metaDataList = metaDataList;

@@ -35,44 +35,74 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.utils.ClassNameUtil;
-
+	
+	/**
+	 * Responsible for determing whether a specific test method is has exceeded a timeout period
+	 */
 	public class FailOnTimeout extends AsyncStatementBase implements IAsyncStatement {
 		private var timeout:Number = 0;
 		private var statement:IAsyncStatement;
 		private var timer:Timer;
 		private var timerComplete:Boolean = false;
 		private var returnMessageSent:Boolean = false;
-
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param timeout The amount of time in milliseconds to wait before attempting to fail the test
+		 * @param statement The current object that implements <code>IAsyncStatement</code> to decorate
+		 */
 		public function FailOnTimeout( timeout:Number, statement:IAsyncStatement ) {
 			this.timeout = timeout;
 			this.statement = statement;
 			
+			//Create a new token that will track the progress of the timeout
 			myToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			myToken.addNotificationMethod( handleNextExecuteComplete );
 			
 			timer = new Timer( timeout, 1 );
 			timer.addEventListener( TimerEvent.TIMER_COMPLETE, handleTimerComplete, false, 0, true );
 		}
-
+		
+		/**
+		 * Determine if the <code>FrameworkMethod</code> has timeout metadata
+		 * 
+		 * @param method The <code>FrameworkMethod</code> to check for a timeout
+		 * 
+		 * @return a String indicating the length of the the timeout or a null String indicating that no timeout was found for the method
+		 */
 		public static function hasTimeout( method:FrameworkMethod ):String {
 			var timeout:String = String( method.getSpecificMetaDataArg( "Test", "timeout" ) );
 			var hasTimeout:Boolean = timeout && ( timeout != "null" ) && ( timeout.length>0 );
 
 			return hasTimeout?timeout:null;			
 		}
-
+		
+		/**
+		 * Evaluates the object that implements the <code>IAsyncStatement</code> and starts the timer
+		 * 
+		 * @param parentToken The token to be notified when it has been determined if a timeout has occured
+		 */
 		public function evaluate( parentToken:AsyncTestToken ):void {
  			this.parentToken = parentToken; 			
  			
  			timer.start();
  			statement.evaluate( myToken );
 		}
-
+		
+		/**
+		 * The timer has completed and the test has not finished; the test has timed out
+		 */
 		private function handleTimerComplete( event:TimerEvent ):void {
 			timerComplete = true;
 			handleNextExecuteComplete( new ChildResult( myToken, new Error( "Test did not complete within specified timeout " + timeout + "ms" ) ) );
 		}
-
+		
+		/**
+		 * Stops the timer and sends any error the <code>ChildResult</code> has encountered to the parentToken
+		 * 
+		 * @param result The <code>ChildResult</code> to check to see if there is an error
+		 */
 		public function handleNextExecuteComplete( result:ChildResult ):void {
 			timer.stop();
 			timer.removeEventListener( TimerEvent.TIMER_COMPLETE, handleTimerComplete, false );

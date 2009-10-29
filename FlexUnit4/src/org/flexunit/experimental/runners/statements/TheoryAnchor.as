@@ -43,7 +43,10 @@ package org.flexunit.experimental.runners.statements
 	import org.flexunit.utils.ClassNameUtil;
 	
 	use namespace classInternal;
-
+	
+	/**
+	 * Responsible for keeping track of the progress of a particular theory.
+	 */
 	public class TheoryAnchor extends AsyncStatementBase implements IAsyncStatement {
 		private var successes:int = 0;
 		private var frameworkMethod:FrameworkMethod;
@@ -54,14 +57,27 @@ package org.flexunit.experimental.runners.statements
 		private var incompleteLoopCount:int = 0;
 		private var completeLoopCount:int = 0;
 		
+		/**
+		 * Constructor.
+		 * 
+		 * @param method The theory method to run
+		 * @param testClass The test class that contains the theory to run
+		 */
  		public function TheoryAnchor( method:FrameworkMethod, testClass:TestClass ) {
 			frameworkMethod = method;
 			this.testClass = testClass;
 			
+			//Create a new token that will track the execution of the theory
 			myToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			myToken.addNotificationMethod( handleMethodExecuteComplete );
 		}
 		
+		/**
+		 * Determine if any errors were thrown during execution of the theory or if the theory did not successfully run for
+		 * any given data subset
+		 * 
+		 * @param result The result of the executed theory
+		 */
 		protected function handleMethodExecuteComplete( result:ChildResult ):void {
 			var error:Error;
 
@@ -90,11 +106,17 @@ package org.flexunit.experimental.runners.statements
 			
 			parentToken.sendResult( error );
 		}
-
+		
+		/**
+		 * Determines all possible parameters that a theory could use and starts the process creating unique combinations
+		 * of parameters to run in the theory
+		 * 
+		 * @param parentToken The token to be notified when the test method has finished running
+		 */
 		public function evaluate(parentToken:AsyncTestToken):void {
 			this.parentToken = parentToken;
 
-			//Thhis is run once per theory method found in the class
+			//This is run once per theory method found in the class
 			var assignment:Assignments = Assignments.allUnassigned( frameworkMethod.method, testClass );
 			var statement:AssignmentSequencer = new AssignmentSequencer( assignment, frameworkMethod, testClass.asClass, this );
 			statement.evaluate( myToken );
@@ -103,17 +125,36 @@ package org.flexunit.experimental.runners.statements
 		private function methodCompletesWithParameters( method:FrameworkMethod, complete:Assignments, freshInstance:Object ):IAsyncStatement {
 			return new MethodCompleteWithParamsStatement( method, this, complete, freshInstance );
 		}
-
+		
+		/**
+		 * Adds a provided <code>AssumptionViolatedException</code> to an array of <code>AssumptionViolatedException</code> encountered
+		 * during the course of executing the theory
+		 * 
+		 * @param e The <code>AssumptionViolatedException</code> to add
+		 */
 		classInternal function handleAssumptionViolation( e:AssumptionViolatedException ):void {
 			invalidParameters.push(e);
 		}
-
+		
+		/**
+		 * Generates a <code>ParameterizedAssertionError</code> if parameters are provided; otherwise, just returns the error
+		 * 
+		 * @param e The error that was thrown
+		 * @param params The parameters that were provided to the theory when the error was thrown
+		 * 
+		 * @return the provided error or a <code>ParameterizedAssertionError</code> if parameters are provided
+		 */
 		classInternal function reportParameterizedError( e:Error, ...params):Error {
  			if (params.length == 0)
 				return e;
 			return new ParameterizedAssertionError(e, frameworkMethod.name, params);
 		}
-
+		
+		/**
+		 * Determines whether null paramater values are acceptable for a specific theory
+		 * 
+		 * @return a Boolean value indicating whether null parameter values are ok
+		 */
 		classInternal function nullsOk():Boolean {
 			
 			return true;
@@ -133,7 +174,11 @@ package org.flexunit.experimental.runners.statements
 			return annotation.nullsAccepted();*/
 			return false;
  		}
-
+		
+		/**
+		 * Updates the number of successes for the given theory.  This should be called when the theory successfully runs for
+		 * a given parameter set.
+		 */
 		classInternal function handleDataPointSuccess():void {
 			successes++;
 		}		

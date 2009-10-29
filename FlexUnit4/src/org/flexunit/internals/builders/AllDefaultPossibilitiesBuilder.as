@@ -29,16 +29,33 @@ package org.flexunit.internals.builders {
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runners.model.IRunnerBuilder;
 	import org.flexunit.runners.model.RunnerBuilderBase;
-
+	
+	/**
+	 * Used to determine what type of <code>IRunner</code> can be used to run a specific testClass
+	 */
 	public class AllDefaultPossibilitiesBuilder extends RunnerBuilderBase {
 		private var canUseSuiteMethod:Boolean;
-
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param canUseSuiteMethod A Boolean value indicating whether a <code>SuiteMethodBuilder</code> can be used
+		 */
 		public function AllDefaultPossibilitiesBuilder( canUseSuiteMethod:Boolean = true ) {
 			this.canUseSuiteMethod= canUseSuiteMethod;
 			super();
 		}
-
+		
+		/**
+		 * Returns an <code>IRunner</code> that can be used by a specific testClass
+		 * 
+		 * @param testClass The class to find a runner for
+		 * 
+		 * @return a runner that can run the testClass, a null value will be returned if no suitable runner is found
+		 */
 		override public function runnerForClass( testClass:Class ):IRunner {
+			//Construct an array of potential builders, the array is ordered so that each potential testClass
+			//will check against the appropriate builder in the correct order
 			var builders:Array = new Array(
 					ignoredBuilder(),
 					metaDataBuilder(),
@@ -46,7 +63,8 @@ package org.flexunit.internals.builders {
 					flexUnit1Builder(),
 					fluint1Builder(),
 					flexUnit4Builder());
-	
+			
+			//Get a runner for the specific type of class
 			for ( var i:int=0; i<builders.length; i++ ) {
 				var builder:IRunnerBuilder = builders[ i ]; 
 				var runner:IRunner = builder.safeRunnerForClass( testClass );
@@ -55,40 +73,64 @@ package org.flexunit.internals.builders {
 			}
 			return null;
 		}
-	
+		
+		/**
+		 * Returns an <code>IgnoredBuilder</code>
+		 */
 		protected function ignoredBuilder():IgnoredBuilder {
 			return new IgnoredBuilder();
 		}
-
+		
+		/**
+		 * Returns a <code>MetaDataBuilder</code>
+		 */
 		protected function metaDataBuilder():MetaDataBuilder {
 			return new MetaDataBuilder(this);
 		}
-
+		
+		/**
+		 * If suite methods can be used, returns a <code>SuiteMethodBuilder</code>;
+		 * otherwise, returns a <code>NullBuilder</code>;
+		 */
 		protected function suiteMethodBuilder():IRunnerBuilder {
 			if (canUseSuiteMethod)
 				return new SuiteMethodBuilder();
 
 			return new NullBuilder();
 		}		
-	
+		
+		/**
+		 * Returns a <code>FlexUnit1Builder</code>
+		 */
 		protected function flexUnit1Builder():FlexUnit1Builder {
 			return new FlexUnit1Builder();
 		}
-	
+		
+		/**
+		 * If Flex classes are compiled into the swc, returns a <code>Fluint1Builder</code>;
+		 * otherwise, returns a <code>NullBuilder</code>;
+		 */
 		protected function fluint1Builder():IRunnerBuilder {
 			var runner:IRunnerBuilder;
-
+			
+			// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
+			// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
+			// flex classes since it will cause errors.
 			CONFIG::useFlexClasses {
 				runner = new Fluint1Builder();
 			}
-				
+			
+			//If the runner has not be set to a Fluint1Builder, set the runner to a NullBuilder
 			if ( !runner ) {
 				runner = new NullBuilder();
 			}
 			
 			return runner;
 		}		
-
+		
+		/**
+		 * Returns a <code>FlexUnit4Builder</code>
+		 */
 		protected function flexUnit4Builder():FlexUnit4Builder {
 			return new FlexUnit4Builder();
 		}

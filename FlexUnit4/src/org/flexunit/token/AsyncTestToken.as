@@ -28,13 +28,18 @@
 
 package org.flexunit.token {
 	
-	
+	/**
+	 * Responsible for indicating that a given task has completed
+	 */
 	dynamic public class AsyncTestToken {
 		private var methodsEntries:Array;
 		private var _error:Error;
 		private var debugClassName:String;
 		private var _token:AsyncTestToken;
-
+		
+		/**
+		 * Returns the parentToken of the AsyncTestToken
+		 */
 		public function get parentToken():AsyncTestToken {
 			return _token;
 		}
@@ -43,10 +48,21 @@ package org.flexunit.token {
 			_token = value;
 		}
 		
+		/**
+		 * Returns the error associated with the AsyncTestToken
+		 */
 		public function get error():Error {
 			return _error;
 		}
 		
+		/**
+		 * Adds a notification method to the AsyncTestToken and returns the token
+		 * 
+		 * @param function A method that will be invoked when results are sent
+		 * @param debugClassName The name of the class
+		 * 
+		 * @return the AsyncTestToken
+		 */
 		public function addNotificationMethod( method:Function, debugClassName:String=null ):AsyncTestToken {
 			if (methodsEntries == null)
 				methodsEntries = [];
@@ -62,7 +78,13 @@ package org.flexunit.token {
 			}
 			return new ChildResult( this, error );
 		}
-
+		
+		/**
+		 * If any notification methods exist, invokes the notification methods with a <code>ChildResult</code> that
+		 * contains a references to this token and the error parameter
+		 * 
+		 * @parameter error The error to be provided to the ChildResult
+		 */
 		public function sendResult( error:Error=null ):void {
 			if ( methodsEntries && methodsEntries[ 0 ] ) {
 				//Right now we only really have 1 level of responders
@@ -92,6 +114,11 @@ package org.flexunit.token {
 			return output; 
 		}
 		
+		/**
+		 * Constructor.
+		 * 
+		 * @param debugClassName The name of the class
+		 */
 		public function AsyncTestToken( debugClassName:String = null ) {
 			this.debugClassName = debugClassName;
 		}

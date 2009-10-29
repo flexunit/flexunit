@@ -32,11 +32,20 @@ package org.flexunit.internals
 	import org.hamcrest.SelfDescribing;
 	import org.hamcrest.StringDescription;
 	
+	/**
+	 * Thrown when an assumption evaluates to false.
+	 */
 	public class AssumptionViolatedException extends Error implements SelfDescribing
 	{
 		private var value:Object;
 		private var matcher:Matcher;
-	
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param value The value that was obtained when the assumption was evaluated
+		 * @param matcher The matcher used to evaluate the assumption
+		 */
 		public function AssumptionViolatedException( value:Object, matcher:Matcher=null ) {
 			super(); //value instanceof Throwable ? (Throwable) value : null);
 			this.value = value;

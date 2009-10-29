@@ -30,17 +30,34 @@ package org.flexunit.runner.manipulation {
 	
 	import org.flexunit.runner.IDescription;
 	
+	/**
+	 * A <code>MetadataSorter</code> compares two values to determine which value is greater.
+	 * 
+	 */
 	public class MetadataSorter {
 		/**
 		 * NULL is a <code>Sorter</code> that leaves elements in an undefined order
 		 */
 		public static var NULL:Sorter = new Sorter(none);
+		
+		/**
+		 * META is a <code>Sorter</code> that leaves elements in sorted order
+		 */
 		public static var META:Sorter = new Sorter(defaultSortFunction);
 		
+		/**
+		 * Does not compare its two arguments for order. Returns a zero regardless of the arguments being passed.
+		 * @param o1 (@link IDescription) the first object to be compared
+		 * @param o2 (@link IDescription) the second object to be compared
+		 * */
 		private static function none( o1:IDescription, o2:IDescription ):int {
 			return 0;
 		}
 		
+		/**
+		 * Determines the value of the order for the argument if an order exists.
+		 * @param o1 (@link IDescription) the object to have its order checked
+		 * */
 		private static function getOrderValueFrom( object:IDescription ):Number {
 			var order:Number = 0;		
 			
@@ -54,6 +71,7 @@ package org.flexunit.runner.manipulation {
 			for ( var i:int=0; i<metadataNodes.length(); i++ ) {
 				metadata = metadataNodes[ i ];
 				
+				//Determine if the node contains an 'order' key, if it does, get the order number
 				var orderString:String = MetadataTools.getArgValueFromSingleMetaDataNode( metadata, "order" );
 				if ( orderString ) {
 					order = Number( orderString );
@@ -64,6 +82,12 @@ package org.flexunit.runner.manipulation {
 			return order;
 		}
 		
+		/**
+		 * Compares its two arguments for order. Returns a negative integer, zero, or a positive integer 
+		 * as the first argument is less than, equal to, or greater than the second.
+		 * @param o1 (@link IDescription) the first object to be compared
+		 * @param o2 (@link IDescription) the second object to be compared
+		 * */
 		public static function defaultSortFunction( o1:IDescription, o2:IDescription ):int {
 			var a:Number;
 			var b:Number; 
@@ -71,18 +95,21 @@ package org.flexunit.runner.manipulation {
 			var o1Meta:XMLList = o1.getAllMetadata();
 			var o2Meta:XMLList = o2.getAllMetadata();
 			
+			//Determine if the first object has an order
 			if ( o1Meta ) { 
 				a = getOrderValueFrom( o1 );
 			} else {
 				a = 0;
 			}
-
+			
+			//Determine if the second object has an order
 			if ( o2Meta ) {
 				b = getOrderValueFrom( o2 );
 			} else {
 				b = 0;
 			}
 			
+			//Determine the ordering of the two respected objects
 			if (a < b)
 				return -1;
 			if (a > b)

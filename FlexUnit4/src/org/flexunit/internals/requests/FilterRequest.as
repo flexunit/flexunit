@@ -34,7 +34,7 @@ package org.flexunit.internals.requests {
 	import org.flexunit.runner.manipulation.NoTestsRemainException;
 
 	/**
-	 * A filtered <code>Request</code>.
+	 * A <code>Request</code> that filters a test class.
 	 */
 	public class FilterRequest extends Request {
 		private var request:IRequest;

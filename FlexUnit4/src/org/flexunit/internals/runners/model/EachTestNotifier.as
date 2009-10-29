@@ -30,16 +30,30 @@ package org.flexunit.internals.runners.model {
 	import org.flexunit.runner.notification.Failure;
 	import org.flexunit.runner.notification.IRunNotifier;
 	
+	/**
+	 * Notifies a notifier about a test method.
+	 */
 	public class EachTestNotifier {
 		private var notifier:IRunNotifier;
 		private var description:IDescription;
-	
+		
+		/** 
+		 * Constructor. 
+		 * 
+		 * @param notifier The notifier to notify about the current test method
+		 * @param description An <code>IDescription</code> the represents a test method
+		 */
 		public function EachTestNotifier( notifier:IRunNotifier, description:IDescription ) {
 			this.notifier = notifier;
 			this.description = description;
 		}
 		
+		/** 
+		 * Tell the notifier that the test method has encountered a failure
+		 * @param targetException The exception that was thrown when running the test method
+		 */
 		public function addFailure( targetException:Error ):void {
+			//If the targetException is a MultipleFailureException, notify the notifier for each failure
 			if (targetException is MultipleFailureException) {
 				var  mfe:MultipleFailureException = MultipleFailureException( targetException );
 				var failures:Array = mfe.failures;
@@ -51,19 +65,32 @@ package org.flexunit.internals.runners.model {
 			notifier.fireTestFailure(new Failure( description, targetException));
 		}
 
-	//TODO: THis needs to be an AssumptionViolatedException... but I need to get Hamcrest in there for that...so it needs to wait
+		//TODO: THis needs to be an AssumptionViolatedException... but I need to get Hamcrest in there for that...so it needs to wait
+		/** 
+		 * Tell the notifier that the test method has failed an assumption
+		 * @param error The assumption that was violated when running the test method
+		 */
 		public function addFailedAssumption( error:Error ):void {
 			notifier.fireTestAssumptionFailed( new Failure( description, error ) );
 		}
-	
+		
+		/** 
+		 * Tell the notifier that the test method has finished running
+		 */
 		public function fireTestFinished():void {
 			notifier.fireTestFinished(description);
 		}
-	
+		
+		/** 
+		 * Tell the notifier that the test method has started
+		 */
 		public function fireTestStarted():void {
 			notifier.fireTestStarted(description);
 		}
 	
+		/** 
+		 * Tell the notifier that the test method has been ignored
+		 */
 		public function fireTestIgnored():void {
 			notifier.fireTestIgnored(description);
 		}

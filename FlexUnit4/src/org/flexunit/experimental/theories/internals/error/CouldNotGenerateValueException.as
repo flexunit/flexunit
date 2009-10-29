@@ -29,6 +29,9 @@ package org.flexunit.experimental.theories.internals.error
 {
 	public class CouldNotGenerateValueException extends Error
 	{
+		/**
+		 * Thrown when a value could not be generated.
+		 */
 		public function CouldNotGenerateValueException(message:String="", id:int=0)
 		{
 			super(message, id);

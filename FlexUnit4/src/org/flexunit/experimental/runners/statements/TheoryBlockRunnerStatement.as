@@ -34,23 +34,39 @@ package org.flexunit.experimental.runners.statements
 	import org.flexunit.internals.runners.statements.IAsyncStatement;
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
-
+	
+	/**
+	 * Responsible for reporting whether the theory method with specific arguments was successful.
+	 */
 	public class TheoryBlockRunnerStatement extends AsyncStatementBase implements IAsyncStatement {
 		use namespace classInternal;
 	
 		private var statement:IAsyncStatement;
 		private var anchor:TheoryAnchor;
 		private var complete:Assignments;
-	
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param statement The <code>IAsyncStatement</code> to execute
+		 * @param anchor The anchor associated with the theory method
+		 * @param complete The <code>Assignments</code> associated with the current theory method test
+		 */
 		public function TheoryBlockRunnerStatement( statement:IAsyncStatement, anchor:TheoryAnchor, complete:Assignments ) {
 			this.statement = statement;
 			this.anchor = anchor;
 			this.complete = complete;
 			
+			//Create a new token that will track the execution of the theory method test
 			myToken = new AsyncTestToken( "TheoryBlockRunnerStatement" );
 			myToken.addNotificationMethod( handleChildExecuteComplete );
 		}	
-	
+		
+		/**
+		 * Executes the current <code>IAsyncStatement</code> that is wrapping the theory method test
+		 * 
+		 * @param parentToken The token to be notified when the the current theory method test has finished all other statements
+		 */
 		public function evaluate( parentToken:AsyncTestToken ):void {
 			this.parentToken = parentToken;
 	
@@ -66,14 +82,22 @@ package org.flexunit.experimental.runners.statements
 				//sendComplete( e );			
 			}
 		}
-							
+		
+		/**
+		 * Notifies the anchor if the statement successfully executed and the parent token of any errors that were encountered
+		 * while running the theory method test
+		 * 
+		 * @param result A <code>ChildResult</code> that contains potential errors encountered during the statements execution
+		 */
 		public function handleChildExecuteComplete( result:ChildResult ):void {
 			var assumptionError:Boolean = false;
 
 			if ( result && result.error && result.error is AssumptionViolatedException) {
 				assumptionError = true;
 			}  
-
+			
+			//If no assumption errors were encountered when running the current theory method test, notify the anchor that one
+			//set of data points were successful
 			if ( !assumptionError ) {
 				anchor.handleDataPointSuccess();
 			}

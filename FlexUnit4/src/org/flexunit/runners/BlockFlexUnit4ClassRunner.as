@@ -91,6 +91,7 @@ package org.flexunit.runners {
 			token.addNotificationMethod( handleBlockComplete );
 			token[ ParentRunner.EACH_NOTIFIER ] = eachNotifier;
 			
+			//Determine if the method should be ignored and not run
 			if ( method.hasMetaData( "Ignore" ) ) {
 				eachNotifier.fireTestIgnored();
 				childRunnerToken.sendResult();
@@ -249,14 +250,14 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Returns an <code> IStatement</code> that invokes <code>method</code> on <code>test</code>
+		 * Returns an <code> IAsyncStatement</code> that invokes <code>method</code> on <code>test</code>
 		 */
 		protected function methodInvoker( method:FrameworkMethod, test:Object ):IAsyncStatement {
 			return new InvokeMethod(method, test);
 		}
 
 		/**
-		 * Returns an <code> IStatement</code>: if <code>method</code>'s <code>Test</code> annotation
+		 * Returns an <code> IAsyncStatement</code>: if <code>method</code>'s <code>Test</code> annotation
 		 * has the {@code expecting} attribute, return normally only if {@code next}
 		 * throws an exception of the correct type, and throw an exception
 		 * otherwise.
@@ -267,7 +268,7 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Returns an <code> IStatement</code>: if <code>method</code>'s <code> Test</code> annotation
+		 * Returns an <code> IAsyncStatement</code>: if <code>method</code>'s <code> Test</code> annotation
 		 * has the <code>timeout</code> attribute, throw an exception if <code>next</code>
 		 * takes more than the specified number of milliseconds.
 		 */
@@ -275,12 +276,20 @@ package org.flexunit.runners {
 			var timeout:String = FailOnTimeout.hasTimeout( method );
 			return timeout ? new FailOnTimeout( Number( timeout ), statement ) : statement;
 		}
-
+		
+		/**
+		 * Returns an <code> IAsyncStatement</code>: if <code>method</code>'s <code> Test</code> annotation
+		 * has the <code>async</code> attribute, throw an exception if <code>next</code>
+		 * encounters an exception during execution
+		 */
 		protected function withPotentialAsync( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
 			var async:Boolean = ExpectAsync.hasAsync( method );
 			return async ? new ExpectAsync( test, statement ) : statement;
 		}
-
+		
+		/**
+		 * Returns an <code> IAsyncStatement</code> that invokes <code>method</code> on a decorated <code>test</code>
+		 */
 		protected function withDecoration( method:FrameworkMethod, test:Object ):IAsyncStatement {
 			var statement:IAsyncStatement = methodInvoker( method, test );
 			statement = withPotentialAsync( method, test, statement );
@@ -296,7 +305,7 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Returns an <code> IStatement</code>: run all non-overridden {@code Before}
+		 * Returns an <code> IAsyncStatement</code>: run all non-overridden {@code Before}
 		 * methods on this class and superclasses before running {@code statement}; if
 		 * any throws an Exception, stop execution and pass the exception on.
 		 */
@@ -308,7 +317,7 @@ package org.flexunit.runners {
 		}
 	
 		/**
-		 * Returns an <code> IStatement</code>: run all non-overridden {@code After}
+		 * Returns an <code> IAsyncStatement</code>: run all non-overridden {@code After}
 		 * methods on this class and superclasses before running {@code next}; all
 		 * After methods are always executed: exceptions thrown by previous steps
 		 * are combined, if necessary, with exceptions from After methods into a

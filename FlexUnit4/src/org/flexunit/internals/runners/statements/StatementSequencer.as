@@ -33,41 +33,71 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.utils.ClassNameUtil;
 	
+	/**
+	 * Sequences statments that are to be executed
+	 */
 	public class StatementSequencer extends AsyncStatementBase implements IAsyncStatement {
 		protected var queue:Array;
 		protected var errors:Array;
-
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param queue An <code>Array</code> containing object that implement <code>IAsyncStatment</code>
+		 */
 		public function StatementSequencer( queue:Array=null ) {
 			super();
 			
 			if (!queue) {
 				queue = new Array();
 			}			
-
+			
+			//Copy the queue
 			this.queue = queue.slice();
 			this.errors = new Array();		
-
+			
+			//Create a new token that will track the execution of this statement seqeuence
 			myToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			myToken.addNotificationMethod( handleChildExecuteComplete );
 		}
 		
+		/**
+		 * Adds an object that implements <code>IAsyncStatement</code> to the queue of statments to execute
+		 * 
+		 * @param child The object that implements <code>IAsyncStatement</code> to add
+		 */
 		public function addStep( child:IAsyncStatement ):void {
 			if ( child ) {
 				queue.push( child );
 			}
 		}
 		
+		/**
+		 * Evaluates the child
+		 * 
+		 * @param child The child object to be evaluated
+		 */
 		protected function executeStep( child:* ):void {
 			if ( child is IAsyncStatement ) {
 				IAsyncStatement( child ).evaluate( myToken );
 			}
 		}
 		
+		/**
+		 * Starts evaluating the queue of statements
+		 * 
+		 * @param parentToken The token to be notified when the statements have finished running
+		 */
 		public function evaluate( parentToken:AsyncTestToken ):void {
 			this.parentToken = parentToken;
 			handleChildExecuteComplete( null );
 		}
-
+		
+		/**
+		 * Executes the first step in the sequence
+		 * 
+		 * @param parentToken The token to be notified when the setp has finished running
+		 */
 		public function handleChildExecuteComplete( result:ChildResult ):void {
 			var step:*;
 			
@@ -89,11 +119,13 @@ package org.flexunit.internals.runners.statements {
 
 		override protected function sendComplete( error:Error=null ):void {
 			var sendError:Error;
-
+			
+			//Determine if any errors were passed to this method
 			if ( error ) {
 				errors.push( error );
 			}
-
+			
+			//Determine whether to send a single error or MultipleFailureException containing the array of errors
 			if (errors.length == 1)
 				sendError = errors[ 0 ];
 			else if ( errors.length > 1 ) {
