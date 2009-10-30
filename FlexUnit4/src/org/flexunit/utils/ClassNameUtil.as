@@ -26,9 +26,21 @@
  * @version    
  **/ 
 package org.flexunit.utils {
+	/**
+	 * Contains static methods to assist in class naming
+	 */
 	public class ClassNameUtil {
 		import flash.utils.getQualifiedClassName;
 
+		/**
+		 * Converts all "." into "_" and concerts all "::" into "_" in contained in
+		 * the class name
+		 * 
+		 * <p>
+		 * @param instance Instance of the object of which to retrieve a name.
+		 * <p>
+		 * @return The modified class name
+		 */
 		public static function getLoggerFriendlyClassName( instance:Object ):String {
 			var periodReplace:RegExp = /\./g;
 			var colonReplace:RegExp = /::/g;

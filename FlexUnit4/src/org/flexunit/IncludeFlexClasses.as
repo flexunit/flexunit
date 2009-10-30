@@ -18,6 +18,9 @@ package org.flexunit
 	import org.fluint.uiImpersonation.TestEnvironment;
 	import org.fluint.uiImpersonation.UIImpersonator;
 
+	/**
+	 * These classes should only be included in a Flex project
+	 */
 	public class IncludeFlexClasses
 	{
 		private var fxu1:AsyncTestResponder;
