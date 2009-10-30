@@ -180,7 +180,7 @@ package org.flexunit.experimental.theories {
 		}
 		
 		/**
-		 * Constructor,
+		 * Constructor.
 		 * 
 		 * @param type The Class of the parameter
 		 * @param metaDataList Associated metadata for the method the parameter is associated with
