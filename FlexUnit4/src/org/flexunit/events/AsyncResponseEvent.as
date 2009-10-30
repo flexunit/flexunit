@@ -26,7 +26,11 @@ package org.flexunit.events {
 	import flash.events.Event;
 	
 	import mx.rpc.IResponder;
-
+	
+	/** 
+	 * An AsyncResponseEvent is event that is fired when an asynchronous test has recieved a response
+	 * from an <code>IAsyncTestTresponder</code>.
+	 */
 	public class AsyncResponseEvent extends Event {
 		public static var RESPONDER_FIRED:String = "responderFired";
 

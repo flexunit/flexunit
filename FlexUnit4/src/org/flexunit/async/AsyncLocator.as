@@ -31,6 +31,9 @@ package org.flexunit.async {
 	import org.flexunit.AssertionError;
 	import org.flexunit.internals.runners.statements.IAsyncHandlingStatement;
 	
+	/**
+	 * The AsyncLocator is used to keep track of asynchronous test cases.
+	 */
 	public class AsyncLocator {
 		private static var asyncHandlerMap:Dictionary = new Dictionary();
 		

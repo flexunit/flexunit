@@ -47,39 +47,37 @@ package org.flexunit.runners {
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.utils.ClassNameUtil;
 	
-//TODO: Do statements referring to older versions apply to older flexUnits?
-/**
- * Implements the FlexUnit 4 standard test case class model, as defined by the
- * annotations in the org.flexunit package. Many users will never notice this
- * class: it is now the default test class runner, but it should have exactly
- * the same behavior as the old test class runner ({@code FlexUnit4ClassRunner}).
- * 
- * BlockFlexUnit4ClassRunner has advantages for writers of custom FlexUnit runners
- * that are slight changes to the default behavior, however:
- * 
- * <ul>
- * <li>It has a much simpler implementation based on <code> Statement</code>s,
- * allowing new operations to be inserted into the appropriate point in the
- * execution flow.
- * 
- * <li>It is published, and extension and reuse are encouraged, whereas {@code
- * FlexUnit4ClassRunner} was in an internal package, and is now deprecated.
- * </ul>
- */
-	
+	//TODO: Do statements referring to older versions apply to older flexUnits?
+	/**
+	 * Implements the FlexUnit 4 standard test case class model, as defined by the
+	 * annotations in the org.flexunit package. Many users will never notice this
+	 * class: it is now the default test class runner, but it should have exactly
+	 * the same behavior as the old test class runner ({@code FlexUnit4ClassRunner}).
+	 * 
+	 * BlockFlexUnit4ClassRunner has advantages for writers of custom FlexUnit runners
+	 * that are slight changes to the default behavior, however:
+	 * 
+	 * <ul>
+	 * <li>It has a much simpler implementation based on <code> Statement</code>s,
+	 * allowing new operations to be inserted into the appropriate point in the
+	 * execution flow.
+	 * 
+	 * <li>It is published, and extension and reuse are encouraged, whereas {@code
+	 * FlexUnit4ClassRunner} was in an internal package, and is now deprecated.
+	 * </ul>
+	 */
 	public class BlockFlexUnit4ClassRunner extends ParentRunner implements IFilterable {
 
 		/**
 		 * Creates a BlockFlexUnit4ClassRunner to run {@code klass}
-		 */
-		 
+		 */	 
 		public function BlockFlexUnit4ClassRunner( klass:Class ) {
 			super( klass );
 		}
 
-	//
-	// Implementation of ParentRunner
-	// 
+		//
+		// Implementation of ParentRunner
+		// 
 	
 		override protected function runChild( child:*, notifier:IRunNotifier, childRunnerToken:AsyncTestToken ):void {
 			var method:FrameworkMethod = FrameworkMethod( child ); 
@@ -139,24 +137,32 @@ package org.flexunit.runners {
 			var method:FrameworkMethod = FrameworkMethod( child );
 			return Description.createTestDescription( testClass.asClass, method.name, method.metadata );
 		}
-
+		
+		/**
+		 * Returns an array of all methods that have been annotated with <code></code>
+		 */
 		override protected function get children():Array {
 			return computeTestMethods();
 		}
 
-	//
-	// Override in subclasses
-	//
+		//
+		// Override in subclasses
+		//
 
-	/**
-	 * Returns the methods that run tests. Default implementation 
-	 * returns all methods annotated with {@code Test} on this 
-	 * class and superclasses that are not overridden.
-	 */
+		/**
+		 * Returns the methods that run tests. Default implementation 
+		 * returns all methods annotated with {@code Test} on this 
+		 * class and superclasses that are not overridden.
+		 */
 		protected function computeTestMethods():Array {
 			return testClass.getMetaDataMethods( "Test" );
 		}
-
+		
+		/**
+		 * It additionally validates whether specific instances of tests are implemented correctly.
+		 * 
+		 * @inheritDoc
+		 */
 		override protected function collectInitializationErrors( errors:Array ):void {
 			super.collectInitializationErrors(errors);
 	
@@ -164,11 +170,11 @@ package org.flexunit.runners {
 			validateInstanceMethods(errors);
 		}
 
-	/**
-	 * Adds to {@code errors} for each method annotated with {@code Test},
-	 * {@code Before}, or {@code After} that is not a public, void instance
-	 * method with no arguments.
-	 */
+		/**
+		 * Adds to {@code errors} for each method annotated with {@code Test},
+		 * {@code Before}, or {@code After} that is not a public, void instance
+		 * method with no arguments.
+		 */
 		protected function validateInstanceMethods( errors:Array ):void {
 			validatePublicVoidNoArgMethods( "After", false, errors);
 			validatePublicVoidNoArgMethods( "Before", false, errors);
@@ -178,10 +184,10 @@ package org.flexunit.runners {
 				errors.push(new Error("No runnable methods"));
 		}
 
-	/**
-	 * Adds to {@code errors} for each method annotated with {@code Test}that
-	 * is not a public, void instance method with no arguments.
-	 */
+		/**
+		 * Adds to {@code errors} for each method annotated with {@code Test}that
+		 * is not a public, void instance method with no arguments.
+		 */
 		protected function validateTestMethods( errors:Array ):void {
 			validatePublicVoidNoArgMethods( "Test", false, errors);
 		}
@@ -194,7 +200,15 @@ package org.flexunit.runners {
 		protected function createTest():Object {
 			return new testClass.asClass();
 		}
-
+		
+		/**
+		 * Creates an <code>EachTestNotifier</code> based on the the description of the method and a notifer
+		 * 
+		 * @param method The <code>FrameworkMethod</code> that is to be described
+		 * @param notifier The notifier to notify about the execution of the method
+		 * 
+		 * @return an <code>EachTestNotifier</code>
+		 */
 		private function makeNotifier( method:FrameworkMethod, notifier:IRunNotifier ):EachTestNotifier {
 			var description:IDescription = describeChild(method);
 			return new EachTestNotifier(notifier, description);
@@ -299,7 +313,10 @@ package org.flexunit.runners {
 			
 			return statement;
 		}
-
+		
+		/**
+		 * Returns an <code> IAsyncStatement</code> that manages the stack and allow execution to break across frames
+		 */
 		protected function withStackManagement( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
 			return new StackAndFrameManagement( statement );
 		}

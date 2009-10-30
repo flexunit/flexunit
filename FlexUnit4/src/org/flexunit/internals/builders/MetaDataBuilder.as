@@ -103,6 +103,16 @@ package org.flexunit.internals.builders {
  			return null;
 		}
 		
+		/**
+		 * Builds an <code>IRunner</code> based on a test class and a suite builder.  This method is typically called if
+		 * the runner did not successfully build with its first signature.
+		 * 
+		 * @param runnerClassName The name of the runner to be used for the provided test class
+		 * @param testClass The test class to provide to the builder
+		 * 
+		 * @return an <code>IRunner</code> for the given test class if it has proper metadata and is successfully built; otherwise,
+		 * returns a null value
+		 */
 		private function buildWithSecondSignature( runnerClass:Class, testClass:Class, runnerClassName:String ):IRunner {
 			try {
 				return new runnerClass( testClass, suiteBuilder );

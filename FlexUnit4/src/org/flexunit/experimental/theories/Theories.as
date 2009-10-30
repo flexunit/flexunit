@@ -34,17 +34,48 @@ package org.flexunit.experimental.theories {
 	import org.flexunit.runners.BlockFlexUnit4ClassRunner;
 	import org.flexunit.runners.model.FrameworkMethod;
 	
+	/**
+	 * The Theories runner is a runner that will run theory theory test methods.  In order for a theory to properly run,
+	 * a test class must have a method marked as a theory method that contains one or more parameters.  The type of each parameter
+	 * must have a static data point or an array of data points that correspond that correspond to that type.
+	 * 
+	 * <pre>
+	 * 
+	 * [DataPoints
+	 * [ArrayElementType("String")]
+	 * public static var stringValues:Array = ["one","two","three","four","five"];
+	 * 
+	 * [DataPoint]
+	 * public static var values1:int = 2;
+	 * 
+	 * 
+	 * [Theory]
+	 * public function testTheory(name:String, value:int):void {
+	 * 		//Do something
+	 * }
+	 * 
+	 * </pre>
+	 */
 	public class Theories extends BlockFlexUnit4ClassRunner {
 		public function Theories( klass:Class ) {
 			super( klass );
 		}
-
+		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function collectInitializationErrors( errors:Array ):void {
 			super.collectInitializationErrors(errors);
 	
 			validateDataPointFields(errors);
 		}
-
+		
+		/**
+		 * Validates all fields in a test class an ensure that they are all static
+		 * 
+		 * @param errors An array of errors that has been encountered during the initialization process.  If
+		 * a field is not static, an error will be added to this array.
+		 */
 		private function validateDataPointFields( errors:Array ):void {
 			var klassInfo:Klass = new Klass( testClass.asClass );
 
@@ -65,6 +96,13 @@ package org.flexunit.experimental.theories {
 			}
 		}
 		
+		/**
+		 * If an element is contained in the removeElements array and the other array, remove
+		 * that element from the other array.
+		 * 
+		 * @param array The array that will have elements removed from it if a match is found
+		 * @param removeElements The array that contains elements to remove from the other array
+		 */
 		private function removeFromArray( array:Array, removeElements:Array ):void {
 			for ( var i:int=0; i<array.length; i++ ) {
 				for ( var j:int=0; j<removeElements.length; j++ ) {
@@ -74,7 +112,7 @@ package org.flexunit.experimental.theories {
 				}
 			}
 		}
-	
+		
 		override protected function computeTestMethods():Array {
 			var testMethods:Array = super.computeTestMethods();
 			var theoryMethods:Array = testClass.getMetaDataMethods( "Theory" );
@@ -84,7 +122,14 @@ package org.flexunit.experimental.theories {
 
 			return testMethods;
 		}
-
+		
+		/**
+		 * Returns a <code>TheoryAnchor</code> for the given theory method in the test class
+		 * 
+		 * @param method The theory method that is to be tested
+		 * 
+		 * @return a <code>TheoryAnchor</code> for the provided <code>FrameworkMethod</code>
+		 */
 		override protected function methodBlock( method:FrameworkMethod ):IAsyncStatement {
 			return new TheoryAnchor( method, testClass );
 		}
