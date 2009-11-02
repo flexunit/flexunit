@@ -32,24 +32,26 @@ package org.flexunit.async {
 	import org.flexunit.internals.runners.statements.IAsyncHandlingStatement;
 	
 	/**
-	 * The AsyncLocator is used to keep track of asynchronous test cases.
+	 * The AsyncLocator is used to keep track of test cases that have implemented asynchronous functionallity.
 	 */
 	public class AsyncLocator {
 		private static var asyncHandlerMap:Dictionary = new Dictionary();
 		
 		/**
 		 * Registers the (@link IAsyncHandlingStatement) with a particular testCase.
-		 * @param (@link IAsyncHandlingStatement) the AsyncHandlingStatement to be registered
-		 * @param object
+		 * 
+		 * @param (@link IAsyncHandlingStatement) the AsyncHandlingStatement to be registered.
+		 * @param testCase The test case to associate with the <code>IAsyncHandlingStatement</code>.
 		 */
 		public static function registerStatementForTest( expectAsyncInstance:IAsyncHandlingStatement, testCase:Object ):void {
 			asyncHandlerMap[ testCase ] = expectAsyncInstance;
 		} 
 		
 		/**
-		 * Retrieves the (@link IAsyncHandlingStatement) for a particular testCase.  If no AsyncHandlingStatement has been registered
-		 * for the testCase, an (@link AssertionError) will be thrown
-		 * @param testCase
+		 * Retrieves the (@link IAsyncHandlingStatement) for a particular testCase.  If no AsyncHandlingStatement has been registered.
+		 * for the testCase, an (@link AssertionError) will be thrown.
+		 * 
+		 * @param testCase The test case used to retrieve the <code>IAsyncHandlingStatement</code>.
 		 */
 		public static function getCallableForTest( testCase:Object ):IAsyncHandlingStatement {
 			var handler:IAsyncHandlingStatement = asyncHandlerMap[ testCase ];
@@ -64,7 +66,8 @@ package org.flexunit.async {
 		
 		/**
 		 * Removes the (@link IAsyncHandlingStatement) for a particular testCase.
-		 * @param testCase
+		 * 
+		 * @param testCase The test case to remove the association with the <code>IAsyncHandlingStatement</code>.
 		 */
 		public static function cleanUpCallableForTest( testCase:Object ):void {
 			delete asyncHandlerMap[ testCase ];

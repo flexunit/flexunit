@@ -98,6 +98,10 @@ package org.flexunit.experimental.runners.statements {
 			sendComplete( result.error );
 		}
 		
+		/**
+		 * Returns a string that includes the name of the method, the assigned parameters, and the 
+		 * new instance of the current test class.
+		 */
 		override public function toString():String {
 			var statementString:String = "MethodCompleteWithParamsStatement :\n";
 	

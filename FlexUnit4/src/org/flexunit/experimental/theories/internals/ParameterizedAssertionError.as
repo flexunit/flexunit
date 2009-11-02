@@ -37,9 +37,9 @@ package org.flexunit.experimental.theories.internals {
 		/**
 		 * Constructor.
 		 * 
-		 * @param targetException The exception that was thrown
-		 * @param methodName The name of the method that threw the exception
-		 * @param params The parameters that were provided to the method that threw the exception
+		 * @param targetException The exception that was thrown.
+		 * @param methodName The name of the method that threw the exception.
+		 * @param params The parameters that were provided to the method that threw the exception.
 		 */
 		public function ParameterizedAssertionError( targetException:Error, methodName:String, ...params ) {
 			this.targetException = targetException;

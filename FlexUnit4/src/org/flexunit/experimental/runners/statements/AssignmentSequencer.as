@@ -26,10 +26,10 @@ package org.flexunit.experimental.runners.statements {
 		/**
 		 * Constructor.
 		 * 
-		 * @param parameterAssignment The current parameter assignments for a theory method test
-		 * @param frameworkMethod The theory method that is being tested
-		 * @param testClass The test class that contains the theory method
-		 * @param anchor The anchor for the theory method
+		 * @param parameterAssignment The current parameter assignments for a theory method test.
+		 * @param frameworkMethod The theory method that is being tested.
+		 * @param testClass The test class that contains the theory method.
+		 * @param anchor The anchor for the theory method.
 		 */
 		public function AssignmentSequencer( parameterAssignment:Assignments, frameworkMethod:FrameworkMethod, testClass:Class, anchor:TheoryAnchor ) {
 			super();
@@ -50,7 +50,7 @@ package org.flexunit.experimental.runners.statements {
 		 * determine what parameters can be provided to the next unassigned parameter.
 		 * 
 		 * @param parentToken The token to be notified when the theory method has finished running for a particluar permutation
-		 * of parameters
+		 * of parameters.
 		 */
 		public function evaluate( parentToken:AsyncTestToken ):void {
 			this.parentToken = parentToken;
@@ -77,7 +77,7 @@ package org.flexunit.experimental.runners.statements {
 		 * If there are no furuther potential values to assign a parameter or all values have already been assigned to a parameter,
 		 * this <code>AssignmentSequencer</code> has finished its duty to sequence parameters.
 		 * 
-		 * @param result A <code>ChildResult</code> that contains potential errors encountered during the theory's execution
+		 * @param result A <code>ChildResult</code> that contains potential errors encountered during the theory's execution.
 		 */
 		public function handleChildExecuteComplete( result:ChildResult ):void {
 			var source:IPotentialAssignment;
@@ -107,7 +107,7 @@ package org.flexunit.experimental.runners.statements {
 		 * Reports to the parentToken that the current configuration of parameter assignments have finished running in the theory
 		 * method test and determines if any error were encountered during execution of that test.
 		 * 
-		 * @param error A potential error that was encountered during a configuration of the theory meethod
+		 * @param error A potential error that was encountered during a configuration of the theory meethod.
 		 */
 		override protected function sendComplete( error:Error=null ):void {
 			var sendError:Error;
@@ -126,10 +126,10 @@ package org.flexunit.experimental.runners.statements {
 		}
 		
 		/**
-		 * Run the theory for the completed set of assigned parameters
+		 * Runs the theory for the completed set of assigned parameters.
 		 * 
 		 * @param complete Contains a permutation of current assigned parameter / value pairs to be supplied to the theory method test
-		 * for this particular configuration
+		 * for this particular configuration.
 		 */
 		protected function runWithCompleteAssignment( complete:Assignments ):void {
 			//trace( "Complete" );

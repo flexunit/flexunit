@@ -45,7 +45,9 @@ package org.flexunit.experimental.runners.statements
 	use namespace classInternal;
 	
 	/**
-	 * Responsible for keeping track of the progress of a particular theory.
+	 * The <code>TheoryAnchor</code> is responsible for keeping track of the progress of a particular theory method.
+	 * It starts the process of running the theory method for each possible combination of provided parameter, and it
+	 * also is responsible for handling the overall operation of the theory.
 	 */
 	public class TheoryAnchor extends AsyncStatementBase implements IAsyncStatement {
 		private var successes:int = 0;
@@ -60,8 +62,8 @@ package org.flexunit.experimental.runners.statements
 		/**
 		 * Constructor.
 		 * 
-		 * @param method The theory method to run
-		 * @param testClass The test class that contains the theory to run
+		 * @param method The theory method to run.
+		 * @param testClass The test class that contains the theory to run.
 		 */
  		public function TheoryAnchor( method:FrameworkMethod, testClass:TestClass ) {
 			frameworkMethod = method;
@@ -74,9 +76,9 @@ package org.flexunit.experimental.runners.statements
 		
 		/**
 		 * Determine if any errors were thrown during execution of the theory or if the theory did not successfully run for
-		 * any given data subset
+		 * any given data subset.
 		 * 
-		 * @param result The result of the executed theory
+		 * @param result The result of the executed theory.
 		 */
 		protected function handleMethodExecuteComplete( result:ChildResult ):void {
 			var error:Error;
@@ -84,6 +86,8 @@ package org.flexunit.experimental.runners.statements
 			if ( result && result.error ) {
 				error = result.error;
 			} else if ( successes == 0 ) {
+				//No errors were reported, but no successes were reported either.  Inform the parent
+				//that no matching conditions of any sort were found.
 				error = new AssertionFailedError("Never found parameters that satisfied " + frameworkMethod.name + " method assumptions.  Violated assumptions: " + invalidParameters);
 			}
 			
@@ -109,9 +113,9 @@ package org.flexunit.experimental.runners.statements
 		
 		/**
 		 * Determines all possible parameters that a theory could use and starts the process creating unique combinations
-		 * of parameters to run in the theory
+		 * of parameters to run in the theory.
 		 * 
-		 * @param parentToken The token to be notified when the test method has finished running
+		 * @param parentToken The token to be notified when the test method has finished running.
 		 */
 		public function evaluate(parentToken:AsyncTestToken):void {
 			this.parentToken = parentToken;
@@ -128,21 +132,21 @@ package org.flexunit.experimental.runners.statements
 		
 		/**
 		 * Adds a provided <code>AssumptionViolatedException</code> to an array of <code>AssumptionViolatedException</code> encountered
-		 * during the course of executing the theory
+		 * during the course of executing the theory.
 		 * 
-		 * @param e The <code>AssumptionViolatedException</code> to add
+		 * @param e The <code>AssumptionViolatedException</code> to add.
 		 */
 		classInternal function handleAssumptionViolation( e:AssumptionViolatedException ):void {
 			invalidParameters.push(e);
 		}
 		
 		/**
-		 * Generates a <code>ParameterizedAssertionError</code> if parameters are provided; otherwise, just returns the error
+		 * Generates a <code>ParameterizedAssertionError</code> if parameters are provided; otherwise, just returns the error.
 		 * 
-		 * @param e The error that was thrown
-		 * @param params The parameters that were provided to the theory when the error was thrown
+		 * @param e The error that was thrown.
+		 * @param params The parameters that were provided to the theory when the error was thrown.
 		 * 
-		 * @return the provided error or a <code>ParameterizedAssertionError</code> if parameters are provided
+		 * @return the provided error or a <code>ParameterizedAssertionError</code> if parameters are provided.
 		 */
 		classInternal function reportParameterizedError( e:Error, ...params):Error {
  			if (params.length == 0)
@@ -151,9 +155,9 @@ package org.flexunit.experimental.runners.statements
 		}
 		
 		/**
-		 * Determines whether null paramater values are acceptable for a specific theory
+		 * Determines whether null paramater values are acceptable for a specific theory.
 		 * 
-		 * @return a Boolean value indicating whether null parameter values are ok
+		 * @return a Boolean value indicating whether null parameter values are ok.
 		 */
 		classInternal function nullsOk():Boolean {
 			

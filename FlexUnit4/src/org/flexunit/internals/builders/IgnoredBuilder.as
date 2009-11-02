@@ -33,18 +33,18 @@ package org.flexunit.internals.builders
 	import org.flexunit.runners.model.RunnerBuilderBase;
 	
 	/**
-	 * Builds an <code>IgnoredClassRunner</code> for a test class
+	 * Builds an <code>IgnoredClassRunner</code> for a test class.
 	 */
 	public class IgnoredBuilder extends RunnerBuilderBase {
 		public static const IGNORE:String = "Ignore";
 		
 		/**
-		 * Returns a <code>IgnoredClassRunner</code> if the class has an ["Ignore"] metadata tag
+		 * Returns a <code>IgnoredClassRunner</code> if the class has an ["Ignore"] metadata tag.
 		 * 
-		 * @param testClass The class to check
+		 * @param testClass The class to check.
 		 * 
 		 * @return a <code>IgnoredClassRunner</code> if the class has an ["Ignore"] metadata tag; otherwise, a
-		 * value of null is returned
+		 * value of null is returned.
 		 */
 		override public function runnerForClass( testClass:Class ):IRunner {
 			var klassInfo:Klass = new Klass( testClass );

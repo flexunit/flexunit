@@ -33,7 +33,7 @@ package org.flexunit.internals.builders {
 	import org.flexunit.token.AsyncTestToken;
 	
 	/**
-	 * An <code>IRunner</code> for test classes to be ignored
+	 * An <code>IRunner</code> for test classes that are to be ignored.
 	 */
 	public class IgnoredClassRunner implements IRunner {
 		private var testClass:Class;
@@ -41,7 +41,7 @@ package org.flexunit.internals.builders {
 		/** 
 		 * Constructor. 
 		 * 
-		 * param testClass The class to ignore
+		 * param testClass The class that is to be ignored.
 		 */ 
 		public function IgnoredClassRunner( testClass:Class ) {
 			this.testClass = testClass;
@@ -50,8 +50,8 @@ package org.flexunit.internals.builders {
 		/**
 		 * Instruct the notifier that a class has been ignored and update the token
 		 * 
-		 * @param notifier
-		 * @param token 
+		 * @param notifier The <code>IRunNotifier</code> to notify that the class has been ignored.
+		 * @param token The <code>AsyncTestToken</code> to notify that the test class has been ignored.
 		 */ 
 		public function run( notifier:IRunNotifier, token:AsyncTestToken ):void {
 			notifier.fireTestIgnored( description );
@@ -59,7 +59,7 @@ package org.flexunit.internals.builders {
 		}
 		
 		/**
-		 * Returns an <code>IDescription</code> of the testClass
+		 * Returns an <code>IDescription</code> of the testClass.
 		 */ 
 		public function get description():IDescription {
 			return Description.createSuiteDescription( testClass );

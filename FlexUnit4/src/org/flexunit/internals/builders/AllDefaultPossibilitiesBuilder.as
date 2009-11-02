@@ -31,7 +31,9 @@ package org.flexunit.internals.builders {
 	import org.flexunit.runners.model.RunnerBuilderBase;
 	
 	/**
-	 * Used to determine what type of <code>IRunner</code> can be used to run a specific testClass
+	 * Used to determine what type of <code>IRunner</code> can be used to run a specific testClass.
+	 * Each testClass will be compared to an array of <code>IRunner</code>s.  The first <code>IRunner</code>
+	 * that can be used to run the testClass will be the <code>IRunner</code> that is selected.
 	 */
 	public class AllDefaultPossibilitiesBuilder extends RunnerBuilderBase {
 		private var canUseSuiteMethod:Boolean;
@@ -39,7 +41,7 @@ package org.flexunit.internals.builders {
 		/**
 		 * Constructor.
 		 * 
-		 * @param canUseSuiteMethod A Boolean value indicating whether a <code>SuiteMethodBuilder</code> can be used
+		 * @param canUseSuiteMethod A Boolean value indicating whether a <code>SuiteMethodBuilder</code> can be used.
 		 */
 		public function AllDefaultPossibilitiesBuilder( canUseSuiteMethod:Boolean = true ) {
 			this.canUseSuiteMethod= canUseSuiteMethod;
@@ -47,15 +49,15 @@ package org.flexunit.internals.builders {
 		}
 		
 		/**
-		 * Returns an <code>IRunner</code> that can be used by a specific testClass
+		 * Returns an <code>IRunner</code> that can be used by a specific testClass.
 		 * 
-		 * @param testClass The class to find a runner for
+		 * @param testClass The test class that needs a runner.
 		 * 
-		 * @return a runner that can run the testClass, a null value will be returned if no suitable runner is found
+		 * @return a runner that can run the testClass, a null value will be returned if no suitable runner is found.
 		 */
 		override public function runnerForClass( testClass:Class ):IRunner {
 			//Construct an array of potential builders, the array is ordered so that each potential testClass
-			//will check against the appropriate builder in the correct order
+			//will check against the appropriate builder in the correct order.
 			var builders:Array = new Array(
 					ignoredBuilder(),
 					metaDataBuilder(),
@@ -68,6 +70,7 @@ package org.flexunit.internals.builders {
 			for ( var i:int=0; i<builders.length; i++ ) {
 				var builder:IRunnerBuilder = builders[ i ]; 
 				var runner:IRunner = builder.safeRunnerForClass( testClass );
+				//A suitable runner has been found, we are done
 				if (runner != null)
 					return runner;
 			}
@@ -75,14 +78,14 @@ package org.flexunit.internals.builders {
 		}
 		
 		/**
-		 * Returns an <code>IgnoredBuilder</code>
+		 * Returns an <code>IgnoredBuilder</code>.
 		 */
 		protected function ignoredBuilder():IgnoredBuilder {
 			return new IgnoredBuilder();
 		}
 		
 		/**
-		 * Returns a <code>MetaDataBuilder</code>
+		 * Returns a <code>MetaDataBuilder</code>.
 		 */
 		protected function metaDataBuilder():MetaDataBuilder {
 			return new MetaDataBuilder(this);
@@ -90,7 +93,7 @@ package org.flexunit.internals.builders {
 		
 		/**
 		 * If suite methods can be used, returns a <code>SuiteMethodBuilder</code>;
-		 * otherwise, returns a <code>NullBuilder</code>;
+		 * otherwise, returns a <code>NullBuilder</code>.
 		 */
 		protected function suiteMethodBuilder():IRunnerBuilder {
 			if (canUseSuiteMethod)
@@ -100,7 +103,7 @@ package org.flexunit.internals.builders {
 		}		
 		
 		/**
-		 * Returns a <code>FlexUnit1Builder</code>
+		 * Returns a <code>FlexUnit1Builder</code>.
 		 */
 		protected function flexUnit1Builder():FlexUnit1Builder {
 			return new FlexUnit1Builder();
@@ -108,7 +111,7 @@ package org.flexunit.internals.builders {
 		
 		/**
 		 * If Flex classes are compiled into the swc, returns a <code>Fluint1Builder</code>;
-		 * otherwise, returns a <code>NullBuilder</code>;
+		 * otherwise, returns a <code>NullBuilder</code>.
 		 */
 		protected function fluint1Builder():IRunnerBuilder {
 			var runner:IRunnerBuilder;
@@ -129,7 +132,7 @@ package org.flexunit.internals.builders {
 		}		
 		
 		/**
-		 * Returns a <code>FlexUnit4Builder</code>
+		 * Returns a <code>FlexUnit4Builder</code>.
 		 */
 		protected function flexUnit4Builder():FlexUnit4Builder {
 			return new FlexUnit4Builder();

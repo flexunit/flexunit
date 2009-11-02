@@ -44,18 +44,18 @@ package org.flexunit.experimental.theories.internals
 		/**
 		 * Constructor.
 		 * 
-		 * @param testClass The Class that is being tested for theories
+		 * @param testClass The Class that is being tested for theories.
 		 */
 		public function AllMembersSupplier( testClass:TestClass ) {
 			this.testClass = testClass;
 		}
 		
 		/**
-		 * Generates an Array containing all possible values that a particular <code>ParameterSignature</code> could have
+		 * Generates an Array containing all possible values that a particular <code>ParameterSignature</code> could have.
 		 * 
-		 * @param sig The provided parameter signature
+		 * @param sig The provided parameter signature.
 		 * 
-		 * @return an Array containing all possible values that a particular <code>ParameterSignature</code> could have 
+		 * @return an Array containing all possible values that a particular <code>ParameterSignature</code> could have.
 		 */
 		public function getValueSources( sig:ParameterSignature ):Array {
 			var list:Array = new Array();
@@ -68,10 +68,10 @@ package org.flexunit.experimental.theories.internals
 		}
 		
 		/**
-		 * Adds potential parameter values that are contained in variables to the list of potential values
+		 * Adds potential parameter values that are contained in variables to the list of potential values.
 		 * 
-		 * @param sig The signature of the parameter that can accept values
-		 * @param list An Array that contains all possible values that can be provided to the current <code>ParameterSignature</code>
+		 * @param sig The signature of the parameter that can accept values.
+		 * @param list An Array that contains all possible values that can be provided to the current <code>ParameterSignature</code>.
 		 */
 		private function addFields( sig:ParameterSignature, list:Array ):void {
 			var fields:Array = testClass.klassInfo.fields;
@@ -96,10 +96,10 @@ package org.flexunit.experimental.theories.internals
 		}
 		
 		/**
-		 * Adds potential individual parameter value that is contained in a method to the list of potential values
+		 * Adds potential individual parameter value that is contained in a method to the list of potential values.
 		 * 
-		 * @param sig The signature of the parameter that can accept values
-		 * @param list An Array that contains all possible values that can be provided to the current <code>ParameterSignature</code>
+		 * @param sig The signature of the parameter that can accept values.
+		 * @param list An Array that contains all possible values that can be provided to the current <code>ParameterSignature</code>.
 		 */
 		private function addSinglePointMethods( sig:ParameterSignature, list:Array ):void {
 			var dataPointMethod:FrameworkMethod;
@@ -117,10 +117,10 @@ package org.flexunit.experimental.theories.internals
 		}
 		
 		/**
-		 * Adds potential parameter values that are contained in a method to the list of potential values
+		 * Adds potential parameter values that are contained in a method to the list of potential values.
 		 * 
-		 * @param sig The signature of the parameter that can accept values
-		 * @param list An Array that contains all possible values that can be provided to the current <code>ParameterSignature</code>
+		 * @param sig The signature of the parameter that can accept values.
+		 * @param list An Array that contains all possible values that can be provided to the current <code>ParameterSignature</code>.
 		 */
 		private function addMultiPointMethods( sig:ParameterSignature, list:Array ):void {
 			var dataPointsMethod:FrameworkMethod;
@@ -141,11 +141,11 @@ package org.flexunit.experimental.theories.internals
 		}
 		
 		/**
-		 * Adds potential variables that the parameter can use to the list of available parameters
+		 * Adds potential variables that the parameter can use to the list of available parameters.
 		 * 
-		 * @param name The name of the field variable
-		 * @param list An array contianing all possible values that could be assigned to a potential parameter
-		 * @param array An object that contains all possible values that are contained in the field
+		 * @param name The name of the field variable.
+		 * @param list An array contianing all possible values that could be assigned to a potential parameter.
+		 * @param array An object that contains all possible values that are contained in the field.
 		 */
 		private function addArrayValues( name:String, list:Array, array:Object ):void {
 			for (var i:int=0; i < (array as Array).length; i++)
@@ -153,11 +153,11 @@ package org.flexunit.experimental.theories.internals
 		}
 		
 		/**
-		 * Returns the static field value associated with the field
+		 * Returns the static field value associated with the field.
 		 * 
-		 * @param field The field that contains the object
+		 * @param field The field that contains the object.
 		 * 
-		 * @return The static object that was in the field
+		 * @return The static object that was in the field.
 		 * 
 		 * @throws Error
 		 */
