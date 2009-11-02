@@ -117,7 +117,21 @@ package org.flexunit.internals.runners.statements {
 			asyncHandler.removeEventListener( AsyncHandler.TIMER_EXPIRED, handleAsyncTimeOut, false );
 		}
 		
-		//This needs to be cleaned up and revised... just a prototype
+		/**
+		 * 
+		 * 
+		 * 
+		 * @internal TODO:: This needs to be cleaned up and revised... just a prototype
+		 * @param eventHandler
+		 * @param timeout
+		 * @param passThroughData
+		 * @param timeoutHandler
+		 * 
+		 * @throws Error Test Completed, but additional async event added
+		 * 
+		 * @return 
+		 * 
+		 */
 		public function asyncErrorConditionHandler( eventHandler:Function, timeout:int=0, passThroughData:Object = null, timeoutHandler:Function = null ):Function {
 			if ( testComplete ) {
 				sendComplete( new Error("Test Completed, but additional async event added") );
@@ -156,9 +170,6 @@ package org.flexunit.internals.runners.statements {
 			return asyncHandler.handleEvent;
 		}
 
-		// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
-		// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
-		// flex classes since it will cause errors.
 		/**
 		 * Creates an async responder based on the provided responder
 		 * 
@@ -167,8 +178,13 @@ package org.flexunit.internals.runners.statements {
 		 * @param passThroughData An Object that can be given information about the current test, this information will be available for both the eventHandler and timeoutHandler
 		 * @param timeoutHandler The function that will be executed if the target does not dispatched the expected event before the timeout time is reached
 		 * 
+		 * @throws Error Object provided to responder parameter of asyncResponder is not a IResponder or ITestResponder
+		 * 
 		 * @return an object that implements <code>IResponder</code> and is waitng for an async response event
 		 */
+		// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
+		// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
+		// flex classes since it will cause errors.
 		CONFIG::useFlexClasses
 		public function asyncResponder( responder:*, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):IResponder { 
 
@@ -259,6 +275,16 @@ package org.flexunit.internals.runners.statements {
 			sendComplete();
 		}
 
+		/**
+		 * Handles the AsyncResponseEvent that is thrown by the asyncResponder.
+		 * It sends data to the original responder based on if it is a result or fault status.
+		 * 
+		 * If the original responder is of type ITestResponder, then the passThroughData is passed to it.
+		 * 
+		 * @param event
+		 * @param passThroughData
+		 * 
+		 */
 		protected function handleAsyncTestResponderEvent( event:AsyncResponseEvent, passThroughData:Object=null ):void {
 			var originalResponder:* = event.originalResponder;
 			var isTestResponder:Boolean = false;
@@ -350,6 +376,12 @@ package org.flexunit.internals.runners.statements {
 			startAsyncTimers();
 	    }
 
+		/**
+		 * 
+		 * @param event
+		 * @param sequenceRunner
+		 * 
+		 */
 		// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
 		// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
 		// flex classes since it will cause errors.
@@ -395,6 +427,7 @@ package org.flexunit.internals.runners.statements {
 		 * Notifies any other statement that this statement has finished execution
 		 * 
 		 * @param error The error to send to the parent token
+		 * @inheritDoc
 		 */
 		override protected function sendComplete( error:Error = null ):void {
 			//If the test has not completed, do not notify the parentToken that this statement has finished executing

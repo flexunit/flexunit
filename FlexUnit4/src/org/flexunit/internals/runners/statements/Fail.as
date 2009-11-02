@@ -47,6 +47,8 @@ package org.flexunit.internals.runners.statements {
 		
 		/**
 		 * Throws an error
+		 * @param previousToken AsyncTestToken - Passed in, but not used in the Error.
+		 * 
 		 */
 		public function evaluate( previousToken:AsyncTestToken ):void {
 			throw error;

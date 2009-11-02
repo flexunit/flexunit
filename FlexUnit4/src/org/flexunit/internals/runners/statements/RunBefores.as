@@ -46,13 +46,18 @@ package org.flexunit.internals.runners.statements {
 		/**
 		 * Constructor.
 		 * 
-		 * @param befores An array containing all statements that need to be executed before a test is executed
-		 * @param target The test class
+		 * @param befores An array containing all statements that need to be executed before a test is executed.
+		 * @param target The test class.
 		 */
 		public function RunBefores( befores:Array, target:Object ) {
 			super( befores, target );
 		}
 
+		/**
+		 * @private 
+		 * @return 
+		 * 
+		 */
 		override public function toString():String {
 			return "RunBefores";
 		}

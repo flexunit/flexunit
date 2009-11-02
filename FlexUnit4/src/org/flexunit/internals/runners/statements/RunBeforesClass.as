@@ -53,6 +53,11 @@ package org.flexunit.internals.runners.statements {
 			super( befores, target );
 		}
 
+		/**
+		 * @private 
+		 * @return 
+		 * 
+		 */
 		override public function toString():String {
 			return "RunBeforesClass";
 		}
