@@ -32,7 +32,7 @@ package org.flexunit.internals.builders
 	import org.flexunit.runners.model.RunnerBuilderBase;
 	
 	/**
-	 * Builds a <code>BlockFlexUnit4ClassRunner</code> for a test class
+	 * Builds a <code>BlockFlexUnit4ClassRunner</code> for a test class.
 	 */
 	public class FlexUnit4Builder extends RunnerBuilderBase {
 		public function FlexUnit4Builder() {
@@ -40,11 +40,11 @@ package org.flexunit.internals.builders
 		}
 		
 		/**
-		 * Returns a <code>BlockFlexUnit4ClassRunner</code> for the given test class
+		 * Returns a <code>BlockFlexUnit4ClassRunner</code> for the given test class.
 		 * 
-		 * @param testClass The test class provided to the builder
+		 * @param testClass The test class provided to the builder.
 		 * 
-		 * @return a <code>BlockFlexUnit4ClassRunner</code> for the given test class
+		 * @return a <code>BlockFlexUnit4ClassRunner</code> for the given test class.
 		 */
 		override public function runnerForClass( testClass:Class ):IRunner {
 			return new BlockFlexUnit4ClassRunner(testClass);

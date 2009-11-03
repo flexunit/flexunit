@@ -27,7 +27,8 @@
  **/ 
 package org.flexunit.async {
 	/**
-	 * A respoder for tests
+	 * A respoder for tests that contains <code>Function</code>s for the test succeeding or the test 
+	 * failing to succeed.
 	 */
 	public class TestResponder extends Object implements ITestResponder {
 		private var resultFunction:Function;
@@ -50,8 +51,15 @@ package org.flexunit.async {
 		/**
 		 * Constructor.
 		 * 
-		 * @param result A <code>Function</code> that handles results and expects an info and passThroughData parameter
-		 * @param fault A <code>Function</code> that handles faults and expects a data and passThroughData parameter
+		 * @param result A <code>Function</code> that handles results and expects an info and passThroughData parameter.
+		 * <p>
+		 * <code>public function result( info:Object, passThroughData:Object ):void {
+		 * }</code></p>
+		 * 
+		 * @param fault A <code>Function</code> that handles faults and expects a data and passThroughData parameter.
+		 * <p>
+		 * <code>public function fault( data:Object, passThroughData:Object ):void {
+		 * }</code></p>
 		 */
 		public function TestResponder( result:Function, fault:Function ) {
 			resultFunction = result;

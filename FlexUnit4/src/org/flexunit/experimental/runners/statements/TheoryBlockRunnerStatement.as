@@ -48,9 +48,9 @@ package org.flexunit.experimental.runners.statements
 		/**
 		 * Constructor.
 		 * 
-		 * @param statement The <code>IAsyncStatement</code> to execute
-		 * @param anchor The anchor associated with the theory method
-		 * @param complete The <code>Assignments</code> associated with the current theory method test
+		 * @param statement The <code>IAsyncStatement</code> to execute.
+		 * @param anchor The anchor associated with the theory method.
+		 * @param complete The <code>Assignments</code> associated with the current theory method test.
 		 */
 		public function TheoryBlockRunnerStatement( statement:IAsyncStatement, anchor:TheoryAnchor, complete:Assignments ) {
 			this.statement = statement;
@@ -63,9 +63,9 @@ package org.flexunit.experimental.runners.statements
 		}	
 		
 		/**
-		 * Executes the current <code>IAsyncStatement</code> that is wrapping the theory method test
+		 * Executes the current <code>IAsyncStatement</code> that is wrapping the theory method test.
 		 * 
-		 * @param parentToken The token to be notified when the the current theory method test has finished all other statements
+		 * @param parentToken The token to be notified when the the current theory method test has finished all other statements.
 		 */
 		public function evaluate( parentToken:AsyncTestToken ):void {
 			this.parentToken = parentToken;
@@ -85,9 +85,9 @@ package org.flexunit.experimental.runners.statements
 		
 		/**
 		 * Notifies the anchor if the statement successfully executed and the parent token of any errors that were encountered
-		 * while running the theory method test
+		 * while running the theory method test.
 		 * 
-		 * @param result A <code>ChildResult</code> that contains potential errors encountered during the statements execution
+		 * @param result A <code>ChildResult</code> that contains potential errors encountered during the statements execution.
 		 */
 		public function handleChildExecuteComplete( result:ChildResult ):void {
 			var assumptionError:Boolean = false;

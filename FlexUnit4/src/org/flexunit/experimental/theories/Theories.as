@@ -35,13 +35,13 @@ package org.flexunit.experimental.theories {
 	import org.flexunit.runners.model.FrameworkMethod;
 	
 	/**
-	 * The Theories runner is a runner that will run theory theory test methods.  In order for a theory to properly run,
+	 * The <code>Theories</code> runner is a runner that will run theory theory test methods.  In order for a theory to properly run,
 	 * a test class must have a method marked as a theory method that contains one or more parameters.  The type of each parameter
 	 * must have a static data point or an array of data points that correspond that correspond to that type.
 	 * 
 	 * <pre>
 	 * 
-	 * [DataPoints
+	 * [DataPoints]
 	 * [ArrayElementType("String")]
 	 * public static var stringValues:Array = ["one","two","three","four","five"];
 	 * 
@@ -71,7 +71,7 @@ package org.flexunit.experimental.theories {
 		}
 		
 		/**
-		 * Validates all fields in a test class an ensure that they are all static
+		 * Validates all fields in a test class an ensure that they are all static.
 		 * 
 		 * @param errors An array of errors that has been encountered during the initialization process.  If
 		 * a field is not static, an error will be added to this array.
@@ -86,6 +86,10 @@ package org.flexunit.experimental.theories {
 			}
 		}
 		
+		/**
+		 * Adds to <code>errors</code> for each method annotated with <code>Test</code> or
+		 * <code>Theory</code> that is not a public, void instance method.
+		 */
 		override protected function validateTestMethods( errors:Array ):void {
 			var method:FrameworkMethod;
 			var methods:Array = computeTestMethods();
@@ -100,8 +104,8 @@ package org.flexunit.experimental.theories {
 		 * If an element is contained in the removeElements array and the other array, remove
 		 * that element from the other array.
 		 * 
-		 * @param array The array that will have elements removed from it if a match is found
-		 * @param removeElements The array that contains elements to remove from the other array
+		 * @param array The array that will have elements removed from it if a match is found.
+		 * @param removeElements The array that contains elements to remove from the other array.
 		 */
 		private function removeFromArray( array:Array, removeElements:Array ):void {
 			for ( var i:int=0; i<array.length; i++ ) {
@@ -113,6 +117,11 @@ package org.flexunit.experimental.theories {
 			}
 		}
 		
+		/**
+		 * Returns the methods that run tests and theories.  The tests
+		 * will be located at the begining of the returned array while 
+		 * the theories will be present at the end of the array.
+		 */
 		override protected function computeTestMethods():Array {
 			var testMethods:Array = super.computeTestMethods();
 			var theoryMethods:Array = testClass.getMetaDataMethods( "Theory" );
@@ -124,11 +133,11 @@ package org.flexunit.experimental.theories {
 		}
 		
 		/**
-		 * Returns a <code>TheoryAnchor</code> for the given theory method in the test class
+		 * Returns a <code>TheoryAnchor</code> for the given theory method in the test class.
 		 * 
-		 * @param method The theory method that is to be tested
+		 * @param method The theory method that is to be tested.
 		 * 
-		 * @return a <code>TheoryAnchor</code> for the provided <code>FrameworkMethod</code>
+		 * @return a <code>TheoryAnchor</code> for the provided <code>FrameworkMethod</code>.
 		 */
 		override protected function methodBlock( method:FrameworkMethod ):IAsyncStatement {
 			return new TheoryAnchor( method, testClass );

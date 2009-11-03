@@ -37,7 +37,9 @@ package org.flexunit.experimental.runners.statements {
 	use namespace classInternal;
 	
 	/**
-	 * The runner used for an indiviudal theory method with assigned parameter values.
+	 * This runner is used for running an indiviudal theory method that has had all of its
+	 * parameters assigned values.  Like the <code>BlockFlexUnit4ClassRunner</code> from which
+	 * it extends, the <code>TheoryBlockRunner</code> is based on <code>Statement</code>s.
 	 */
 	public class TheoryBlockRunner extends BlockFlexUnit4ClassRunner {
 		private var complete:Assignments;
@@ -47,9 +49,9 @@ package org.flexunit.experimental.runners.statements {
 		/**
 		 * Constructor.
 		 * 
-		 * @param klass The class that contains the theory
-		 * @param anchor The anchor associated with the theory method
-		 * @param complete Contains the parameters used for the theory method
+		 * @param klass The class that contains the theory.
+		 * @param anchor The anchor associated with the theory method.
+		 * @param complete Contains the parameters used for the theory method.
 		 */
 		public function TheoryBlockRunner( klass:Class, anchor:TheoryAnchor, complete:Assignments ) {
 			super(klass);
@@ -67,7 +69,7 @@ package org.flexunit.experimental.runners.statements {
 		
 		/**
 		 * Creates a <code>MethodCompleteWithParamsStatement</code> that is used to execute the theory method for
-		 * a specific set of <code>Assignments</code>
+		 * a specific set of <code>Assignments</code>.<p>
 		 * 
 		 * @inheritDoc
 		 */
@@ -84,11 +86,11 @@ package org.flexunit.experimental.runners.statements {
 		
 		/**
 		 * Retrieves an object that implements a <code>IAsyncStatement</code> for a specific theory test method that will run
-		 * a theory with a subset of potential parameters that the theory can be run with
+		 * a theory with a subset of potential parameters that the theory can be run with.
 		 * 
-		 * @param method The <code>FrameworkMethod</code> theory to test
+		 * @param method The <code>FrameworkMethod</code> theory to test.
 		 * 
-		 * @return an object that implements a <code>IAsyncStatement</code> for a specific theory test
+		 * @return an object that implements a <code>IAsyncStatement</code> for a specific theory test.
 		 */
 		public function getMethodBlock( method:FrameworkMethod ):IAsyncStatement {
 			return methodBlock( method );
