@@ -29,18 +29,35 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.internals.runners.statements.IAsyncStatement;
 	import org.flexunit.internals.runners.statements.SequencerWithDecoration;
 	import org.flexunit.runners.model.FrameworkMethod;
-
+	
+	/**
+	 * Determine if a specific test class contains 'Before' metadata and should be run before a test has started 
+	 */
 	public class RunBefores extends SequencerWithDecoration implements IAsyncStatement {
-
+		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function withPotentialAsync( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
 			var async:Boolean = ExpectAsync.hasAsync( method, "Before" );
 			return async ? new ExpectAsync( test, statement ) : statement;
 		}
-
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param befores An array containing all statements that need to be executed before a test is executed.
+		 * @param target The test class.
+		 */
 		public function RunBefores( befores:Array, target:Object ) {
 			super( befores, target );
 		}
 
+		/**
+		 * @private 
+		 * @return 
+		 * 
+		 */
 		override public function toString():String {
 			return "RunBefores";
 		}

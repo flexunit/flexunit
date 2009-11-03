@@ -33,15 +33,30 @@ package org.flexunit.internals.runners {
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.token.AsyncTestToken;
 	
+	/**
+	 * Runner responsible for reproting errors encountered when attempting to initialize a class instead of running tests
+	 */
 	public class ErrorReportingRunner implements IRunner {
 		private var _causes:Array;
 		private var _testClass:Class;
-
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param testClass The test class that generated the error
+		 * @param cause The error that was generated when attempting to find a 
+		 */
 		public function ErrorReportingRunner( testClass:Class, cause:Error ) {
 			_testClass = testClass;
 			_causes = getCauses(cause);
 		}
 
+		/**
+		 * Describe the test class and add a child to it for each cause that was associated with the Error
+		 * 
+		 * @return an <code>IDescription</code> describing the provided test class with the causes of error associated
+		 * with the test class
+		 */
 		public function get description():IDescription {
 			var description:IDescription = Description.createSuiteDescription( _testClass );
 
@@ -51,7 +66,13 @@ package org.flexunit.internals.runners {
 
 			return description;
 		}
-
+		
+		/**
+		 * Informs the notifier about each potential cause Error for the test class
+		 * 
+		 * @param notifier The notifer to notify about the cause Errors
+		 * @param token A token that will be alerted when the notifer has been notified for each cause Error
+		 */
 		public function run( notifier:IRunNotifier, token:AsyncTestToken ):void {
 			for ( var i:int=0; i<_causes.length; i++ ) {
 				description.addChild( describeCause( _causes[ i ] ) );
@@ -61,7 +82,12 @@ package org.flexunit.internals.runners {
 			//notify our parent that we are good to continue
 			token.sendResult();
 		}
-
+		
+		/**
+		 * Determines the causes that generated the provided error
+		 * 
+		 * @param cause The Error to inspect for its cause
+		 */
 		private function getCauses( cause:Error ):Array {
 			/*
 			TODO: Figure this whole mess out
@@ -85,7 +111,13 @@ package org.flexunit.internals.runners {
 		private function describeCause( child:Error ):IDescription {
 			return Description.createTestDescription( _testClass, "initializationError");
 		}
-	
+		
+		/**
+		 * Report to the notifier about the specific cause Error
+		 * 
+		 * @param child The cause Error to report to the notifier
+		 * @param notifier The notifier that is notified about the cause Error
+		 */
 		private function runCause( child:Error, notifier:IRunNotifier ):void {
 			var description:IDescription = describeCause(child);
 			notifier.fireTestStarted( description );

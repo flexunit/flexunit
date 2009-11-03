@@ -34,14 +34,29 @@ package org.flexunit.experimental.theories.internals
 	import org.flexunit.experimental.theories.PotentialAssignment;
 	import org.flexunit.runners.model.FrameworkMethod;
 	import org.flexunit.runners.model.TestClass;
-
+	
+	/**
+	 * Determines what values can be applied to parameters in theories in a specific test class.
+	 */
 	public class AllMembersSupplier implements IParameterSupplier {
 		private var testClass:TestClass;
-
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param testClass The Class that is being tested for theories.
+		 */
 		public function AllMembersSupplier( testClass:TestClass ) {
 			this.testClass = testClass;
 		}
 		
+		/**
+		 * Generates an Array containing all possible values that a particular <code>ParameterSignature</code> could have.
+		 * 
+		 * @param sig The provided parameter signature.
+		 * 
+		 * @return an Array containing all possible values that a particular <code>ParameterSignature</code> could have.
+		 */
 		public function getValueSources( sig:ParameterSignature ):Array {
 			var list:Array = new Array();
 
@@ -51,15 +66,24 @@ package org.flexunit.experimental.theories.internals
 	
 			return list;
 		}
-
+		
+		/**
+		 * Adds potential parameter values that are contained in variables to the list of potential values.
+		 * 
+		 * @param sig The signature of the parameter that can accept values.
+		 * @param list An Array that contains all possible values that can be provided to the current <code>ParameterSignature</code>.
+		 */
 		private function addFields( sig:ParameterSignature, list:Array ):void {
 			var fields:Array = testClass.klassInfo.fields;
 			var field:Field;
 
 			for ( var i:int=0; i<fields.length; i++ ) {
 				field = fields[ i ] as Field;
-
-				if ( field.isStatic ) {					
+				
+				//Determine if the field is a static variable
+				if ( field.isStatic ) {
+					//Determine if it is an individual variable or an array of variables and if they are datapoints, if they are
+					//add them to the list of values the parameter can use
 					if (sig.canAcceptArrayType(field)
 							&& field.hasMetaData( "DataPoints" ) ) {
 						addArrayValues(field.name, list, getStaticFieldValue(field));
@@ -70,7 +94,13 @@ package org.flexunit.experimental.theories.internals
 				}
 			}
 		}
-
+		
+		/**
+		 * Adds potential individual parameter value that is contained in a method to the list of potential values.
+		 * 
+		 * @param sig The signature of the parameter that can accept values.
+		 * @param list An Array that contains all possible values that can be provided to the current <code>ParameterSignature</code>.
+		 */
 		private function addSinglePointMethods( sig:ParameterSignature, list:Array ):void {
 			var dataPointMethod:FrameworkMethod;
 			var methods:Array = testClass.getMetaDataMethods( "DataPoint" );
@@ -85,7 +115,13 @@ package org.flexunit.experimental.theories.internals
 				}
 			}
 		}
-	
+		
+		/**
+		 * Adds potential parameter values that are contained in a method to the list of potential values.
+		 * 
+		 * @param sig The signature of the parameter that can accept values.
+		 * @param list An Array that contains all possible values that can be provided to the current <code>ParameterSignature</code>.
+		 */
 		private function addMultiPointMethods( sig:ParameterSignature, list:Array ):void {
 			var dataPointsMethod:FrameworkMethod;
 			var methods:Array = testClass.getMetaDataMethods( "DataPoints" );
@@ -103,12 +139,28 @@ package org.flexunit.experimental.theories.internals
 				}
 			}
 		}
-
+		
+		/**
+		 * Adds potential variables that the parameter can use to the list of available parameters.
+		 * 
+		 * @param name The name of the field variable.
+		 * @param list An array contianing all possible values that could be assigned to a potential parameter.
+		 * @param array An object that contains all possible values that are contained in the field.
+		 */
 		private function addArrayValues( name:String, list:Array, array:Object ):void {
 			for (var i:int=0; i < (array as Array).length; i++)
 				list.push( PotentialAssignment.forValue( name + "[" + i + "]", array[i] ) );
 		}
-	
+		
+		/**
+		 * Returns the static field value associated with the field.
+		 * 
+		 * @param field The field that contains the object.
+		 * 
+		 * @return The static object that was in the field.
+		 * 
+		 * @throws Error unexpected: field from getClass doesn't exist on object
+		 */
 		private function getStaticFieldValue( field:Field ):Object {
 			try {
 				return field.getObj(null);

@@ -26,14 +26,6 @@
  * @version    
  **/ 
 
-/**
- * This class allows us to break execution across frames and ensure we don't have a stack overflow
- * it does this by starting a timer when it is asked to evaluate itself. When the timer fires, which
- * will be the following frame, we resume the execution. One might argue (with validity) that we 
- * shouldn't do this on each test, but rather take a more green threaded approach and look at how
- * much time we have taken so far. This would make things run much faster and may be considered for
- * a future version
- **/
 package org.flexunit.internals.runners.statements {
 	import flash.display.Stage;
 	import flash.events.TimerEvent;
@@ -45,7 +37,15 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.utils.ClassNameUtil;
-
+	
+	/**
+	 * This class allows us to break execution across frames and ensure we don't have a stack overflow
+	 * it does this by starting a timer when it is asked to evaluate itself. When the timer fires, which
+	 * will be the following frame, we resume the execution. One might argue (with validity) that we 
+	 * shouldn't do this on each test, but rather take a more green threaded approach and look at how
+	 * much time we have taken so far. This would make things run much faster and may be considered for
+	 * a future version
+	 **/
 	public class StackAndFrameManagement implements IAsyncStatement {
 		protected var parentToken:AsyncTestToken;		
 		protected var myToken:AsyncTestToken;
@@ -55,20 +55,32 @@ package org.flexunit.internals.runners.statements {
 		//this can eventually be computed
 		private static var greenThreadStartTime:Number;
   		private static var frameLength:Number = 40; //given standard frame rates for flex a frame passes every 42 or so milliseconds, so we are going to try to use about 38 of those
-  
+  		
+		/**
+		 * Constructor.
+		 * 
+		 * @param statement The current object that implements <code>IAsyncStatement</code> to decorate
+		 */
 		public function StackAndFrameManagement( statement:IAsyncStatement ) {
 			super();
 			
 			this.statement = statement;
 			
+			//Determine if the greenThreadStartTime has been obtained
 			if ( !greenThreadStartTime ) {
 				greenThreadStartTime = getTimer();
 			}
-
+			
+			//Create a new token that will track the progress of frame management
 			myToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			myToken.addNotificationMethod( handleNextExecuteComplete );
 		}
-
+		
+		/**
+		 * Determines if there is time in the frame to start running the <code>IAsyncStatement</code>
+		 * 
+		 * @param previousToken The token to be notified when that <code>IAsyncStatement</code> has finished executing
+		 */
 		public function evaluate( previousToken:AsyncTestToken ):void {
 			parentToken = previousToken;
 			
@@ -94,16 +106,32 @@ package org.flexunit.internals.runners.statements {
 				statement.evaluate( myToken );	
 			}
 		}
-
+		
+		/**
+		 * Evaluates the <code>IAsyncStatement</code> after the timer has waited
+		 * 
+		 * @param event
+		 * 
+		 */
 		protected function handleTimerComplete( event:TimerEvent ):void {
 			timer.removeEventListener( TimerEvent.TIMER_COMPLETE, handleTimerComplete, false );
 			statement.evaluate( myToken );
 		}
-
+		
+		/**
+		 * Sends any error the <code>ChildResult</code> has encountered to the parentToken
+		 * 
+		 * @param result The <code>ChildResult</code> to check to see if there is an error
+		 */
 		public function handleNextExecuteComplete( result:ChildResult ):void {
 			parentToken.sendResult( result.error );
 		}
 
+		/**
+		 * @private 
+		 * @return "Stack Management Base"
+		 * 
+		 */
 		public function toString():String {
 			return "Stack Management Base";
 		}

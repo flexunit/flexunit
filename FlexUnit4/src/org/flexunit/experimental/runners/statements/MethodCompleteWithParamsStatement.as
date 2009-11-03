@@ -37,23 +37,40 @@ package org.flexunit.experimental.runners.statements {
 	import org.flexunit.token.ChildResult;
 	
 	use namespace classInternal;
-
+	
+	/**
+	 * Responsible for executing a theory method with a single set of parameters.
+	 */
 	public class MethodCompleteWithParamsStatement extends AsyncStatementBase implements IAsyncStatement {
 		private var frameworkMethod:FrameworkMethod;
 		private var anchor:TheoryAnchor;
 		private var complete:Assignments;
 		private var freshInstance:Object;
 		
+		/**
+		 * Constructor.
+		 * 
+		 * @param frameworkMethod The current theory that is being tested
+		 * @param anchor The anchor for the current theory that is being tested
+		 * @param complete Contains values that can be applied to the theory method
+		 * @param freshInstance An instance of the current test class
+		 */
 		public function MethodCompleteWithParamsStatement( frameworkMethod:FrameworkMethod, anchor:TheoryAnchor, complete:Assignments, freshInstance:Object ) {
 			this.frameworkMethod = frameworkMethod;
 			this.complete = complete;
 			this.freshInstance = freshInstance;
 			this.anchor = anchor;
 			
+			//Create a new token that will track the execution of the current theory method
 			myToken = new AsyncTestToken( "MethodCompleteWithParamsStatement" );
 			myToken.addNotificationMethod( handleChildExecuteComplete );
 		}	
-	
+		
+		/**
+		 * Executes the current theory method with the provided values from the complete <code>Assignments</code>
+		 * 
+		 * @param parentToken The token to be notified when the theory method has finished running
+		 */
 		public function evaluate( parentToken:AsyncTestToken ):void {
 			this.parentToken = parentToken;	
 	
@@ -72,10 +89,19 @@ package org.flexunit.experimental.runners.statements {
 			}
 	 	}
 		
+		/**
+		 * Tells the parent token that the method has finished running and provides it with any encountered errors
+		 * 
+		 * @param result A <code>ChildResult</code> that contains potential errors encountered during execution
+		 */
 		public function handleChildExecuteComplete( result:ChildResult ):void {
 			sendComplete( result.error );
 		}
 		
+		/**
+		 * Returns a string that includes the name of the method, the assigned parameters, and the 
+		 * new instance of the current test class.
+		 */
 		override public function toString():String {
 			var statementString:String = "MethodCompleteWithParamsStatement :\n";
 	

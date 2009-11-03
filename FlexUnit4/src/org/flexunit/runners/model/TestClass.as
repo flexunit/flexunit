@@ -60,6 +60,9 @@ package org.flexunit.runners.model {
 			}
 		}
 		
+		/**
+		 * Returns a <code>Klass</code> that was generated from the class provided to TestClass
+		 */
 		public function get klassInfo():Klass {
 			return _klassInfo;
 		}

@@ -4,7 +4,10 @@ package org.flexunit.async
 	
 	import mx.rpc.IResponder;
  	
-	//Marker interface to allow others to substitute their own responsers for ours
+	/**
+	 * This is a marker interface that allows others to substitute their own asynchronous test 
+	 * responsers for the ones that already exist.
+	 */
 	public interface IAsyncTestResponder extends IResponder, IEventDispatcher {
 		
 	}

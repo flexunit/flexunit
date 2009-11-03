@@ -31,31 +31,50 @@ package org.flexunit.internals {
 	import org.flexunit.runner.Result;
 	import org.flexunit.runner.notification.Failure;
 	import org.flexunit.runner.notification.RunListener;
-
+	
+	/**
+	 * A <code>TraceListener</code> will trace the events encountered during the course of a test run.
+	 */
 	public class TraceListener extends RunListener {
-
+	
+		/** 
+		 * Constructor.
+		 */
 		public function TraceListener() {
 			super();
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function testRunFinished( result:Result ):void {
 			printHeader( result.runTime );
 			printFailures( result );
 			printFooter( result );
 		}
-	
+		
+		/**
+		 * @inheritDoc
+		 */
 		override public function testStarted( description:IDescription ):void {
 			trace( description.displayName + " ." );
 		}
 	
+		/**
+		 * @inheritDoc
+		 */
 		override public function testFailure( failure:Failure ):void {
+			//Determine if the exception in the failure is considered an error
 			if ( FailureFormatter.isError( failure.exception ) ) {
 				trace( failure.description.displayName + " E" );
 			} else {
 				trace( failure.description.displayName + " F" );
 			}
 		}
-	
+		
+		/**
+		 * @inheritDoc
+		 */
 		override public function testIgnored( description:IDescription ):void {
 			trace( description.displayName + " I" );
 		}
@@ -63,13 +82,25 @@ package org.flexunit.internals {
 		/*
 		 * Internal methods
 		 */
+		
+		/**
+		 * Traces a header that provides the total run time
+		 * 
+		 * @param runTime The total run time of all tests in milliseconds
+		 */
 		protected function printHeader( runTime:Number ):void {
 			trace( "Time: " + elapsedTimeAsString(runTime) );
 			//trace( elapsedTimeAsString(runTime) );
 		}
-	
+		
+		/**
+		 * Traces all failures that were received in the result
+		 * 
+		 * @param result The result that contains potential failures
+		 */
 		protected function printFailures( result:Result ):void {
 			var failures:Array = result.failures;
+			//Determine if there are any failures to print
 			if (failures.length == 0)
 				return;
 			if (failures.length == 1)
@@ -77,16 +108,29 @@ package org.flexunit.internals {
 			else
 				trace("There were " + failures.length + " failures:" );
 			
+			//Print each failure
 			for ( var i:int=0; i<failures.length; i++ ) {
 				printFailure( failures[ i ], String( i+1 ) );
 			}
 		}
-	
+		
+		/**
+		 * Traces a provided failure with a certain prefix
+		 * 
+		 * @param failure The provided failure
+		 * @param prefix A String prefix for the failure
+		 */
 		protected function printFailure( failure:Failure, prefix:String ):void {
 			trace( prefix + " " + failure.testHeader + " " + failure.stackTrace );
 		}
-	
+		
+		/**
+		 * Traces a footer for the provided result
+		 * 
+		 * @param result The result that contains the total run count
+		 */
 		protected function printFooter( result:Result ):void {
+			//Determine if the result was a success
 			if (result.successful ) {
 				trace( "OK (" + result.runCount + " test " + (result.runCount == 1 ? "" : "s") + ")" );
 			} else {

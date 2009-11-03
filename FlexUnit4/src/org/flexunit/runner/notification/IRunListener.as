@@ -31,13 +31,54 @@ package org.flexunit.runner.notification
 	import org.flexunit.runner.Result;
 	
 	public interface IRunListener
-	{
+	{	
+		/**
+		 * Called before any tests have been run.
+		 * @param description describes the tests to be run
+		 */
 		function testRunStarted( description:IDescription ):void;
+		
+		/**
+		 * Called when all tests have finished
+		 * @param result the summary of the test run, including all the tests that failed
+		 */
 		function testRunFinished( result:Result ):void;
+		
+		/**
+		 * Called when an atomic test is about to be started.
+		 * @param description the description of the test that is about to be run 
+		 * (generally a class and method name)
+		 */
 		function testStarted( description:IDescription ):void;
+		
+		/**
+		 * Called when an atomic test has finished, whether the test succeeds or fails.
+		 * @param description the description of the test that just ran
+		 */
 		function testFinished( description:IDescription ):void;
+		
+		/** 
+		 * Called when an atomic test fails.
+		 * @param failure describes the test that failed and the exception that was thrown
+		 */
 		function testFailure( failure:Failure ):void;
+		
+		/**
+		 * Called when an atomic test flags that it assumes a condition that is
+		 * false
+		 * 
+		 * @param failure
+		 *            describes the test that failed and the
+		 *            <code> AssumptionViolatedException</code> that was thrown
+		 */
 		function testAssumptionFailure( failure:Failure ):void;
+		
+		/**
+		 * Called when a test will not be run, generally because a test method is annotated 
+		 * with <code> org.junit.Ignore</code>.
+		 * 
+		 * @param description describes the test that will not be run
+		 */
 		function testIgnored( description:IDescription ):void;
 	}
 }

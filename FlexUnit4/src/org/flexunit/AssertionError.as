@@ -27,6 +27,9 @@
  **/ 
 package org.flexunit
 {
+	/**
+	 * Thrown when an an assertion is false.
+	 */
 	public class AssertionError extends Error
 	{
 		public function AssertionError(message:String="", id:int=0)

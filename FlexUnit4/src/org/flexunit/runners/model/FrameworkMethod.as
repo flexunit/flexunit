@@ -68,11 +68,23 @@ package org.flexunit.runners.model {
 			return method.name;
 		}
 		
+		/**
+		 * Returns the method's metadata
+		 */
 		public function get metadata():XMLList {
 			return method.metadata;
 		}
 
 		//Consider upper/lower case issues
+		/**
+		 * Returns a metadata argument string based on whether the method's metadata has a matching metaDataTag and key
+		 * 
+		 * @param metaDataTag The metadata tag to search for in the method's metadata
+		 * @param key The key to find a specific atrribute argument in the metadata tag
+		 * 
+		 * @return the specific String if the metaDataTag and key exist, a value of 'true' if there is an argument that
+		 * has a value that matches the key, or an empty or null String if the key is not found for the given metadata tag
+		 */
 		public function getSpecificMetaDataArg( metaDataTag:String, key:String ):String {
 			var returnValue:String = MetadataTools.getArgValueFromMetaDataNode( method.methodXML, metaDataTag, key );
 			
@@ -88,7 +100,14 @@ package org.flexunit.runners.model {
 			
 			return returnValue;
 		}
-
+		
+		/**
+		 * Determine if the method has metadata for a specific metadata tag
+		 * 
+		 * @param metaDataTag The metadata tag to search for in the method's metadata
+		 * 
+		 * @return a Boolean value indicating if the method has specific metadata that matches the metaDataTag
+		 */
 		public function hasMetaData( metaDataTag:String ):Boolean {
 			return MetadataTools.nodeHasMetaData( method.methodXML, metaDataTag );
 		}

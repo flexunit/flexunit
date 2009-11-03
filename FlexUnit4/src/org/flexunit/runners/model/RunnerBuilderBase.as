@@ -33,8 +33,10 @@ package org.flexunit.runners.model {
 	import org.flexunit.runner.IRequest;
 	import org.flexunit.runner.IRunner;
 
-
-//TODO: class description needed, similar to IRunnerBuilder's? Reference IRunnerBuilder?
+	//TODO: class description needed, similar to IRunnerBuilder's? Reference IRunnerBuilder?
+	/**
+	 * Responsible for building runners for a test class' child classes
+	 */
 	public class RunnerBuilderBase implements IRunnerBuilder {
 		private var parents:Dictionary = new Dictionary( true );
 
@@ -73,11 +75,18 @@ package org.flexunit.runners.model {
 			
 			return null;
 		}
-
+		
+		/**
+		 * Returns an array of runner that can run the provided array of children
+		 * 
+		 * @param children An array that consists of child classes of the parent class
+		 * 
+		 * @return an array of runners that can run the child classes
+		 */
 		private function localRunners( children:Array ):Array {
 			var runners:Array = new Array();
 			
-			
+			//Determine what runner to use for each child
 			for ( var i:int=0; i<children.length; i++ ) {
 				//TODO: Verify this or look further into the world of JUnit for what I am missing.
 				//To me this seems reasonable, but, then again there may be a better way
@@ -97,11 +106,26 @@ package org.flexunit.runners.model {
 			}
 			return runners;
 		}
-
+		
+		/**
+		 * Returns an <code>IRunner</code> for a specific testClass
+		 * 
+		 * @param testClass The test class to find a runner for
+		 * 
+		 * @return an runner that will run the test class
+		 */
 		public function runnerForClass( testClass:Class ):IRunner {
 			return null;
 		}
-
+		
+		/**
+		 * Checks to see if the parent class is already in the parents dictionary; if it is, an exception is thrown,
+		 * if not, the parent is added to the dictionary
+		 * 
+		 * @param parent The parent class to add to the dictionary
+		 * 
+		 * @throws InitializationError if the parent is already in the parents dictionary
+		 */
 		private function addParent( parent:Class ):Class {
 			if ( parent ) {
 				if ( parents[ parent ] ) {
@@ -116,13 +140,21 @@ package org.flexunit.runners.model {
 			
 			return parent;
 		}
-
+		
+		/**
+		 * Removes the parent class from the parents dictionary
+		 * 
+		 * @param parent The parent class to remove from the dictionary
+		 */
 		private function removeParent( parent:Class ):void {
 			if ( parent ) {
 				delete parents[ parent ];
 			}
 		}
-
+		
+		/**
+		 * Constructor.
+		 */
 		public function RunnerBuilderBase() {
 		}
 	}
