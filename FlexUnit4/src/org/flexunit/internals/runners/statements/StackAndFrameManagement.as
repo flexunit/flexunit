@@ -109,6 +109,9 @@ package org.flexunit.internals.runners.statements {
 		
 		/**
 		 * Evaluates the <code>IAsyncStatement</code> after the timer has waited
+		 * 
+		 * @param event
+		 * 
 		 */
 		protected function handleTimerComplete( event:TimerEvent ):void {
 			timer.removeEventListener( TimerEvent.TIMER_COMPLETE, handleTimerComplete, false );
@@ -124,6 +127,11 @@ package org.flexunit.internals.runners.statements {
 			parentToken.sendResult( result.error );
 		}
 
+		/**
+		 * @private 
+		 * @return "Stack Management Base"
+		 * 
+		 */
 		public function toString():String {
 			return "Stack Management Base";
 		}

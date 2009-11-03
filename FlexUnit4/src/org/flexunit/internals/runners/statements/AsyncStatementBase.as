@@ -61,6 +61,11 @@ package org.flexunit.internals.runners.statements {
 			
 		}
 		
+		/**
+		 * @private 
+		 * @return 
+		 * 
+		 */
 		public function toString():String {
 			return "Async Statement Base";
 		}

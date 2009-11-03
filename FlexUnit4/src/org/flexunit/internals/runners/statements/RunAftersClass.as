@@ -54,6 +54,11 @@ package org.flexunit.internals.runners.statements
 			super( afters, target );
 		}
 
+		/**
+		 * @private 
+		 * @return 
+		 * 
+		 */
 		override public function toString():String {
 			return "RunAftersClass";
 		}

@@ -117,6 +117,13 @@ package org.flexunit.internals.runners.statements {
 			}
 		}
 
+		/**
+		 * Queues errors and sends them, either using MultipleFailureException
+		 * or the super sendComplete, if there is only one error in the queue. 
+		 * 
+		 * @param error The Error to send
+		 * @inheritDoc
+		 */
 		override protected function sendComplete( error:Error=null ):void {
 			var sendError:Error;
 			
@@ -135,6 +142,11 @@ package org.flexunit.internals.runners.statements {
 			super.sendComplete( sendError );
 		}
 
+		/**
+		 * Returns the current queue of statements that are in the sequence. 
+		 * @return A string representing the sequence queue.
+		 * 
+		 */
 		override public function toString():String {
 			var sequenceString:String = "StatementSequencer :\n";
 			

@@ -80,6 +80,11 @@ package org.flexunit.internals.runners.statements {
 			parentToken.sendResult( null );
 		}
 		
+		/**
+		 * @private 
+		 * @return 
+		 * 
+		 */
 		override public function toString():String {
 			return "InvokeMethod " + testMethod.name;
 		}

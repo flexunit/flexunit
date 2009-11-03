@@ -159,7 +159,7 @@ package org.flexunit.experimental.theories.internals
 		 * 
 		 * @return The static object that was in the field.
 		 * 
-		 * @throws Error
+		 * @throws Error unexpected: field from getClass doesn't exist on object
 		 */
 		private function getStaticFieldValue( field:Field ):Object {
 			try {
