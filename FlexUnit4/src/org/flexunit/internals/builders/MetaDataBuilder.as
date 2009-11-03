@@ -52,14 +52,14 @@ package org.flexunit.internals.builders {
 	 * implemented in one of the two following manners:<p>
 	 * 
 	 * <pre><code>
-	 * public function RunnerClass( testClass ) {
+	 * public function RunnerClass( testClass:Object ) {
 	 * }
 	 * </code></pre><p>
 	 * 
 	 * Where testClass is the class to be run.<p>
 	 * 
 	 * <pre><code>
-	 * public function RunnerClass( testClass, suiteBuilder ) {
+	 * public function RunnerClass( testClass:Object, suiteBuilder:IRunnerBuilder ) {
 	 * }
 	 * </code></pre><p>
 	 * 
