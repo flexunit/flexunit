@@ -26,25 +26,16 @@
  * @version    
  **/ 
 package org.flexunit.token {
-	/**
-	 * Stores an AsyncTestToken and a potential error associated with a result.
-	 */
 	public class ChildResult {
-		/**
-		 * The AsyncTestToken associated with the result
-		 */
 		public var token:AsyncTestToken;
-		
-		/**
-		 * The error associated with the result
-		 */
 		public var error:Error;
-		
-		/** 
-		 * Constructor. 
+
+		/**
+		 * Creates a new ChildResult with the paramater AsyncTestToken and Error
 		 * 
-		 * @param token The AsyncTestToken to store
-		 * @param error A potential error associated with the result
+		 * <p>
+		 * @param token Token to associate with this result
+		 * @param error Error to associate with this result (<code>null</code> ok)
 		 */
 		public function ChildResult( token:AsyncTestToken, error:Error=null ){
 			this.token = token;
