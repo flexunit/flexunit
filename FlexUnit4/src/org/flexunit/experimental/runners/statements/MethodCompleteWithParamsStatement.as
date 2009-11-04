@@ -50,10 +50,10 @@ package org.flexunit.experimental.runners.statements {
 		/**
 		 * Constructor.
 		 * 
-		 * @param frameworkMethod The current theory that is being tested
-		 * @param anchor The anchor for the current theory that is being tested
-		 * @param complete Contains values that can be applied to the theory method
-		 * @param freshInstance An instance of the current test class
+		 * @param frameworkMethod The current theory that is being tested.
+		 * @param anchor The anchor for the current theory that is being tested.
+		 * @param complete Contains values that can be applied to the theory method.
+		 * @param freshInstance An instance of the current test class.
 		 */
 		public function MethodCompleteWithParamsStatement( frameworkMethod:FrameworkMethod, anchor:TheoryAnchor, complete:Assignments, freshInstance:Object ) {
 			this.frameworkMethod = frameworkMethod;
@@ -67,9 +67,9 @@ package org.flexunit.experimental.runners.statements {
 		}	
 		
 		/**
-		 * Executes the current theory method with the provided values from the complete <code>Assignments</code>
+		 * Executes the current theory method with the provided values from the complete <code>Assignments</code>.
 		 * 
-		 * @param parentToken The token to be notified when the theory method has finished running
+		 * @param parentToken The token to be notified when the theory method has finished running.
 		 */
 		public function evaluate( parentToken:AsyncTestToken ):void {
 			this.parentToken = parentToken;	
@@ -90,9 +90,9 @@ package org.flexunit.experimental.runners.statements {
 	 	}
 		
 		/**
-		 * Tells the parent token that the method has finished running and provides it with any encountered errors
+		 * Tells the parent token that the method has finished running and provides it with any encountered errors.
 		 * 
-		 * @param result A <code>ChildResult</code> that contains potential errors encountered during execution
+		 * @param result A <code>ChildResult</code> that contains potential errors encountered during execution.
 		 */
 		public function handleChildExecuteComplete( result:ChildResult ):void {
 			sendComplete( result.error );

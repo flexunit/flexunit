@@ -37,7 +37,21 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.utils.ClassNameUtil;
 	
 	/**
-	 * Responsible for determing whether a specific test method is has exceeded a timeout period
+	 * The <code>FailOnTimeout</code> is a decorator that is responsible for determing 
+	 * whether a specific test method has exceeded a timeout period for execution.  A test
+	 * method normally will run to completion regardless of how long it takes the test to
+	 * execute; however, if a timeout is imposed on the test method, the test will
+	 * fail if the test does not finish within the time limit.<p>
+	 * 
+	 * In order to fail on a timeout, a test method must include metadata indicating it has
+	 * a timeout time limit.  The timeout time limit is expected to be provided in milliseconds.<p>
+	 * 
+	 * <pre><code>
+	 * [Test(timeout=100)]
+	 * public function timeoutTest():void {
+	 * 	//Test to run
+	 * }
+	 * </code></pre>
 	 */
 	public class FailOnTimeout extends AsyncStatementBase implements IAsyncStatement {
 		private var timeout:Number = 0;
@@ -49,8 +63,8 @@ package org.flexunit.internals.runners.statements {
 		/**
 		 * Constructor.
 		 * 
-		 * @param timeout The amount of time in milliseconds to wait before attempting to fail the test
-		 * @param statement The current object that implements <code>IAsyncStatement</code> to decorate
+		 * @param timeout The amount of time in milliseconds to wait before attempting to fail the test.
+		 * @param statement The current object that implements <code>IAsyncStatement</code> to decorate.
 		 */
 		public function FailOnTimeout( timeout:Number, statement:IAsyncStatement ) {
 			this.timeout = timeout;
@@ -65,11 +79,14 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Determine if the <code>FrameworkMethod</code> has timeout metadata
+		 * Determine if the <code>FrameworkMethod</code> test has a timeout by checking its metadata to see if it
+		 * contains a "timeout" string.
 		 * 
-		 * @param method The <code>FrameworkMethod</code> to check for a timeout
+		 * @param method The <code>FrameworkMethod</code> to check to see if it has a timeout.
 		 * 
-		 * @return a String indicating the length of the the timeout or a null String indicating that no timeout was found for the method
+		 * @return a String indicating the length of the the timeout if the <code>FrameworkMethod</code>
+		 * contains metadata that indicates the method contains a timeout; otherwise, a value of null
+		 * will be returned.
 		 */
 		public static function hasTimeout( method:FrameworkMethod ):String {
 			var timeout:String = String( method.getSpecificMetaDataArg( "Test", "timeout" ) );
@@ -79,9 +96,9 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Evaluates the object that implements the <code>IAsyncStatement</code> and starts the timer
+		 * Evaluates the object that implements the <code>IAsyncStatement</code> and starts the timeout timer.
 		 * 
-		 * @param parentToken The token to be notified when it has been determined if a timeout has occured
+		 * @param parentToken The token to be notified when it has been determined if a timeout has occured.
 		 */
 		public function evaluate( parentToken:AsyncTestToken ):void {
  			this.parentToken = parentToken; 			
@@ -91,7 +108,7 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * The timer has completed and the test has not finished; the test has timed out
+		 * The timer has completed and the test has not finished; the test has timed out.
 		 */
 		private function handleTimerComplete( event:TimerEvent ):void {
 			timerComplete = true;
@@ -99,9 +116,11 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Stops the timer and sends any error the <code>ChildResult</code> has encountered to the parentToken
+		 * Stops the timer and sends any error the <code>ChildResult</code> has encountered to the parentToken.  If
+		 * the timer has already finished, the parentToken has been already notified of the failure and nothing
+		 * further will occur.
 		 * 
-		 * @param result The <code>ChildResult</code> to check to see if there is an error
+		 * @param result The <code>ChildResult</code> to check to see if there is an error.
 		 */
 		public function handleNextExecuteComplete( result:ChildResult ):void {
 			timer.stop();

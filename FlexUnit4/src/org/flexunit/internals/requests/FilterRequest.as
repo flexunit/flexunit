@@ -41,10 +41,12 @@ package org.flexunit.internals.requests {
 		private var filter:Filter;
 
 		/**
-		 * Creates a filtered Request
-		 * @param classRequest an <code>IRequest</code> describing your Tests
-		 * @param filter <code>Filter</code> to apply to the Tests described in 
-		 * <code>classRequest</code>
+		 * Constructor.
+		 * 
+		 * Creates a filtered Request.
+		 * 
+		 * @param classRequest An <code>IRequest</code> describing the tests.
+		 * @param filter <code>Filter</code> to apply to the tests described in classRequest.
 		 */
 		public function FilterRequest( classRequest:IRequest, filter:Filter ) {
 			super();

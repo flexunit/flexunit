@@ -30,7 +30,7 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.token.AsyncTestToken;
 	
 	/**
-	 * The AsyncStatementBase is responsible for notifiying a token that it has completed its task.
+	 * The <code>AsyncStatementBase</code> is responsible for notifiying a token that it has completed its task.
 	 */
 	public class AsyncStatementBase {
 		protected var parentToken:AsyncTestToken;
@@ -46,9 +46,9 @@ package org.flexunit.internals.runners.statements {
 		
 		/**
 		 * If the parentToken has not already been alerted that the statement has completed, alert the parent token that
-		 * the current statement has finished
+		 * the current statement has finished.
 		 * 
-		 * @param error The Error to send to the parentToken
+		 * @param error The Error to send to the parentToken.
 		 */
 		protected function sendComplete( error:Error = null ):void {
 			//If the parentToken hasn't already be notified that the statement has completed, notify the parentToken
@@ -64,7 +64,6 @@ package org.flexunit.internals.runners.statements {
 		/**
 		 * @private 
 		 * @return 
-		 * 
 		 */
 		public function toString():String {
 			return "Async Statement Base";
