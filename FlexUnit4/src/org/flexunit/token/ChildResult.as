@@ -30,6 +30,13 @@ package org.flexunit.token {
 		public var token:AsyncTestToken;
 		public var error:Error;
 
+		/**
+		 * Creates a new ChildResult with the paramater AsyncTestToken and Error
+		 * 
+		 * <p>
+		 * @param token Token to associate with this result
+		 * @param error Error to associate with this result (<code>null</code> ok)
+		 */
 		public function ChildResult( token:AsyncTestToken, error:Error=null ){
 			this.token = token;
 			this.error = error;

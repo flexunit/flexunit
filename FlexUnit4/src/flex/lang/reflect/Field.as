@@ -35,16 +35,25 @@ package flex.lang.reflect {
 		private var _metaData:XMLList;
 
 		private var _name:String;
+		/**
+		 * Retrieves the name of the <code>Field</code>
+		 */
 		public function get name():String {
 			return _name;
 		}
 
 		private var _isStatic:Boolean;
+		/**
+		 * Returns wether the <code>Field</code> is static or now
+		 */
 		public function get isStatic():Boolean {
 			return _isStatic;
 		}
 		
 		private var _isProperty:Boolean;
+		/**
+		 * Returns wether the <code>Field</code> is a propery field or not
+		 */
 		public function get isProperty():Boolean {
 			return _isProperty;
 		}
@@ -57,6 +66,9 @@ package flex.lang.reflect {
 			}
 		}
 		
+		/**
+		 * Retrieves the element type of the <code>Field</code>
+		 */
 		public function get elementType():Class {
 			if ( _elementType ) {
 				return _elementType;
@@ -66,6 +78,7 @@ package flex.lang.reflect {
 				//we are an array at least, so let's go further;
 				var meta:String = getMetaData( "ArrayElementType" );
 				
+				//TODO : Shouldn't this throw an error rather than tracing it?
 				try {
 					_elementType = Klass.getClassFromName( meta );
 				} catch ( error:Error ) {
@@ -77,6 +90,9 @@ package flex.lang.reflect {
 			return _elementType;
 		}
 
+		/**
+		 * Retrieves the metadata of the <code>Field</code>
+		 */
 		public function get metadata():XMLList {
 			if ( !_metaData ) {
 				_metaData = MetadataTools.nodeMetaData( _fieldXML );	
@@ -85,15 +101,42 @@ package flex.lang.reflect {
 			return _metaData;
 		}
 		
+		/**
+		 * Tests wether the <code>Field</code> has the metadata specified by name
+		 * 
+		 * <p>
+		 * @param name Name of the requested metadata
+		 * 
+		 * <p>
+		 * @return <code>true</code> if <code>Field</code> has the metadata, else <code>false</code>.
+		 */
 		public function hasMetaData( name:String ):Boolean {
 			return MetadataTools.nodeHasMetaData( _fieldXML, name );
 		}
 		
+		/**
+		 * Retrieves the metadata associated with the <code>Field</code> having the paramater
+		 * name and the paramater key.  If no key is specified, returns the value associated with
+		 * the named metadata
+		 * 
+		 * <p>
+		 * @param name Name of the requested metadata
+		 * @param key Key matching the name (<code>null</code> ok)
+		 * 
+		 * <p>
+		 * @return Value of the corresponding metadata
+		 */
 		public function getMetaData( name:String, key:String="" ):String {
 			return MetadataTools.getArgValueFromMetaDataNode( _fieldXML, name, key );
 		}
 
 		private var _type:Class;
+		/**
+		 * Retrieves the <code>Class</code> associated with the <code>Field</code>
+		 * 
+		 * <p>
+		 * @return Associated <code>Class</code>, if any
+		 */
 		public function get type():Class {
 			if (!_type) {
 				_type = Klass.getClassFromName( _fieldXML.@type );
@@ -101,6 +144,15 @@ package flex.lang.reflect {
 			return _type;
 		}
 
+		/**
+		 * <code>Field</code> Constructor
+		 *
+		 * <p>
+		 * @param fieldXML XML that describes the <code>Field</code> to be created
+		 * @param isStatic <code>true</code> if <code>Field</code> is static, else <code>false</code>
+		 * @param definedBy <code>Class</code> that defines the <code>Field</code> to be created
+		 * @param isProperty <code>true</code> if the <code>Field</code> is a property, else <code>false</code>
+		 */
 		public function Field( fieldXML:XML, isStatic:Boolean, definedBy:Class, isProperty:Boolean ) {
 			_fieldXML = fieldXML;
 			_name = fieldXML.@name;		

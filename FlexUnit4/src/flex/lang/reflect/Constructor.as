@@ -28,18 +28,34 @@
 package flex.lang.reflect {
 	import flash.utils.describeType;
 	
+	/**
+	 * Used by flexunit to create of object constructors as XML so that
+	 * they may be parsed and used by FlexUnit
+	 * 
+	 * @see Klass
+	 * @see Method
+	 * @see Field
+	 */
 	public class Constructor {
 		private var _constructorXML:XML;
 		private var _klass:Klass;
 		private var requiredArgNum:int = 0;
 		private var triedToRegetConstructorParams:Boolean = false;
 		
+		//TODO: This is not currently set or used anywhere
 		private var _name:String;
 		public function get name():String {
 			return _name;
 		}
 		
 		private var _parameterTypes:Array;
+		
+		/**
+		 *  Builds and returns an an object of type <code>Array</code> which contains a list
+		 *  of paramater types required by the Constructor
+		 * 
+		 *  @return _parameterTypes
+		 */
 		public function get parameterTypes():Array {
 			if ( !_parameterTypes ) {
 				_parameterTypes = buildParamTypeArray();
@@ -48,11 +64,15 @@ package flex.lang.reflect {
 			return _parameterTypes;
 		}
 
+		//TODO: This is not currently set or used anywhere
 		private var _parameterMetaData:Array = new Array();
 		public function get parameterMetaData():Array {
 			return _parameterMetaData;
 		}
 
+		/**
+		 * @private
+		 */
 		private function buildParamTypeArray():Array {
 			//We have been asked for our params, this can actually suck quite a bit due to a bug
 			//if we have not attempted to instantiate the class before the describeType call that run in the flex.lang.reflect.Klass instance
@@ -107,6 +127,9 @@ package flex.lang.reflect {
 			return ar;
 		}
 		
+		/**
+		 * @private
+		 */
 		private function instantiateAndRegetParamTypes( numArgs:int ):Array {
 			triedToRegetConstructorParams = true;
 
@@ -130,30 +153,51 @@ package flex.lang.reflect {
 
 		private static var argMap:Array = [ createInstance0, createInstance1, createInstance2, createInstance3, createInstance4, createInstance5 ];
 		//okay, so AS doesn't really allow us to do an apply on the constructor, so we need to fake it
+		/**
+		 * @private
+		 */
 		private static function createInstance0( klass:Class ):* {
 			return new klass();
 		}
 
+		/**
+		 * @private
+		 */
 		private static function createInstance1( clazz:Class, arg1:* ):* {
 			return new clazz( arg1 );
 		}
 
+		/**
+		 * @private
+		 */
 		private static function createInstance2( clazz:Class, arg1:*, arg2:* ):* {
 			return new clazz( arg1, arg2 );
 		}
 
+		/**
+		 * @private
+		 */
 		private static function createInstance3( clazz:Class, arg1:*, arg2:*, arg3:* ):* {
 			return new clazz( arg1, arg2, arg3 );
 		}
 
+		/**
+		 * @private
+		 */
 		private static function createInstance4( clazz:Class, arg1:*, arg2:*, arg3:*, arg4:* ):* {
 			return new clazz( arg1, arg2, arg3, arg4 );
 		}
 
+		/**
+		 * @private
+		 */
 		private static function createInstance5( clazz:Class, arg1:*, arg2:*, arg3:*, arg4:*, arg5:* ):* {
 			return new clazz( arg1, arg2, arg3, arg4, arg5 );
 		}
-		
+	
+		/**
+		 * @private
+		 */
 		private function canInstantiateWithParams( args:Array ):Boolean {
 			var maxArgs:int = parameterTypes.length;
 
@@ -165,6 +209,18 @@ package flex.lang.reflect {
 			return true;
 		}
 		
+		/**
+		 * Creates a new instance of an object using the constructor definition
+		 * 
+		 * <p>
+		 * @param params An array of paramaters to be used by the constructor (max 5). 
+		 * 
+		 * <p>
+		 * @return A new instance of the object defined by the constructor
+		 * 
+		 * <p>
+		 * @see #newInstance()
+		 */
 		public function newInstanceApply( params:Array ):Object {
 			if ( !canInstantiateWithParams( params ) ) {
 				throw new Error("Invalid number or type of arguments to contructor");
@@ -181,10 +237,31 @@ package flex.lang.reflect {
 			
 		}
 		
+		/**
+		 * Creates a new instance of an object using the constructor definition.  The maximum paramater
+		 * list is currently restriced to 5.  If more paramaters are needed, take a look at <code>
+		 * Constructor.as</code> on how to create your own.
+		 * 
+		 * <p>
+		 * @param args a comma list or array of elements to be used by the constructor as paramaters (max 5).
+		 * 
+		 * <p>
+		 * @return A new instance of the object defined by the constructor
+		 */
 		public function newInstance( ...args ):Object {
 			return newInstanceApply( args );
 		}
 
+		/**
+		 * Constructor
+		 * 
+		 * <p>
+		 * @param constructorXML the constructor definition as XML
+		 * @param klass Klass which defines the contructor paramater
+		 * 
+		 * <p>
+		 * @see Klass
+		 */
 		public function Constructor( constructorXML:XML, klass:Klass ) {
 			if ( constructorXML ) {
 				_constructorXML = constructorXML;
