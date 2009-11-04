@@ -42,9 +42,21 @@ package org.flexunit.experimental.runners.statements {
 	 * Responsible for executing a theory method with a single set of parameters.
 	 */
 	public class MethodCompleteWithParamsStatement extends AsyncStatementBase implements IAsyncStatement {
+		/**
+		 * @private
+		 */
 		private var frameworkMethod:FrameworkMethod;
+		/**
+		 * @private
+		 */
 		private var anchor:TheoryAnchor;
+		/**
+		 * @private
+		 */
 		private var complete:Assignments;
+		/**
+		 * @private
+		 */
 		private var freshInstance:Object;
 		
 		/**
