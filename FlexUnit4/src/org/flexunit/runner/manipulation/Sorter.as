@@ -27,16 +27,12 @@
  **/ 
 package org.flexunit.runner.manipulation
 {
-	import flexunit.framework.Test;
-	
 	import org.flexunit.runner.Description;
 	import org.flexunit.runner.IDescription;
 	
 	/**
 	 * A <code>Sorter</code> orders tests. In general you will not need
-	 * to use a <code>Sorter</code> directly. Instead, use <code> org.junit.runner.Request#sortWith(Function)</code>.
-	 * 
-	 * 
+	 * to use a <code>Sorter</code> directly. Instead, use <code>org.flexunit.runner.Request#sortWith(Function)</code>.
 	 */
 	public class Sorter implements ISorter
 	{	
@@ -45,7 +41,7 @@ package org.flexunit.runner.manipulation
 		/**
 		 * Creates a <code>Sorter</code> that uses <code>compare function</code>
 		 * to sort tests
-		 * @param comparator the <code> Function</code> to use when sorting tests
+		 * @param comparator the <code>Function</code> to use when sorting tests
 		 */
 		public function Sorter(comparator:Function) {
 			this.comparator = comparator;

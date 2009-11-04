@@ -119,6 +119,8 @@ package org.fluint.sequence {
 
 		/** 
 		 * Called by the SequenceRunner to cause the setup of event listeners
+		 * 
+		 * @throws Error Attempting to watch un-watchable property
 		 **/ 
 		public function setupListeners( testCase:*, sequence:SequenceRunner ):void {
 			if ( ChangeWatcher.canWatch( target, propertyName ) ) {

@@ -37,11 +37,21 @@ package org.flexunit.internals {
 	import org.flexunit.runner.Result;
 	import org.flexunit.runner.notification.Failure;
 	import org.flexunit.runner.notification.RunListener;
-
+	
+	/**
+	 * A <code>TextListener</code> will record the events encountered during the course of a test run in a logger.
+	 */
 	public class TextListener extends RunListener {
 		private var logger:ILogger;
 		private static var nf:NumberFormatter;
-
+		
+		/**
+		 * Creates an <code>ILoggingTarget</code>
+		 * 
+		 * @param level The level to set on the <code>ILoggingTarget</code>
+		 * 
+		 * @return an <code>ILoggingTarget</code>
+		 */
 		protected static function buildILoggingTarget( level:int ):ILoggingTarget {
 			var traceTarget:TraceTarget = new TraceTarget();
 			traceTarget.level = level; //LogEventLevel.DEBUG;
@@ -53,44 +63,73 @@ package org.flexunit.internals {
 			
 			return traceTarget;
 		}
-
+		
+		/** 
+		 * Returns a default instance of the TextListener.
+		 * 
+		 * @param logLevel The target level to set on the <code>ILoggingTarget</code>
+		 * 
+		 * @return the default <code>TextListener</code>
+		 */
 		public static function getDefaultTextListener( logLevel:int ):TextListener {
 			Log.addTarget( buildILoggingTarget( logLevel ) );
 			
 			return new TextListener( Log.getLogger("FlexUnit4") );
 		}
-
+		
+		/** 
+		 * Constructor. 
+		 * 
+		 * @param logger The logger used to log the events during a test run.
+		 */
 		public function TextListener( logger:ILogger ) {
 			super();
 			this.logger = logger;
 			
+			//Determine if the number formatter has been created
 			if ( !nf ) {
 				nf = new NumberFormatter();
 			}
 		}
-
+	
+		/**
+		 * @inheritDoc
+		 */
 		override public function testRunStarted( description:IDescription ):void {
 			logger.info( "Running {0} Tests", description.testCount );			
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function testRunFinished( result:Result ):void {
 			printHeader( result.runTime );
 			printFailures( result );
 			printFooter( result );
 		}
-	
+		
+		/**
+		 * @inheritDoc
+		 */
 		override public function testStarted( description:IDescription ):void {
 			logger.info( description.displayName + " ." );
 		}
-	
+		
+		/**
+		 * @inheritDoc
+		 */
 		override public function testFailure( failure:Failure ):void {
+			//Determine if the exception in the failure is considered an error
 			if ( FailureFormatter.isError( failure.exception ) ) {
 				logger.error( failure.description.displayName + " E" );
 			} else {
 				logger.warn( failure.description.displayName + " F" );
 			}
 		}
-	
+		
+		/**
+		 * @inheritDoc
+		 */
 		override public function testIgnored( description:IDescription ):void {
 			logger.info( description.displayName + " I" );
 		}
@@ -98,13 +137,25 @@ package org.flexunit.internals {
 		/*
 		 * Internal methods
 		 */
+		
+		/**
+		 * Logs a header that provides the total run time
+		 * 
+		 * @param runTime The total run time of all tests in milliseconds
+		 */
 		protected function printHeader( runTime:Number ):void {
 			logger.info( "Time: {0}", elapsedTimeAsString(runTime) );
 			//trace( elapsedTimeAsString(runTime) );
 		}
-	
+		
+		/**
+		 * Logs all failures that were received in the result
+		 * 
+		 * @param result The result that contains potential failures
+		 */
 		protected function printFailures( result:Result ):void {
 			var failures:Array = result.failures;
+			//Determine if there are any failures to print
 			if (failures.length == 0)
 				return;
 			if (failures.length == 1)
@@ -112,16 +163,29 @@ package org.flexunit.internals {
 			else
 				logger.warn("There were {0} failures:", failures.length );
 			
+			//Print each failure
 			for ( var i:int=0; i<failures.length; i++ ) {
 				printFailure( failures[ i ], String( i+1 ) );
 			}
 		}
-	
+		
+		/**
+		 * Logs a provided failure with a certain prefix
+		 * 
+		 * @param failure The provided failure
+		 * @param prefix A String prefix for the failure
+		 */
 		protected function printFailure( failure:Failure, prefix:String ):void {
 			//logger.warn( "{0} {1} {2}", prefix, failure.testHeader, failure.stackTrace );
 		}
-	
+		
+		/**
+		 * Logs a footer for the provided result
+		 * 
+		 * @param result The result that contains the total run count
+		 */
 		protected function printFooter( result:Result ):void {
+			//Determine if the result was a success
 			if (result.successful ) {
 				logger.info( "OK ({0} test{1})", result.runCount, (result.runCount == 1 ? "" : "s") );
 			} else {

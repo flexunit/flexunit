@@ -34,7 +34,10 @@
 	import org.flexunit.runner.notification.IAsyncStartupRunListener;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.token.AsyncListenersToken;
-
+	
+	/**
+	 * Responsible for watching <code>IAsyncStartupRunListener</code>
+	 */
 	public class AsyncListenerWatcher {
 		public static const LISTENER_READY:String = "listenerReady";
 		public static const LISTENER_FAILED:String = "listenerFailed";
@@ -48,45 +51,82 @@
 		//private var logger:ILogger;
 		private var _startToken:AsyncListenersToken;
 		private var _completeToken:AsyncListenersToken;
-
+		
+		/**
+		 * Returns the start up <code>AsyncListenersToken</code>
+		 */
 		public function get startUpToken():AsyncListenersToken {
 			return _startToken;
 		}
-
+		
+		/**
+		 * Returns the complete <code>AsyncListenersToken</code>
+		 */
 		public function get completeToken():AsyncListenersToken {
 			return _completeToken;
 		}
-
+		
+		/**
+		 * Returns a Boolean value indicating whether all listeners are ready
+		 */
 		public function get allListenersReady():Boolean {
 			return (pendingCount==0);
 		}
-
+		
+		/**
+		 * Returns a Boolean value indicating whether all are complete
+		 */
 		public function get allListenersComplete():Boolean {
 			return (pendingCount==0);
 		}
-
+		
+		/**
+		 * Returns the number of pending start ups
+		 */
 		public function get pendingCount():int {
 			return _pendingStartupCount;
 		}
-
+		
+		/**
+		 * Returns the number of total start ups
+		 */
 		public function get totalCount():int {
 			return _totalStartUpCount;
 		}
-
+		
+		/**
+		 * Monitors the <code>IAsyncStartupRunListener</code> to determine if the listener is ready or if
+		 * the listener has failed
+		 * 
+		 * @param listener The <code>IAsyncStartupRunListener</code> to listen to
+		 */
 		protected function monitorForAsyncStartup( listener:IAsyncStartupRunListener ):void {
 			listener.addEventListener( LISTENER_READY, handleListenerReady );
 			listener.addEventListener( LISTENER_FAILED, handleListenerFailed );
 		}
-
+		
+		/**
+		 * Stop monitoring the <code>IAsyncStartupRunListener</code> 
+		 * 
+		 * @param listener The <code>IAsyncStartupRunListener</code> to stop listening to
+		 */
 		protected function cleanupStartupListeners( listener:IAsyncStartupRunListener ):void {
 			listener.removeEventListener( LISTENER_READY, handleListenerReady );
 			listener.removeEventListener( LISTENER_FAILED, handleListenerFailed );
 		}
-
+	
+		/**
+		 * Instruct the start up token that all listeners are now ready
+		 */
 		protected function sendReadyNotification():void {
 			startUpToken.sendReady();
 		}
-
+		
+		/**
+		 * Stops listening when the listener will be ready and determines if all other listeners are ready
+		 * 
+		 * @param event
+		 */
 		protected function handleListenerReady( event:Event ):void {
 			var asyncListener:IAsyncStartupRunListener = event.target as IAsyncStartupRunListener;
 
@@ -98,6 +138,12 @@
 			}
 		}
 		
+		/**
+		 * Stops listening when the listener will be ready, removes the listener from the <code>IRunNotifier<code>.
+		 * and determines if all other listeners are ready
+		 * 
+		 * @param event
+		 */
 		protected function handleListenerFailed( event:Event ):void {
 			var asyncListener:IAsyncStartupRunListener = event.target as IAsyncStartupRunListener;
 
@@ -111,13 +157,19 @@
 				sendReadyNotification();
 			}
 		}
-
+		
+		/**
+		 * Makes the AsyncListenerWatcher stop watching the provided <code>IAsyncStartupRunListener</code>
+		 * 
+		 * @param listener The <code>IAsyncStartupRunListener</code> to stop watching
+		 */
 		public function unwatchListener( listener:IAsyncStartupRunListener ):void {
 			if ( listener is IAsyncStartupRunListener ) {
 				_totalStartUpCount--;
 
 				var startListener:IAsyncStartupRunListener = listener as IAsyncStartupRunListener; 
-
+				
+				//The listener still was not ready, stop watching it 
 				if ( !startListener.ready ) {
 					_pendingStartupCount--;
 					cleanupStartupListeners( startListener );
@@ -128,13 +180,19 @@
 				var completeListener:IAsyncCompletionRunListener = listener as IAsyncCompletionRunListener;
 			}
 		}
-
+		
+		/**
+		 * Makes the AsyncListenerWatcher start watching the provided <code>IAsyncStartupRunListener</code>
+		 * 
+		 * @param listener The <code>IAsyncStartupRunListener</code> to watch
+		 */
 		public function watchListener( listener:IAsyncStartupRunListener ):void {
 			if ( listener is IAsyncStartupRunListener ) {
 				_totalStartUpCount++;
 
 				var startListener:IAsyncStartupRunListener = listener as IAsyncStartupRunListener; 
-
+				
+				//If this listener is not ready, wait for it
 				if ( !startListener.ready ) {
 					_pendingStartupCount++;
 					monitorForAsyncStartup( startListener );
@@ -146,7 +204,13 @@
 			}
 
 		}
-
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param notifier
+		 * @param logger 
+		 */
 		public function AsyncListenerWatcher( notifier:IRunNotifier, logger:* ) {
 			this.notifier = notifier;
 			//this.logger = logger;

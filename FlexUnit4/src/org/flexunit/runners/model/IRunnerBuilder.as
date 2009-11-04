@@ -37,7 +37,7 @@ package org.flexunit.runners.model {
 	 * imagine a custom IRunner that builds suites based on a list of classes in a text file:
 	 * 
 	 * <pre>
-	 * RunWith(TextFileSuite.class)
+	 * RunWith(TextFileSuite.as)
 	 * SuiteSpecFile("mysuite.txt")
 	 * class MySuite {}
 	 * </pre>
@@ -45,10 +45,9 @@ package org.flexunit.runners.model {
 	 * The implementation of TextFileSuite might include:
 	 * 
 	 * <pre>
-	 * public TextFileSuite(Class testClass, IRunnerBuilder builder) {
+	 * public function TextFileSuite(testClass:Class, builder:IRunnerBuilder) {
 	 *   // ...
-	 *   for (String className : readClassNames())
-	 *     addRunner(builder.runnerForClass(Class.forName(className)));
+	 *     var runner:IRunner = builder.runnerForClass( testClass );
 	 *   // ...
 	 * }
 	 * </pre>

@@ -98,6 +98,7 @@ package org.flexunit.runner {
 
 			var result:int = 0;
 			
+			//If the receiver has children, determine how many tests they have
 			if ( children ) {
 				var child:IDescription;
 				for ( var i:int=0; i<children.length; i++ ) {
@@ -110,18 +111,26 @@ package org.flexunit.runner {
 		}
 
 		/**
-		 * @return the metadata as XML that is attached to this description node, 
-		 * or null if none exists
+		 * @param type the name of the node to find
+		 * @return the metadata node as XML that is attached to this description if a node is found with a matching <code>type</code>, 
+		 * or null if no such node exists
 		 */
 		public function getMetadata( type:String ):XML {
 			//Extract specific needed node by type
 			return MetadataTools.getMetaDataNodeFromNodesList( _metadata, type );
 		}
-
+		
+		/**
+		 * @return the metadata as XML that is attached to this description node, 
+		 * or null if none exists
+		 */
 		public function getAllMetadata():XMLList {
 			return _metadata;
 		}
-
+		
+		/**
+		 * @return <code>true</code> if the receiver is an instance
+		 */
 		public function get isInstance():Boolean {
 			return ( _isInstance );
 		}
@@ -149,12 +158,19 @@ package org.flexunit.runner {
 			trace("Method not yet implemented");
 			return new Description( _displayName, _metadata );
 		}
-
+		
+		/**
+		 * Determines if the current description is equal to the provided <code>obj</code>
+		 * @param obj
+		 * @return true if this is a description of a Runner that runs no tests
+		 */
 		public function equals( obj:Object ):Boolean {
 			if (!(obj is Description))
 				return false;
 
 			var d:Description = Description( obj );
+			
+			//Determine if the displayNames and children are equal; if so, the descriptions are equal
 			return ( ( displayName == d.displayName ) && ( ObjectUtil.compare( children, d.children ) == 0 ) );
 		}		
 

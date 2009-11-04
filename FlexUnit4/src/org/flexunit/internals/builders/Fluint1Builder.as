@@ -36,9 +36,20 @@ package org.flexunit.internals.builders {
 	import org.flexunit.internals.runners.Fluint1ClassRunner;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runners.model.RunnerBuilderBase;
-
+	
+	/**
+	 * Builds a <code>Fluint1ClassRunner</code> for a test class.
+	 */
 	public class Fluint1Builder extends RunnerBuilderBase {
 
+		/**
+		 * Returns a <code>Fluint1ClassRunner</code> if the class is a Fluint suite or test case.
+		 * 
+		 * @param testClass The class to check.
+		 * 
+		 * @return a <code>Fluint1ClassRunner</code> if the class is a Fluint suite or test case; otherwise, a
+		 * value of null is returned.
+		 */
 		override public function runnerForClass( testClass:Class ):IRunner {
 			var klassInfo:Klass = new Klass( testClass );
 
@@ -46,7 +57,14 @@ package org.flexunit.internals.builders {
 				return new Fluint1ClassRunner(testClass);
 			return null;
 		}
-	
+		
+		/**
+		 * Determine if the provided <code>Klass</code> is a Fluint suite or test case.
+		 * 
+		 * @param klassInfo The klass to check.
+		 * 
+		 * @return a Boolean value indicating whether the klass is a Fluint suite or test case.
+		 */
 		public function isFluintSuiteOrCase( klassInfo:Klass ):Boolean {
  			var testCase:Boolean = klassInfo.descendsFrom( net.digitalprimates.fluint.tests.TestCase );
 			var testSuite:Boolean = klassInfo.descendsFrom( net.digitalprimates.fluint.tests.TestSuite );

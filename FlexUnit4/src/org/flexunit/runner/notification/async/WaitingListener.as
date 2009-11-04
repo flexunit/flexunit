@@ -48,14 +48,18 @@ package org.flexunit.runner.notification.async
 	import org.flexunit.runner.notification.Failure;
 	import org.flexunit.runner.notification.IAsyncStartupRunListener;
 
-
+	/**
+	 * This class is simply to test async startup listeners
+	 */
 	public class WaitingListener extends EventDispatcher implements IAsyncStartupRunListener
 	{
 		private var _ready:Boolean = false;
 		
 		private var msgQueue:Array = new Array();
 
-		/**This class is simply to test async startup listeners**/
+		/**
+		 * Constructor.
+		 */
 		public function WaitingListener() {
 			var timer:Timer = new Timer( 5000, 1 );
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete, false, 0, true );
@@ -73,6 +77,9 @@ package org.flexunit.runner.notification.async
 			
 		}
 		
+		/**
+		 * Returns a Boolean value indicating whether the listener is ready
+		 */
 		[Bindable(event="listenerReady")]
 		public function get ready():Boolean {
 			return _ready;

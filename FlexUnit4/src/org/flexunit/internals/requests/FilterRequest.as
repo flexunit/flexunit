@@ -34,17 +34,19 @@ package org.flexunit.internals.requests {
 	import org.flexunit.runner.manipulation.NoTestsRemainException;
 
 	/**
-	 * A filtered <code>Request</code>.
+	 * A <code>Request</code> that filters a test class.
 	 */
 	public class FilterRequest extends Request {
 		private var request:IRequest;
 		private var filter:Filter;
 
 		/**
-		 * Creates a filtered Request
-		 * @param classRequest an <code>IRequest</code> describing your Tests
-		 * @param filter <code>Filter</code> to apply to the Tests described in 
-		 * <code>classRequest</code>
+		 * Constructor.
+		 * 
+		 * Creates a filtered Request.
+		 * 
+		 * @param classRequest An <code>IRequest</code> describing the tests.
+		 * @param filter <code>Filter</code> to apply to the tests described in classRequest.
 		 */
 		public function FilterRequest( classRequest:IRequest, filter:Filter ) {
 			super();

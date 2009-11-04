@@ -28,19 +28,27 @@
 package org.flexunit
 {
 	import flexunit.framework.AssertionFailedError;
-	
-/**
- * A set of assert methods.  Messages are only displayed when an assert fails.
- */
- 
+ 	
+	/**
+	 * A set of assert methods.  Messages are only displayed when an assert fails.
+	 */
 	public class Assert
 	{
+		/**
+		 * @private
+		 */
 		public static var _assertCount:int = 0;
-
+		
+		/**
+		 * Returns the number of assertions that have been made
+		 */
 		public static function get assertionsMade() : Number {
 			return _assertCount;
 		}
-		  
+		
+		/**
+		 * Resets the count for the number of assertions that have been made back to zero
+		 */
 		public static function resetAssertionsFields() : void {
 			_assertCount = 0;
 		}
@@ -152,7 +160,7 @@ package org.flexunit
 			   failWithUserMessage( message, "expected false but was true" );
 		}
 	
-	//TODO:  (<code>null</code> okay) needs removal?
+		//TODO:  (<code>null</code> okay) needs removal?
 		/**
 		 * Asserts that an object is null. If it is not, an <code> AssertionFailedError</code>
 		 * is thrown with the given message.
@@ -181,7 +189,7 @@ package org.flexunit
 			   failWithUserMessage( message, "object was null: " + object );
 		}
 	
-	//TODO:  (<code>null</code> okay) needs removal?
+		//TODO:  (<code>null</code> okay) needs removal?
 		/**
 		 * Asserts that an object isn't null. If it is an <code> AssertionFailedError</code> is
 		 * thrown with the given message.
@@ -209,7 +217,7 @@ package org.flexunit
 			if ( object != null )
 			   failWithUserMessage( message, "object was not null: " + object );
 		}
-	//TODO:  (<code>null</code> okay) needs removal?
+		//TODO:  (<code>null</code> okay) needs removal?
 		/**
 		 * Fails a test with the given message.
 		 * 

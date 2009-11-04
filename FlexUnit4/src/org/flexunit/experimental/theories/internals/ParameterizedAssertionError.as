@@ -27,9 +27,20 @@
  **/ 
 package org.flexunit.experimental.theories.internals {
 	import org.flexunit.AssertionError;
-
+	
+	/**
+	 * Thrown when an assertion is false and provides the parameters that caused the test to fail.
+	 */
 	public class ParameterizedAssertionError extends AssertionError {
 		public var targetException:Error;
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param targetException The exception that was thrown.
+		 * @param methodName The name of the method that threw the exception.
+		 * @param params The parameters that were provided to the method that threw the exception.
+		 */
 		public function ParameterizedAssertionError( targetException:Error, methodName:String, ...params ) {
 			this.targetException = targetException;
 			super( methodName + " " + ( params as Array ).join( ", " ) );

@@ -119,14 +119,20 @@ package org.flexunit.runner {
 			
 			return filterWithFilter( filter );
 		}
-
+		
+		/**
+		 * Returns a Request that either filters based on a <code> Description</code> or a <code>Filter</code>
+		 * @param filterOrDescription The <code> Filter</code> or <code> Description</code> to apply to this Request
+		 * @return the filtered Request
+		 */
 		public function filterWith( filterOrDescription:* ):Request {
 			if ( filterOrDescription is IDescription ) {
 				return filterWithDescription( filterOrDescription as IDescription );
 			} else if ( filterOrDescription is Filter ) {
 				return filterWithFilter( filterOrDescription as Filter );
 			}
-
+			
+			//If neither an IDescription or Filter is provided, return the current request
 			return this;
 		}
 		
@@ -137,7 +143,13 @@ package org.flexunit.runner {
 		public function sortWith(comparator:Function):Request {
 			return new SortingRequest(this, comparator);
 		}
-
+		
+		/**
+		 * Create a <code>Request</code> that, when processed, will run all the tests
+		 * in a class. The odd name is necessary because <code>class</code> is a reserved word.
+		 * @param clazz the class containing the tests
+		 * @return a <code>Request</code> that will cause all tests in the class to be run
+		 */
 		public static function aClass( clazz:Class ):Request {
 			return new ClassRequest(clazz);
 		}
@@ -167,7 +179,15 @@ package org.flexunit.runner {
 	 		
 	 		return request;
 		}
-
+		
+		/**
+		 * Create a <code>Request</code> that, when processed, will run a single test.
+		 * This is done by filtering out all other tests. This method is used to support rerunning
+		 * single tests.
+		 * @param clazz the class of the test
+		 * @param methodName the name of the test
+		 * @return a <code>Request</code> that will cause a single test be run
+		 */
 		public static function method( clazz:Class, methodName:String ):Request {
 			var method:IDescription = Description.createTestDescription( clazz, methodName );
 			return Request.aClass(clazz).filterWith(method);

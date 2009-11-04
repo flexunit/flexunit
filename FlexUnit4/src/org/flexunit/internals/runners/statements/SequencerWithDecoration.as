@@ -29,26 +29,56 @@ package org.flexunit.internals.runners.statements
 {
 	import org.flexunit.runners.model.FrameworkMethod;
 	
+	/**
+	 * Sequences classes methods that have decorations.
+	 * Example: "Before", "After", "BeforeClass", "AfterClass", ect.
+	 */
 	public class SequencerWithDecoration extends StatementSequencer
 	{
 		private var target:Object;	
 		private var afters:Array;
-
+		
+		/**
+		 * Creates an <code>InvokeMethod</code> object for the given method and test class
+		 * 
+		 * @param method The current method to execute
+		 * @param test The test class
+		 */
 		protected function methodInvoker( method:FrameworkMethod, test:Object ):IAsyncStatement {
 			return new InvokeMethod(method, test);
 		}
-
+		
+		/**
+		 * Determine if a potential <code>FrameworkMethod</code> is asynchronous
+		 * 
+		 * @param method The <code>FrameworkMethod</code> that the statement has wrapped
+		 * @param test The current test class
+		 * @param statement The current statement
+		 * 
+		 * @return An object that implements an <code>IAsyncStatement</code> that has been decorated with a potential async
+		 */
 		protected function withPotentialAsync( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
 			return statement;
 		}
-
+		
+		/**
+		 * Creats a object that implements an <code>IAsyncStatement</code> and decorates it
+		 * 
+		 * @param method The <code>FrameworkMethod</code> to wrap
+		 * @param test The current test class
+		 * 
+		 * @return An object that implements an <code>IAsyncStatement</code> that has been decorated
+		 */
 		protected function withDecoration( method:FrameworkMethod, test:Object ):IAsyncStatement {
 			var statement:IAsyncStatement = methodInvoker( method, test );
 			statement = withPotentialAsync( method, test, statement );
 			
 			return statement;
 		}
-
+		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function executeStep( child:* ):void {
 			super.executeStep( child );
 
@@ -61,7 +91,13 @@ package org.flexunit.internals.runners.statements
 				errors.push( error );
 			}
 		}
-
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param afters An array of potential statements that need to be executed at a specific time
+		 * @target target The test class
+		 */
 		public function SequencerWithDecoration( afters:Array, target:Object ) {
 			super( afters );
 			this.target = target;
