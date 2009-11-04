@@ -29,11 +29,26 @@ package flex.lang.reflect {
 	import flex.lang.reflect.utils.MetadataTools;
 	
 	public class Field {
+		/**
+		 * @private
+		 */
 		private var _fieldXML:XML;
+		/**
+		 * @private
+		 */
 		private var _definedBy:Class;
+		/**
+		 * @private
+		 */
 		private var _elementType:Class;
+		/**
+		 * @private
+		 */
 		private var _metaData:XMLList;
 
+		/**
+		 * @private
+		 */
 		private var _name:String;
 		/**
 		 * Retrieves the name of the <code>Field</code>
@@ -42,6 +57,9 @@ package flex.lang.reflect {
 			return _name;
 		}
 
+		/**
+		 * @private
+		 */
 		private var _isStatic:Boolean;
 		/**
 		 * Returns wether the <code>Field</code> is static or now
@@ -50,6 +68,9 @@ package flex.lang.reflect {
 			return _isStatic;
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _isProperty:Boolean;
 		/**
 		 * Returns wether the <code>Field</code> is a propery field or not
@@ -58,6 +79,16 @@ package flex.lang.reflect {
 			return _isProperty;
 		}
 		
+		/**
+		 * Retrieves the Class associated with the object specified by the field name.
+		 *   If a null paramater is passed will instead retrieve the field defined by the field name
+		 * will instead return the Class defined by this field.
+		 * 
+		 * <p>
+		 * @param obj The object
+		 * <p>
+		 * @return An object specified by name else the
+		 */
 		public function getObj( obj:Object ):Object {
 			if ( obj == null ) {
 				return _definedBy[ name ];
@@ -130,6 +161,9 @@ package flex.lang.reflect {
 			return MetadataTools.getArgValueFromMetaDataNode( _fieldXML, name, key );
 		}
 
+		/**
+		 * @private
+		 */
 		private var _type:Class;
 		/**
 		 * Retrieves the <code>Class</code> associated with the <code>Field</code>

@@ -34,13 +34,44 @@ package flex.lang.reflect {
 	 * apply/invoke call and allowing FlexUnit to pull the results
 	 */
 	public class Method {
+		/**
+		 * @private
+		 */
 		private var _methodXML:XML;
+		
+		/**
+		 * @private
+		 */
 		private var _declaringClass:Class;
+		
+		/**
+		 * @private
+		 */
 		private var _name:String;
+		
+		/**
+		 * @private
+		 */
 		private var _parameterTypes:Array;
+		
+		/**
+		 * @private
+		 */
 		private var _returnType:Class;
+		
+		/**
+		 * @private
+		 */
 		private var _metaData:XMLList;
+		
+		/**
+		 * @private
+		 */
 		private var _isStatic:Boolean = false;
+		
+		/**
+		 * @private
+		 */
 		private var _elementType:Class;
 
 		/**

@@ -37,17 +37,38 @@ package flex.lang.reflect {
 	 * @see Field
 	 */
 	public class Constructor {
+		/**
+		 * @private
+		 */
 		private var _constructorXML:XML;
+		/**
+		 * @private
+		 */
 		private var _klass:Klass;
+		/**
+		 * @private
+		 */
 		private var requiredArgNum:int = 0;
+		/**
+		 * @private
+		 */
 		private var triedToRegetConstructorParams:Boolean = false;
 		
 		//TODO: This is not currently set or used anywhere
+		/**
+		 * @private
+		 */
 		private var _name:String;
+		/**
+		 * Retrieves the name associated with the constructor
+		 */
 		public function get name():String {
 			return _name;
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _parameterTypes:Array;
 		
 		/**
@@ -65,7 +86,14 @@ package flex.lang.reflect {
 		}
 
 		//TODO: This is not currently set or used anywhere
+		/**
+		 * @private
+		 */
 		private var _parameterMetaData:Array = new Array();
+		
+		/**
+		 * Retrieves the parameterMetaData array
+		 */
 		public function get parameterMetaData():Array {
 			return _parameterMetaData;
 		}
@@ -151,6 +179,9 @@ package flex.lang.reflect {
 			return buildParamTypeArray();
 		}
 
+		/**
+		 * @private
+		 */
 		private static var argMap:Array = [ createInstance0, createInstance1, createInstance2, createInstance3, createInstance4, createInstance5 ];
 		//okay, so AS doesn't really allow us to do an apply on the constructor, so we need to fake it
 		/**
@@ -253,7 +284,7 @@ package flex.lang.reflect {
 		}
 
 		/**
-		 * Constructor
+		 * Creates a new Constructor
 		 * 
 		 * <p>
 		 * @param constructorXML the constructor definition as XML

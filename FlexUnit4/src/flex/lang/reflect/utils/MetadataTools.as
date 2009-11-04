@@ -45,7 +45,7 @@ package flex.lang.reflect.utils
 			return ( baseType == "Class" );
 		}
 		
-		/**
+		/**		
 		 * Determine if the XML does not have a base attribute with a value of "Class"
 		 * 
 		 * @param description The XML description to check
