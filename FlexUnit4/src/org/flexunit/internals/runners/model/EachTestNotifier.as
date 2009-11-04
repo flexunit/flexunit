@@ -31,7 +31,8 @@ package org.flexunit.internals.runners.model {
 	import org.flexunit.runner.notification.IRunNotifier;
 	
 	/**
-	 * Notifies a notifier about a test method.
+	 * The <code>EachTestNotifier</code> is responsible for instructing a provided
+	 * <code>IRunNotifier</code> about the execution of a specific test.
 	 */
 	public class EachTestNotifier {
 		private var notifier:IRunNotifier;
@@ -40,8 +41,8 @@ package org.flexunit.internals.runners.model {
 		/** 
 		 * Constructor. 
 		 * 
-		 * @param notifier The notifier to notify about the current test method
-		 * @param description An <code>IDescription</code> the represents a test method
+		 * @param notifier The <code>IRunNotifier</code> to notify regarding the execution of a specific test.
+		 * @param description An <code>IDescription</code> of the current test.
 		 */
 		public function EachTestNotifier( notifier:IRunNotifier, description:IDescription ) {
 			this.notifier = notifier;
@@ -49,8 +50,9 @@ package org.flexunit.internals.runners.model {
 		}
 		
 		/** 
-		 * Tell the notifier that the test method has encountered a failure
-		 * @param targetException The exception that was thrown when running the test method
+		 * Instructs the notifier that the test method has encountered a failure.
+		 * 
+		 * @param targetException The exception that was thrown when running the test method.
 		 */
 		public function addFailure( targetException:Error ):void {
 			//If the targetException is a MultipleFailureException, notify the notifier for each failure
@@ -67,29 +69,30 @@ package org.flexunit.internals.runners.model {
 
 		//TODO: THis needs to be an AssumptionViolatedException... but I need to get Hamcrest in there for that...so it needs to wait
 		/** 
-		 * Tell the notifier that the test method has failed an assumption
-		 * @param error The assumption that was violated when running the test method
+		 * Instructs the notifier that the test method has failed an assumption.
+		 * 
+		 * @param error The assumption that was violated when running the test method.
 		 */
 		public function addFailedAssumption( error:Error ):void {
 			notifier.fireTestAssumptionFailed( new Failure( description, error ) );
 		}
 		
 		/** 
-		 * Tell the notifier that the test method has finished running
+		 * Instructs the notifier that the test method has finished running.
 		 */
 		public function fireTestFinished():void {
 			notifier.fireTestFinished(description);
 		}
 		
 		/** 
-		 * Tell the notifier that the test method has started
+		 * Instructs the notifier that the test method has started.
 		 */
 		public function fireTestStarted():void {
 			notifier.fireTestStarted(description);
 		}
 	
 		/** 
-		 * Tell the notifier that the test method has been ignored
+		 * Instructs the notifier that the test method has been ignored.
 		 */
 		public function fireTestIgnored():void {
 			notifier.fireTestIgnored(description);

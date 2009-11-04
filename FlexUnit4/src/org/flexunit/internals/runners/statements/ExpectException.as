@@ -36,7 +36,23 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.utils.ClassNameUtil;
 	
 	/**
-	 * Responsible for determing whether a specific test method is expecting a certain exception
+	 * The <code>ExpectException</code> is a decorator that is responsible for determing 
+	 * whether a specific test method throws an expected exception.  Normally, if a test method
+	 * throws an specific exception, the test will fail; however, if the test is expecting a 
+	 * specific exception and that exception is thrown, the test will be a success.  If an
+	 * exception is expected an is not encountered through the course of running the test, the
+	 * test will be considered a failure.<p>
+	 * 
+	 * In order to expect an exception, a test method must include metadata indicating it is
+	 * expecting an exception.  The exception that it is expecting must be in the form of
+	 * the qualified class name of the exception class.<p>
+	 * 
+	 * <pre><code>
+	 * [Test(expected="org.flexunit.runner.notification.StoppedByUserException")]
+	 * public function exceptionTest():void {
+	 * 	//Test will throw a StoppedByUserException
+	 * }
+	 * </code></pre>
 	 */
 	public class ExpectException extends AsyncStatementBase implements IAsyncStatement {
 		private var exceptionName:String;
@@ -47,8 +63,8 @@ package org.flexunit.internals.runners.statements {
 		/**
 		 * Constructor.
 		 * 
-		 * @param exceptionName The qualified class name fo the exception to expect
-		 * @param statement The current object that implements <code>IAsyncStatement</code> to decorate
+		 * @param exceptionName The qualified class name of the exception to expect.
+		 * @param statement The current object that implements <code>IAsyncStatement</code> to decorate.
 		 */
 		public function ExpectException( exceptionName:String, statement:IAsyncStatement ) {
 			this.exceptionName = exceptionName;
@@ -64,11 +80,12 @@ package org.flexunit.internals.runners.statements {
 		
 		/**
 		 * Determine if a <code>FrameworkMethod</code> test is expecting an exception by checking its metadata to see if
-		 * it contains either an "expects" or "expected" String
+		 * it contains either an "expects" or "expected" string.
 		 * 
-		 * @param method The <code>FrameworkMethod</code> to check to see if its expecting an exception
+		 * @param method The <code>FrameworkMethod</code> to check to see if its expecting an exception.
 		 * 
-		 * @return a String containing the qualified path name of the expected exception
+		 * @return a String containing the qualified path name of the expected exception if the <code>FrameworkMethod</code>
+		 * contains metadata that indicates the method is expecting an exception; otherwise, a value of null will be returned.
 		 */
 		public static function hasExpected( method:FrameworkMethod ):String {
 			//There is conflicting docs in the JUnit world about expects versus expected being the right metadata for this
@@ -85,18 +102,20 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Returns a boolean value indicating whether the provided error was expected
+		 * Returns a Boolean value indicating whether the provided error matches the error that
+		 * was expected.
 		 * 
-		 * @param The error to evaluate
+		 * @param e The error to check and determine whether it is of the type that is expected.
 		 */
 		private function validErrorType( e:Error ):Boolean {
 			return ( e is exceptionClass );
 		}
 		
 		/**
-		 * Generates a new error indicating the expected error was not thrown
+		 * Generates a new error indicating the expected error was not thrown by the test but
+		 * instead another error was encountered.
 		 * 
-		 * @param The error that was thrown
+		 * @param e The error that was thrown but was not of the expected type.
 		 */
 		private function createInvalidError( e:Error ):Error {
 			var message:String = "Unexpected exception, expected<"
@@ -108,8 +127,9 @@ package org.flexunit.internals.runners.statements {
 		
 		/**
 		 * Evaluates the object that implements the <code>IAsyncStatement</code> and checks to see if an exception is thrown
+		 * by that <code>IAsyncStatement</code>.  If an exception is thrown, check to see if the error is of the expected type.
 		 * 
-		 * @param parentToken The token to be notified when the check for an exception being thrown has finished
+		 * @param parentToken The token to be notified when the check for an exception being thrown has finished.
 		 */
 		public function evaluate( parentToken:AsyncTestToken ):void {
  			this.parentToken = parentToken; 			
@@ -122,17 +142,19 @@ package org.flexunit.internals.runners.statements {
 					//all is well
 					handleNextExecuteComplete( new ChildResult( myToken ) );
 				} else {
-					//another error we were not expected was encountered
+					//another error we were not expecting was encountered
 					handleNextExecuteComplete( new ChildResult( myToken, createInvalidError( e ) ) );								
 				}
 			}
 		}
 		
 		/**
-		 * Determines if the excpetion in the <code>ChildResult</code> is the expected value.  If not, one is created because
-		 * an excpetion should have been thrown in this instance.
+		 * Determines if the excpetion in the <code>ChildResult</code> is of the expected type.  If the exception is not
+		 * of the expected type, an error will be generated that includes the type of error that was encountered.
+		 * If no exception was thrown, a new error will be created because an excpetion should have been thrown in 
+		 * this instance.
 		 * 
-		 * @param result The <code>ChildResult</code> to check to see if there is an error
+		 * @param result The <code>ChildResult</code> to check to see if there is an error was provided.
 		 */
 		public function handleNextExecuteComplete( result:ChildResult ):void {
 			var errorToSendBack:Error;

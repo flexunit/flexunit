@@ -41,10 +41,12 @@ package org.flexunit.internals.requests
 		private var comparator:Function;
 		
 		/**
-		 * Creates a sorted Request
-		 * @param request an <code>IRequest</code> describing your Tests
-		 * @param comparator <code>Function</code> to apply to the Tests described in 
-		 * <code>request</code>
+		 * Constructor.
+		 * 
+		 * Creates a sorted Request.
+		 * 
+		 * @param request An <code>IRequest</code> describing the tests.
+		 * @param comparator The <code>Function</code> to apply to the tests described in request.
 		 */
 		public function SortingRequest(request:IRequest, comparator:Function)
 		{

@@ -51,14 +51,15 @@ package org.flexunit.internals.runners.model {
 		}*/
 		
 		/** 
-		 * Returns the array of all of the failures
+		 * Returns the array of all of the failures.
 		 */
 		public function get failures():Array {
 			return errors;
 		}
 		
 		/** 
-		 * Returns the MultipleFailureException after adding the additional failure to array of failures
+		 * Returns the MultipleFailureException after adding the additional failure to array of failures.
+		 * 
 		 * @param error The failure to add to the array of failures
 		 */
 		public function addFailure( error:Error ):MultipleFailureException {
@@ -75,7 +76,7 @@ package org.flexunit.internals.runners.model {
 		/** 
 		 * Constructor. 
 		 * 
-		 * @param errors The array of failures.
+		 * @param errors An initial array of encountered failures.
 		 */
 		public function MultipleFailureException( errors:Array ) {
 			this.errors = errors;

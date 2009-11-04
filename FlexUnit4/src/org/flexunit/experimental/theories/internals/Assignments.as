@@ -241,7 +241,8 @@ package org.flexunit.experimental.theories.internals {
 		}
 		
 		/**
-		 * Returns a string containing the name of the test class, the assigned parameters, and the unassigned parameters.
+		 * Returns a string containing the name of the test class, the assigned parameters, and the 
+		 * unassigned parameters.
 		 */
 		public function toString():String {
 			var str:String = "              Assignments :\n";

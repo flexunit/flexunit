@@ -337,7 +337,7 @@ package org.flexunit.runners {
 		 * @param notifier The notifier that is notified about issues encountered during the execution of the test class
 		 * @param previousToken The token that is to be notified when the runner has finished execution of the test class
 		 * 
-		 * @throws StoppedByUserException
+		 * @throws org.flexunit.runner.notification.StoppedByUserException The user has stopped the test run.
 		 */
 		public function run( notifier:IRunNotifier, previousToken:AsyncTestToken ):void {
 			var testNotifier:EachTestNotifier = new EachTestNotifier(notifier, description );
