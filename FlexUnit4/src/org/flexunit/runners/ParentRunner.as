@@ -75,6 +75,9 @@ package org.flexunit.runners {
 	 * <code> Description</code>, and run children sequentially.
 	 */
 	public class ParentRunner implements IRunner, ISortable {
+		/**
+		 * @private
+		 */
 		protected static const EACH_NOTIFIER:String = "eachNotifier";
 		
 		private var _testClass:TestClass;
@@ -86,11 +89,11 @@ package org.flexunit.runners {
 		private var cachedDescription:IDescription;
 		
 		/**
-		 * Constructs a new <code>ParentRunner</code> that will run <code>TestClass</code>
+		 * Constructs a new <code>ParentRunner</code> that will run <code>TestClass</code>.
 		 * 
-		 * @param klass The test class that is to be executed by the runner
+		 * @param klass The test class that is to be executed by the runner.
 		 * 
-		 * @throws InitializationError //TODO: does it throw an InitializationError?
+		 * @throws org.flexunit.internals.runners.InitializationError //TODO: does it throw an InitializationError?
 		 */
 		public function ParentRunner( klass:Class ) {
 			this._testClass = new TestClass( klass );
@@ -98,21 +101,21 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Returns a name used to describe this Runner
+		 * Returns a name used to describe this Runner.
 		 */
 		protected function get name():String {
 			return testClass.name;
 		}
 
 		/**
-		 * Returns a <code> TestClass</code> object wrapping the class to be executed.
+		 * Returns a <code>TestClass</code> object wrapping the class to be executed.
 		 */
 		protected function get testClass():TestClass {
 			return _testClass;
 		}
 		
 		/**
-		 * Retruns an <code>IDescription</code> of the test class that the runner is running
+		 * Retruns an <code>IDescription</code> of the test class that the runner is running.
 		 */
 		public function get description():IDescription {
 			
@@ -142,39 +145,52 @@ package org.flexunit.runners {
 		}
 	
 		/**
-		 * Returns a <code> Description</code> for {@code child}, which can be assumed to
-		 * be an element of the list returned by <code> ParentRunner#children()</code>
+		 * Returns a <code>Description</code> for <code>child</code>, which can be assumed to
+		 * be an element of the list returned by <code>ParentRunner#children()</code>.
+		 * 
+		 * @param child The child to describe.
+		 * 
+		 * @return an <code>IDescription</code> of the provided <code>child</code>.
 		 */
 		protected function describeChild( child:* ):IDescription {
 			return null
 		}
 
 		/**
-		 * Runs the test corresponding to {@code child}, which can be assumed to be
-		 * an element of the list returned by <code> ParentRunner#children()</code>.
+		 * Runs the test corresponding to <code>child</code>, which can be assumed to be
+		 * an element of the list returned by <code>ParentRunner#children()</code>.
 		 * Subclasses are responsible for making sure that relevant test events are
-		 * reported through {@code notifier}
+		 * reported through <code>notifier</code>.
+		 * 
+		 * @param child The child to run.
+		 * @param notifier The <code>IRunNotifier</code> to notify on the progress of the <code>child</code>.
+		 * @param childRunnerToken The token used to keep track of the <code>child</code>'s execution.
 		 */
 		protected function runChild( child:*, notifier:IRunNotifier, childRunnerToken:AsyncTestToken ):void {
 		
 		}
 
 		/** 
-		 * Constructs an {@code IStatement} to run all of the tests in the test class. Override to add pre-/post-processing. 
+		 * Constructs an <code>IAsyncStatement</code> to run all of the tests in the test class. Override to add pre-/post-processing. 
 		 * Here is an outline of the implementation:
+		 * 
 		 * <ul>
-		 * <li>Call <code> #runChild(Object, RunNotifier)} on each object returned by <code> #children()</code> (subject to any imposed filter and sort).</li>
-		 * <li>ALWAYS run all non-overridden {@code BeforeClass} methods on this class
+		 * <li>Call <code>#runChild(Object, IRunNotifier, AsyncTestToken)</code> on each object returned by <code> #children()</code> (subject to any imposed filter and sort).</li>
+		 * <li>ALWAYS run all non-overridden <code>BeforeClass</code> methods on this class
 		 * and superclasses before the previous step; if any throws an
 		 * Exception, stop execution and pass the exception on.
-		 * <li>ALWAYS run all non-overridden {@code AfterClass} methods on this class
+		 * <li>ALWAYS run all non-overridden <code>AfterClass</code> methods on this class
 		 * and superclasses before any of the previous steps; all AfterClass methods are
 		 * always executed: exceptions thrown by previous steps are combined, if
 		 * necessary, with exceptions from AfterClass methods into a
-		 * <code> MultipleFailureException</code>.
+		 * <code>MultipleFailureException</code>.
 		 * </ul>
-		 * @param notifier
-		 * @return {@code IStatement}
+		 * 
+		 * @param notifier The <code>IRunNotifier</code> to notify on the progress of the children.
+		 * 
+		 * @return an <code>IAsyncStatement</code>.
+		 * 
+		 * @see #runChild()
 		 */
 		protected function classBlock( notifier:IRunNotifier ):IAsyncStatement {
 			var sequencer:StatementSequencer = new StatementSequencer();
@@ -187,9 +203,11 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Returns an <code> IStatement</code>: run all non-overridden {@code BeforeClass} methods on this class
-		 * and superclasses before executing {@code statement}; if any throws an
+		 * Returns an <code>IAsyncStatement</code>: run all non-overridden <code>BeforeClass</code> methods on this class
+		 * and superclasses before executing the <code>statement</code>; if any throws an
 		 * Exception, stop execution and pass the exception on.
+		 * 
+		 * @return an <code>IAsyncStatement</code> containing methdos to run before the class.
 		 */
 		protected function withBeforeClasses():IAsyncStatement {
 			var befores:Array = testClass.getMetaDataMethods( "BeforeClass" );
@@ -201,11 +219,13 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Returns an <code> IStatement</code>: run all non-overridden {@code AfterClass} methods on this class
-		 * and superclasses before executing {@code statement}; all AfterClass methods are
+		 * Returns an <code>IAsyncStatement</code>: run all non-overridden <code>AfterClass</code> methods on this class
+		 * and superclasses before executing the <code>statement</code>; all <code>AfterClass</code> methods are
 		 * always executed: exceptions thrown by previous steps are combined, if
-		 * necessary, with exceptions from AfterClass methods into a
-		 * <code> MultipleFailureException</code>.
+		 * necessary, with exceptions from <code>AfterClass</code> methods into a
+		 * <code>MultipleFailureException</code>.
+		 * 
+		 * @return an <code>IAsyncStatement</code> containing methods to run after the class.
 		 */
 		protected function withAfterClasses():IAsyncStatement {
 			var afters:Array = testClass.getMetaDataMethods( "AfterClass" );
@@ -216,7 +236,7 @@ package org.flexunit.runners {
 		}		
 		
 		/**
-		 * Ensure that no initilization issues encountered when attempting to setup
+		 * Ensure that no initilization issues are encountered when attempting to setup
 		 * the runner for the test class.
 		 */
 		private function validate():void {
@@ -227,11 +247,16 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Adds to {@code errors} a throwable for each problem noted with the test class 
-		 * (available from <code> #testClass()</code>).
+		 * Adds to <code>errors</code> an error for each problem noted with the test class 
+		 * (available from <code>#testClass()</code>).
 		 * Default implementation adds an error for each method annotated with
-		 * {@code BeforeClass} or {@code AfterClass} that is not
-		 * {@code public static void} with no arguments.
+		 * <code>BeforeClass</code> or <code>AfterClass</code> that is not
+		 * <code>public static void</code> with no arguments.
+		 * 
+		 * @param errors An <code>Array</code> of issues encountered when attempting to setup
+		 * the runner for the test class.
+		 * 
+		 * @see #testClass()
 		 */
 		protected function collectInitializationErrors( errors:Array ):void {
 			validatePublicVoidNoArgMethods( "BeforeClass", true, errors );
@@ -239,14 +264,20 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Adds to {@code errors} if any method in this class is annotated with
-		 * {@code metaDataTag}, but:
+		 * Adds to <code>errors</code> if any method in this class is annotated with
+		 * <code>metaDataTag</code>, but:
+		 * 
 		 * <ul>
 		 * <li>is not public, or
 		 * <li>takes parameters, or
 		 * <li>returns something other than void, or
-		 * <li>is static (given {@code isStatic is false}), or
-		 * <li>is not static (given {@code isStatic is true}).
+		 * <li>is static (given <code>isStatic</code> is <code>false</code>), or
+		 * <li>is not static (given <code>isStatic</code> is <code>true</code>).</ul>
+		 * 
+		 * @param metaDataTag The metadata tag used to retrieve the methods.
+		 * @param isStatic a Boolean value indicating whether the methods should be static.
+		 * @param errors An <code>Array</code> of issues encountered when attempting to setup
+		 * the runner for the test class.
 		 */
 		protected function validatePublicVoidNoArgMethods( metaDataTag:String, isStatic:Boolean, errors:Array ):void {
 			var methods:Array = testClass.getMetaDataMethods( metaDataTag  );
@@ -259,9 +290,14 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Returns an <code> IStatement</code>: Call <code> #runChild(Object, RunNotifier)</code>
-		 * on each object returned by <code> #children()</code> (subject to any imposed
-		 * filter and sort)
+		 * Returns an <code>IAsyncStatement</code>: Call <code>#runChild(Object, IRunNotifier, AsyncTestToken)</code>
+		 * on each object returned by <code>#children()</code> (subject to any imposed
+		 * filter and sort).
+		 * 
+		 * @param notifier The <code>IRunNotifier</code> to notify on the progress of the children.
+		 * 
+		 * @see #runChild()
+		 * @see #children()
 		 */
 		protected function childrenInvoker( notifier:IRunNotifier ):IAsyncStatement {
 			var children:Array = getFilteredChildren();
@@ -275,7 +311,7 @@ package org.flexunit.runners {
 		 * whether each child can run, applies the runner's <code>Filter</code>, applies the runner's
 		 * <code>ISorter</code>, and adds it to the array.  This array is then sorted using the runner's <code>ISorter</code>.
 		 * 
-		 * @return an array of filtered and sorted children
+		 * @return an <code>Array</code> of filtered and sorted children.
 		 */
 		private function getFilteredChildren():Array {
 			if(!childrenFiltered) {
@@ -284,6 +320,7 @@ package org.flexunit.runners {
 	
 				for ( var i:int=0; i<children.length; i++ ) {
 					child = children[ i ];
+					//Determine if the child matches the filter
 					if ( shouldRun( child ) ) {
 						try {
 							filterChild( child );
@@ -295,6 +332,7 @@ package org.flexunit.runners {
 					}
 				}
 				
+				//Sort all remaining children
 				filtered.sort(compare);
 				filteredChildren = filtered;
 				childrenFiltered = true;
@@ -304,16 +342,16 @@ package org.flexunit.runners {
 		}
 		
 		/**
-		 * Applies the runner's <code>ISorter</code> to the provided child
+		 * Applies the runner's <code>ISorter</code> to the provided child.
 		 * 
-		 * @param child The object to apply the <code>ISorter</code> to
+		 * @param child The object to which to apply the <code>ISorter</code>.
 		 */
 		private function sortChild( child:* ):void {
 			sorter.apply(child);
 		}
 		
 		/**
-		 * This sorting method uses the runner's <code>ISorter</code> to compare two child arguments
+		 * This sorting method uses the runner's <code>ISorter</code> to compare two child arguments.
 		 */
 		//Applies the sorter to an array
 		protected function compare(o1:Object, o2:Object):int {
@@ -321,9 +359,9 @@ package org.flexunit.runners {
 		};
 		
 		/**
-		 * Applies the runner's <code>Filter</code> to the provided child
+		 * Applies the runner's <code>Filter</code> to the provided child.
 		 * 
-		 * @param child The object to apply the <code>Filter</code> to
+		 * @param child The object to which to apply the <code>Filter</code>.
 		 */
 		private function filterChild( child:* ):void {
  			if (filterRef != null)
@@ -332,10 +370,10 @@ package org.flexunit.runners {
 
 		private var currentEachNotifier:EachTestNotifier;
 		/**
-		 * Runs the test class and updates the notifier on the status of running the tests
+		 * Runs the test class and updates the <code>notifier</code> on the status of running the tests.
 		 * 
-		 * @param notifier The notifier that is notified about issues encountered during the execution of the test class
-		 * @param previousToken The token that is to be notified when the runner has finished execution of the test class
+		 * @param notifier The notifier that is notified about issues encountered during the execution of the test class.
+		 * @param previousToken The token that is to be notified when the runner has finished execution of the test class.
 		 * 
 		 * @throws org.flexunit.runner.notification.StoppedByUserException The user has stopped the test run.
 		 */
@@ -369,9 +407,9 @@ package org.flexunit.runners {
 		}
 		
 		/**
-		 * Handles the results of the runner on the test class
+		 * Handles the results of the runner on the test class.
 		 * 
-		 * @param result The results of the running the runner on the test class
+		 * @param result The results of the running the runner on the test class.
 		 */
 		private function handleRunnerComplete( result:ChildResult ):void {
 			var error:Error = result.error;
@@ -391,11 +429,11 @@ package org.flexunit.runners {
 		}
 		
 		/**
-		 * Returns a Boolean value indicating whether the item should run
+		 * Returns a Boolean value indicating whether the <code>item</code> should run.
 		 * 
-		 * @param item The item to check to see if it should run
+		 * @param item The item to check to see if it should run.
 		 * 
-		 * @return a Boolean value indicating whether the item should run 
+		 * @return a Boolean value indicating whether the <code>item</code> should run .
 		 */
 		private function shouldRun( item:* ):Boolean {
 			return filterRef == null || filterRef.shouldRun( describeChild( item ) );
@@ -405,9 +443,9 @@ package org.flexunit.runners {
 		 * Applies the provided <code>Filter</code> to the runner.  If every child of the test class is filtered out,
 		 * no children will be run, and a <code>NoTestsRemainException</code> will be thrown.
 		 * 
-		 * @param Filter The <code>Filter</code> to apply to the runner
+		 * @param filter The <code>Filter</code> to apply to the runner.
 		 * 
-		 * @throws NoTestsRemainException
+		 * @throws org.flexunit.runner.manipulation.NoTestsRemainException Thrown if all children have been filtered.
 		 */
 		public function filter( filter:Filter ):void {
 			if(filter == this.filterRef)
@@ -431,9 +469,7 @@ package org.flexunit.runners {
 		/**
 		 * Applies the provided <code>ISorter</code> to the runner.
 		 * 
-		 * @param Filter The <code>Filter</code> to apply to the runner
-		 * 
-		 * @throws NoTestsRemainException
+		 * @param sorter The <code>ISorter</code> to apply to the runner.
 		 */
 		public function sort(sorter:ISorter):void {
 			//Determine if the runner has already specified a ISorter besides the default META Sorter,
@@ -444,7 +480,11 @@ package org.flexunit.runners {
 				childrenFiltered = false;
 			}
 		}
-
+		
+		/**
+		 * @private
+		 * @return
+		 */
 		public function toString():String {
 			return "ParentRunner";
 		}

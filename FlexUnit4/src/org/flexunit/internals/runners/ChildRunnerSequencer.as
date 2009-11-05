@@ -36,6 +36,10 @@ package org.flexunit.internals.runners {
 	 * Runs its children in a particular sequence
 	 */
 	public class ChildRunnerSequencer extends StatementSequencer implements IAsyncStatement {
+		
+		/**
+		 * @private
+		 */
 		public static const COMPLETE:String = "complete";
 		private var runChild:Function;
 		private var notifier:IRunNotifier;
@@ -62,6 +66,10 @@ package org.flexunit.internals.runners {
 			runChild( child, notifier, myToken );
 		}
 		
+		/**
+		 * @private
+		 * @return
+		 */
 		override public function toString():String {
 			return "ChildRunnerSequence";
 		}

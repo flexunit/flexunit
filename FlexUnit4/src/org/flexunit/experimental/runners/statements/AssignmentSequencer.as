@@ -15,12 +15,34 @@ package org.flexunit.experimental.runners.statements {
 	 * parameters will be provided to the theory method.
 	 */
 	public class AssignmentSequencer extends AsyncStatementBase implements IAsyncStatement {
+		
+		/**
+		 * @private
+		 */
 		protected var potential:Array;
+		/**
+		 * @private
+		 */
 		protected var parameterAssignment:Assignments;
+		/**
+		 * @private
+		 */
 		protected var counter:int = 0;
+		/**
+		 * @private
+		 */
 		protected var errors:Array;
+		/**
+		 * @private
+		 */
 		protected var testClass:Class;
+		/**
+		 * @private
+		 */
 		protected var anchor:TheoryAnchor;
+		/**
+		 * @private
+		 */
 		protected var frameworkMethod:FrameworkMethod;
 		
 		/**

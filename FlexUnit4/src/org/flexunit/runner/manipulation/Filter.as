@@ -34,13 +34,15 @@ package org.flexunit.runner.manipulation {
 	 * than introduce runner API just for that one case, FlexUnit provides a general filtering mechanism.
 	 * If you want to filter the tests to be run, extend <code>Filter</code> and apply an instance of
 	 * your filter to the <code>org.flexunit.runner.Request</code> before running it (see 
-	 * <code>org.junit.runner.FlexUnitCore#run(Request)</code>. 
+	 * <code>org.flexunit.runner.FlexUnitCore#run(Request)</code>. 
 	 * 
 	 * //TODO: IRunner is an interface, there is no pre-existing implementing class, does the following 
 	 * //still apply? Is there a RunWith equivalent
 	 * Alternatively, apply a <code>Filter</code> to 
 	 * a org.junit.runner.Runner before running tests (for example, in conjunction with 
 	 * org.junit.runner.RunWith.
+	 * 
+	 * @see org.flexunit.runner.FlexUnitCore#run()
 	 */
 	public class Filter {
 

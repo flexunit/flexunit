@@ -45,42 +45,42 @@ package org.flexunit.runner {
 		private var _failures:Array = new Array()
 		
 		/**
-		 * @return the number of tests that failed during the run
+		 * Returns the number of tests that failed over the course of the run.
 		 */
 		public function get failureCount():int {
 			return failures.length;
 		}
 
 		/**
-		 * @return the <code> Failure</code>s describing tests that failed and the problems they encountered
+		 * Returns the <code>Failure</code>s describing tests that failed and the problems they encountered.
 		 */
 		public function get failures():Array {
 			return _failures;
 		}
 
 		/**
-		 * @return the number of tests ignored during the run
+		 * Returns the number of tests ignored over the course of the run.
 		 */
 		public function get ignoreCount():int {
 			return _ignoreCount;
 		}
 
 		/**
-		 * @return the number of tests run
+		 * Returns the number of tests that have run.
 		 */
 		public function get runCount():int {
 			return _runCount;
 		}
 
 		/**
-		 * @return the number of milliseconds it took to run the entire suite to run
+		 * Returns the number of milliseconds it took to run the entire set of tests.
 		 */
 		public function get runTime():Number {
 			return _runTime;
 		}
 
 		/**
-		 * @return <code>true</code> if all tests succeeded
+		 * Returns a Boolean value of <code>true</code> if all tests succeeded.
 		 */
 		public function get successful():Boolean {
 			return ( failureCount == 0 );

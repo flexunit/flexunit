@@ -38,7 +38,7 @@ package org.flexunit.internals.builders {
 	/**
 	 * Builds a runner that is specificed in the metadata for a specific test class.  If a test class is using a
 	 * special runner in the metadata, it should include the [RunWith] tag that lists the full class name of
-	 * the runner.<p>
+	 * the runner.
 	 * 
 	 * <pre><code>
 	 * [RunWith("org.flexunit.runners.Suite")]

@@ -31,7 +31,8 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.runners.model.FrameworkMethod;
 	
 	/**
-	 * Determine if a specific test class contains 'Before' metadata and should be run before a test has started 
+	 * The <code>RunBefores</code> is a <code>SequencerWithDecoration</code> for potential methods that have
+	 * <code>Before</code> metadata and should be run before a test has started.
 	 */
 	public class RunBefores extends SequencerWithDecoration implements IAsyncStatement {
 		
@@ -56,7 +57,6 @@ package org.flexunit.internals.runners.statements {
 		/**
 		 * @private 
 		 * @return 
-		 * 
 		 */
 		override public function toString():String {
 			return "RunBefores";

@@ -37,38 +37,52 @@ package org.flexunit.runners {
 	
 //TODO: How do references to older JUnits compare to older FlexUnits?	
 	/**
- 	* Using <code>Suite</code> as a runner allows you to manually
- 	* build a suite containing tests from many classes. It is the JUnit 4 equivalent of the JUnit 3.8.x
- 	* static junit.framework.Test <code>suite()</code> method. To use it, annotate a class
- 	* with <code>RunWith(Suite.class)</code> and <code>SuiteClasses(TestClass1.class, ...)</code>.
- 	* When you run this class, it will run all the tests in all the suite classes.
+ 	 * Using <code>Suite</code> as a runner allows you to manually
+ 	 * build a suite containing tests from many classes. It is the JUnit 4 equivalent of the JUnit 3.8.x
+ 	 * static junit.framework.Test <code>suite()</code> method. To use it, annotate a class
+ 	 * with <code>RunWith("org.flexunit.runners.Suite")</code>.
+ 	 * When you run this class, it will run all the tests in all the suite classes.
+	 * 
+	 * <p><pre><code>
+	 * [RunWith("org.flexunit.runners.Suite")]
+	 * public class SuiteToRun
+	 * {
+	 * 	public var oneTest:OneTest; //A Test
+	 * 	public var anotherTest:AnotherTest; //Another Test
+	 * 	public var differentSuite:DifferentSuite; //A Suite
+	 * }
+	 * </pre<code>
  	*/
 	public class Suite extends ParentRunner {
 		private var _runners:Array;
 		
 		/**
-		 * @inhertDoc
+		 * @inheritDoc
 		 */
 		override protected function get children():Array {
 			return _runners;
 		}
 		
 		/**
-		 * @inhertDoc
+		 * @inheritDoc
 		 */
 		override protected function describeChild( child:* ):IDescription {
 			return IRunner( child ).description;
 		}
 		
 		/**
-		 * @inhertDoc
+		 * @inheritDoc
 		 */
 		override protected function runChild( child:*, notifier:IRunNotifier, childRunnerToken:AsyncTestToken ):void {
 			IRunner( child ).run( notifier, childRunnerToken );
 		}
 		
 		/**
-		 * Returns an array of class in a given suite
+		 * Returns an array of non-static class feilds in the provided <code>suite</code> class.
+		 * 
+		 * @param suite The class to check for non-static class fields.
+		 * 
+		 * @return an array of non-static class feilds in the provided <code>suite</code> class.
 		 */
 		private static function getSuiteClasses( suite:Class ):Array {
 			var klassInfo:Klass = new Klass( suite );

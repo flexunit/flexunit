@@ -35,7 +35,7 @@ package org.flexunit.experimental.theories {
 	import org.flexunit.runners.model.FrameworkMethod;
 	
 	/**
-	 * The <code>Theories</code> runner is a runner that will run theory theory test methods.  In order for a theory to properly run,
+	 * The <code>Theories</code> runner is a runner that will run theory test methods.  In order for a theory to properly run,
 	 * a test class must have a method marked as a theory method that contains one or more parameters.  The type of each parameter
 	 * must have a static data point or an array of data points that correspond that correspond to that type.
 	 * 
@@ -51,12 +51,18 @@ package org.flexunit.experimental.theories {
 	 * 
 	 * [Theory]
 	 * public function testTheory(name:String, value:int):void {
-	 * 		//Do something
+	 * 	//Do something
 	 * }
 	 * 
 	 * </pre>
 	 */
 	public class Theories extends BlockFlexUnit4ClassRunner {
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param klass The test class that is to be executed by the runner.
+		 */
 		public function Theories( klass:Class ) {
 			super( klass );
 		}

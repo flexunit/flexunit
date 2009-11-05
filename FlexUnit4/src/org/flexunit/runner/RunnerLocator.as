@@ -31,7 +31,7 @@ package org.flexunit.runner
 	
 	/**
 	 * A <code>RunnerLocator</code> either registers or
-	 * retrieves an <code>IRunner</code> for a particular test.
+	 * retrieves an <code>IRunner</code> for a particular test class.
 	 * 
 	 */
 	public class RunnerLocator {
@@ -39,18 +39,22 @@ package org.flexunit.runner
 		private var d:Dictionary = new Dictionary( true );
 		
 		/**
-		 * Registers the (@link IRunner) with a particular test.
-		 * @param test
-		 * @param runner the (@link IRunner) to be registered
+		 * Registers the <code>IRunner</code> with a particular test class.
+		 * 
+		 * @param test The test class used to register the <code>IRunner</code>.
+		 * @param runner The <code>IRunner</code> to be registered.
 		 */
 		public function registerRunnerForTest( test:Object, runner:IRunner ):void {
 			d[ test ] = runner;
 		}	
 		
 		/**
-		 * Retrieves the (@link IRunner) for a particular test.  If no runner has been registered
-		 * for the test, a null value is returned.
-		 * @param test
+		 * Retrieves the <code>IRunner<code> for a particular test class.  If no runner has been 
+		 * registered for the test, a <code>null</code> value is returned.
+		 * 
+		 * @param test The test class used to determine if there is a registered <code>IRunner</code>.
+		 * 
+		 * @return the <code>IRunner</code> asscoiated with that test class.
 		 */
 		public function getRunnerForTest( test:Object ):IRunner {
 			return d[ test ] as IRunner;

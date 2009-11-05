@@ -32,15 +32,15 @@ package org.flexunit.async {
 	import org.flexunit.internals.runners.statements.IAsyncHandlingStatement;
 	
 	/**
-	 * The AsyncLocator is used to keep track of test cases that have implemented asynchronous functionallity.
+	 * The <code>AsyncLocator</code> is used to keep track of test cases that have implemented asynchronous functionallity.
 	 */
 	public class AsyncLocator {
 		private static var asyncHandlerMap:Dictionary = new Dictionary();
 		
 		/**
-		 * Registers the (@link IAsyncHandlingStatement) with a particular testCase.
+		 * Registers the <code>IAsyncHandlingStatement</code> with a particular testCase.
 		 * 
-		 * @param (@link IAsyncHandlingStatement) the AsyncHandlingStatement to be registered.
+		 * @param <code>IAsyncHandlingStatement</code> the AsyncHandlingStatement to be registered.
 		 * @param testCase The test case to associate with the <code>IAsyncHandlingStatement</code>.
 		 */
 		public static function registerStatementForTest( expectAsyncInstance:IAsyncHandlingStatement, testCase:Object ):void {
@@ -48,10 +48,14 @@ package org.flexunit.async {
 		} 
 		
 		/**
-		 * Retrieves the (@link IAsyncHandlingStatement) for a particular testCase.  If no AsyncHandlingStatement has been registered.
-		 * for the testCase, an (@link AssertionError) will be thrown.
+		 * Retrieves the <code>IAsyncHandlingStatement</code> for a particular testCase.  If no AsyncHandlingStatement has been registered.
+		 * for the testCase, an <code>AssertionError</code> will be thrown.
 		 * 
 		 * @param testCase The test case used to retrieve the <code>IAsyncHandlingStatement</code>.
+		 * 
+		 * @return a <code>IAsyncHandlingStatement</code> associated with the <code>testCase</code>.
+		 * 
+		 * @throws org.flexunit.AssertionError Thrown if a handler could not be found for the <code>testCase</code>.
 		 */
 		public static function getCallableForTest( testCase:Object ):IAsyncHandlingStatement {
 			var handler:IAsyncHandlingStatement = asyncHandlerMap[ testCase ];
@@ -65,7 +69,7 @@ package org.flexunit.async {
 		} 
 		
 		/**
-		 * Removes the (@link IAsyncHandlingStatement) for a particular testCase.
+		 * Removes the <code>IAsyncHandlingStatement</code> for a particular testCase.
 		 * 
 		 * @param testCase The test case to remove the association with the <code>IAsyncHandlingStatement</code>.
 		 */

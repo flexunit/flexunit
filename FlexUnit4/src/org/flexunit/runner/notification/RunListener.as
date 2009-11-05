@@ -31,28 +31,26 @@ package org.flexunit.runner.notification {
 	import org.flexunit.runner.Result;
 	
 	/**
-	 * <p>If you need to respond to the events during a test run, extend <code>RunListener</code>
+	 * If you need to respond to the events during a test run, extend <code>RunListener</code>
 	 * and override the appropriate methods. If a listener throws an exception while processing a 
-	 * test event, it will be removed for the remainder of the test run.</p>
+	 * test event, it will be removed for the remainder of the test run.
 	 * 
 	 * <p>For example, suppose you have a <code>Cowbell</code>
 	 * class that you want to make a noise whenever a test fails. You could write:
 	 * <pre>
 	 * public class RingingListener extends RunListener {
-	 *    public function testFailure(failure:Failure):void {
-	 *       Cowbell.ring();
-	 *    }
+	 * 	public function testFailure(failure:Failure):void {
+	 * 		Cowbell.ring();
+	 * 	}
 	 * }
 	 * </pre>
 	 * </p>
 	 * 
 	 * <p>To invoke your listener, you need to run your tests through <code>FlexUnitCore</code>.
 	 * <pre>
-	 * public void main(String... args) {
-	 *    FlexUnitCore core= new FlexUnitCore();
-	 *    core.addListener(new RingingListener());
-	 *    core.run(MyTestClass.class);
-	 * }
+	 * core:FlexUnitCore = new FlexUnitCore();
+	 * core.addListener(new RingingListener());
+	 * core.run(MyTestClass);
 	 * </pre>
 	 * </p>
 	 * @see org.flexunit.runner.FlexUnitCore

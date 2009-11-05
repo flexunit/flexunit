@@ -43,8 +43,8 @@ package org.flexunit.internals
 		/**
 		 * Constructor.
 		 * 
-		 * @param value The value that was obtained when the assumption was evaluated
-		 * @param matcher The matcher used to evaluate the assumption
+		 * @param value The value that was obtained when the assumption was evaluated.
+		 * @param matcher The matcher used to evaluate the assumption.
 		 */
 		public function AssumptionViolatedException( value:Object, matcher:Matcher=null ) {
 			super(); //value instanceof Throwable ? (Throwable) value : null);
