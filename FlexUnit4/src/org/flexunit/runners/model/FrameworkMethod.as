@@ -36,8 +36,8 @@ package org.flexunit.runners.model {
 	/**
 	 * Represents a method on a test class to be invoked at the appropriate point in
 	 * test execution. These methods are usually marked with an annotation (such as
-	 * {@code Test}, {@code Before}, {@code After}, {@code BeforeClass}, {@code
-	 * AfterClass}, etc.)
+	 * <code>Test</code>, <code>Before</code>, <code>After</code>, <code>BeforeClass</code>, 
+	 * <code>AfterClass</code>, etc.).
 	 */
 	public class FrameworkMethod extends EventDispatcher {
 		
@@ -46,7 +46,7 @@ package org.flexunit.runners.model {
 		private var _method:Method;
 
 		/**
-		 * Returns a new {@code FrameworkMethod} for {@code method}
+		 * Returns a new <code>FrameworkMethod</code> for <code>method</code>.
 		 */
 		//We don't really have a method class, but we do have a chunk of XML that can describe our 
 		//method, so we will preserve it that way I also suspect we are going to need a class reference 
@@ -55,21 +55,21 @@ package org.flexunit.runners.model {
 			_method = method;
 		}
 		/**
-		 * Returns the underlying method
+		 * Returns the underlying method.
 		 */
 		public function get method():Method {
 			return _method;
 		}
 
 		/**
-		 * Returns the method's name
+		 * Returns the method's name.
 		 */
 		public function get name():String {
 			return method.name;
 		}
 		
 		/**
-		 * Returns the method's metadata
+		 * Returns the method's metadata.
 		 */
 		public function get metadata():XMLList {
 			return method.metadata;
@@ -77,13 +77,15 @@ package org.flexunit.runners.model {
 
 		//Consider upper/lower case issues
 		/**
-		 * Returns a metadata argument string based on whether the method's metadata has a matching metaDataTag and key
+		 * Returns a metadata argument string based on whether the method's metadata has a matching <code>metaDataTag</code>
+		 * and <code>key</code>.
 		 * 
-		 * @param metaDataTag The metadata tag to search for in the method's metadata
-		 * @param key The key to find a specific atrribute argument in the metadata tag
+		 * @param metaDataTag The metadata tag to search for in the method's metadata.
+		 * @param key The key to find a specific atrribute argument in the <code>metaDataTag</code>.
 		 * 
-		 * @return the specific String if the metaDataTag and key exist, a value of 'true' if there is an argument that
-		 * has a value that matches the key, or an empty or null String if the key is not found for the given metadata tag
+		 * @return the specific String if the <code>metaDataTag</code> and <code>key</code> exist, a value of 'true' if there 
+		 * is an argument that has a value that matches the <code>key</code>, or an empty or null String if the key is not 
+		 * found for the given <code>metaDataTag</code>.
 		 */
 		public function getSpecificMetaDataArg( metaDataTag:String, key:String ):String {
 			var returnValue:String = MetadataTools.getArgValueFromMetaDataNode( method.methodXML, metaDataTag, key );
@@ -102,16 +104,25 @@ package org.flexunit.runners.model {
 		}
 		
 		/**
-		 * Determine if the method has metadata for a specific metadata tag
+		 * Determine if the method has metadata for a specific <code>metaDataTag</code>.
 		 * 
-		 * @param metaDataTag The metadata tag to search for in the method's metadata
+		 * @param metaDataTag The metadata tag to search for in the method's metadata.
 		 * 
-		 * @return a Boolean value indicating if the method has specific metadata that matches the metaDataTag
+		 * @return a Boolean value indicating if the method has specific metadata that matches the <code>metaDataTag</code>.
 		 */
 		public function hasMetaData( metaDataTag:String ):Boolean {
 			return MetadataTools.nodeHasMetaData( method.methodXML, metaDataTag );
 		}
-
+		
+		/**
+		 * Returns a Boolean value indicating whether the method has no parameters and 
+		 * whether the method has a return type that matches the provided <code>type</code>.
+		 * 
+		 * @param type The return type to check for in the method.
+		 * 
+		 * @reutrn a Boolean value indicating whether the method has no parameters and 
+		 * whether the method has a return type that matches the provided <code>type</code>.
+		 */
 		public function producesType( type:Class ):Boolean {
 			return ( ( method.parameterTypes.length == 0 ) &&
 					( type == method.returnType ) );
@@ -144,7 +155,7 @@ package org.flexunit.runners.model {
 		
 		/**
 		 * Returns the result of invoking this method on <code>target</code> with
-		 * parameters {@code params}. <code> InvocationTargetException</code>s thrown are
+		 * parameters <code>params</code>. <code>InvocationTargetException</code>s thrown are
 		 * unwrapped, and their causes rethrown.
 		 */
 		public function invokeExplosivelyAsync( parentToken:AsyncTestToken, target:Object, ...params ):void {
@@ -164,13 +175,13 @@ package org.flexunit.runners.model {
 		}
 
 		/**
-		 * Adds to {@code errors} if this method:
+		 * Adds to <code>errors</code> if this method:
 		 * <ul>
 		 * <li>is not public, or
 		 * <li>takes parameters, or
 		 * <li>returns something other than void, or
-		 * <li>is static (given {@code isStatic is false}), or
-		 * <li>is not static (given {@code isStatic is true}).
+		 * <li>is static (given <code>isStatic</code> is <code>false</code>), or
+		 * <li>is not static (given <code>isStatic</code> is <code>true</code>).</ul>
 		 */
 		public function validatePublicVoidNoArg( isStatic:Boolean, errors:Array ):void {
 			validatePublicVoid(isStatic, errors);
@@ -182,12 +193,12 @@ package org.flexunit.runners.model {
 		}
 
 		/**
-		 * Adds to {@code errors} if this method:
+		 * Adds to <code>errors</code> if this method:
 		 * <ul>
 		 * <li>is not public, or
 		 * <li>returns something other than void, or
-		 * <li>is static (given {@code isStatic is false}), or
-		 * <li>is not static (given {@code isStatic is true}).
+		 * <li>is static (given <code>isStatic</code> is <code>false</code>), or
+		 * <li>is not static (given <code>isStatic</code> is <code>true</code>).</ul>
 		 */
 		public function validatePublicVoid( isStatic:Boolean, errors:Array ):void {
 
@@ -206,7 +217,11 @@ package org.flexunit.runners.model {
 			if ( !isVoid )
 				errors.push(new Error("Method " + name + "() should be void"));
 		}
-
+		
+		/**
+		 * @private
+		 * @return
+		 */
 		override public function toString():String {
 			return "FrameworkMethod " + this.name;
 		}

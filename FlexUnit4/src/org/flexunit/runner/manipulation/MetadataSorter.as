@@ -47,8 +47,9 @@ package org.flexunit.runner.manipulation {
 		
 		/**
 		 * Does not compare its two arguments for order. Returns a zero regardless of the arguments being passed.
-		 * @param o1 (@link IDescription) the first object to be compared
-		 * @param o2 (@link IDescription) the second object to be compared
+		 * 
+		 * @param o1 <code>IDescription</code> the first object to be compared.
+		 * @param o2 <code>IDescription</code> the second object to be compared.
 		 * */
 		private static function none( o1:IDescription, o2:IDescription ):int {
 			return 0;
@@ -56,7 +57,8 @@ package org.flexunit.runner.manipulation {
 		
 		/**
 		 * Determines the value of the order for the argument if an order exists.
-		 * @param o1 (@link IDescription) the object to have its order checked
+		 * 
+		 * @param o1 <code>IDescription</code> the object to have its order checked.
 		 * */
 		private static function getOrderValueFrom( object:IDescription ):Number {
 			var order:Number = 0;		
@@ -85,8 +87,9 @@ package org.flexunit.runner.manipulation {
 		/**
 		 * Compares its two arguments for order. Returns a negative integer, zero, or a positive integer 
 		 * as the first argument is less than, equal to, or greater than the second.
-		 * @param o1 (@link IDescription) the first object to be compared
-		 * @param o2 (@link IDescription) the second object to be compared
+		 * 
+		 * @param o1 <code>IDescription</code> the first object to be compared.
+		 * @param o2 <code>IDescription</code> the second object to be compared.
 		 * */
 		public static function defaultSortFunction( o1:IDescription, o2:IDescription ):int {
 			var a:Number;

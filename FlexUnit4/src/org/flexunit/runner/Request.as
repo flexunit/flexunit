@@ -56,7 +56,10 @@ package org.flexunit.runner {
 		private var _filter:Function;
 		private var _sort:ISort;
 		classInternal var _runner:IRunner;
-
+		
+		/**
+		 * Returns an <code>ISort</code> for this Request.
+		 */
 		public function get sort():ISort {
 			return _sort;
 		}
@@ -67,8 +70,7 @@ package org.flexunit.runner {
 		}
 
 		/**
-		 * Returns an <code> IRunner</code> for this Request
-		 * @return corresponding <code> IRunner</code> for this Request
+		 * Returns an <code>IRunner</code> for this Request.
 		 */
 		public function get iRunner():IRunner {
 			return _runner;
@@ -81,9 +83,11 @@ package org.flexunit.runner {
 		
 		/**
 		 * Returns a Request that only contains those tests that should run when
-		 * <code>filter</code> is applied
-		 * @param filter The <code> Filter</code> to apply to this Request
-		 * @return the filtered Request
+		 * a <code>filter</code> is applied.
+		 * 
+		 * @param filter The <code>Filter</code> to apply to this Request.
+		 * 
+		 * @return the filtered Request.
 		 */
 		protected function filterWithFilter( filter:Filter ):Request {
 			return new FilterRequest(this, filter);
@@ -91,9 +95,11 @@ package org.flexunit.runner {
 		
 		/**
 		 * Returns a Request that only runs contains tests whose <code> Description</code>
-		 * equals <code>desiredDescription</code>
-		 * @param desiredDescription <code> Description</code> of those tests that should be run
-		 * @return the filtered Request
+		 * equals <code>desiredDescription</code>.
+		 * 
+		 * @param desiredDescription An <code>IDescription</code> of those tests that should be run.
+		 * 
+		 * @return the filtered Request.
 		 */
 		protected function filterWithDescription( desiredDescription:IDescription ):Request {
 			var filter:Filter = new Filter(
@@ -121,9 +127,11 @@ package org.flexunit.runner {
 		}
 		
 		/**
-		 * Returns a Request that either filters based on a <code> Description</code> or a <code>Filter</code>
-		 * @param filterOrDescription The <code> Filter</code> or <code> Description</code> to apply to this Request
-		 * @return the filtered Request
+		 * Returns a Request that either filters based on a <code> Description</code> or a <code>Filter</code>.
+		 * 
+		 * @param filterOrDescription The <code> Filter</code> or <code> Description</code> to apply to this Request.
+		 * 
+		 * @return the filtered Request.
 		 */
 		public function filterWith( filterOrDescription:* ):Request {
 			if ( filterOrDescription is IDescription ) {
@@ -137,8 +145,9 @@ package org.flexunit.runner {
 		}
 		
 		/**
-		 * @param comparator definition of the order of the tests in this Request
-		 * @return a Request with ordered Tests
+		 * @param comparator definition of the order of the tests in this Request.
+		 * 
+		 * @return a Request with ordered Tests.
 		 */
 		public function sortWith(comparator:Function):Request {
 			return new SortingRequest(this, comparator);
@@ -147,8 +156,10 @@ package org.flexunit.runner {
 		/**
 		 * Create a <code>Request</code> that, when processed, will run all the tests
 		 * in a class. The odd name is necessary because <code>class</code> is a reserved word.
-		 * @param clazz the class containing the tests
-		 * @return a <code>Request</code> that will cause all tests in the class to be run
+		 * 
+		 * @param clazz the class containing the tests.
+		 * 
+		 * @return a <code>Request</code> that will cause all tests in the class to be run.
 		 */
 		public static function aClass( clazz:Class ):Request {
 			return new ClassRequest(clazz);
@@ -162,16 +173,19 @@ package org.flexunit.runner {
  		/**
 		 * Create a <code>Request</code> that, when processed, will run all the tests
 		 * in a set of classes.
-		 * @param argumentsArray the classes containing the tests
-		 * @return a <code>Request</code> that will cause all tests in the classes to be run
+		 * 
+		 * @param argumentsArray the classes containing the tests.
+		 * 
+		 * @return a <code>Request</code> that will cause all tests in the classes to be run.
 		 */
 		public static function classes( ...argumentsArray ):Request {
 			return runner( new Suite( new AllDefaultPossibilitiesBuilder( true ), argumentsArray ) );
 		}
 
 		/**
-		 * @param runner the IRunner to return
-		 * @return a <code>Request</code> that will run the given runner when invoked
+		 * @param runner the IRunner to return.
+		 * 
+		 * @return a <code>Request</code> that will run the given runner when invoked.
 		 */
 	 	public static function runner( runner:IRunner ):Request {
 	 		var request:Request = new Request();
@@ -184,15 +198,20 @@ package org.flexunit.runner {
 		 * Create a <code>Request</code> that, when processed, will run a single test.
 		 * This is done by filtering out all other tests. This method is used to support rerunning
 		 * single tests.
-		 * @param clazz the class of the test
-		 * @param methodName the name of the test
-		 * @return a <code>Request</code> that will cause a single test be run
+		 * 
+		 * @param clazz the class of the test.
+		 * @param methodName the name of the test.
+		 * 
+		 * @return a <code>Request</code> that will cause a single test be run.
 		 */
 		public static function method( clazz:Class, methodName:String ):Request {
 			var method:IDescription = Description.createTestDescription( clazz, methodName );
 			return Request.aClass(clazz).filterWith(method);
 		}
-
+		
+		/**
+		 * Constructor.
+		 */
 		public function Request() {
 		}
 	}

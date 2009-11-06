@@ -43,8 +43,8 @@ package org.flexunit.runner.manipulation
 		/**
 		 * Compares its two arguments for order. Returns a negative integer, zero, or a positive integer 
 		 * as the first argument is less than, equal to, or greater than the second.
-		 * @param o1 (@link IDescription) the first object to be compared
-		 * @param o2 (@link IDescription) the second object to be compared
+		 * @param o1 <code>IDescription</code> the first object to be compared
+		 * @param o2 <code>IDescription</code> the second object to be compared
 		 * */
 		function compare(o1:IDescription, o2:IDescription):int;
 	}

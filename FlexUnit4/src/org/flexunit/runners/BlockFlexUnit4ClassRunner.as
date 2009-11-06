@@ -69,7 +69,9 @@ package org.flexunit.runners {
 	public class BlockFlexUnit4ClassRunner extends ParentRunner implements IFilterable {
 
 		/**
-		 * Creates a BlockFlexUnit4ClassRunner to run {@code klass}
+		 * Creates a BlockFlexUnit4ClassRunner to run <code>klass</code>.
+		 * 
+		 * @param klass The class to run.
 		 */	 
 		public function BlockFlexUnit4ClassRunner( klass:Class ) {
 			super( klass );
@@ -78,7 +80,10 @@ package org.flexunit.runners {
 		//
 		// Implementation of ParentRunner
 		// 
-	
+		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function runChild( child:*, notifier:IRunNotifier, childRunnerToken:AsyncTestToken ):void {
 			var method:FrameworkMethod = FrameworkMethod( child ); 
 			var eachNotifier:EachTestNotifier = makeNotifier( method, notifier);
@@ -116,12 +121,19 @@ package org.flexunit.runners {
 				//childRunnerToken.sendResult( error );
 			}
 		}
-
+		
+		/**
+		 * Handles the result of the test method that has run and alerts the <code>IRunNotifier</code>
+		 * about the results of the test.
+		 * 
+		 * @param result The <code>ChildResult</code> of the test method that has run.
+		 */
 		private function handleBlockComplete( result:ChildResult ):void {
 			var error:Error = result.error;
 			var token:AsyncTestToken = result.token;
 			var eachNotifier:EachTestNotifier = result.token[ EACH_NOTIFIER ];
-
+			
+			//Determine if an assumption failed, if it did, ignore the test; otherwise, report the error
 			if ( error is AssumptionViolatedException ) {
 				eachNotifier.fireTestIgnored();
 			} else if ( error ) {
@@ -132,14 +144,17 @@ package org.flexunit.runners {
 
 			token.parentToken.sendResult();
 		}
-
+		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function describeChild( child:* ):IDescription {
 			var method:FrameworkMethod = FrameworkMethod( child );
 			return Description.createTestDescription( testClass.asClass, method.name, method.metadata );
 		}
 		
 		/**
-		 * Returns an array of all methods that have been annotated with <code></code>
+		 * Returns an array of all methods that have been annotated with <code>Test</code>.
 		 */
 		override protected function get children():Array {
 			return computeTestMethods();
@@ -281,7 +296,7 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Returns an <code> IAsyncStatement</code>: if <code>method</code>'s <code> Test</code> annotation
+		 * Returns an <code>IAsyncStatement</code>: if <code>method</code>'s <code> Test</code> annotation
 		 * has the <code>timeout</code> attribute, throw an exception if <code>next</code>
 		 * takes more than the specified number of milliseconds.
 		 */
@@ -291,7 +306,7 @@ package org.flexunit.runners {
 		}
 		
 		/**
-		 * Returns an <code> IAsyncStatement</code>: if <code>method</code>'s <code> Test</code> annotation
+		 * Returns an <code>IAsyncStatement</code>: if <code>method</code>'s <code> Test</code> annotation
 		 * has the <code>async</code> attribute, throw an exception if <code>next</code>
 		 * encounters an exception during execution.
 		 */
@@ -301,7 +316,7 @@ package org.flexunit.runners {
 		}
 		
 		/**
-		 * Returns an <code> IAsyncStatement</code> that invokes <code>method</code> on a decorated <code>test</code>.
+		 * Returns an <code>IAsyncStatement</code> that invokes <code>method</code> on a decorated <code>test</code>.
 		 */
 		protected function withDecoration( method:FrameworkMethod, test:Object ):IAsyncStatement {
 			var statement:IAsyncStatement = methodInvoker( method, test );
@@ -314,7 +329,7 @@ package org.flexunit.runners {
 		}
 		
 		/**
-		 * Returns an <code> IAsyncStatement</code> that manages the stack and allow execution to break across frames.
+		 * Returns an <code>IAsyncStatement</code> that manages the stack and allow execution to break across frames.
 		 */
 		protected function withStackManagement( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
 			return new StackAndFrameManagement( statement );

@@ -71,8 +71,8 @@ package org.flexunit.runners {
 	 *  Subclasses
 	 * must implement finding the children of the node, describing each child, and
 	 * running each child. ParentRunner will filter and sort children, handle
-	 * {@code BeforeClass} and {@code AfterClass} methods, create a composite
-	 * <code> Description</code>, and run children sequentially.
+	 * <code>BeforeClass</code> and <code>AfterClass</code> methods, create a composite
+	 * <code>IDescription</code>, and run children sequentially.
 	 */
 	public class ParentRunner implements IRunner, ISortable {
 		/**
@@ -145,7 +145,7 @@ package org.flexunit.runners {
 		}
 	
 		/**
-		 * Returns a <code>Description</code> for <code>child</code>, which can be assumed to
+		 * Returns an <code>IDescription</code> for <code>child</code>, which can be assumed to
 		 * be an element of the list returned by <code>ParentRunner#children()</code>.
 		 * 
 		 * @param child The child to describe.

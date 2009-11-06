@@ -28,14 +28,17 @@
 package org.flexunit.internals.runners {
 	
 	/**
-	 * Represents one or more problems encountered while initializing a Runner
- 	*/
+	 * The <code>InitializationError</code> represents one or more problems encountered while 
+	 * initializing an <code>IRunner</code>.
+	 */
 	public class InitializationError extends Error {
 		private var _errors:Array = new Array();;
 
 		/**
-		 * Construct a new {@code InitializationError} with one or more
-		 * errors {@code arg} as causes
+		 * Construct a new <code>InitializationError</code> with one or more
+		 * errors <code>arg</code> as causes.
+		 * 
+		 * @param arg The issue that cuased the <code>InitializationError</code> to occur.
 		 */
 		public function InitializationError( arg:* ) {
 			if ( arg is Array ) {
@@ -50,6 +53,8 @@ package org.flexunit.internals.runners {
 
 		/**
 		 * Returns one or more Throwables that led to this initialization error.
+		 * 
+		 * @return an array contiaining the causes of the <code>InitializationError</code>.
 		 */
 		public function getCauses():Array {
 			return _errors;

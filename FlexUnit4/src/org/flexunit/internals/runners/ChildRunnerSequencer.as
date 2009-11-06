@@ -33,7 +33,7 @@ package org.flexunit.internals.runners {
 	import org.flexunit.runner.notification.IRunNotifier;
 	
 	/**
-	 * Runs its children in a particular sequence
+	 * Runs its children in a particular sequence.
 	 */
 	public class ChildRunnerSequencer extends StatementSequencer implements IAsyncStatement {
 		
@@ -48,9 +48,9 @@ package org.flexunit.internals.runners {
 		/**
 		 * Constructor.
 		 * 
-		 * @param children An <code>Array</code> of children
-		 * @param funChild A <code>Function</code> that will be run against a specific child
-		 * @param notifier An <code>IRunNottifer</code> that will report on a child running in the runChild method
+		 * @param children An <code>Array</code> of children.
+		 * @param funChild A <code>Function</code> that will be run against a specific child.
+		 * @param notifier An <code>IRunNottifer</code> that will report on a child running in the runChild method.
 		 */
 		public function ChildRunnerSequencer( children:Array, runChild:Function, notifier:IRunNotifier ) {
 			super( children );
