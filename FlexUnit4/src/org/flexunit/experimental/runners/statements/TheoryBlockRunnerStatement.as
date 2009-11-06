@@ -41,8 +41,17 @@ package org.flexunit.experimental.runners.statements
 	public class TheoryBlockRunnerStatement extends AsyncStatementBase implements IAsyncStatement {
 		use namespace classInternal;
 	
+		/**
+		 * @private
+		 */
 		private var statement:IAsyncStatement;
+		/**
+		 * @private
+		 */
 		private var anchor:TheoryAnchor;
+		/**
+		 * @private
+		 */
 		private var complete:Assignments;
 		
 		/**

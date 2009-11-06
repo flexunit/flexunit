@@ -39,10 +39,21 @@ package flex.lang.reflect {
 	 * the <code>Class</code>
 	 */
 	public class Klass {
+		/**
+		 * @private
+		 */
 		private static var metaDataCache:Dictionary = new Dictionary();
 
+		/**
+		 * @private
+		 */
 		private var classXML:XML;
+		
+		/**
+		 * @private
+		 */
 		private var clazz:Class;
+		
 		/**
 		 * Returns the <code>Class</code> definition defined by the Klass
 		 * 
@@ -52,7 +63,11 @@ package flex.lang.reflect {
 			return clazz;
 		}
 		
-		private var _name:String;	
+		/**
+		 * @private
+		 */
+		private var _name:String;
+		
 		/**
 		 * Returns the <code>String</code> name of the <code>Class</code>
 		 * 
@@ -62,7 +77,11 @@ package flex.lang.reflect {
 			return _name;			
 		}
 
+		/**
+		 * @private
+		 */
 		private var _metaData:XMLList;
+		
 		/**
 		 * Returns an <code>XMLList</code> of metadata contained in the Class
 		 * 
@@ -83,7 +102,11 @@ package flex.lang.reflect {
 			return classXML.factory.constructor[ 0 ];
 		}
 
+		/**
+		 * @private
+		 */
 		private var _constructor:Constructor;
+		
 		/**
 		 * Returns the constructor of the class as a <code>Constructor</code>
 		 * 
@@ -119,7 +142,11 @@ package flex.lang.reflect {
 			return null;
 		}
 
+		/**
+		 * @private
+		 */
 		private var _fields:Array;
+		
 		/**
 		 * Returns an Array of elements where each element is of type <code>Field</code>
 		 * 
@@ -152,7 +179,11 @@ package flex.lang.reflect {
 			return null;
 		}
 
+		/**
+		 * @private
+		 */
 		private var _methods:Array;
+		
 		/**
 		 * Returns a list of all methods contained in the class as an
 		 * Array whose elements are of type <code>Method</code>
@@ -170,8 +201,12 @@ package flex.lang.reflect {
 			return _methods;
 		}
 
-		//TODO: interfaces implemented.
+		//TODO: 10/21/09 - interfaces implemented.
+		/**
+		 * @private
+		 */
 		private var _interfaces:Array;
+		
 		/**
 		 * Returns an <code>Array</code> of all interfaces as <code>Class</code> definitions 
 		 * implemented by the <code>Class</code>
@@ -186,7 +221,11 @@ package flex.lang.reflect {
 			return _interfaces
 		}
 
+		/**
+		 * @private
+		 */
 		private var _packageName:String;
+		
 		/**
 		 * Returns the package name that <code>Class</code> resides within.
 		 */
@@ -209,7 +248,11 @@ package flex.lang.reflect {
 			//return getClassFromName( classXML.factory.extendsClass.type );
 		}
 
+		/**
+		 * @private
+		 */
 		private var _classDef:Class;
+		
 		/**
 		 * Returns the <code>Class</code> definition
 		 */
