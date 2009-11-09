@@ -35,9 +35,10 @@ package org.flexunit.listeners
 	import flash.events.SecurityErrorEvent;
 	import flash.events.TimerEvent;
 	import flash.net.XMLSocket;
-	import flash.system.fscommand;
 	import flash.utils.Timer;
 	
+	import org.flexunit.listeners.closer.ApplicationCloser;
+	import org.flexunit.listeners.closer.StandAloneFlashPlayerCloser;
 	import org.flexunit.reporting.FailureFormatter;
 	import org.flexunit.runner.Descriptor;
 	import org.flexunit.runner.IDescription;
@@ -72,6 +73,8 @@ package org.flexunit.listeners
 		[Inspectable]
 		public var server : String; //this is local host. same machine
 		
+		public var closer : ApplicationCloser;
+		
 		private var lastFailedTest:IDescription;
 		private var timeOut:Timer;
 		
@@ -79,6 +82,7 @@ package org.flexunit.listeners
 		{
 			this.port = port;
 			this.server = server;
+			this.closer = new StandAloneFlashPlayerCloser(); //default application closer
 			
 			socket = new XMLSocket ();
 			socket.addEventListener( DataEvent.DATA, dataHandler );
@@ -284,11 +288,11 @@ package org.flexunit.listeners
 		}
 		
 		/**
-		 * Exit the test runner and close the player.
+		 * Exit the test runner by calling the ApplicationCloser.
 		 */
 		protected function exit() : void
 		{
-			fscommand("quit");
+			this.closer.close();
 		}
 	}
 }
