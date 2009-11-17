@@ -48,13 +48,30 @@ package org.flexunit.internals.runners.statements {
 	 * much faster and may be considered for a future version
 	 **/
 	public class StackAndFrameManagement implements IAsyncStatement {
-		protected var parentToken:AsyncTestToken;		
+		/**
+		 * @private
+		 */
+		protected var parentToken:AsyncTestToken;
+		/**
+		 * @private
+		 */
 		protected var myToken:AsyncTestToken;
+		/**
+		 * @private
+		 */
 		protected var timer:Timer;
+		/**
+		 * @private
+		 */
 		protected var statement:IAsyncStatement;
 		
-		//this can eventually be computed
-		private static var greenThreadStartTime:Number;
+		/**
+		 * @private
+		 */
+		private static var greenThreadStartTime:Number; //this can eventually be computed
+		/**
+		 * @private
+		 */
   		private static var frameLength:Number = 40; //given standard frame rates for flex a frame passes every 42 or so milliseconds, so we are going to try to use about 38 of those
   		
 		/**

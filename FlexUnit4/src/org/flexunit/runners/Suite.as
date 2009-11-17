@@ -54,6 +54,9 @@ package org.flexunit.runners {
 	 * </pre<code>
  	*/
 	public class Suite extends ParentRunner {
+		/**
+		 * @private
+		 */
 		private var _runners:Array;
 		
 		/**

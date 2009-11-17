@@ -36,6 +36,9 @@ package org.flexunit.internals.builders {
 	 * that can be used to run the testClass will be the <code>IRunner</code> that is selected.
 	 */
 	public class AllDefaultPossibilitiesBuilder extends RunnerBuilderBase {
+		/**
+		 * @private
+		 */
 		private var canUseSuiteMethod:Boolean;
 		
 		/**
@@ -49,11 +52,12 @@ package org.flexunit.internals.builders {
 		}
 		
 		/**
-		 * Returns an <code>IRunner</code> that can be used by a specific testClass.
+		 * Returns an <code>IRunner</code> that can be used by a specific <code>testClass</code>.
 		 * 
 		 * @param testClass The test class that needs a runner.
 		 * 
-		 * @return a runner that can run the testClass, a null value will be returned if no suitable runner is found.
+		 * @return a runner that can run the <code>testClass</code>; a value of <code>null</code> will be returned 
+		 * if no suitable runner is found.
 		 */
 		override public function runnerForClass( testClass:Class ):IRunner {
 			//Construct an array of potential builders, the array is ordered so that each potential testClass

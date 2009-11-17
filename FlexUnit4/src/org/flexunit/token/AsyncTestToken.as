@@ -32,9 +32,21 @@ package org.flexunit.token {
 	 * The <code>AsyncTestToken</code> is responsible for indicating that a given task has completed.
 	 */
 	dynamic public class AsyncTestToken {
+		/**
+		 * @private
+		 */
 		private var methodsEntries:Array;
+		/**
+		 * @private
+		 */
 		private var _error:Error;
+		/**
+		 * @private
+		 */
 		private var debugClassName:String;
+		/**
+		 * @private
+		 */
 		private var _token:AsyncTestToken;
 		
 		/**
@@ -72,6 +84,13 @@ package org.flexunit.token {
 			return this;
 		}
 		
+		/**
+		 * Creates a <code>ChildResult</code> using this <code>AsynctestToken</code> and the provided <code>error</code>.
+		 * 
+		 * @param error The error to provide to the <code>ChildResult</code>.
+		 * 
+		 * @return a <code>ChildResult</code> using this <code>AsynctestToken</code> and the provided <code>error</code>.
+		 */
 		private function createChildResult( error:Error ):ChildResult {
 			if ( error ) {
 				//trace("break here");

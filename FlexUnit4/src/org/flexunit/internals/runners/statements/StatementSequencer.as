@@ -37,7 +37,13 @@ package org.flexunit.internals.runners.statements {
 	 * Sequences statments that are to be executed.
 	 */
 	public class StatementSequencer extends AsyncStatementBase implements IAsyncStatement {
+		/**
+		 * An array of queued statements.
+		 */
 		protected var queue:Array;
+		/**
+		 * An array of errors that have been encountered.
+		 */
 		protected var errors:Array;
 		
 		/**

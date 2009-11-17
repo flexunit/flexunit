@@ -44,7 +44,7 @@ package org.flexunit.internals.builders {
 	 * [RunWith("org.flexunit.runners.Suite")]
 	 * public class testSuite {
 	 * 	[Test]
-	 * 	public function testMe():void {
+	 * 	public function testMe():void { ...
 	 * 	}
 	 * }</code></pre><p>
 	 * 
@@ -52,14 +52,14 @@ package org.flexunit.internals.builders {
 	 * implemented in one of the two following manners:<p>
 	 * 
 	 * <pre><code>
-	 * public function RunnerClass( testClass:Object ) {
+	 * public function RunnerClass( testClass:Object ) { ...
 	 * }
 	 * </code></pre><p>
 	 * 
 	 * Where testClass is the class to be run.<p>
 	 * 
 	 * <pre><code>
-	 * public function RunnerClass( testClass:Object, suiteBuilder:IRunnerBuilder ) {
+	 * public function RunnerClass( testClass:Object, suiteBuilder:IRunnerBuilder ) { ...
 	 * }
 	 * </code></pre><p>
 	 * 
@@ -67,19 +67,31 @@ package org.flexunit.internals.builders {
 	 */
 	public class MetaDataBuilder extends RunnerBuilderBase {
 		public static const RUN_WITH:String = "RunWith";
+		/**
+		 * @private
+		 */
 		private static const CLASS_NOT_FOUND:String = "classNotFound";
+		/**
+		 * @private
+		 */
 		private static const INVALID_CONSTRUCTOR_ARGS:String = "invalidConstructorArguments";
+		/**
+		 * @private
+		 */
 		private static const UNSPECIFIED:String = "unspecified";
 		
+		/**
+		 * @private
+		 */
 		private var suiteBuilder:IRunnerBuilder;
 		
 		/**
-		 * Returns an <code>IRunner</code> for the given test class based on the test class' metadata.
+		 * Returns an <code>IRunner</code> based on the metadata of the provided <code>testClass</code>.
 		 * 
-		 * @param testClass The test class that includes the runner metadata.
+		 * @param testClass The test class for which to find an <code>IRunner</code>.
 		 * 
-		 * @return an <code>IRunner</code> for the given test class if it has proper metadata and is successfully built; otherwise,
-		 * returns a null value.
+		 * @return an <code>IRunner</code> for the provided <code>testClass</code> if it has proper metadata and is 
+		 * successfully built; otherwise, returns a value of <code>null</code>.
 		 */
 		override public function runnerForClass( testClass:Class ):IRunner {
 			var klassInfo:Klass = new Klass( testClass );
@@ -95,13 +107,16 @@ package org.flexunit.internals.builders {
 		}
 		
 		/**
-		 * Builds an <code>IRunner</code> based on a runner class name for the provided test class.
+		 * Builds an <code>IRunner</code> based on a <code>runnerClassName</code> for the provided <code>testClass</code>.
 		 * 
-		 * @param runnerClassName The name of the runner to be used for the provided test class.
+		 * @param runnerClassName The name of the runner to be used for the provided <code>testClass</code>.
 		 * @param testClass The test class to provide to the builder.
 		 * 
-		 * @return an <code>IRunner</code> for the given test class if it has proper metadata and is successfully built; otherwise,
-		 * returns a null value.
+		 * @return an <code>IRunner</code> for the provided <code>testClass</code> if it has proper metadata and is 
+		 * successfully built; otherwise, returns a value of <code>null</code>.
+		 * 
+		 * @throws org.flexunit.internals.runners.InitializationError Thrown if there is an issue when building the 
+		 * <code>IRunner</code>.
 		 */
 		public function buildRunner( runnerClassName:String, testClass:Class ):IRunner {
 			try {
@@ -129,14 +144,18 @@ package org.flexunit.internals.builders {
 		}
 		
 		/**
-		 * Builds an <code>IRunner</code> based on a test class and a suite builder.  This method is typically called if
-		 * the runner did not successfully build with its first signature.
+		 * Builds an <code>IRunner</code> based on a <code>runnerClass</code> for the provided <code>testClass</code>.  
+		 * This method is typically called if the runner did not successfully build with its first signature.
 		 * 
-		 * @param runnerClassName The name of the runner to be used for the provided test class.
+		 * @param runnerClass The runner class used to run the provided <code>testClass</code>.
 		 * @param testClass The test class to provide to the builder.
+		 * @param runnerClassName The name of the runner to be used for the provided <code>testClass</code>.
 		 * 
-		 * @return an <code>IRunner</code> for the given test class if it has proper metadata and is successfully built; otherwise,
-		 * returns a null value.
+		 * @return an <code>IRunner</code> for the provided <code>testClass</code> if it has proper metadata and is 
+		 * successfully built; otherwise, returns a value of <code>null</code>.
+		 * 
+		 * @throws org.flexunit.internals.runners.InitializationError Thrown if there is an issue when building the 
+		 * <code>IRunner</code>.
 		 */
 		private function buildWithSecondSignature( runnerClass:Class, testClass:Class, runnerClassName:String ):IRunner {
 			try {
@@ -153,7 +172,8 @@ package org.flexunit.internals.builders {
 		}
 		
 		/**
-		 * Creates an <code>InitializationError</code> for a specific reason cause by a potential runner class.
+		 * Creates an <code>InitializationError</code> for a specific <code>reason</code> caused by the attempted initialization
+		 * of an <code>IRunner</code> that is named <code>runnerClassName</code>.
 		 * 
 		 * @param reason The reason that the initialization error occured.
 		 * @param runnerClassName The name of the runner class that caused the initialization issue.

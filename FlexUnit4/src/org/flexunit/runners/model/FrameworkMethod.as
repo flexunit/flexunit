@@ -41,8 +41,14 @@ package org.flexunit.runners.model {
 	 */
 	public class FrameworkMethod extends EventDispatcher {
 		
+		/**
+		 * @private
+		 */
 		private var parentToken:AsyncTestToken;
-
+		
+		/**
+		 * @private
+		 */
 		private var _method:Method;
 
 		/**

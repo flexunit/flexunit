@@ -56,12 +56,30 @@ package org.flexunit.internals.runners {
 	 * The <code>FlexUnit1ClassRunner</code> is responsible for running FlexUnit1 classes.
 	 */
 	public class FlexUnit1ClassRunner implements IRunner, IFilterable {
-
+		
+		/**
+		 * @private
+		 */
 		private var test:Test;
+		/**
+		 * @private
+		 */
 		private var klassOrTest:*;
+		/**
+		 * @private
+		 */
 		private var totalTestCount:int = 0;
+		/**
+		 * @private
+		 */
 		private var numTestsRun:int = 0;
+		/**
+		 * @private
+		 */
 		private var filterRef:Filter = null;
+		/**
+		 * @private
+		 */
 		private var testCompletedToken : AsyncTestToken;
 		
 		/**
@@ -106,7 +124,7 @@ package org.flexunit.internals.runners {
 		 * 
 		 * @param item The item to check to see if it should run.
 		 * 
-		 * @return a Boolean value indicating whether the <code>item</code> should run .
+		 * @return a Boolean value indicating whether the <code>item</code> should run.
 		 */
 		private function shouldRun( item:* ):Boolean {
 			return filterRef == null || filterRef.shouldRun( describeChild( item ) );

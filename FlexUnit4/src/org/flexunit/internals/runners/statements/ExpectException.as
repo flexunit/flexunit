@@ -55,9 +55,21 @@ package org.flexunit.internals.runners.statements {
 	 * </code></pre>
 	 */
 	public class ExpectException extends AsyncStatementBase implements IAsyncStatement {
+		/**
+		 * @private
+		 */
 		private var exceptionName:String;
+		/**
+		 * @private
+		 */
 		private var exceptionClass:Class;
+		/**
+		 * @private
+		 */
 		private var statement:IAsyncStatement;
+		/**
+		 * @private
+		 */
 		private var receivedError:Boolean = false;
 		
 		/**

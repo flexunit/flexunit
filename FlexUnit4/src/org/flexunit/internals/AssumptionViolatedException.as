@@ -37,7 +37,13 @@ package org.flexunit.internals
 	 */
 	public class AssumptionViolatedException extends Error implements SelfDescribing
 	{
+		/**
+		 * @private
+		 */
 		private var value:Object;
+		/**
+		 * @private
+		 */
 		private var matcher:Matcher;
 		
 		/**

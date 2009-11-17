@@ -35,7 +35,13 @@ package org.flexunit.internals.runners.model {
 	 * <code>IRunNotifier</code> about the execution of a specific test.
 	 */
 	public class EachTestNotifier {
+		/**
+		 * @private
+		 */
 		private var notifier:IRunNotifier;
+		/**
+		 * @private
+		 */
 		private var description:IDescription;
 		
 		/** 

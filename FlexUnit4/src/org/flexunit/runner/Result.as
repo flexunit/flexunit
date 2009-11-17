@@ -37,11 +37,26 @@ package org.flexunit.runner {
 	 * the count of tests that ran.
 	 */
 	public class Result {
+		/**
+		 * The number of tests run.
+		 */
 		classInternal var _runCount:int = 0;
+		/**
+		 * The number of tests ignored.
+		 */
 		classInternal var _ignoreCount:int = 0;
+		/**
+		 * The number of milliseconds it took to run the entire set of tests.
+		 */
 		classInternal var _runTime:Number = 0;
+		/**
+		 * The time when the test run started.
+		 */
 		classInternal var _startTime:Number;
-
+		
+		/**
+		 * @private
+		 */
 		private var _failures:Array = new Array()
 		
 		/**
@@ -94,7 +109,10 @@ package org.flexunit.runner {
 			listener.result = this;
 			return listener;
 		}
-
+		
+		/**
+		 * Constructor.
+		 */
 		public function Result() {
 		}
 	}

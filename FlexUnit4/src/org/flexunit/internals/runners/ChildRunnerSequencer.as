@@ -37,12 +37,18 @@ package org.flexunit.internals.runners {
 	 */
 	public class ChildRunnerSequencer extends StatementSequencer implements IAsyncStatement {
 		
+		public static const COMPLETE:String = "complete";
 		/**
 		 * @private
 		 */
-		public static const COMPLETE:String = "complete";
 		private var runChild:Function;
+		/**
+		 * @private
+		 */
 		private var notifier:IRunNotifier;
+		/**
+		 * @private
+		 */
 		private var parent:IEventDispatcher;
 		
 		/**

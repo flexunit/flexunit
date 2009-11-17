@@ -80,12 +80,30 @@ package org.flexunit.runners {
 		 */
 		protected static const EACH_NOTIFIER:String = "eachNotifier";
 		
+		/**
+		 * @private
+		 */
 		private var _testClass:TestClass;
+		/**
+		 * @private
+		 */
 		private var filterRef:Filter = null;
+		/**
+		 * @private
+		 */
 		private var sorter:ISorter = MetadataSorter.META;
+		/**
+		 * @private
+		 */
 		private var filteredChildren:Array;
+		/**
+		 * @private
+		 */
 		private var childrenFiltered:Boolean = false;
 		
+		/**
+		 * @private
+		 */
 		private var cachedDescription:IDescription;
 		
 		/**

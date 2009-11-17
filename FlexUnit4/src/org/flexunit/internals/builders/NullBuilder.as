@@ -34,6 +34,9 @@ package org.flexunit.internals.builders
 	 */
 	public class NullBuilder extends RunnerBuilderBase
 	{
+		/**
+		 * Constructor.
+		 */
 		public function NullBuilder()
 		{
 			super();

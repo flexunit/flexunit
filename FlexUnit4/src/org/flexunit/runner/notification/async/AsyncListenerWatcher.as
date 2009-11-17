@@ -44,12 +44,26 @@
 		public static const LISTENER_COMPLETE:String = "listenerComplete";
 
 		//public static const ALL_LISTENERS_READY:String = "allListenersReady";
-
+		/**
+		 * @private
+		 */
 		private var _pendingStartupCount:int;
+		/**
+		 * @private
+		 */
 		private var _totalStartUpCount:int;
+		/**
+		 * @private
+		 */
 		private var notifier:IRunNotifier;
 		//private var logger:ILogger;
+		/**
+		 * @private
+		 */
 		private var _startToken:AsyncListenersToken;
+		/**
+		 * @private
+		 */
 		private var _completeToken:AsyncListenersToken;
 		
 		/**
