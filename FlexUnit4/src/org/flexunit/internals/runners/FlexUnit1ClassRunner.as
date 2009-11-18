@@ -286,7 +286,6 @@ package org.flexunit.internals.runners {
 		}
 		
 		/**
-		 * @private 
 		 * Generates an <code>IDescription</code> for the provided <code>Test</code>.
 		 * 
 		 * @param test The <code>Test</code> ufor which to generate the <code>IDescription</code>.
