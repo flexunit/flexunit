@@ -11,8 +11,9 @@ package org.flexunit.experimental.runners.statements {
 	import org.flexunit.utils.ClassNameUtil;
 	
 	/**
-	 * Responsible for the sequencing of parameters to be provided to a particular theory method test.  All permutations of potential
-	 * parameters will be provided to the theory method.
+	 * The <code>AssignmentSequencer</code> is responsible for the sequencing of parameters to be provided 
+	 * to a particular theory method test.  All permutations of potential parameters will be provided to the 
+	 * theory method.
 	 */
 	public class AssignmentSequencer extends AsyncStatementBase implements IAsyncStatement {
 		

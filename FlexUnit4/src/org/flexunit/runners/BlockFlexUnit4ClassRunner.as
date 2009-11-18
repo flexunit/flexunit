@@ -306,7 +306,7 @@ package org.flexunit.runners {
 		}
 		
 		/**
-		 * Returns an <code>IAsyncStatement</code>: if <code>method</code>'s <code> Test</code> annotation
+		 * Returns an <code>IAsyncStatement</code>: if <code>method</code>'s <code>Test</code> annotation
 		 * has the <code>async</code> attribute, throw an exception if <code>next</code>
 		 * encounters an exception during execution.
 		 */

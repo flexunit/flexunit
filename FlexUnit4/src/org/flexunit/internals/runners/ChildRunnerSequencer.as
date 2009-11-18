@@ -55,8 +55,9 @@ package org.flexunit.internals.runners {
 		 * Constructor.
 		 * 
 		 * @param children An <code>Array</code> of children.
-		 * @param funChild A <code>Function</code> that will be run against a specific child.
-		 * @param notifier An <code>IRunNottifer</code> that will report on a child running in the runChild method.
+		 * @param runChild A <code>Function</code> that will be run against a specific child.
+		 * @param notifier An <code>IRunNottifer</code> that will report on a child running in the 
+		 * <code>runChild</code> method.
 		 */
 		public function ChildRunnerSequencer( children:Array, runChild:Function, notifier:IRunNotifier ) {
 			super( children );

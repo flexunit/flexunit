@@ -85,7 +85,7 @@ package org.flexunit.internals.runners.statements {
 			this.timeout = timeout;
 			this.statement = statement;
 			
-			//Create a new token that will track the progress of the timeout
+			//Create a new token that will alert this class when the provided statement has completed
 			myToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			myToken.addNotificationMethod( handleNextExecuteComplete );
 			
@@ -94,12 +94,12 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Determine if the <code>FrameworkMethod</code> test has a timeout by checking its metadata to see if it
+		 * Determine if the <code>method</code> test has a timeout by checking its metadata to see if it
 		 * contains a "timeout" string.
 		 * 
 		 * @param method The <code>FrameworkMethod</code> to check to see if it has a timeout.
 		 * 
-		 * @return a String indicating the length of the the timeout if the <code>FrameworkMethod</code>
+		 * @return a String indicating the length of the the timeout if the <code>method</code>
 		 * contains metadata that indicates the method contains a timeout; otherwise, a value of <code>null</code>
 		 * will be returned.
 		 */
@@ -131,7 +131,7 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Stops the timer and sends any error the <code>ChildResult</code> has encountered to the parentToken.  If
+		 * Stops the timer and sends any error the <code>result</code> has encountered to the parentToken.  If
 		 * the timer has already finished, the parentToken has been already notified of the failure and nothing
 		 * further will occur.
 		 * 
