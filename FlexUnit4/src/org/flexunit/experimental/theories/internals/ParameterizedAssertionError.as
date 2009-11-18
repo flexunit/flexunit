@@ -32,6 +32,9 @@ package org.flexunit.experimental.theories.internals {
 	 * Thrown when an assertion is false and provides the parameters that caused the test to fail.
 	 */
 	public class ParameterizedAssertionError extends AssertionError {
+		/**
+		 * The exception that was thrown.
+		 */
 		public var targetException:Error;
 		
 		/**

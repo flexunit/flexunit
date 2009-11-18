@@ -96,7 +96,6 @@
     <classEntry path="org.flexunit.runner.Request"/>
     <classEntry path="org.flexunit.runner.Result"/>
     <classEntry path="org.flexunit.runner.RunnerLocator"/>
-    <classEntry path="org.flexunit.runner.manipulation.FieldSorter"/>
     <classEntry path="org.flexunit.runner.manipulation.Filter"/>
     <classEntry path="org.flexunit.runner.manipulation.IFilterable"/>
     <classEntry path="org.flexunit.runner.manipulation.NoTestsRemainException"/>

@@ -54,10 +54,22 @@ package org.flexunit.runner {
 	public class Description implements IDescription {
 		public static var EMPTY:Description = new Description("Empty", null );
 		public static var TEST_MECHANISM:Description = new Description("Test mechanism", null );
-
+		
+		/**
+		 * @private
+		 */
 		private var _children:Array;
+		/**
+		 * @private
+		 */
 		private var _displayName:String = "";
+		/**
+		 * @private
+		 */
 		private var _metadata:XMLList;
+		/**
+		 * @private
+		 */
 		private var _isInstance:Boolean = false;
 		
 		/**

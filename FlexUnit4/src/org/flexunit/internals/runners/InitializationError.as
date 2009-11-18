@@ -32,6 +32,9 @@ package org.flexunit.internals.runners {
 	 * initializing an <code>IRunner</code>.
 	 */
 	public class InitializationError extends Error {
+		/**
+		 * @private
+		 */
 		private var _errors:Array = new Array();;
 
 		/**

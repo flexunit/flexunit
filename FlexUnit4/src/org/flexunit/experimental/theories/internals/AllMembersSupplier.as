@@ -39,6 +39,9 @@ package org.flexunit.experimental.theories.internals
 	 * Determines what values can be applied to parameters in theories in a specific test class.
 	 */
 	public class AllMembersSupplier implements IParameterSupplier {
+		/**
+		 * @private
+		 */
 		private var testClass:TestClass;
 		
 		/**

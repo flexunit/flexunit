@@ -34,6 +34,9 @@ package org.flexunit.internals.runners.statements {
 	 * Responsible for throwing an failure error
 	 */
 	public class Fail extends AsyncStatementBase implements IAsyncStatement {
+		/**
+		 * @private
+		 */
 		private var error:Error;
 		
 		/**

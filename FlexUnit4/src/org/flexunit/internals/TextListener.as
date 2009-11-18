@@ -42,7 +42,13 @@ package org.flexunit.internals {
 	 * A <code>TextListener</code> will record the events encountered during the course of a test run in a logger.
 	 */
 	public class TextListener extends RunListener {
+		/**
+		 * @private
+		 */
 		private var logger:ILogger;
+		/**
+		 * @private
+		 */
 		private static var nf:NumberFormatter;
 		
 		/**

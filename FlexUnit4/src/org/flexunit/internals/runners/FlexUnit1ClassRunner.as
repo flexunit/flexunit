@@ -56,12 +56,30 @@ package org.flexunit.internals.runners {
 	 * The <code>FlexUnit1ClassRunner</code> is responsible for running FlexUnit1 classes.
 	 */
 	public class FlexUnit1ClassRunner implements IRunner, IFilterable {
-
+		
+		/**
+		 * @private
+		 */
 		private var test:Test;
+		/**
+		 * @private
+		 */
 		private var klassOrTest:*;
+		/**
+		 * @private
+		 */
 		private var totalTestCount:int = 0;
+		/**
+		 * @private
+		 */
 		private var numTestsRun:int = 0;
+		/**
+		 * @private
+		 */
 		private var filterRef:Filter = null;
+		/**
+		 * @private
+		 */
 		private var testCompletedToken : AsyncTestToken;
 		
 		/**
@@ -106,7 +124,7 @@ package org.flexunit.internals.runners {
 		 * 
 		 * @param item The item to check to see if it should run.
 		 * 
-		 * @return a Boolean value indicating whether the <code>item</code> should run .
+		 * @return a Boolean value indicating whether the <code>item</code> should run.
 		 */
 		private function shouldRun( item:* ):Boolean {
 			return filterRef == null || filterRef.shouldRun( describeChild( item ) );
@@ -180,7 +198,7 @@ package org.flexunit.internals.runners {
 		 * 
 		 * @param test The <code>Test</code> for which to obtain the <code>Class</code>.
 		 * 
-		 * @reutrn the <code>Class</code> for a provided <code>Test</code>.
+		 * @return the <code>Class</code> for a provided <code>Test</code>.
 		 */
 		public static function getClassFromTest( test:Test ):Class {
 			var name:String = getQualifiedClassName( test );
@@ -256,7 +274,7 @@ package org.flexunit.internals.runners {
 		
 		private var cachedDescription:IDescription;
 		/**
-		 * Retruns an <code>IDescription</code> of the test class that the runner is running.
+		 * Returns an <code>IDescription</code> of the test class that the runner is running.
 		 */
 		public function get description():IDescription {
 			//Determine if a description has already been created
@@ -268,6 +286,7 @@ package org.flexunit.internals.runners {
 		}
 		
 		/**
+		 * @private 
 		 * Generates an <code>IDescription</code> for the provided <code>Test</code>.
 		 * 
 		 * @param test The <code>Test</code> ufor which to generate the <code>IDescription</code>.
@@ -311,6 +330,11 @@ package org.flexunit.internals.runners {
 			}
 		}
 		
+		/**
+		 * Will apply a <code>Filter</code> to the test object.
+		 * @param filter Filter
+		 * @see org.flexunit.runner.manipulation.Filter
+		 */
 		public function filter( filter:Filter ):void {
 			if ( test is IFilterable ) {
 				var adapter:IFilterable = IFilterable( test );

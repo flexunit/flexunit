@@ -35,8 +35,17 @@ package org.flexunit.runners.model {
 	 * Wraps a class to be run, providing method validation and annotation searching
 	 */
 	public class TestClass {
+		/**
+		 * @private
+		 */
 		private var klass:Class;
-		private var _klassInfo:Klass
+		/**
+		 * @private
+		 */
+		private var _klassInfo:Klass;
+		/**
+		 * @private
+		 */
 		private var metaDataDictionary:Dictionary = new Dictionary( false );
 
 	//TODO: I'm guessing JDK should be replaced with something else

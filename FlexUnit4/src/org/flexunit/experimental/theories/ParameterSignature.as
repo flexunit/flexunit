@@ -37,8 +37,14 @@ package org.flexunit.experimental.theories {
 	 * information about the parameter's type as well as information about the method it belongs to.
 	 */
 	public class ParameterSignature {
-
+		
+		/**
+		 * @private
+		 */
 		private var _type:Class;
+		/**
+		 * @private
+		 */
 		private var _metaDataList:XMLList;
 		
 		/**
@@ -91,7 +97,7 @@ package org.flexunit.experimental.theories {
 		}
 		
 		/**
-		 * Returns the type of the <code>ParameterSignature</code>
+		 * Returns the type of the <code>ParameterSignature</code>.
 		 */
 		public function get type():Class {
 			return _type;

@@ -37,7 +37,13 @@ package org.flexunit.internals.runners {
 	 * Runner responsible for reproting errors encountered when attempting to initialize a class instead of running tests
 	 */
 	public class ErrorReportingRunner implements IRunner {
+		/**
+		 * @private
+		 */
 		private var _causes:Array;
+		/**
+		 * @private
+		 */
 		private var _testClass:Class;
 		
 		/**

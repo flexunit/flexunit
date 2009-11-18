@@ -35,16 +35,19 @@ package org.flexunit.internals.builders
 	 * Builds a <code>BlockFlexUnit4ClassRunner</code> for a test class.
 	 */
 	public class FlexUnit4Builder extends RunnerBuilderBase {
+		/**
+		 * Constructor.
+		 */
 		public function FlexUnit4Builder() {
 			super();
 		}
 		
 		/**
-		 * Returns a <code>BlockFlexUnit4ClassRunner</code> for the given test class.
+		 * Returns a <code>BlockFlexUnit4ClassRunner</code> for the provided <code>testClass</code>.
 		 * 
 		 * @param testClass The test class provided to the builder.
 		 * 
-		 * @return a <code>BlockFlexUnit4ClassRunner</code> for the given test class.
+		 * @return a <code>BlockFlexUnit4ClassRunner</code> for the provided <code>testClass</code>.
 		 */
 		override public function runnerForClass( testClass:Class ):IRunner {
 			return new BlockFlexUnit4ClassRunner(testClass);

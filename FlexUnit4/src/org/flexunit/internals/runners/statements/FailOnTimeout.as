@@ -54,10 +54,25 @@ package org.flexunit.internals.runners.statements {
 	 * </code></pre>
 	 */
 	public class FailOnTimeout extends AsyncStatementBase implements IAsyncStatement {
+		/**
+		 * @private
+		 */
 		private var timeout:Number = 0;
+		/**
+		 * @private
+		 */
 		private var statement:IAsyncStatement;
+		/**
+		 * @private
+		 */
 		private var timer:Timer;
+		/**
+		 * @private
+		 */
 		private var timerComplete:Boolean = false;
+		/**
+		 * @private
+		 */
 		private var returnMessageSent:Boolean = false;
 		
 		/**

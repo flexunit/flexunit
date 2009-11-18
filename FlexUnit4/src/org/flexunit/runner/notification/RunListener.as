@@ -56,6 +56,9 @@ package org.flexunit.runner.notification {
 	 * @see org.flexunit.runner.FlexUnitCore
 	 */
 	public class RunListener implements IRunListener {
+		/**
+		 * The <code>Result</code> recieved for a finished test run.
+		 */
 		public var result:Result;
 
 		/**

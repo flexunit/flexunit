@@ -33,6 +33,11 @@ package org.flexunit.internals.runners {
 	
 	
 	public class SuiteMethod extends FlexUnit1ClassRunner {
+		/**
+		 * Constructor.
+		 * 
+		 * @param klass
+		 */
 		public function SuiteMethod( klass:Class ) {
 			super( testFromSuiteMethod( klass ) );
 		}

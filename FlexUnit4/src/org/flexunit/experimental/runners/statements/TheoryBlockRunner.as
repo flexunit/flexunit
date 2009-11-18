@@ -42,8 +42,17 @@ package org.flexunit.experimental.runners.statements {
 	 * it extends, the <code>TheoryBlockRunner</code> is based on <code>Statement</code>s.
 	 */
 	public class TheoryBlockRunner extends BlockFlexUnit4ClassRunner {
+		/**
+		 * @private
+		 */
 		private var complete:Assignments;
+		/**
+		 * @private
+		 */
 		private var anchor:TheoryAnchor;
+		/**
+		 * @private
+		 */
 		private var klassInfo:Klass;
 		
 		/**

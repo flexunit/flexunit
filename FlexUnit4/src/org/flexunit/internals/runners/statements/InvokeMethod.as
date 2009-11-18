@@ -38,7 +38,13 @@ package org.flexunit.internals.runners.statements {
 	 * given test class.
 	 */
 	public class InvokeMethod extends AsyncStatementBase implements IAsyncStatement {
+		/**
+		 * @private
+		 */
 		private var testMethod:FrameworkMethod;
+		/**
+		 * @private
+		 */
 		private var target:Object;
 		
 		/**

@@ -39,7 +39,13 @@ package org.flexunit.runner.notification {
 	 * something other than a single test.
 	 */
 	public class Failure {
+		/**
+		 * @private
+		 */
 		private var _description:IDescription;
+		/**
+		 * @private
+		 */
 		private var _exception:Error;
 
 		/**

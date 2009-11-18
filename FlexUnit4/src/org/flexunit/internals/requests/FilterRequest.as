@@ -37,7 +37,13 @@ package org.flexunit.internals.requests {
 	 * A <code>Request</code> that filters a test class.
 	 */
 	public class FilterRequest extends Request {
+		/**
+		 * @private
+		 */
 		private var request:IRequest;
+		/**
+		 * @private
+		 */
 		private var filter:Filter;
 
 		/**

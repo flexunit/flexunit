@@ -52,15 +52,44 @@ package org.flexunit.internals.runners {
 	import org.flexunit.utils.ClassNameUtil;
 	import org.fluint.uiImpersonation.TestEnvironment;
 	
+	/**
+	 * Runs the associated testClass that is passed into the <code>Fluint1ClassRunner</class>.
+	 * 
+	 */
 	public class Fluint1ClassRunner implements IRunner, IFilterable {
 
+		/**
+		 * @private
+		 */
 		private var testClass:*;
+		/**
+		 * @private
+		 */
 		private var test:*;
+		/**
+		 * @private
+		 */
 		private var klassInfo:Klass;
+		/**
+		 * @private
+		 */
 		private var flexUnitTestEnvironment:org.fluint.uiImpersonation.TestEnvironment;
+		/**
+		 * @private
+		 */
 		private var testRunner:TestRunner;
+		/**
+		 * @private
+		 */
 		private var token:AsyncTestToken;
 
+		/**
+		 * Constructor
+		 *  
+		 * @param clazz is an XML <code>Klass</code> that allows the associated <code>Class</code>
+		 * to be called and run methods associated with the <code>Class</code>.
+		 * 
+		 */
 		public function Fluint1ClassRunner( clazz:* ) {
 			super();
 
@@ -71,11 +100,24 @@ package org.flexunit.internals.runners {
 			flexUnitTestEnvironment = org.fluint.uiImpersonation.TestEnvironment.getInstance();
 		}
 
+		/**
+		 * Returns the <code>Class</code> for a provided <code>Test</code>.
+		 * 
+		 * @param test The <code>Test</code> for which to obtain the <code>Class</code>.
+		 * 
+		 * @return the <code>Class</code> for a provided <code>Test</code>.
+		 */
 		public static function getClassFromTest( test:* ):Class {
 			var name:String = getQualifiedClassName( test );
 			return getDefinitionByName( name ) as Class;		
 		}
 
+		/**
+		 * Runs the test class and updates the <code>notifier</code> on the status of running the tests.
+		 * 
+		 * @param notifier The notifier that is notified about issues encountered during the execution of the test class.
+		 * @param previousToken The token that is to be notified when the runner has finished execution of the test class.
+		 */
 		public function run( notifier:IRunNotifier, previousToken:AsyncTestToken ):void {
 			token = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			token.parentToken = previousToken;
@@ -90,12 +132,30 @@ package org.flexunit.internals.runners {
 			testRunner.startTests( [test] );
 		}
 		
+		/**
+		 * Handles the results when all of the tests are complete for the class.
+		 * Removes all of the children from the <code>flexUnitTestEnvironment</code>.
+		 * 
+		 * Also calls <code>sendResult</code> on the token.parentToken.
+		 * 
+		 * @param event
+		 * @see org.flexunit.token.AsyncTestToken
+		 */
 		protected function handleAllTestsComplete( event:Event ):void {
 			//need to remove older environment
 			flexUnitTestEnvironment.removeAllChildren();;
 			token.parentToken.sendResult();
 		}
 		
+		/**
+		 * Handles the results of a single test completing. Removes all of the children from
+		 * the <code>flexUnitTestEnvironment</code>.
+		 * 
+		 * Also calls <code>sendResult</code> on the token.parentToken contained in <code>result</code>.
+		 * 
+		 * @param result ChildResult - The results of the running test.
+		 * @see org.flexunit.token.AsyncTestToken
+		 */
 		protected function handleTestComplete( result:ChildResult ):void {
 			var token:AsyncTestToken = result.token;
 
@@ -105,11 +165,26 @@ package org.flexunit.internals.runners {
 			token.parentToken.sendResult();
 		}
 
+		/**
+		 * Creates an instance of the <code>FluintAdaptingListener</code> internal class and passes
+		 * an <code>IRunNotifier</code> to it.
+		 * @param notifier IRunNotifier
+		 * @return TestMonitor
+		 * 
+		 */
  		public function createAdaptingMonitor( notifier:IRunNotifier ):TestMonitor {
 			return new FluintAdaptingListener( notifier );
 		}
 		
+		/**
+		 * @private
+		 */
 		private var cachedDescription:IDescription;
+		/**
+		 * Returns an <code>IDescription</code> of the test class that the runner is running.
+		 * @return IDescription of the cached description.
+		 * 
+		 */
 		public function get description():IDescription {
 			if ( !cachedDescription ) {
 				cachedDescription = makeDescription( test );
@@ -119,6 +194,14 @@ package org.flexunit.internals.runners {
 		}
 
 	
+		/**
+		 * @private 
+		 * Generates an <code>IDescription</code> for the provided <code>Test</code>.
+		 * 
+		 * @param test The <code>Test</code> ufor which to generate the <code>IDescription</code>.
+		 * 
+		 * @return an <code>IDescription</code> for the provided <code>Test</code>.
+		 */
 		private function makeDescription( test:* ):IDescription {
 			var klassInfo:Klass;
 			var clazz:Class;
@@ -168,7 +251,15 @@ package org.flexunit.internals.runners {
 			return Description.EMPTY;		
 		}
 	
+		/**
+		 * @private
+		 */
 		private var appliedFilter:Filter; 
+		/**
+		 * Will apply a <code>Filter</code> to the test object.
+		 * @param filter Filter
+		 * @see org.flexunit.runner.manipulation.Filter
+		 */
 		public function filter( filter:Filter ):void {
 			if ( filter ) {
 				appliedFilter = filter;
@@ -176,6 +267,9 @@ package org.flexunit.internals.runners {
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function filterWithIFilter( item:Object ):Boolean {
 			return appliedFilter.shouldRun( makeDescription( item ) );
 		}

@@ -37,7 +37,13 @@ package org.flexunit.internals.requests
 	 */
 	public class SortingRequest extends Request
 	{
+		/**
+		 * @private
+		 */
 		private var request:IRequest;
+		/**
+		 * @private
+		 */
 		private var comparator:Function;
 		
 		/**

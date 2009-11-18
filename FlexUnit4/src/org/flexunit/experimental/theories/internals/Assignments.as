@@ -40,16 +40,25 @@ package org.flexunit.experimental.theories.internals {
 	 * configuration of a theory method.
 	 */
 	public class Assignments {
+		/**
+		 * An array of <code>IPotentialAssignment</code>s that have been assigned values.
+		 */
 		public var assigned:Array;
-		public var unassigned:Array;		
+		/**
+		 * An array of <code>ParameterSignature</code>s that not been assigned values.
+		 */
+		public var unassigned:Array;
+		/**
+		 * The test class that contains the theory.
+		 */
 		public var testClass:TestClass;
 		
 		/**
 		 * Constructor.
 		 * 
-		 * @param assigned An array of <code>IPotentialAssignment</code>s that have been assigned values
-		 * @param unassigned An array of <code>ParameterSignature</code>s that not been assigned values
-		 * @param testClass The test class that contains the theory
+		 * @param assigned An array of <code>IPotentialAssignment</code>s that have been assigned values.
+		 * @param unassigned An array of <code>ParameterSignature</code>s that not been assigned values.
+		 * @param testClass The test class that contains the theory.
 		 */
 		public function Assignments( assigned:Array, unassigned:Array, testClass:TestClass ) {
 			this.assigned = assigned;

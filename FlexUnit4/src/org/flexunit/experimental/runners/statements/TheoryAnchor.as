@@ -50,13 +50,37 @@ package org.flexunit.experimental.runners.statements
 	 * also is responsible for handling the overall operation of the theory.
 	 */
 	public class TheoryAnchor extends AsyncStatementBase implements IAsyncStatement {
+		/**
+		 * @private
+		 */
 		private var successes:int = 0;
+		/**
+		 * @private
+		 */
 		private var frameworkMethod:FrameworkMethod;
+		/**
+		 * @private
+		 */
 		private var invalidParameters:Array = new Array();
+		/**
+		 * @private
+		 */
 		private var testClass:TestClass;
+		/**
+		 * @private
+		 */
 		private var assignment:Assignments;
+		/**
+		 * @private
+		 */
 		private var errors:Array = new Array();
+		/**
+		 * @private
+		 */
 		private var incompleteLoopCount:int = 0;
+		/**
+		 * @private
+		 */
 		private var completeLoopCount:int = 0;
 		
 		/**

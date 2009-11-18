@@ -35,7 +35,10 @@ package org.flexunit.runner
 	 * 
 	 */
 	public class RunnerLocator {
-
+		
+		/**
+		 * @private
+		 */
 		private var d:Dictionary = new Dictionary( true );
 		
 		/**

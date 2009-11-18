@@ -35,6 +35,9 @@ package org.flexunit.async {
 	 * The <code>AsyncLocator</code> is used to keep track of test cases that have implemented asynchronous functionallity.
 	 */
 	public class AsyncLocator {
+		/**
+		 * @private
+		 */
 		private static var asyncHandlerMap:Dictionary = new Dictionary();
 		
 		/**

@@ -34,10 +34,25 @@ package org.flexunit.token {
 	 * and indicating when the <code>IAsyncRunListener</code>s are ready or have completed.
 	 */
 	public class AsyncListenersToken {
+		/**
+		 * @private
+		 */
 		private var methodsEntries:Array;
+		/**
+		 * @private
+		 */
 		private var _error:Error;
+		/**
+		 * @private
+		 */
 		private var debugClassName:String;
+		/**
+		 * @private
+		 */
 		private var _token:AsyncTestToken;
+		/**
+		 * @private
+		 */
 		private var _runner:IRunner;
 		
 		/**

@@ -37,7 +37,13 @@ package org.flexunit.internals.requests {
 	 * A <code>Request</code> that is used to determine what runner to use to run a specific test class.
 	 */
 	public class ClassRequest extends Request {
+		/**
+		 * @private
+		 */
 		private var testClass:Class;
+		/**
+		 * @private
+		 */
 		private var canUseSuiteMethod:Boolean;
 		
 		/**

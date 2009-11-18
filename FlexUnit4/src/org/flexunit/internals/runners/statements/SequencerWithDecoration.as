@@ -35,7 +35,13 @@ package org.flexunit.internals.runners.statements
 	 */
 	public class SequencerWithDecoration extends StatementSequencer
 	{
-		private var target:Object;	
+		/**
+		 * @private
+		 */
+		private var target:Object;
+		/**
+		 * @private
+		 */
 		private var afters:Array;
 		
 		/**

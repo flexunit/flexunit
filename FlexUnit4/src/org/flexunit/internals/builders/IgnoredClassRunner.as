@@ -36,6 +36,9 @@ package org.flexunit.internals.builders {
 	 * An <code>IRunner</code> for test classes that are to be ignored.
 	 */
 	public class IgnoredClassRunner implements IRunner {
+		/**
+		 * @private
+		 */
 		private var testClass:Class;
 		
 		/** 
@@ -48,7 +51,7 @@ package org.flexunit.internals.builders {
 		}
 		
 		/**
-		 * Instruct the notifier that a class has been ignored and update the token
+		 * Instructs the <code>notifier</code> that a class has been ignored and updates the provided <code>token</code>.
 		 * 
 		 * @param notifier The <code>IRunNotifier</code> to notify that the class has been ignored.
 		 * @param token The <code>AsyncTestToken</code> to notify that the test class has been ignored.

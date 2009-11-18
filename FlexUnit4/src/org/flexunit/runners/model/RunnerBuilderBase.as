@@ -39,6 +39,9 @@ package org.flexunit.runners.model {
 	 * a particular test class.
 	 */
 	public class RunnerBuilderBase implements IRunnerBuilder {
+		/**
+		 * @private
+		 */
 		private var parents:Dictionary = new Dictionary( true );
 
 		/**

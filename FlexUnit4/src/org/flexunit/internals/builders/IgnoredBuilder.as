@@ -39,12 +39,12 @@ package org.flexunit.internals.builders
 		public static const IGNORE:String = "Ignore";
 		
 		/**
-		 * Returns a <code>IgnoredClassRunner</code> if the class has an ["Ignore"] metadata tag.
+		 * Returns a <code>IgnoredClassRunner</code> if the <code>testClass</code> has an ["Ignore"] metadata tag.
 		 * 
 		 * @param testClass The class to check.
 		 * 
-		 * @return a <code>IgnoredClassRunner</code> if the class has an ["Ignore"] metadata tag; otherwise, a
-		 * value of null is returned.
+		 * @return a <code>IgnoredClassRunner</code> if the <code>testClass</code> has an ["Ignore"] metadata tag; 
+		 * otherwise, a value of <code>null</code> is returned.
 		 */
 		override public function runnerForClass( testClass:Class ):IRunner {
 			var klassInfo:Klass = new Klass( testClass );

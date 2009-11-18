@@ -30,6 +30,9 @@ package org.flexunit.internals.runners.model {
 	 * Thrown when there are multiple failures.
 	 */
 	public class MultipleFailureException extends Error {
+		/**
+		 * @private
+		 */
 		private var errors:Array;
 
 /*		public function areAllErrorsType( type:Class ):Boolean {

@@ -38,11 +38,11 @@ package org.flexunit.internals.builders {
 	public class SuiteMethodBuilder extends RunnerBuilderBase {
 		
 		/**
-		 * Returns a <code>SuiteMethod</code> if the class has a suite method.
+		 * Returns a <code>SuiteMethod</code> if the <code>testClass</code> has a suite method.
 		 * 
 		 * @param testClass The class to check.
 		 * 
-		 * @return a <code>SuiteMethod</code> if the class has a suite method; otherwise, a
+		 * @return a <code>SuiteMethod</code> if the <code>testClass</code> has a suite method; otherwise, a
 		 * value of null is returned.
 		 */
 		override public function runnerForClass( testClass:Class ):IRunner {
@@ -53,11 +53,11 @@ package org.flexunit.internals.builders {
 		}
 		
 		/**
-		 * Determine if the provided test class has a suite method.
+		 * Determine if the provided <code>testClass</code> has a suite method.
 		 * 
 		 * @param testClass The class to check.
 		 * 
-		 * @return a Boolean value indicating whether the test class has a suite method.
+		 * @return a Boolean value indicating whether the <code>testClass</code> has a suite method.
 		 */
 		public function hasSuiteMethod( testClass:Class ):Boolean {
 			var klass:Klass = new Klass( testClass );

@@ -53,8 +53,17 @@ package org.flexunit.runner {
 	 * which is a tree structure of the tests to be run.</p>
 	 */
 	public class Request implements IRequest {
+		/**
+		 * @private
+		 */
 		private var _filter:Function;
+		/**
+		 * @private
+		 */
 		private var _sort:ISort;
+		/**
+		 * The <code>IRunner</code> for this Request.
+		 */
 		classInternal var _runner:IRunner;
 		
 		/**

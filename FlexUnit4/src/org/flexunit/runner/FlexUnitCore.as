@@ -63,18 +63,33 @@ package org.flexunit.runner {
 		// flex classes since it will cause errors.
 		CONFIG::useFlexClasses {
 			// This class imports all Flex classes.
-			private var t1:IncludeFlexClasses
+			/**
+			 * @private
+			 */
+			private var t1:IncludeFlexClasses;
 		}
 		
+		/**
+		 * @private
+		 */
 		private var notifier:IRunNotifier;
+		/**
+		 * @private
+		 */
 		private var asyncListenerWatcher:AsyncListenerWatcher;
 		
+		/**
+		 * @private
+		 */
 		private static const RUN_LISTENER:String = "runListener";
 		public static const TESTS_COMPLETE : String = "testsComplete";
 		public static const RUNNER_START : String = "runnerStart";
 		public static const RUNNER_COMPLETE : String = "runnerComplete";
 
 		//Just keep theories linked in until we decide how to deal with it
+		/**
+		 * @private
+		 */
 		private var theory:Theories;
 		
 		/**
