@@ -53,18 +53,20 @@
 	</target>
 
 	<target name="test" depends="compile">
-		<!-- Compile TestRunner.mxml as a SWF -->
-		<mxmlc file="${test.src.loc}/TestRunner.mxml" output="${bin.loc}/TestRunner.swf">
-			<source-path path-element="${main.src.loc}" />
-			<library-path dir="${lib.loc}" append="true">
-				<include name="*.swc" />
-			</library-path>
-			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
-			<compiler.headless-server>true</compiler.headless-server>
-		</mxmlc>
+		<!-- Compile TestRunner.mxml as a SWF runnable by ADL -->
+		<java jar="${FLEX_HOME}/lib/mxmlc.jar" fork="true" failonerror="true">
+			<arg line="+flexlib '${FLEX_HOME}/frameworks'" />
+			<arg line="+configname=air" />
+			<arg line="-file-specs='${test.src.loc}/AirTestRunner.mxml'"/>
+			<arg line="-output '${bin.loc}/AirTestRunner.swf'" />
+			<arg line="-source-path+='${main.src.loc}'" />
+			<arg line="-library-path+='${lib.loc}'" />
+			<arg line="-compiler.verbose-stacktraces=true" />
+			<arg line="-compiler.headless-server=true" />
+		</java>
 
 		<!-- Execute TestRunner.swf as FlexUnit tests and publish reports -->
-		<flexunit swf="${bin.loc}/TestRunner.swf" toDir="${report.loc}" haltonfailure="false" verbose="true" localTrusted="false" />
+		<flexunit player="air" swf="${bin.loc}/AirTestRunner.swf" toDir="${report.loc}" haltonfailure="false" verbose="true" />
 
 		<!-- Generate readable JUnit-style reports -->
 		<junitreport todir="${report.loc}">
@@ -74,7 +76,7 @@
 			<report format="frames" todir="${report.loc}/html" />
 		</junitreport>
 	</target>
-	
+
 	<target name="package" depends="test">
 		<!-- Assemble final website -->
 		<copy file="${bin.loc}/Main.swf" todir="${output.loc}" />
