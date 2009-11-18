@@ -55,9 +55,11 @@
 				<include name="framework.swc" />
 				<include name="rpc.swc" />
 				<include name="utilities.swc" />
+				<include name="air/airglobal.swc" />
 			</compiler.external-library-path>
 			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
 			<compiler.headless-server>true</compiler.headless-server>
+			<target-player>10.0.0</target-player>
 		</compc>
 	</target>
 
@@ -79,6 +81,8 @@
 			<arg line="-source-path+='${main.src.loc}'" />
 			<arg line="-output '${doc.loc}'" />
 			<arg line="-library-path+='${lib.loc}'" />
+			<arg line="-library-path+='${FLEX_HOME}/frameworks/libs/air/airglobal.swc'" />
+			<arg line="-target-player=10.0.0" />
 			<arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
 		</java>
 	</target>
