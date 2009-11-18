@@ -316,7 +316,8 @@ public class FlexUnitTask extends Task
       LoggingUtil.log("Setting up server process ...");
       
       //Create server for use by thread
-      FlexUnitSocketServer server = new FlexUnitSocketServer(port, socketTimeout, serverBufferSize, !isLocalTrusted);
+      boolean usePolicyFile = !isLocalTrusted && player.equals("flash");
+      FlexUnitSocketServer server = new FlexUnitSocketServer(port, socketTimeout, serverBufferSize, usePolicyFile);
       
       //Get handle to specialized object to run in separate thread.
       Callable<Object> operation = new FlexUnitSocketThread(server, reportDir, reports);
