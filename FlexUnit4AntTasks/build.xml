@@ -44,6 +44,7 @@
 
 	<target name="package" depends="test">
 		<copy file="${main.src.loc}/flexUnitTasks.tasks" todir="${bin.loc}" />
+		<copy file="${main.src.loc}/flexUnitDescriptor.template" todir="${bin.loc}" />
 
 		<unjar src="${lib.loc}/dom4j-1.6.1.jar" dest="${bin.loc}" />
 		<unjar src="${lib.loc}/jaxen-1.1-beta-6.jar" dest="${bin.loc}" />
