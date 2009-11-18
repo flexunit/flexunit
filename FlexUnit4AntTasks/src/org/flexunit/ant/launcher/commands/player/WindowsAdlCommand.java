@@ -5,6 +5,6 @@ public class WindowsAdlCommand extends AdlCommand
    @Override
    protected String getAdlFilename()
    {
-      return "adl.bat";
+      return "adl.exe";
    }
 }
