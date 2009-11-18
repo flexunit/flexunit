@@ -52,24 +52,26 @@ package org.flexunit.runners {
 	 * Implements the FlexUnit 4 standard test case class model, as defined by the
 	 * annotations in the org.flexunit package. Many users will never notice this
 	 * class: it is now the default test class runner, but it should have exactly
-	 * the same behavior as the old test class runner ({@code FlexUnit4ClassRunner}).
+	 * the same behavior as the old test class runner (<code>FlexUnit4ClassRunner</code>).
 	 * 
 	 * BlockFlexUnit4ClassRunner has advantages for writers of custom FlexUnit runners
 	 * that are slight changes to the default behavior, however:
 	 * 
 	 * <ul>
-	 * <li>It has a much simpler implementation based on <code> Statement</code>s,
+	 * <li>It has a much simpler implementation based on <code>Statement</code>s,
 	 * allowing new operations to be inserted into the appropriate point in the
 	 * execution flow.
 	 * 
-	 * <li>It is published, and extension and reuse are encouraged, whereas {@code
-	 * FlexUnit4ClassRunner} was in an internal package, and is now deprecated.
+	 * <li>It is published, and extension and reuse are encouraged, whereas <code>
+	 * FlexUnit4ClassRunner</code> was in an internal package, and is now deprecated.
 	 * </ul>
 	 */
 	public class BlockFlexUnit4ClassRunner extends ParentRunner implements IFilterable {
 
 		/**
-		 * Creates a BlockFlexUnit4ClassRunner to run {@code klass}
+		 * Creates a BlockFlexUnit4ClassRunner to run <code>klass</code>.
+		 * 
+		 * @param klass The class to run.
 		 */	 
 		public function BlockFlexUnit4ClassRunner( klass:Class ) {
 			super( klass );
@@ -78,7 +80,10 @@ package org.flexunit.runners {
 		//
 		// Implementation of ParentRunner
 		// 
-	
+		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function runChild( child:*, notifier:IRunNotifier, childRunnerToken:AsyncTestToken ):void {
 			var method:FrameworkMethod = FrameworkMethod( child ); 
 			var eachNotifier:EachTestNotifier = makeNotifier( method, notifier);
@@ -116,12 +121,19 @@ package org.flexunit.runners {
 				//childRunnerToken.sendResult( error );
 			}
 		}
-
+		
+		/**
+		 * Handles the result of the test method that has run and alerts the <code>IRunNotifier</code>
+		 * about the results of the test.
+		 * 
+		 * @param result The <code>ChildResult</code> of the test method that has run.
+		 */
 		private function handleBlockComplete( result:ChildResult ):void {
 			var error:Error = result.error;
 			var token:AsyncTestToken = result.token;
 			var eachNotifier:EachTestNotifier = result.token[ EACH_NOTIFIER ];
-
+			
+			//Determine if an assumption failed, if it did, ignore the test; otherwise, report the error
 			if ( error is AssumptionViolatedException ) {
 				eachNotifier.fireTestIgnored();
 			} else if ( error ) {
@@ -132,14 +144,17 @@ package org.flexunit.runners {
 
 			token.parentToken.sendResult();
 		}
-
+		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function describeChild( child:* ):IDescription {
 			var method:FrameworkMethod = FrameworkMethod( child );
 			return Description.createTestDescription( testClass.asClass, method.name, method.metadata );
 		}
 		
 		/**
-		 * Returns an array of all methods that have been annotated with <code></code>
+		 * Returns an array of all methods that have been annotated with <code>Test</code>.
 		 */
 		override protected function get children():Array {
 			return computeTestMethods();
@@ -151,7 +166,7 @@ package org.flexunit.runners {
 
 		/**
 		 * Returns the methods that run tests. Default implementation 
-		 * returns all methods annotated with {@code Test} on this 
+		 * returns all methods annotated with <code>Test</code> on this 
 		 * class and superclasses that are not overridden.
 		 */
 		protected function computeTestMethods():Array {
@@ -171,8 +186,8 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Adds to {@code errors} for each method annotated with {@code Test},
-		 * {@code Before}, or {@code After} that is not a public, void instance
+		 * Adds to <code>errors</code> for each method annotated with <code>Test</code>,
+		 * <code>Before</code>, or <code>After</code> that is not a public, void instance
 		 * method with no arguments.
 		 */
 		protected function validateInstanceMethods( errors:Array ):void {
@@ -185,7 +200,7 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Adds to {@code errors} for each method annotated with {@code Test}that
+		 * Adds to <code>errors</code> for each method annotated with <code>Test</code> that
 		 * is not a public, void instance method with no arguments.
 		 */
 		protected function validateTestMethods( errors:Array ):void {
@@ -202,12 +217,12 @@ package org.flexunit.runners {
 		}
 		
 		/**
-		 * Creates an <code>EachTestNotifier</code> based on the the description of the method and a notifer
+		 * Creates an <code>EachTestNotifier</code> based on the the description of the method and a notifer.
 		 * 
-		 * @param method The <code>FrameworkMethod</code> that is to be described
-		 * @param notifier The notifier to notify about the execution of the method
+		 * @param method The <code>FrameworkMethod</code> that is to be described.
+		 * @param notifier The notifier to notify about the execution of the method.
 		 * 
-		 * @return an <code>EachTestNotifier</code>
+		 * @return an <code>EachTestNotifier</code>.
 		 */
 		private function makeNotifier( method:FrameworkMethod, notifier:IRunNotifier ):EachTestNotifier {
 			var description:IDescription = describeChild(method);
@@ -216,30 +231,30 @@ package org.flexunit.runners {
 
 		/**
 		 * Returns an IStatement that, when executed, either returns normally if
-		 * {@code method} passes, or throws an exception if {@code method} fails.
+		 * <code>method</code> passes, or throws an exception if <code>method</code> fails.
 		 * 
-		 * Here is an outline of the default implementation:
+		 * <p>Here is an outline of the default implementation:
 		 * 
 		 * <ul>
-		 * <li>Invoke {@code method} on {@code test}, and
+		 * <li>Invoke <code>method</code> on <code>test</code>, and
 		 * throw any exceptions thrown by either operation.
-		 * <li>HOWEVER, if {@code method}'s {@code Test} annotation has the {@code
-		 * expecting} attribute, return normally only if the previous step threw an
+		 * <li>HOWEVER, if <code>method</code>'s <code>Test</code> annotation has the <code>
+		 * expecting</code> attribute, return normally only if the previous step threw an
 		 * exception of the correct type, and throw an exception otherwise.
-		 * <li>HOWEVER, if {@code method}'s {@code Test} annotation has the {@code
-		 * timeout} attribute, throw an exception if the previous step takes more
+		 * <li>HOWEVER, if <code>method</code>'s <code>Test</code> annotation has the <code>
+		 * timeout</code> attribute, throw an exception if the previous step takes more
 		 * than the specified number of milliseconds.
-		 * <li>ALWAYS run all non-overridden {@code Before} methods on this class
+		 * <li>ALWAYS run all non-overridden <code>Before</code> methods on this class
 		 * and superclasses before any of the previous steps; if any throws an
 		 * Exception, stop execution and pass the exception on.
-		 * <li>ALWAYS run all non-overridden {@code After} methods on this class
+		 * <li>ALWAYS run all non-overridden <code>After</code> methods on this class
 		 * and superclasses before any of the previous steps; all After methods are
 		 * always executed: exceptions thrown by previous steps are combined, if
 		 * necessary, with exceptions from After methods into a
-		 * <code> MultipleFailureException</code>.
+		 * <code>MultipleFailureException</code>.
 		 * </ul>
 		 * 
-		 * This can be overridden in subclasses, either by overriding this method,
+		 * <p>This can be overridden in subclasses, either by overriding this method,
 		 * or the implementations creating each sub-statement.
 		 */
 		protected function methodBlock( method:FrameworkMethod ):IAsyncStatement {
@@ -264,17 +279,16 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Returns an <code> IAsyncStatement</code> that invokes <code>method</code> on <code>test</code>
+		 * Returns an <code>IAsyncStatement</code> that invokes <code>method</code> on <code>test</code>
 		 */
 		protected function methodInvoker( method:FrameworkMethod, test:Object ):IAsyncStatement {
 			return new InvokeMethod(method, test);
 		}
 
 		/**
-		 * Returns an <code> IAsyncStatement</code>: if <code>method</code>'s <code>Test</code> annotation
-		 * has the {@code expecting} attribute, return normally only if {@code next}
-		 * throws an exception of the correct type, and throw an exception
-		 * otherwise.
+		 * Returns an <code>IAsyncStatement</code>: if <code>method</code>'s <code>Test</code> annotation
+		 * has the <code>expecting</code> attribute, return normally only if <code>next</code>
+		 * throws an exception of the correct type, and throw an exception otherwise.
 		 */
 		protected function possiblyExpectingExceptions( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
 			var expected:String = ExpectException.hasExpected( method );
@@ -282,7 +296,7 @@ package org.flexunit.runners {
 		}
 
 		/**
-		 * Returns an <code> IAsyncStatement</code>: if <code>method</code>'s <code> Test</code> annotation
+		 * Returns an <code>IAsyncStatement</code>: if <code>method</code>'s <code> Test</code> annotation
 		 * has the <code>timeout</code> attribute, throw an exception if <code>next</code>
 		 * takes more than the specified number of milliseconds.
 		 */
@@ -292,9 +306,9 @@ package org.flexunit.runners {
 		}
 		
 		/**
-		 * Returns an <code> IAsyncStatement</code>: if <code>method</code>'s <code> Test</code> annotation
+		 * Returns an <code>IAsyncStatement</code>: if <code>method</code>'s <code> Test</code> annotation
 		 * has the <code>async</code> attribute, throw an exception if <code>next</code>
-		 * encounters an exception during execution
+		 * encounters an exception during execution.
 		 */
 		protected function withPotentialAsync( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
 			var async:Boolean = ExpectAsync.hasAsync( method );
@@ -302,7 +316,7 @@ package org.flexunit.runners {
 		}
 		
 		/**
-		 * Returns an <code> IAsyncStatement</code> that invokes <code>method</code> on a decorated <code>test</code>
+		 * Returns an <code>IAsyncStatement</code> that invokes <code>method</code> on a decorated <code>test</code>.
 		 */
 		protected function withDecoration( method:FrameworkMethod, test:Object ):IAsyncStatement {
 			var statement:IAsyncStatement = methodInvoker( method, test );
@@ -315,15 +329,15 @@ package org.flexunit.runners {
 		}
 		
 		/**
-		 * Returns an <code> IAsyncStatement</code> that manages the stack and allow execution to break across frames
+		 * Returns an <code>IAsyncStatement</code> that manages the stack and allow execution to break across frames.
 		 */
 		protected function withStackManagement( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
 			return new StackAndFrameManagement( statement );
 		}
 
 		/**
-		 * Returns an <code> IAsyncStatement</code>: run all non-overridden {@code Before}
-		 * methods on this class and superclasses before running {@code statement}; if
+		 * Returns an <code>IAsyncStatement</code>: run all non-overridden <code>Before</code>
+		 * methods on this class and superclasses before running <code>statement</code>; if
 		 * any throws an Exception, stop execution and pass the exception on.
 		 */
 		protected function withBefores( method:FrameworkMethod, target:Object ):IAsyncStatement {
@@ -334,11 +348,11 @@ package org.flexunit.runners {
 		}
 	
 		/**
-		 * Returns an <code> IAsyncStatement</code>: run all non-overridden {@code After}
-		 * methods on this class and superclasses before running {@code next}; all
+		 * Returns an <code>IAsyncStatement</code>: run all non-overridden <code>After</code>
+		 * methods on this class and superclasses before running <code>next</code>; all
 		 * After methods are always executed: exceptions thrown by previous steps
 		 * are combined, if necessary, with exceptions from After methods into a
-		 * <code> MultipleFailureException</code>.
+		 * <code>MultipleFailureException</code>.
 		 */
 		protected function withAfters( method:FrameworkMethod, target:Object ):IAsyncStatement {
 			var afters:Array = testClass.getMetaDataMethods( "After" );

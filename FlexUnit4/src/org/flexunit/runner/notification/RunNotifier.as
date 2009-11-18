@@ -33,8 +33,8 @@ package org.flexunit.runner.notification {
 	/**
 	 * If you write custom runners, you may need to notify FlexUnit of your progress running tests.
 	 * Do this by invoking the <code>RunNotifier</code> passed to your implementation of
-	 * <code> org.flexunit.runner.Runner#run(RunNotifier)</code>. Future evolution of this class is likely to 
-	 * move <code> #fireTestRunStarted(Description)</code> and <code> #fireTestRunFinished(Result)</code>
+	 * <code>org.flexunit.runner.Runner#run(RunNotifier)</code>. Future evolution of this class is likely to 
+	 * move <code>#fireTestRunStarted(IDescription)</code> and <code>#fireTestRunFinished(Result)</code>
 	 * to a separate class since they should only be called once per run.
 	 */
 	public class RunNotifier implements IRunNotifier {
@@ -69,8 +69,11 @@ package org.flexunit.runner.notification {
 
 		/**
 		 * Invoke to tell listeners that an atomic test is about to start.
-		 * @param description the description of the atomic test (generally a class and method name)
-		 * @throws StoppedByUserException thrown if a user has requested that the test run stop
+		 * 
+		 * @param description The description of the atomic test (generally a class and method name).
+		 * 
+		 * @throws org.flexunit.runner.notification.StoppedByUserException Thrown if a user has 
+		 * requested that the test run stop.
 		 */
 		public function fireTestStarted( description:IDescription ):void {
 			if (pleaseStopBool)
@@ -87,7 +90,8 @@ package org.flexunit.runner.notification {
 
 		/**
 		 * Invoke to tell listeners that an atomic test failed.
-		 * @param failure the description of the test that failed and the exception thrown
+		 * 
+		 * @param failure The description of the test that failed and the exception thrown.
 		 */
 		public function fireTestFailure( failure:Failure ):void {
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
@@ -104,8 +108,8 @@ package org.flexunit.runner.notification {
 		 * something false.
 		 * 
 		 * @param failure
-		 *            the description of the test that failed and the
-		 *            <code> AssumptionViolatedException</code> thrown
+		 *            The description of the test that failed and the
+		 *            <code>AssumptionViolatedException</code> thrown
 		 */
 		public function fireTestAssumptionFailed( failure:Failure ):void {
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
@@ -119,7 +123,8 @@ package org.flexunit.runner.notification {
 
 		/**
 		 * Invoke to tell listeners that an atomic test was ignored.
-		 * @param description the description of the ignored test
+		 * 
+		 * @param description The description of the ignored test.
 		 */
 		public function fireTestIgnored( description:IDescription ):void {
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
@@ -132,9 +137,10 @@ package org.flexunit.runner.notification {
 		}
 		/**
 		 * Invoke to tell listeners that an atomic test finished. Always invoke 
-		 * <code> #fireTestFinished(Description)</code> if you invoke <code> #fireTestStarted(Description)</code> 
+		 * <code>#fireTestFinished(IDescription)</code> if you invoke <code>#fireTestStarted(Description)</code> 
 		 * as listeners are likely to expect them to come in pairs.
-		 * @param description the description of the test that finished
+		 * 
+		 * @param description The description of the test that finished.
 		 */
 		public function fireTestFinished( description:IDescription ):void {
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
@@ -156,7 +162,8 @@ package org.flexunit.runner.notification {
 			pleaseStopBool = true;
 		}
 
-		/** Internal use only
+		/** 
+		 * Internal use only.
 		 */
 		public function addListener( listener:IRunListener ):void {
 			listeners.push( listener );
@@ -179,7 +186,10 @@ package org.flexunit.runner.notification {
 				}
 			}
 		}
-
+		
+		/**
+		 * Constructor.
+		 */
 		public function RunNotifier() {
 		}
 	}

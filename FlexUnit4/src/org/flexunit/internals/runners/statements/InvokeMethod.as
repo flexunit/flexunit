@@ -34,7 +34,8 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.utils.ClassNameUtil;
 	
 	/**
-	 * Responsible for invoking a specific method for a given test class
+	 * The <code>InvokeMethod</code> is responsible for invoking a specific method in 
+	 * given test class.
 	 */
 	public class InvokeMethod extends AsyncStatementBase implements IAsyncStatement {
 		private var testMethod:FrameworkMethod;
@@ -43,8 +44,8 @@ package org.flexunit.internals.runners.statements {
 		/**
 		 * Constructor.
 		 * 
-		 * @param testMethod A specific method in the test class
-		 * @param target The test class
+		 * @param testMethod A specific method in the test class.
+		 * @param target The test class.
 		 */
 		public function InvokeMethod( testMethod:FrameworkMethod, target:Object ) {
 			this.testMethod = testMethod;
@@ -56,9 +57,9 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Executes the test method to be run
+		 * Executes the test method to be run.
 		 * 
-		 * @param parentToken The token to be notified when the test method has finished running
+		 * @param parentToken The token to be notified when the test method has finished running.
 		 */
 		public function evaluate( parentToken:AsyncTestToken ):void {
 			this.parentToken = parentToken;
@@ -72,18 +73,17 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Tells the parent token that the method has finished execution
+		 * Tells the parent token that the method has finished execution.
 		 * 
-		 * @param result The result of the method executing
+		 * @param result The result of the method executing.
 		 */
  		protected function handleMethodExecuteComplete( result:ChildResult ):void {
 			parentToken.sendResult( null );
 		}
 		
 		/**
-		 * @private 
-		 * @return 
-		 * 
+		 * @private
+		 * @return
 		 */
 		override public function toString():String {
 			return "InvokeMethod " + testMethod.name;

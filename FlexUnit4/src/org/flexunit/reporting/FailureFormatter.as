@@ -7,14 +7,17 @@ package org.flexunit.reporting {
 	import org.hamcrest.AssertionError;
 	
 	/**
-	 * Responsible for formatting potential failures
+	 * The <code>FailureFormatter</code> is responsible for formatting potential failures.
 	 */
 	public class FailureFormatter {
 		
 		/**
-		 * Returns a boolean indicating whether the the error parameter is an actual failure or an expected failure
+		 * Returns a Boolean indicating whether the the provided <code>error</code> is an actual failure or 
+		 * if the <code>error</code> is an expected failure.
 		 * 
-		 * @param error The error that was thrown
+		 * @param error The Error to check and determine if it is an actual or expected Error.
+		 * 
+		 * @return A Boolean value indicating whehter <code>error</code> was an actual or expected Error.
 		 */
 		//Determines if this is a failure or Error for reporting purposes
 		//This will eventually need to be dynamic, but this will get us started
@@ -29,11 +32,11 @@ package org.flexunit.reporting {
 		}
 		
 		/**
-		 * Filters XML characters out of a String
+		 * Filters XML characters out of a provided <code>message</code>.
 		 * 
-		 * @param message The String that will have XML characters filtered out of it
+		 * @param message The String that will have XML characters filtered out of it.
 		 * 
-		 * @return the input String without XML characters
+		 * @return the <code>message</code> without XML characters.
 		 */
 		public static function xmlEscapeMessage( message:String ):String {
 			var escape:XML = <escape/>;

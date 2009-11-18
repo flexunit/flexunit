@@ -28,16 +28,55 @@
 package flex.lang.reflect {
 	import flex.lang.reflect.utils.MetadataTools;
 	
+	/**
+	 * Used to create XML style methods for use with FlexUnit
+	 * These XML "methods" are then run through the associated
+	 * apply/invoke call and allowing FlexUnit to pull the results
+	 */
 	public class Method {
+		/**
+		 * @private
+		 */
 		private var _methodXML:XML;
+		
+		/**
+		 * @private
+		 */
 		private var _declaringClass:Class;
+		
+		/**
+		 * @private
+		 */
 		private var _name:String;
+		
+		/**
+		 * @private
+		 */
 		private var _parameterTypes:Array;
+		
+		/**
+		 * @private
+		 */
 		private var _returnType:Class;
+		
+		/**
+		 * @private
+		 */
 		private var _metaData:XMLList;
+		
+		/**
+		 * @private
+		 */
 		private var _isStatic:Boolean = false;
+		
+		/**
+		 * @private
+		 */
 		private var _elementType:Class;
 
+		/**
+		 * Retrieves the metadata attributed to the <code>Method</code>
+		 */
 		public function get metadata():XMLList {
 			if ( !_metaData ) {
 				_metaData = MetadataTools.nodeMetaData( methodXML );	
@@ -46,10 +85,16 @@ package flex.lang.reflect {
 			return _metaData;
 		}
 
+		/**
+		 * Retrieves the XML of the <code>Method</code>
+		 */
 		public function get methodXML():XML {
 			return _methodXML;
 		} 
 
+		/**
+		 * Retrieves the class from which the <code>Method</code> is derived.
+		 */
 		public function get declaringClass():Class {
 			if ( !_declaringClass ) {
 				_declaringClass = getDeclaringClassFromMeta( methodXML );
@@ -58,10 +103,16 @@ package flex.lang.reflect {
 			return _declaringClass;
 		} 
 
+		/**
+		 * Retrieves the name of the <code>Method</code>
+		 */
 		public function get name():String {
 			return _name;
 		} 
 
+		/**
+		 * Retrieves the types of the paramaters associated with the <code>Method</code>
+		 */
 		public function get parameterTypes():Array {
 			if ( !_parameterTypes ) {
 				_parameterTypes = getParameterTypes( methodXML );
@@ -70,6 +121,9 @@ package flex.lang.reflect {
 			return _parameterTypes;
 		} 
 
+		/**
+		 * Retrieves the return type of the <code>Method</code>
+		 */
 		public function get returnType():Class {
 			if ( !_returnType ) { 
 				_returnType = getReturnTypeFromMeta( methodXML );
@@ -78,6 +132,9 @@ package flex.lang.reflect {
 			return _returnType;
 		} 
 
+		/**
+		 * If the return type is an array, retrieves the type of each element
+		 */
 		public function get elementType():Class {
 			if ( _elementType ) {
 				return _elementType;
@@ -98,10 +155,16 @@ package flex.lang.reflect {
 			return _elementType;
 		}
 
+		/**
+		 * Returns whether the method is static or not
+		 */
 		public function get isStatic():Boolean {
 			return _isStatic;
 		} 
 		
+		/**
+		 * @private
+		 */
 		private function getFunction( obj:Object ):Function {
 			var method:Function;
 
@@ -114,6 +177,19 @@ package flex.lang.reflect {
 			return method;			
 		}
 		
+		/**
+		 * Calls <code>apply</code> associated with the method
+		 * 
+		 * <p>
+		 * @param obj the item to call
+		 * @argArray the paramaters to call with apply, if any
+		 * 
+		 * <p>
+		 * @return result of the apply
+		 * 
+		 * <p>
+		 * @see #invoke()
+		 */
 		public function apply( obj:Object, argArray:* ):* {
 			var method:Function = getFunction( obj );
 			var returnVal:Object;
@@ -127,6 +203,18 @@ package flex.lang.reflect {
 			return returnVal;
 		}
 
+		/**
+		 * Calls <code>apply</code> associated with the method
+		 * 
+		 * <p>
+		 * @param obj the item to call
+		 * @args the paramaters to call with apply, if any
+		 * 
+		 * <p>
+		 * @return result of the apply
+		 * <p>
+		 * @see #apply()
+		 */
 		public function invoke( obj:Object, ...args ):Object {
 			var method:Function = getFunction( obj );
 			var returnVal:Object;
@@ -140,18 +228,30 @@ package flex.lang.reflect {
 			return returnVal;
 		}
 
+		/**
+		 * @private
+		 */
 		private static function getDeclaringClassFromMeta( methodXML:XML ):Class {
 			return Klass.getClassFromName( methodXML.@declaredBy );
 		} 
 
+		/**
+		 * @private
+		 */
 		private static function getReturnTypeFromMeta( methodXML:XML ):Class {
 			return Klass.getClassFromName( methodXML.@returnType );
 		} 
 		
+		/**
+		 * @private
+		 */
 		private static function getParameterClass( parameter:XML ):Class {
 			return Klass.getClassFromName( parameter.@type );
 		}
 
+		/**
+		 * @private
+		 */
 		private static function getParameterTypes( methodXML:XML ):Array {
 			var paramsLength:int = 0;
 			var paramArray:Array;
@@ -172,14 +272,41 @@ package flex.lang.reflect {
 			return paramArray;
 		}
 
+		/**
+		 * Tests if the <code>Method</code> has the paramater metadata
+		 * 
+		 * <p>
+		 * @param name of the metadata
+		 * 
+		 * <p>
+		 * @return <code>true</code> if found, else <code>false</code>
+		 */
 		public function hasMetaData( name:String ):Boolean {
 			return MetadataTools.nodeHasMetaData( _methodXML, name );
 		}
 		
+		/**
+		 * Retrieves the value of the metadata defined by the paramater name with the paramater key.
+		 * If key is left blank, will match the first metadata with the paramater name
+		 * 
+		 * <p>
+		 * @param name of the metadata
+		 * @param key matching the name (<code>null</code> ok)
+		 * 
+		 * <p>
+		 * @return value of the metadata
+		 */
 		public function getMetaData( name:String, key:String="" ):String {
 			return MetadataTools.getArgValueFromMetaDataNode( _methodXML, name, key );
 		}
 
+		/**
+		 * <code>Method</code> Constructor
+		 * 
+		 * <p>
+		 * @param methodXML XML of the method to create
+		 * @param isStatic specifies wether the method is static or not
+		 */
 		public function Method( methodXML:XML, isStatic:Boolean=false ) {
 			_methodXML = methodXML;
 			_isStatic = isStatic;

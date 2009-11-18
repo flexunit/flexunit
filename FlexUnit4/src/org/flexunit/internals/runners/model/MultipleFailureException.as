@@ -60,7 +60,7 @@ package org.flexunit.internals.runners.model {
 		/** 
 		 * Returns the MultipleFailureException after adding the additional failure to array of failures.
 		 * 
-		 * @param error The failure to add to the array of failures
+		 * @param error The failure to add to the array of failures.
 		 */
 		public function addFailure( error:Error ):MultipleFailureException {
 			//Create an error array if no errors were initially provided

@@ -30,7 +30,8 @@ package org.flexunit.token {
 	import org.flexunit.runner.IRunner;
 	
 	/**
-	 * Responsible for indicating the status of <code>IAsyncRunListener</code>
+	 * The <code>AsyncListenersToken</code> is responsible for indicating the status of <code>IAsyncRunListener</code>s
+	 * and indicating when the <code>IAsyncRunListener</code>s are ready or have completed.
 	 */
 	public class AsyncListenersToken {
 		private var methodsEntries:Array;
@@ -40,7 +41,7 @@ package org.flexunit.token {
 		private var _runner:IRunner;
 		
 		/**
-		 * Returns an instance of the <code>IRunner</code> associated with the AsyncListenersToken
+		 * Returns an instance of the <code>IRunner</code> associated with the <code>AsyncListenersToken</code>.
 		 */
 		public function get runner():IRunner {
 			return _runner;
@@ -51,11 +52,12 @@ package org.flexunit.token {
 		}
 		
 		/**
-		 * Addes a notification method to an Array of notification methods
+		 * Adds a notification method to the <code>AsyncListenersToken</code> and returns the token.
 		 * 
-		 * @param method The notification method to add
+		 * @param method A <code>Function</code> that will be invoked when the <code>AsyncListenersToken</code>
+		 * are ready or have completed.
 		 * 
-		 * @return the current instance of the AsyncListenersToken
+		 * @return this <code>AsyncListenersToken</code> with the added <code>method</code>.
 		 */
 		public function addNotificationMethod( method:Function ):AsyncListenersToken {
 			if (methodsEntries == null)
@@ -67,7 +69,7 @@ package org.flexunit.token {
 		}
 		
 		/**
-		 * Calls each notification method and passes the current <code>IRunner</code> to that method
+		 * Calls each notification method and passes the current <code>IRunner</code> to that method.
 		 */
 		public function sendReady():void {
 			if ( methodsEntries ) {
@@ -78,7 +80,7 @@ package org.flexunit.token {
 		}
 		
 		/**
-		 * Calls each notification method and passes the current <code>IRunner</code> to that method
+		 * Calls each notification method and passes the current <code>IRunner</code> to that method.
 		 */
 		public function sendComplete():void {
 			if ( methodsEntries ) {

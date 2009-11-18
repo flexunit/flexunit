@@ -85,7 +85,7 @@ package org.flexunit.internals.runners.statements {
 		 * @param method The <code>FrameworkMethod</code> to check to see if it has a timeout.
 		 * 
 		 * @return a String indicating the length of the the timeout if the <code>FrameworkMethod</code>
-		 * contains metadata that indicates the method contains a timeout; otherwise, a value of null
+		 * contains metadata that indicates the method contains a timeout; otherwise, a value of <code>null</code>
 		 * will be returned.
 		 */
 		public static function hasTimeout( method:FrameworkMethod ):String {

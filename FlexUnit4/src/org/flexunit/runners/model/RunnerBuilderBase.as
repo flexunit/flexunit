@@ -35,15 +35,20 @@ package org.flexunit.runners.model {
 
 	//TODO: class description needed, similar to IRunnerBuilder's? Reference IRunnerBuilder?
 	/**
-	 * Responsible for building runners for a test class' child classes
+	 * The <code>RunnerBuilderBase</code> is responsible for determining what runner is needed in order to run
+	 * a particular test class.
 	 */
 	public class RunnerBuilderBase implements IRunnerBuilder {
 		private var parents:Dictionary = new Dictionary( true );
 
 		/**
-		 * Always returns an IRunner, even if it is just one that prints an error instead of running tests.
-		 * @param testClass class to be run
-		 * @return an IRunner
+		 * Returns an <code>IRunner</code> that can safely run the provided <code>testClass</code>.
+		 * An <code>IRunner</code> will always be returned, even if it is just one that prints an error 
+		 * instead of running tests.
+		 * 
+		 * @param testClass The class to for which to determine an <code>IRunner</code>.
+		 * 
+		 * @return an <code>IRunner</code> that can run the <code>testClass</code>.
 		 */
 		public function safeRunnerForClass( testClass:Class ):IRunner {
 			try {
@@ -56,10 +61,15 @@ package org.flexunit.runners.model {
 		}
 		
 		/**
-		 * Constructs and returns a list of IRunners, one for each child class in
-		 * {@code children}.  Care is taken to avoid infinite recursion:
+		 * Constructs and returns a list of <code>IRunner</code>s, one for each child class in
+		 * <code>children</code>.  Care is taken to avoid infinite recursion:
 		 * this builder will throw an exception if it is requested for another
-		 * runner for {@code parent} before this call completes.
+		 * runner for <code>parent</code> before this call completes.
+		 * 
+		 * @param parent The parent class that contains the <code>children</code>.
+		 * @param children The child classes for which to find <code>IRunner</code>.
+		 * 
+		 * @return a list of <code>IRunner</code>s, one for each child class.
 		 */
 		public function runners( parent:Class, children:Array ):Array {
 			addParent(parent);
@@ -77,11 +87,11 @@ package org.flexunit.runners.model {
 		}
 		
 		/**
-		 * Returns an array of runner that can run the provided array of children
+		 * Returns an <code>Array</code> of runner that can run the provided <code>children</code>.
 		 * 
-		 * @param children An array that consists of child classes of the parent class
+		 * @param children An <code>Array</code> that consists of child classes of the parent class.
 		 * 
-		 * @return an array of runners that can run the child classes
+		 * @return an <code>Array</code> of runners that can run the child classes.
 		 */
 		private function localRunners( children:Array ):Array {
 			var runners:Array = new Array();
@@ -108,23 +118,24 @@ package org.flexunit.runners.model {
 		}
 		
 		/**
-		 * Returns an <code>IRunner</code> for a specific testClass
+		 * Returns an <code>IRunner</code> for a specific <code>testClass</code>.
 		 * 
-		 * @param testClass The test class to find a runner for
+		 * @param testClass The test class for which to determine an <code>IRunner</code>.
 		 * 
-		 * @return an runner that will run the test class
+		 * @return an <code>IRunner</code> that will run the <code>testClass</code>.
 		 */
 		public function runnerForClass( testClass:Class ):IRunner {
 			return null;
 		}
 		
 		/**
-		 * Checks to see if the parent class is already in the parents dictionary; if it is, an exception is thrown,
-		 * if not, the parent is added to the dictionary
+		 * Checks to see if the <code>parent</code> is already in the parents dictionary; if it is, an exception is thrown,
+		 * if not, the <code>parent</code> is added to the dictionary.
 		 * 
-		 * @param parent The parent class to add to the dictionary
+		 * @param parent The parent class to add to the dictionary.
 		 * 
-		 * @throws InitializationError if the parent is already in the parents dictionary
+		 * @throws org.flexunit.internals.runners.InitializationError Thrown if the <code>parent</code> is already in the 
+		 * parents dictionary.  This could be caused due to a SuiteClass or a child SuiteClass containing itself.
 		 */
 		private function addParent( parent:Class ):Class {
 			if ( parent ) {
@@ -142,9 +153,9 @@ package org.flexunit.runners.model {
 		}
 		
 		/**
-		 * Removes the parent class from the parents dictionary
+		 * Removes the <code>parent</code> from the parents dictionary.
 		 * 
-		 * @param parent The parent class to remove from the dictionary
+		 * @param parent The parent class to remove from the dictionary.
 		 */
 		private function removeParent( parent:Class ):void {
 			if ( parent ) {

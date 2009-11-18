@@ -27,17 +27,18 @@
  **/ 
 package org.flexunit.utils {
 	/**
-	 * Helps format class names.
+	 * The <code>ClassNameUtil</code> is responsible for assisting in the formatting of class names.
 	 */
 	public class ClassNameUtil {
 		import flash.utils.getQualifiedClassName;
-		
+
 		/**
-		 * Returns a logger friendly class name for a given object
+		 * Returns a logger friendly class name for the provided <code>instance</code>.  The
+		 * normal qualified class name will have all "::" and "." replaced with underscores.
 		 * 
-		 * @param instance The Object to get the name for
+		 * @param instance The Object for which to obtain a logger friendly class name.
 		 * 
-		 * @return a qualified path name with all "::" and "." replaced with underscores
+		 * @return a qualified path name with all "::" and "." replaced with underscores.
 		 */
 		public static function getLoggerFriendlyClassName( instance:Object ):String {
 			var periodReplace:RegExp = /\./g;
@@ -49,10 +50,7 @@ package org.flexunit.utils {
 
 			return fullname;
 		}
-		
-		/**
-		 * Constructor.
-		 */
+
 		public function ClassNameUtil() {
 		}
 	}

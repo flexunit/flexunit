@@ -85,7 +85,7 @@ package org.flexunit.internals.runners.statements {
 		 * @param method The <code>FrameworkMethod</code> to check to see if its expecting an exception.
 		 * 
 		 * @return a String containing the qualified path name of the expected exception if the <code>FrameworkMethod</code>
-		 * contains metadata that indicates the method is expecting an exception; otherwise, a value of null will be returned.
+		 * contains metadata that indicates the method is expecting an exception; otherwise, a value of <code>null</code> will be returned.
 		 */
 		public static function hasExpected( method:FrameworkMethod ):String {
 			//There is conflicting docs in the JUnit world about expects versus expected being the right metadata for this

@@ -76,7 +76,10 @@ package org.flexunit.runner {
 
 		//Just keep theories linked in until we decide how to deal with it
 		private var theory:Theories;
-
+		
+		/**
+		 * Returns the version number.
+		 */
 		public static function get version():String {
 			return "4.0.0b2";
 		}
@@ -204,7 +207,12 @@ package org.flexunit.runner {
 
 			finishRun( runListener );
 		}
-
+		
+		/**
+		 * Notifies that the <code>runListener</code> that the test run has finished.
+		 * 
+		 * @param runListener The listern to notify about the test run finishing.
+		 */
 		private function finishRun( runListener:RunListener ):void {
 			notifier.fireTestRunFinished( runListener.result );
 			removeListener( runListener );

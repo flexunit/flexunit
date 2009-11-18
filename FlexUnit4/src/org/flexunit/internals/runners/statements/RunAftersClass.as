@@ -32,7 +32,8 @@ package org.flexunit.internals.runners.statements
 	import org.flexunit.runners.model.FrameworkMethod;
 	
 	/**
-	 * Determine if a specific test class contains 'AfterClass' metadata and should be run after all of the tests in the test class have finished
+	 * The <code>RunAftersClass</code> is a <code>SequencerWithDecoration</code> for potential methods that have
+	 * <code>AfterClass</code> metadata and should be run after all of the tests in the test class have finished.
 	 */
 	public class RunAftersClass extends RunAfters implements IAsyncStatement {
 		
@@ -47,8 +48,8 @@ package org.flexunit.internals.runners.statements
 		/**
 		 * Constructor.
 		 * 
-		 * @param afters An array containing all statements that need to be executed after all tests in the class have executed
-		 * @param target The test class
+		 * @param afters An array containing all statements that need to be executed after all tests in the class have executed.
+		 * @param target The test class.
 		 */
 		public function RunAftersClass( afters:Array, target:Object ) {
 			super( afters, target );
@@ -56,8 +57,7 @@ package org.flexunit.internals.runners.statements
 
 		/**
 		 * @private 
-		 * @return 
-		 * 
+		 * @return  
 		 */
 		override public function toString():String {
 			return "RunAftersClass";

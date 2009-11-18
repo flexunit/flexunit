@@ -34,7 +34,7 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.utils.ClassNameUtil;
 	
 	/**
-	 * Sequences statments that are to be executed
+	 * Sequences statments that are to be executed.
 	 */
 	public class StatementSequencer extends AsyncStatementBase implements IAsyncStatement {
 		protected var queue:Array;
@@ -43,7 +43,7 @@ package org.flexunit.internals.runners.statements {
 		/**
 		 * Constructor.
 		 * 
-		 * @param queue An <code>Array</code> containing object that implement <code>IAsyncStatment</code>
+		 * @param queue An <code>Array</code> containing object that implement <code>IAsyncStatment</code>.
 		 */
 		public function StatementSequencer( queue:Array=null ) {
 			super();
@@ -62,9 +62,9 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Adds an object that implements <code>IAsyncStatement</code> to the queue of statments to execute
+		 * Adds an object that implements <code>IAsyncStatement</code> to the queue of statments to execute.
 		 * 
-		 * @param child The object that implements <code>IAsyncStatement</code> to add
+		 * @param child The object that implements <code>IAsyncStatement</code> to add.
 		 */
 		public function addStep( child:IAsyncStatement ):void {
 			if ( child ) {
@@ -73,9 +73,9 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Evaluates the child
+		 * Evaluates the child if the child is an <code>IAsyncStatement</code>.
 		 * 
-		 * @param child The child object to be evaluated
+		 * @param child The child object to be evaluated.
 		 */
 		protected function executeStep( child:* ):void {
 			if ( child is IAsyncStatement ) {
@@ -84,9 +84,9 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Starts evaluating the queue of statements
+		 * Starts evaluating the queue of statements.
 		 * 
-		 * @param parentToken The token to be notified when the statements have finished running
+		 * @param parentToken The token to be notified when the statements have finished running.
 		 */
 		public function evaluate( parentToken:AsyncTestToken ):void {
 			this.parentToken = parentToken;
@@ -94,9 +94,9 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Executes the first step in the sequence
+		 * Executes the first step in the sequence.
 		 * 
-		 * @param parentToken The token to be notified when the setp has finished running
+		 * @param parentToken The token to be notified when the setp has finished running.
 		 */
 		public function handleChildExecuteComplete( result:ChildResult ):void {
 			var step:*;
@@ -119,9 +119,8 @@ package org.flexunit.internals.runners.statements {
 
 		/**
 		 * Queues errors and sends them, either using MultipleFailureException
-		 * or the super sendComplete, if there is only one error in the queue. 
+		 * or the super sendComplete, if there is only one error in the queue.<p>
 		 * 
-		 * @param error The Error to send
 		 * @inheritDoc
 		 */
 		override protected function sendComplete( error:Error=null ):void {
@@ -144,8 +143,8 @@ package org.flexunit.internals.runners.statements {
 
 		/**
 		 * Returns the current queue of statements that are in the sequence. 
-		 * @return A string representing the sequence queue.
 		 * 
+		 * @return a string representing the sequence queue.
 		 */
 		override public function toString():String {
 			var sequenceString:String = "StatementSequencer :\n";

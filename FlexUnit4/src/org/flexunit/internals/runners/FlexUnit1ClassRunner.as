@@ -52,6 +52,9 @@ package org.flexunit.internals.runners {
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.utils.ClassNameUtil;
 	
+	/**
+	 * The <code>FlexUnit1ClassRunner</code> is responsible for running FlexUnit1 classes.
+	 */
 	public class FlexUnit1ClassRunner implements IRunner, IFilterable {
 
 		private var test:Test;
@@ -60,7 +63,12 @@ package org.flexunit.internals.runners {
 		private var numTestsRun:int = 0;
 		private var filterRef:Filter = null;
 		private var testCompletedToken : AsyncTestToken;
-
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param klassOrTest The class or test to run.
+		 */
 		public function FlexUnit1ClassRunner( klassOrTest:* ) {
 			super();
 
@@ -80,23 +88,47 @@ package org.flexunit.internals.runners {
 				}
 			}
 		}
-
+		
+		/**
+		 * Returns an <code>IDescription</code> for <code>child</code>.
+		 * 
+		 * @param child The child to describe.
+		 * 
+		 * @return an <code>IDescription</code> of the provided <code>child</code>.
+		 */
 		protected function describeChild( child:* ):IDescription {
 			var method:FrameworkMethod = FrameworkMethod( child );
 			return Description.createTestDescription( klassOrTest, method.name, method.metadata);
 		}
 		
+		/**
+		 * Returns a Boolean value indicating whether the <code>item</code> should run.
+		 * 
+		 * @param item The item to check to see if it should run.
+		 * 
+		 * @return a Boolean value indicating whether the <code>item</code> should run .
+		 */
 		private function shouldRun( item:* ):Boolean {
 			return filterRef == null || filterRef.shouldRun( describeChild( item ) );
 		}
 		
+		/**
+		 * Returns an <code>Array</code> of methods that should run that are contained in
+		 * <code>klassInfo</code>.
+		 * 
+		 * @param klassInfo The <code>Klass</code> used to find methods.
+		 * @param filter
+		 * 
+		 * @return an <code>Array</code> of methods that should run.
+		 */
 		private function getMethodListFromFilter( klassInfo:Klass, filter:Filter ):Array {
 			var list:Array = [];
 
 			for ( var i:int=0; i<klassInfo.methods.length; i++ ) {
 				var method:Method = klassInfo.methods[ i ] as Method;
 				var frameworkMethod:FrameworkMethod = new FrameworkMethod( method );
-
+				
+				//Determine if the method should run
 				if ( shouldRun( frameworkMethod ) ) {
 					list.push( method.name );
 				}  
@@ -105,6 +137,13 @@ package org.flexunit.internals.runners {
 			return list;
 		}
 		
+		/**
+		 * Creates a <code>TestSuite</code> that is filtered based on the provided <code>Filter</code>.
+		 * 
+		 * @param filter The <code>Filter</code> to apply to the class or test.
+		 * 
+		 * @return a <code>TestSuite</code> that is filtered based on the provided <code>Filter</code>.
+		 */
 		private function createTestSuiteWithFilter( filter:Filter = null ):Test {
 			if ( !filter ) {
 				return new TestSuite( klassOrTest );
@@ -135,12 +174,25 @@ package org.flexunit.internals.runners {
 				return suite;
 			}
 		}
-
+		
+		/**
+		 * Returns the <code>Class</code> for a provided <code>Test</code>.
+		 * 
+		 * @param test The <code>Test</code> for which to obtain the <code>Class</code>.
+		 * 
+		 * @reutrn the <code>Class</code> for a provided <code>Test</code>.
+		 */
 		public static function getClassFromTest( test:Test ):Class {
 			var name:String = getQualifiedClassName( test );
 			return getDefinitionByName( name ) as Class;		
 		}
-
+		
+		/**
+		 * Runs the test class and updates the <code>notifier</code> on the status of running the tests.
+		 * 
+		 * @param notifier The notifier that is notified about issues encountered during the execution of the test class.
+		 * @param previousToken The token that is to be notified when the runner has finished execution of the test class.
+		 */
 		public function run( notifier:IRunNotifier, previousToken:AsyncTestToken ):void {
 			var token:AsyncTestToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			token.parentToken = previousToken;
@@ -154,6 +206,11 @@ package org.flexunit.internals.runners {
 			test.runWithResult(result);
 		}
 		
+		/**
+		 * Handles the results of a single test completing.
+		 * 
+		 * @param result The results of the running test.
+		 */
 		protected function handleTestComplete( result:ChildResult ):void {
 			//trace( numTestsRun + ' ' + totalTestCount );
 			if ( ++numTestsRun == totalTestCount ) {
@@ -173,25 +230,50 @@ package org.flexunit.internals.runners {
 			}
 		}
 		
+		/**
+		 * Handles the results of the test class completing.
+		 * 
+		 * @param event
+		 */
 		private function handleAllTestsComplete( event : TimerEvent ) : void
 		{
 			(event.target as Timer).removeEventListener( TimerEvent.TIMER, handleAllTestsComplete );
 			testCompletedToken.parentToken.sendResult();
 		}
-
+		
+		/**
+		 * Creates a <code>TestListener</code> using a provided <code>notifier</code> and
+		 * <code>token</code>.
+		 * 
+		 * @param notifier The notifier to notify about the status of the test.
+		 * @param token The token to nofity when the test has finished.
+		 * 
+		 * @return a <code>TestListener</code>.
+		 */
 		public static function createAdaptingListener( notifier:IRunNotifier, token:AsyncTestToken ):TestListener {
 			return new OldTestClassAdaptingListener(notifier, token );
 		}
 		
 		private var cachedDescription:IDescription;
+		/**
+		 * Retruns an <code>IDescription</code> of the test class that the runner is running.
+		 */
 		public function get description():IDescription {
+			//Determine if a description has already been created
 			if ( !cachedDescription ) {
 				cachedDescription = makeDescription( test );
 			}
 
 			return cachedDescription;
 		}
-	
+		
+		/**
+		 * Generates an <code>IDescription</code> for the provided <code>Test</code>.
+		 * 
+		 * @param test The <code>Test</code> ufor which to generate the <code>IDescription</code>.
+		 * 
+		 * @return an <code>IDescription</code> for the provided <code>Test</code>.
+		 */
 		private function makeDescription( test:Test ):IDescription {
 			var name:String;
 			var description:IDescription;
@@ -228,7 +310,7 @@ package org.flexunit.internals.runners {
 				return Description.createSuiteDescription( test.className );
 			}
 		}
-	
+		
 		public function filter( filter:Filter ):void {
 			if ( test is IFilterable ) {
 				var adapter:IFilterable = IFilterable( test );

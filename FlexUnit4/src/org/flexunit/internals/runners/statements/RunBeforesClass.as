@@ -31,7 +31,8 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.runners.model.FrameworkMethod;
 
 	/**
-	 * Determine if a specific test class contains 'BeforeClass' metadata and should be run before the test class is created
+	 * The <code>RunBeforesClass</code> is a <code>SequencerWithDecoration</code> for potential methods that have
+	 * <code>BeforeClass</code> metadata and should be run before the test class has been created.
 	 */
 	public class RunBeforesClass extends RunBefores implements IAsyncStatement {
 		
@@ -46,8 +47,8 @@ package org.flexunit.internals.runners.statements {
 		/**
 		 * Constructor.
 		 * 
-		 * @param befores An array containing all statements that need to be executed before the class is created
-		 * @param target The test class
+		 * @param befores An array containing all statements that need to be executed before the class is created.
+		 * @param target The test class.
 		 */
 		public function RunBeforesClass( befores:Array, target:Object ) {
 			super( befores, target );
@@ -56,7 +57,6 @@ package org.flexunit.internals.runners.statements {
 		/**
 		 * @private 
 		 * @return 
-		 * 
 		 */
 		override public function toString():String {
 			return "RunBeforesClass";
