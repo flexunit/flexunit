@@ -1,3 +1,30 @@
+/**
+ * Copyright (c) 2009 Digital Primates IT Consulting Group
+ * 
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following
+ * conditions:
+ * 
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ * 
+ * @author     Michael Labriola 
+ * @version    
+ **/ 
 package org.flexunit.experimental.runners.statements {
 	import org.flexunit.experimental.theories.IPotentialAssignment;
 	import org.flexunit.experimental.theories.internals.Assignments;
@@ -62,15 +89,15 @@ package org.flexunit.experimental.runners.statements {
 			this.frameworkMethod = frameworkMethod;
 			this.errors = new Array();
 			
-			//Create a new token that will track the assignment of parameters to the theory method
+			//Create a new token that will alert this class when the provided statement has completed
 			myToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			myToken.addNotificationMethod( handleChildExecuteComplete );
 		}
 		
 		/**
-		 * Determines if all parameters have been assigned for a particular configuration of a theory method.  If they have all been
-		 * assigned, run the theory with the particular parameter configuration.  If all parameter values have not been assinged,
-		 * determine what parameters can be provided to the next unassigned parameter.
+		 * Determines if all parameters have been assigned for a particular configuration of a theory method.  If they have 
+		 * all been assigned, run the theory with the particular parameter configuration.  If all parameter values have not 
+		 * been assinged, determine what parameters can be provided to the next unassigned parameter.
 		 * <p>
 		 * @param parentToken The token to be notified when the theory method has finished running for a particluar permutation
 		 * of parameters.
@@ -149,10 +176,10 @@ package org.flexunit.experimental.runners.statements {
 		}
 		
 		/**
-		 * Runs the theory for the completed set of assigned parameters.
+		 * Runs the theory for the <code>complete</code> set of assigned parameters.
 		 * <p>
-		 * @param complete Contains a permutation of current assigned parameter / value pairs to be supplied to the theory method test
-		 * for this particular configuration.
+		 * @param complete Contains a permutation of current assigned parameter / value pairs to be supplied to the 
+		 * theory method test for this particular configuration.
 		 */
 		protected function runWithCompleteAssignment( complete:Assignments ):void {
 			//trace( "Complete" );

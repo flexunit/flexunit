@@ -37,6 +37,8 @@ package org.flexunit.runners.model {
 	/**
 	 * The <code>RunnerBuilderBase</code> is responsible for determining what runner is needed in order to run
 	 * a particular test class.
+	 * 
+	 * @see org.flexunit.internals.builders.AllDefaultPossibilitiesBuilder
 	 */
 	public class RunnerBuilderBase implements IRunnerBuilder {
 		/**
@@ -46,8 +48,7 @@ package org.flexunit.runners.model {
 
 		/**
 		 * Returns an <code>IRunner</code> that can safely run the provided <code>testClass</code>.
-		 * An <code>IRunner</code> will always be returned, even if it is just one that prints an error 
-		 * instead of running tests.
+		 * If no suitable <code>IRunner</code> can be found, a value of <code>null</code> is returned.
 		 * 
 		 * @param testClass The class to for which to determine an <code>IRunner</code>.
 		 * 

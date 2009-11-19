@@ -36,7 +36,8 @@ package org.flexunit.experimental.runners.statements
 	import org.flexunit.token.ChildResult;
 	
 	/**
-	 * Responsible for reporting whether the theory method with specific arguments was successful.
+	 * The <code>TheoryBlockRunnerStatement</code> is responsible for reporting whether the theory 
+	 * method with specific arguments was successful.
 	 */
 	public class TheoryBlockRunnerStatement extends AsyncStatementBase implements IAsyncStatement {
 		use namespace classInternal;
@@ -66,7 +67,7 @@ package org.flexunit.experimental.runners.statements
 			this.anchor = anchor;
 			this.complete = complete;
 			
-			//Create a new token that will track the execution of the theory method test
+			//Create a new token that will alert this class when the provided statement has completed
 			myToken = new AsyncTestToken( "TheoryBlockRunnerStatement" );
 			myToken.addNotificationMethod( handleChildExecuteComplete );
 		}	

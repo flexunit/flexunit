@@ -29,7 +29,8 @@
 package org.flexunit.token {
 	
 	/**
-	 * The <code>AsyncTestToken</code> is responsible for indicating that a given task has completed.
+	 * The <code>AsyncTestToken</code> is responsible for indicating that a given task has completed.  The token
+	 * can then notify other tasks and provide the results of the just completed task,.
 	 */
 	dynamic public class AsyncTestToken {
 		/**
@@ -68,7 +69,7 @@ package org.flexunit.token {
 		}
 		
 		/**
-		 * Adds a notification method to the <code>AsyncTestToken</code> and returns the token.
+		 * Adds a notification <code>method</code> to the <code>AsyncTestToken</code> and returns the token.
 		 * 
 		 * @param method A <code>Function</code> that will be invoked when results are sent.
 		 * @param debugClassName The name of the class.
