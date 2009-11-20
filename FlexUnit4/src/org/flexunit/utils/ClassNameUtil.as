@@ -50,7 +50,10 @@ package org.flexunit.utils {
 
 			return fullname;
 		}
-
+		
+		/**
+		 * Constructor.
+		 */
 		public function ClassNameUtil() {
 		}
 	}

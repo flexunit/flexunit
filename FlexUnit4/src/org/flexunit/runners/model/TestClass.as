@@ -32,7 +32,8 @@ package org.flexunit.runners.model {
 	import flex.lang.reflect.Method;
 	
 	/**
-	 * Wraps a class to be run, providing method validation and annotation searching
+	 * The <code>TestClass</code> wraps a class that is to be executing, providing method 
+	 * validation and annotation searching.
 	 */
 	public class TestClass {
 		/**
@@ -50,10 +51,14 @@ package org.flexunit.runners.model {
 
 	//TODO: I'm guessing JDK should be replaced with something else
 		/**
+		 * Constructor.
+		 * 
 		 * Creates a <code>TestClass</code> wrapping <code>klass</code>. Each time this
 		 * constructor executes, the class is scanned for annotations, which can be
 		 * an expensive process (we hope in future JDK's it will not be.) Therefore,
 		 * try to share instances of <code>TestClass</code> where possible.
+		 * 
+		 * @param klass The Class to wrap.
 		 */
 		public function TestClass( klass:Class ) {
 			this.klass = klass;
@@ -151,6 +156,11 @@ package org.flexunit.runners.model {
 		
 		/**
 		 * Returns, efficiently, all the non-overridden methods in this class and
+		 * its superclasses that contain the metadata tag <coede>metaTag</code>.
+		 * 
+		 * @param metaTag The tag used to locate the methods.
+		 * 
+		 * @return all the non-overridden methods in this class and
 		 * its superclasses that contain the metadata tag <coede>metaTag</code>.
 		 */
 		public function getMetaDataMethods( metaTag:String ):Array {

@@ -30,7 +30,7 @@ package org.flexunit.token {
 	import org.flexunit.runner.IRunner;
 	
 	/**
-	 * The <code>AsyncListenersToken</code> is responsible for indicating the status of <code>IAsyncRunListener</code>s
+	 * The <code>AsyncListenersToken</code> is responsible for indicating the statuses of <code>IAsyncRunListener</code>s
 	 * and indicating when the <code>IAsyncRunListener</code>s are ready or have completed.
 	 */
 	public class AsyncListenersToken {

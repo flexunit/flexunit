@@ -31,7 +31,8 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.token.AsyncTestToken;
 	
 	/**
-	 * Responsible for throwing an failure error
+	 * The <code>Fail</code> class is responsible for throwing a failure error when the 
+	 * statement is evaluated.
 	 */
 	public class Fail extends AsyncStatementBase implements IAsyncStatement {
 		/**
@@ -42,16 +43,16 @@ package org.flexunit.internals.runners.statements {
 		/**
 		 * Constructor.
 		 * 
-		 * @param error The <code>Error</code> to be thrown
+		 * @param error The <code>Error</code> to be thrown when this statement is evalutated.
 		 */
 		public function Fail( error:Error ) {
 			this.error = error;
 		}
 		
 		/**
-		 * Throws an error
-		 * @param previousToken AsyncTestToken - Passed in, but not used in the Error.
+		 * Throws the error that was initially provided to <code>Faikl</code>.
 		 * 
+		 * @param previousToken AsyncTestToken - Passed in, but not used in this method.
 		 */
 		public function evaluate( previousToken:AsyncTestToken ):void {
 			throw error;

@@ -28,12 +28,32 @@
 package org.flexunit.runner {
 	import org.flexunit.runner.manipulation.ISort;
 	
+	/**
+	 * The <code>IRequest</code> interface is an interface used by classes that want to specify tests 
+	 * that are to be executed.
+	 */
 	public interface IRequest {
+		/**
+		 * Returns that <code>ISort</code> that is being used by this <code>IRequest</code>.
+		 */
 		function get sort():ISort;
 		function set sort( value:ISort ):void;
-
+		
+		/**
+		 * Returns an <code>IRunner</code> for this <code>IRequest</code>.
+		 */
 		function get iRunner():IRunner;
 		
+		/**
+		 * Creates a request that is filtered based on the provided
+		 * <code>filterOrDescription</code> which is either an <code>Filter</code>
+		 * or an <code>IDescription</code>.
+		 * 
+		 * @param filterOrDescription The <code>Filter</code> or <code> Description</code> 
+		 * to apply to this <code>Request/code>.
+		 * 
+		 * @return a <code>Request</code> that has been filtered.
+		 */
 		function filterWith( filterOrDescription:* ):Request;
 	}
 }

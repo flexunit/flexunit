@@ -34,7 +34,8 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.utils.ClassNameUtil;
 	
 	/**
-	 * Sequences statments that are to be executed.
+	 * The <code>StatementSequencer</code> is a class that is responsible for the sequencing of
+	 * statments that are to be executed.
 	 */
 	public class StatementSequencer extends AsyncStatementBase implements IAsyncStatement {
 		/**
@@ -62,7 +63,7 @@ package org.flexunit.internals.runners.statements {
 			this.queue = queue.slice();
 			this.errors = new Array();		
 			
-			//Create a new token that will track the execution of this statement seqeuence
+			//Create a new token that will alert this class when the provided statement has completed
 			myToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			myToken.addNotificationMethod( handleChildExecuteComplete );
 		}

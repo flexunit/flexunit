@@ -93,7 +93,7 @@ package org.flexunit.experimental.runners.statements
 			frameworkMethod = method;
 			this.testClass = testClass;
 			
-			//Create a new token that will track the execution of the theory
+			//Create a new token that will alert this class when the provided statement has completed
 			myToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			myToken.addNotificationMethod( handleMethodExecuteComplete );
 		}

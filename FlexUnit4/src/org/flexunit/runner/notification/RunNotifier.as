@@ -36,6 +36,9 @@ package org.flexunit.runner.notification {
 	 * <code>org.flexunit.runner.Runner#run(RunNotifier)</code>. Future evolution of this class is likely to 
 	 * move <code>#fireTestRunStarted(IDescription)</code> and <code>#fireTestRunFinished(Result)</code>
 	 * to a separate class since they should only be called once per run.
+	 * 
+	 * @see org.flexunit.runner.IRunner#run()
+	 * @see #fireTestRunFinished()
 	 */
 	public class RunNotifier implements IRunNotifier {
 		private var listeners:Array = new Array();
@@ -107,9 +110,8 @@ package org.flexunit.runner.notification {
 		 * Invoke to tell listeners that an atomic test flagged that it assumed
 		 * something false.
 		 * 
-		 * @param failure
-		 *            The description of the test that failed and the
-		 *            <code>AssumptionViolatedException</code> thrown
+		 * @param failure The description of the test that failed and the
+		 * <code>AssumptionViolatedException</code> thrown.
 		 */
 		public function fireTestAssumptionFailed( failure:Failure ):void {
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
@@ -141,6 +143,8 @@ package org.flexunit.runner.notification {
 		 * as listeners are likely to expect them to come in pairs.
 		 * 
 		 * @param description The description of the test that finished.
+		 * 
+		 * @see #fireTestStarted()
 		 */
 		public function fireTestFinished( description:IDescription ):void {
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
@@ -176,7 +180,7 @@ package org.flexunit.runner.notification {
 			listeners.unshift( listener );
 		}
 
-		/** Internal use only
+		/** Internal use only.
 		 */
 		public function removeListener( listener:IRunListener ):void {
 			for ( var i:int=0; i<listeners.length; i++ ) {

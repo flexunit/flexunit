@@ -34,19 +34,24 @@ package org.flexunit.async
 	import org.flexunit.internals.runners.statements.IAsyncHandlingStatement;
 	
 	/**
-	 * Contains static methods for handling asynchronous events.
+	 * The <code>Async</code> class contains static methods used in the handling of events in asynchronous
+	 * methods in a particular test case.
 	 */
 	public class Async
 	{	
 		/**
-		 * Creates an object that implements an <code>IAsyncHandlingStatement</code> and will either proceed or call the timeoutHandler based on whether the target has dispatched 
-		 * an event with the correct eventName within the timeout period.
+		 * Proceeds for a given <code>testCase</code> based on the <code>IAsyncHandlingStatement</code> that has been 
+		 * associated with the test when an event with the name of <code>eventName</code> is encountered by the 
+		 * <code>target</code>.  If the event named <code>eventName</code> is not encountered by the <code>target</code> 
+		 * within the specified <code>timeout</code> period, the <code>timeoutHandler</code> will be called.
 		 * 
-		 * @param testCase The current test class.
-		 * @param target The target to watch for the dispatched event.
-		 * @param eventName The name of the event to listen to that comes from the target.
-		 * @param timeout The length of time in milliseconds before the async call will timeout.
-		 * @param timeoutHandler The function that will be executed if the target does not dispatched the expected event before the timeout time is reached.
+		 * @param testCase The current asynchronous test case.
+		 * @param target The target that will listen for the dispatched <code>eventName</code>.
+		 * @param eventName The name of the event being listend for by the <code>target</code>.
+		 * @param timeout The length of time, in milliseconds, before the calling the <code>timeoutHandler</code>
+		 * if the <code>eventName</code> event is not dispatched.
+		 * @param timeoutHandler The function that will be executed if the <code>target<code> does not 
+		 * receive expected <code>eventName</code> before the <code>timeout</code> time is reached.
 		 */
 		public static function proceedOnEvent( testCase:Object, target:IEventDispatcher, eventName:String, timeout:int=500, timeoutHandler:Function = null ):void {
 			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
@@ -57,14 +62,17 @@ package org.flexunit.async
 		} 
 		
 		/**
-		 * Creates an object that implements an <code>IAsyncHandlingStatement</code> and will fail based on whether the target has dispatched 
-		 * an event with the correct eventName within the timeout period.
+		 * Fails for a given <code>testCase</code> based on the <code>IAsyncHandlingStatement</code> that has been 
+		 * associated with the test when an event with the name of <code>eventName</code> is encountered by the 
+		 * <code>target</code>.  If the event named <code>eventName</code> is not encountered by the <code>target</code> 
+		 * within the specified <code>timeout</code> period, the <code>testCase</code> will not fail.
 		 * 
-		 * @param testCase The current test class.
-		 * @param target The target to watch for the dispatched event.
-		 * @param eventName The name of the event to listen to that comes from the target.
-		 * @param timeout The length of time in milliseconds before the async call will timeout.
-		 * @param timeoutHandler The function that will be executed if the timeout time is reached.
+		 * @param testCase The current asynchronous test case.
+		 * @param target The target that will listen for the dispatched <code>eventName</code>.
+		 * @param eventName The name of the event being listend for by the <code>target</code>.
+		 * @param timeout The length of time, in milliseconds, before the calling the <code>timeoutHandler</code>
+		 * if the <code>eventName</code> event is not dispatched.
+		 * @param timeoutHandler
 		 */
 		public static function failOnEvent( testCase:Object, target:IEventDispatcher, eventName:String, timeout:int=500, timeoutHandler:Function = null ):void {
 			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
@@ -75,16 +83,22 @@ package org.flexunit.async
 		} 
 		
 		/**
-		 * Creates an object that implements an <code>IAsyncHandlingStatement</code> that will either call the eventHandler or the timeoutHandler
-		 * based on whether the target has dispatched an event with the correct eventName within the timeout period.
+		 * Handles a given <code>testCase</code> based on the <code>IAsyncHandlingStatement</code> that has been 
+		 * associated with the test when an event with the name of <code>eventName</code> is encountered by the 
+		 * <code>target</code>.  If the event named <code>eventName</code> is not encountered by the <code>target</code> 
+		 * within the specified <code>timeout</code> period, the <code>timeoutHandler</code> will be called.
 		 * 
-		 * @param testCase The current test class.
-		 * @param target The target to watch for the dispatched event.
-		 * @param eventName The name of the event to listen to that comes from the target.
-		 * @param eventHandler The function that will be executed if the the target dispatches an event with a name of eventName.
-		 * @param timeout The length of time in milliseconds before the async call will timeout.
-		 * @param passThroughData An Object that can be given information about the current test, this information will be available for both the eventHandler and timeoutHandler.
-		 * @param timeoutHandler The function that will be executed if the target does not dispatched the expected event before the timeout time is reached.
+		 * @param testCase The current asynchronous test case.
+		 * @param target The target that will listen for the dispatched <code>eventName</code>.
+		 * @param eventName The name of the event being listend for by the <code>target</code>.
+		 * @param eventHandler The function that will be executed if the the <code>target</code> dispatches an event with 
+		 * a name of <code>eventName</code> within the provided <code>timemout</code> period.
+		 * @param timeout The length of time, in milliseconds, before the calling the <code>timeoutHandler</code>
+		 * if the <code>eventName</code> event is not dispatched.
+		 * @param passThroughData An Object that can be given information about the current test, this information will be 
+		 * available to both the <code>eventHandler</code> and <code>timeoutHandler</code>.
+		 * @param timeoutHandler The function that will be executed if the <code>target<code> does not 
+		 * receive expected <code>eventName</code> before the <code>timeout</code> time is reached.
 		 */
 		public static function handleEvent( testCase:Object, target:IEventDispatcher, eventName:String, eventHandler:Function, timeout:int=500, passThroughData:Object = null, timeoutHandler:Function = null ):void {
 			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
@@ -95,14 +109,16 @@ package org.flexunit.async
 		} 
 		
 		/**
-		 * Creates an object that implements an <code>IAsyncHandlingStatement</code> and returns a function that will either call the eventHandler or the timeoutHandler
-		 * based on whether time has timed out.
+		 * Provides a handler function for the <code>testCase</code> based on the <code>IAsyncHandlingStatement</code> 
+		 * that has been associated with the test.
 		 * 
-		 * @param testCase The current test class.
-		 * @param eventHandler The function that will be executed if the timeout has not expired.
-		 * @param timeout The length of time in milliseconds before the async call will timeout.
-		 * @param passThroughData An Object that can be given information about the current test, this information will be available for both the eventHandler and timeoutHandler.
-		 * @param timeoutHandler The function that will be executed if the target does not dispatched the expected event before the timeout time is reached.
+		 * @param testCase The current asynchronous test case.
+		 * @param eventHandler The function that will be executed if the <code>timemout</code> period has not been reached.
+		 * @param timeout The length of time, in milliseconds, before the calling the <code>timeoutHandler</code>
+		 * if the <code>eventName</code> event is not dispatched.
+		 * @param passThroughData An Object that can be given information about the current test, this information will be 
+		 * available to both the <code>eventHandler</code> and <code>timeoutHandler</code>.
+		 * @param timeoutHandler The function that will be executed if the <code>timeout</code> period is reached.
 		 */
 		public static function asyncHandler( testCase:Object, eventHandler:Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):Function {
 			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
@@ -114,14 +130,16 @@ package org.flexunit.async
 		// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
 		// flex classes since it will cause errors.
 		/**
-		 * Creates an object that implements an <code>IAsyncHandlingStatement</code> and returns a function that will either call 
-		 * the responder or the timeoutHandler based on whether time has timed out.
+		 * Provides a handler function for the <code>testCase</code> based on the <code>IAsyncHandlingStatement</code> 
+		 * that has been associated with the test.
 		 * 
-		 * @param testCase The current test class.
-		 * @param responder The responder to handle the test when it succeeds of fails.
-		 * @param timeout The length of time in milliseconds before the async call will timeout.
-		 * @param passThroughData An Object that can be given information about the current test, this information will be available for both the eventHandler and timeoutHandler.
-		 * @param timeoutHandler The function that will be executed if the target does not dispatched the expected event before the timeout time is reached.
+		 * @param testCase The current asynchronous test case.
+		 * @param responder The responder that will be executed if the <code>timemout</code> period has not been reached.
+		 * @param timeout The length of time, in milliseconds, before the calling the <code>timeoutHandler</code>
+		 * if the <code>eventName</code> event is not dispatched.
+		 * @param passThroughData An Object that can be given information about the current test, this information will be 
+		 * available to both the <code>eventHandler</code> and <code>timeoutHandler</code>.
+		 * @param timeoutHandler The function that will be executed if the <code>timeout</code> period is reached.
 		 */
 		CONFIG::useFlexClasses
 		public static function asyncResponder( testCase:Object, responder:*, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):IResponder {

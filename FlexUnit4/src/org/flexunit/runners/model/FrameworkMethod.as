@@ -52,7 +52,11 @@ package org.flexunit.runners.model {
 		private var _method:Method;
 
 		/**
-		 * Returns a new <code>FrameworkMethod</code> for <code>method</code>.
+		 * Construcotr.
+		 * 
+		 * Returns a new <code>FrameworkMethod</code> for a provided<code>method</code>.
+		 * 
+		 * @param method The metadata for a particular test method.
 		 */
 		//We don't really have a method class, but we do have a chunk of XML that can describe our 
 		//method, so we will preserve it that way I also suspect we are going to need a class reference 
@@ -147,7 +151,16 @@ package org.flexunit.runners.model {
 			
 			return method;
 		} */
-
+		
+		/**
+		 * Calls the method with the provided set of <code>params</code> for the <code>target</code> class.
+		 * Once the method has finished execution, instruct the <code>parentToken</code> that the method
+		 * has finished running.
+		 * 
+		 * @param parentToken The <code>AsyncTestToken</code> to be notified when the method has been run.
+		 * @param target The class that contains the method.
+		 * @param params The parameters to be supplied to the method.
+		 */
 		public function applyExplosivelyAsync( parentToken:AsyncTestToken, target:Object, params:Array ):void {
 			this.parentToken = parentToken;
 
@@ -163,11 +176,23 @@ package org.flexunit.runners.model {
 		 * Returns the result of invoking this method on <code>target</code> with
 		 * parameters <code>params</code>. <code>InvocationTargetException</code>s thrown are
 		 * unwrapped, and their causes rethrown.
+		 * 
+		 * @param parentToken The <code>AsyncTestToken</code> to be notified when the method has been run.
+		 * @param target The class that contains the method.
+		 * @param params The parameters to be supplied to the method.
 		 */
 		public function invokeExplosivelyAsync( parentToken:AsyncTestToken, target:Object, ...params ):void {
 			applyExplosivelyAsync( parentToken, target, params );
 		}
-
+		
+		/**
+		 * Calls the method with the provided set of <code>params</code> for the <code>target</code> class.
+		 * 
+		 * 
+		 * @param parentToken The <code>AsyncTestToken</code> to be notified when the method has been run.
+		 * @param target The class that contains the method.
+		 * @param params The parameters to be supplied to the method.
+		 */
 		public function invokeExplosively( target:Object, ...params ):Object {
 			//var method:Function = getMethodFromTarget( target );
 			var methodCall:ReflectiveCallable = new ReflectiveCallable( method, target, params );
@@ -175,7 +200,12 @@ package org.flexunit.runners.model {
 			
 			return result;
 		}
-
+		
+		/**
+		 * Alerts the parentToken that the operation has been completed.
+		 * 
+		 * @param error A potential error encoutnered during the process.
+		 */
 		protected function asyncComplete( error:Error ):void {
 			parentToken.sendResult( error );
 		}
@@ -188,6 +218,11 @@ package org.flexunit.runners.model {
 		 * <li>returns something other than void, or
 		 * <li>is static (given <code>isStatic</code> is <code>false</code>), or
 		 * <li>is not static (given <code>isStatic</code> is <code>true</code>).</ul>
+		 * 
+		 * @param isStatic A Boolean value indicating whether it is acceptable that the method
+		 * is a static method.
+		 * @param errors An array of errors that will potential have the current method added if
+		 * the method does not fufill the proper criteria.
 		 */
 		public function validatePublicVoidNoArg( isStatic:Boolean, errors:Array ):void {
 			validatePublicVoid(isStatic, errors);
@@ -205,6 +240,11 @@ package org.flexunit.runners.model {
 		 * <li>returns something other than void, or
 		 * <li>is static (given <code>isStatic</code> is <code>false</code>), or
 		 * <li>is not static (given <code>isStatic</code> is <code>true</code>).</ul>
+		 * 
+		 * @param isStatic A Boolean value indicating whether it is acceptable that the method
+		 * is a static method.
+		 * @param errors An array of errors that will potential have the current method added if
+		 * the method does not fufill the proper criteria.
 		 */
 		public function validatePublicVoid( isStatic:Boolean, errors:Array ):void {
 

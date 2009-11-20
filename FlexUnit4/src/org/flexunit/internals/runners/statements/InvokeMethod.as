@@ -50,14 +50,14 @@ package org.flexunit.internals.runners.statements {
 		/**
 		 * Constructor.
 		 * 
-		 * @param testMethod A specific method in the test class.
+		 * @param testMethod A specific method in the <code>target</code> to test.
 		 * @param target The test class.
 		 */
 		public function InvokeMethod( testMethod:FrameworkMethod, target:Object ) {
 			this.testMethod = testMethod;
 			this.target = target;
 			
-			//Create a new token that will track the execution of the test method
+			//Create a new token that will alert this class when the provided statement has completed
 			myToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			myToken.addNotificationMethod( handleMethodExecuteComplete );
 		}

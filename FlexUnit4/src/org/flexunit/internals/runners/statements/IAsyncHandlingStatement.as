@@ -33,24 +33,83 @@ package org.flexunit.internals.runners.statements
 	
 	import org.fluint.sequence.SequenceRunner;
 	
+	/**
+	 * An <code>IAsyncHandlingStatement</code> is an interface for statements that handle asynchronous functionallity
+	 * for tests.  If a statement is going to be handlining asynchronous tests, it needs to implement this interface.
+	 */
 	public interface IAsyncHandlingStatement
 	{
+		/**
+		 * Returns a Boolean value indicating whether the test method is current executing.
+		 */
 		function get bodyExecuting():Boolean;
-
+		
+		/**
+		 * Creates an <code>AsyncHandler</code> that pend and either call the <code>eventHandler</code> or the
+		 * <code>timeoutHandler</code>, passing the <code>passThroughData</code>, depending on whether the
+		 * <code>timeout</code> period has been reached.
+		 * 
+		 * @param eventHandler The Function that will be executed if the handler is called before 
+		 * the <code>timeout</code> has expired.
+		 * @param timeout The length of time, in milliseconds, before the <code>timeoutHandler</code> will be executed.
+		 * @param passThroughData An Object that can be given information about the current test; this information will 
+		 * be available for both the <code>eventHandler</code> and the <code>timeoutHandler</code>.
+		 * @param timeoutHandler The Function that will be executed if the <code>timeout</code> time is reached prior to
+		 * the expected event being dispatched.
+		 * 
+		 * @return an event handler Function that will determine whether the <code>timeout</code> has been reached.
+		 */
 		function asyncHandler( eventHandler:Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):Function; 
 		function asyncErrorConditionHandler( eventHandler:Function, timeout:int=0, passThroughData:Object = null, timeoutHandler:Function = null ):Function;
 		
 		// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
 		// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
 		// flex classes since it will cause errors.
+		/**
+		 * Creates an <code>IAsyncTestResponder</code> that pend and either call the <code>eventHandler</code> or the
+		 * <code>timeoutHandler</code>, passing the <code>passThroughData</code>, depending on whether the
+		 * <code>timeout</code> period has been reached.
+		 * 
+		 * @param responder The responder that will be executed if the <code>IResponder</code> is called before 
+		 * the <code>timeout</code> has expired.
+		 * @param timeout The length of time, in milliseconds, before the <code>timeoutHandler</code> will be executed.
+		 * @param passThroughData An Object that can be given information about the current test; this information will 
+		 * be available for both the <code>eventHandler</code> and the <code>timeoutHandler</code>.
+		 * @param timeoutHandler The Function that will be executed if the <code>timeout</code> time is reached prior to
+		 * the expected event being dispatched.
+		 * 
+		 * @return an <code>IResponder</code> that will determine whether the <code>timeout</code> has been reached.
+		 */
 		CONFIG::useFlexClasses
 		function asyncResponder( responder:*, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):IResponder;
+		// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
+		// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
+		// flex classes since it will cause errors.
 		CONFIG::useFlexClasses
 		function handleBindableNextSequence( event:Event, sequenceRunner:SequenceRunner ):void;
 		
+		/**
+		 * A handler method that is called in order to fail for a given asynchronous event once an it
+		 * has been dispatched.
+		 * 
+		 * @param event The event that was received.
+		 * @param passThroughData An Object that contains information to pass to the handler.
+		 */
 		function failOnComplete( event:Event, passThroughData:Object ):void;
+		/**
+		 * A handler method that is called in order to wait once an asynchronous event has been dispatched.
+		 * 
+		 * @param event The event that was received.
+		 * @param passThroughData An Object that contains information to pass to the handler.
+		 */
 		function pendUntilComplete( event:Event, passThroughData:Object=null ):void;
-
+		
+		/**
+		 * Handles the next steps in a <code>SequenceRunner</code>.
+		 * 
+		 * @param event The event boradcast by the last step in the sequence.
+		 * @param sequenceRunner The runner responsible for running the steps in the sequence.
+		 */
 		function handleNextSequence( event:Event, sequenceRunner:SequenceRunner ):void;
 	}
 }

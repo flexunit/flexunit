@@ -27,7 +27,7 @@
  **/ 
 package org.flexunit.token {
 	/**
-	 * The <code>ChildResult</code> stores an <code>AsyncTestToken</code> and a potential <code>error</code> 
+	 * The <code>ChildResult</code> stores an <code>AsyncTestToken</code> and a potential <code>Error</code> 
 	 * associated with the execution of an <code>IAsyncStatement</code>.
 	 */
 	public class ChildResult {
@@ -42,7 +42,7 @@ package org.flexunit.token {
 		public var error:Error;
 
 		/**
-		 * Creates a new ChildResult with the provided <code>AsyncTestToken</code> and <code>Error</code>.
+		 * Creates a new ChildResult with the provided <code>token</code> and <code>eorr</code>.
 		 * 
 		 * @param token The token to associate with this result.
 		 * @param error The potential <code>Error</code> that was generated from this operation.  If an

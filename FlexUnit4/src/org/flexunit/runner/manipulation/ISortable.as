@@ -36,8 +36,9 @@ package org.flexunit.runner.manipulation
 	public interface ISortable
 	{
 		/**
-		 * Sorts the tests using <code>sorter</code>
-		 * @param sorter the <code> Sorter</code> to use for sorting the tests
+		 * Sorts the tests using <code>sorter</code>.
+		 * 
+		 * @param sorter The <code>Sorter</code> to use for sorting the tests.
 		 */
 		function sort(sorter:ISorter):void;
 	}

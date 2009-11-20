@@ -30,11 +30,14 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.token.AsyncTestToken;
 	
 	/**
-	 * The <code>AsyncStatementBase</code> is responsible for notifiying a token that it has completed its task.
+	 * The <code>AsyncStatementBase</code> is responsible for notifiying a parent token that it has completed its task.
 	 */
 	public class AsyncStatementBase {
 		/**
-		 * The <code>AsyncTestToken</code> for the parent of the current statment.
+		 * The <code>AsyncTestToken</code> for the parent of the current statment.  This is notified when the
+		 * current statement has finished.
+		 * 
+		 * @see #sendComplete()
 		 */
 		protected var parentToken:AsyncTestToken;
 		/**

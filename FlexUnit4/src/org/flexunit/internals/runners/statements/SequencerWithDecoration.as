@@ -68,7 +68,7 @@ package org.flexunit.internals.runners.statements
 		}
 		
 		/**
-		 * Creats a object that implements an <code>IAsyncStatement</code> and decorates it
+		 * Creates an object that implements an <code>IAsyncStatement</code> and decorates it
 		 * 
 		 * @param method The <code>FrameworkMethod</code> to wrap
 		 * @param test The current test class

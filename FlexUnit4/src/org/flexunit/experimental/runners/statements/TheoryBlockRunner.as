@@ -37,9 +37,9 @@ package org.flexunit.experimental.runners.statements {
 	use namespace classInternal;
 	
 	/**
-	 * This runner is used for running an indiviudal theory method that has had all of its
-	 * parameters assigned values.  Like the <code>BlockFlexUnit4ClassRunner</code> from which
-	 * it extends, the <code>TheoryBlockRunner</code> is based on <code>Statement</code>s.
+	 * The <code>TheoryBlockRunner</code> is a runner used for running an indiviudal theory method that 
+	 * has had all of its parameters assigned values.  Like the <code>BlockFlexUnit4ClassRunner</code> 
+	 * from which it extends, the <code>TheoryBlockRunner</code> is based on <code>Statement</code>s.
 	 */
 	public class TheoryBlockRunner extends BlockFlexUnit4ClassRunner {
 		/**

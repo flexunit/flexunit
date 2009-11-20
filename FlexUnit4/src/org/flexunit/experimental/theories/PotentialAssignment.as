@@ -28,7 +28,8 @@
 package org.flexunit.experimental.theories {
 	
 	/**
-	 * Stores information for a particular value that is assigned to a parameter in a theory method.
+	 * A <code>PotentialAssignment</code> stores information for a particular value 
+	 * that is assigned to a parameter in a theory method.
 	 */
 	public class PotentialAssignment implements IPotentialAssignment {
 		/**
