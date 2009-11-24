@@ -43,9 +43,11 @@ package org.flexunit.internals.runners.statements {
 	 * It does this by starting a timer when it is asked to evaluate itself. When the timer fires, which
 	 * will be the following frame, execution will resume. 
 	 * 
-	 * <p>One might argue (with validity) that we shouldn't do this on each test, but rather take a more 
-	 * green threaded approach and look at how much time we have taken so far. This would make things run 
-	 * much faster and may be considered for a future version
+	 * Each time we get to the beginning of a new test, we calculate the elapsed time versus the framerate.
+	 * If we get to the point where we have used mroe than about 80% of a given frame, we then defer until the
+	 * next one. This prevents the player from being locked into a single frame for the entire duration of the tests
+	 * preventing it from communicating with external servers, updating the UI and potentially timing out after 15 seconds
+	 * 
 	 **/
 	public class StackAndFrameManagement implements IAsyncStatement {
 		/**
