@@ -44,7 +44,7 @@ package org.flexunit.internals.runners.statements {
 	 * will be the following frame, execution will resume. 
 	 * 
 	 * Each time we get to the beginning of a new test, we calculate the elapsed time versus the framerate.
-	 * If we get to the point where we have used mroe than about 80% of a given frame, we then defer until the
+	 * If we get to the point where we have used more than about 80% of a given frame, we then defer until the
 	 * next one. This prevents the player from being locked into a single frame for the entire duration of the tests
 	 * preventing it from communicating with external servers, updating the UI and potentially timing out after 15 seconds
 	 * 
