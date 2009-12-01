@@ -32,7 +32,8 @@ package org.flexunit.internals.runners.statements {
 
 	/**
 	 * The <code>RunBeforesClass</code> is a <code>SequencerWithDecoration</code> for potential methods that have
-	 * <code>BeforeClass</code> metadata and should be run before the test class has been created.
+	 * <code>BeforeClass</code> metadata and should be run before the test class has been created.  This class 
+	 * also determines whether methods tagged as before class methods are asynchronous.
 	 */
 	public class RunBeforesClass extends RunBefores implements IAsyncStatement {
 		

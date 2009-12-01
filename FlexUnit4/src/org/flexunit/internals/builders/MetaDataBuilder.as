@@ -36,9 +36,14 @@ package org.flexunit.internals.builders {
 	import org.flexunit.runners.model.RunnerBuilderBase;
 	
 	/**
-	 * Builds a runner that is specificed in the metadata for a specific test class.  If a test class is using a
-	 * special runner in the metadata, it should include the [RunWith] tag that lists the full class name of
-	 * the runner.
+	 * The <code>MetaDataBuilder</code> potentially builds an <code>IRunner</code> runner that is specificed
+	 * in the metadata tag for a specific test class.  If no metadata tag is present or the <code>IRunner</code>
+	 * fails to build, no <code>IRunner</code> will be generated.  If a test class wants to use a defined
+	 * <code>IRunner</code>, it should include the [RunWith] tag that lists the full class name of
+	 * the <code>IRunner</code>.<p>
+	 * 
+	 * The <code>MetaDataBuilder</code> provides a hug hook for extensibility, allowing many different types of
+	 * <code>IRunner</code>s to be created and used to run tests.<p>
 	 * 
 	 * <pre><code>
 	 * [RunWith("org.flexunit.runners.Suite")]

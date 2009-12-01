@@ -30,7 +30,7 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.token.AsyncTestToken;
 	
 	/**
-	 * An <code>IAsyncStatement</code> is an interface for statements that need to be evaluated and report back
+	 * An <code>IAsyncStatement</code> is an interface for statements that need to be evaluated and report
 	 * to a parent when the statement has finish evaluating.  Often times, <code>IAsyncStatement</code> are chained together
 	 * with each statement performing a specific task and notifying its parent when it has finished.
 	 */

@@ -34,8 +34,10 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.utils.ClassNameUtil;
 	
 	/**
-	 * The <code>InvokeMethod</code> is responsible for invoking a specific method in 
-	 * given test class.
+	 * The <code>InvokeMethod</code> is responsible for invoking a specific test method in 
+	 * given test class. This class will cause the test to run and will report whether the
+	 * test successfully passed with no encountered exceptions or if it exceptions were 
+	 * thrown during test execution.
 	 */
 	public class InvokeMethod extends AsyncStatementBase implements IAsyncStatement {
 		/**

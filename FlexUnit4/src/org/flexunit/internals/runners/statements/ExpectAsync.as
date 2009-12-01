@@ -53,8 +53,10 @@ package org.flexunit.internals.runners.statements {
 	
 	/**
 	 * The <code>ExpectAsync</code> is a decorator that is responsible for determing 
-	 * whether a specific test method is expecting an asynchronous response.  The class implements
-	 * <code>IAsyncHandlingStatement</code> and works with the <code>Async</code> class.<p>
+	 * whether a specific test method is expecting an asynchronous response.  As this 
+	 * infrastructure carries overhead, we only create it when the user specifics a 
+	 * given test is asynchronous.  The class implements <code>IAsyncHandlingStatement</code> 
+	 * and works with the <code>Async</code> class.<p>
 	 * 
 	 * In order to expect an asynchronous response, a test method must include metadata indicating 
 	 * it is expecting asynchronous functionallity.<p>

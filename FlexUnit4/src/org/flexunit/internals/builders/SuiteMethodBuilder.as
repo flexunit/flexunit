@@ -33,7 +33,12 @@ package org.flexunit.internals.builders {
 	import org.flexunit.runners.model.RunnerBuilderBase;
 	
 	/**
-	 * Builds a <code>SuiteMethod</code> for a test class if it is a FlexUnit1 suite.
+	 * The <code>SuiteMethodBuilder</code> potentially builds a <code>SuiteMethod</code> for
+	 * a provided testClass.  It is determined whether the testClass contains a suite method in 
+	 * order to determine if it is a FlexUnit1 suite.  It does this by checking to see if the
+	 * provided testClass contains a static suite method.  If this is the case, a 
+	 * <code>SuiteMethod</code> is created for the test class; however, if it does not fulfill 
+	 * this criteria, no <code>IRunner</code> will be generated.
 	 */
 	public class SuiteMethodBuilder extends RunnerBuilderBase {
 		
