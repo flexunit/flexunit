@@ -35,7 +35,7 @@ package org.flexunit.internals.builders
 	/**
 	 * The <code>IgnoredBuilder</code> potentially builds an <code>IgnoredClassRunner</code> for
 	 * a provided testClass.  It is determined whether the testClass is marked as being ignored with
-	 * a metadata tag.  If this is the case, a <code>IgnoredClassRunner</code> is created for the test 
+	 * a metadata tag ([Ignore]).  If this is the case, a <code>IgnoredClassRunner</code> is created for the test 
 	 * class; however, if it does not fulfill this criteria, no <code>IRunner</code> will be generated.
 	 */
 	public class IgnoredBuilder extends RunnerBuilderBase {

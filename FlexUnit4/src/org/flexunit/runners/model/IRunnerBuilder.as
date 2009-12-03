@@ -31,12 +31,11 @@ package org.flexunit.runners.model {
 	/**
 	 * An <code>IRunnerBuilder</code> is a strategy for constructing <code>IRunner</code>s for classes.<p>
 	 * 
-	 * Only writers of custom runners should use <code>IRunnerBuilder</code>s.  A custom runner class with a constructor taking
-	 * an <code>IRunnerBuilder</code> parameter will be passed the instance of <code>IRunnerBuilder</code> used to build that 
-	 * runner itself.<p>
+	 * Only writers of custom runners should use <code>IRunnerBuilder</code>s.  A custom runner class with a constructor 
+	 * taking an <code>IRunnerBuilder</code> parameter will be passed the instance of <code>IRunnerBuilder</code> used 
+	 * to build that runner itself.<p>
 	 *  
-	 * For example,
-	 * imagine a custom <code>IRunner</code> that builds suites based on a list of classes in a text file:
+	 * For example, imagine a custom <code>IRunner</code> that builds suites based on a list of classes in a text file:
 	 * 
 	 * <pre>
 	 * RunWith(TextFileSuite.as)

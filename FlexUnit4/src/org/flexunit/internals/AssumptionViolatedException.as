@@ -33,7 +33,13 @@ package org.flexunit.internals
 	import org.hamcrest.StringDescription;
 	
 	/**
-	 * Thrown when an assumption evaluates to false.
+	 * The <code>AssumptionViolatedException</code> is thrown when an assumption in a test
+	 * evalutes to false.  It contains information about the incorrect value that was
+	 * encountered that caused the assumption to fail as well as the values that the
+	 * assumption was expecting.  The <code>AssumptionViolatedException</code> is currently
+	 * thrown when an assumption fails in the <code>Assume</code> class.
+	 * 
+	 * @see org.flexunit.Assume
 	 */
 	public class AssumptionViolatedException extends Error implements SelfDescribing
 	{

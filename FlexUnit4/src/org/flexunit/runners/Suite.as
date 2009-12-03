@@ -35,15 +35,27 @@ package org.flexunit.runners {
 	import org.flexunit.runners.model.IRunnerBuilder;
 	import org.flexunit.token.AsyncTestToken;
 	
-//TODO: How do references to older JUnits compare to older FlexUnits?	
 	/**
- 	 * Using <code>Suite</code> as a runner allows you to manually
- 	 * build a suite containing tests from many classes. It is the JUnit 4 equivalent of the JUnit 3.8.x
- 	 * static junit.framework.Test <code>suite()</code> method. To use it, annotate a class
- 	 * with <code>RunWith("org.flexunit.runners.Suite")</code>.
- 	 * When you run this class, it will run all the tests in all the suite classes.
+ 	 * A <code>Suite</code> is an <code>IRunner</code> that contains test cases and other
+	 * <code>Suites</code> to be run during the course of a test run.  The <code>Suite</code> is
+	 * responsible for locating all non-static classes that it contains and obtaining an array of
+	 * <code>IRunner</code>s for each child that was found in this manner.  The 
+	 * <code>IRunnerBuilder</code> to be used to determine the runner for the child classes is
+	 * provided to the <code>Suite</code> during its instantiation.<p>
 	 * 
-	 * <p><pre><code>
+	 * When a <code>Suite</code> goes to run a child, it is telling another <code>IRunner</code> to
+	 * begin running, supplying the <code>IRunner</code> with an <code>IRunNotifier</code> in
+	 * order to keep track of the test run.  An <code>AsyncTestToken</code> is also provided to
+	 * the child <code>IRunner</code> in order to notify the <code>Suite</code> when the child has
+	 * finished.<p>
+	 * 
+	 * In order to declare a class as a suite class, the class must include a <code>[Suite]</code>
+	 * and <code>[RunWith("org.flexunit.runners.Suite")]</code> metadata tag.  The 
+	 * <code>[RunWith]</code> tag will instruct an <code>IRunnerBuilder</code> to use the
+	 * <code>Suite</code> <code>IRunner</code> for the class.<p>
+	 * 
+	 * <pre><code>
+	 * [Suite]
 	 * [RunWith("org.flexunit.runners.Suite")]
 	 * public class SuiteToRun
 	 * {
@@ -51,8 +63,8 @@ package org.flexunit.runners {
 	 * 	public var anotherTest:AnotherTest; //Another Test
 	 * 	public var differentSuite:DifferentSuite; //A Suite
 	 * }
-	 * </pre<code>
- 	*/
+	 * <code></pre>
+	 */
 	public class Suite extends ParentRunner {
 		/**
 		 * @private
@@ -121,8 +133,9 @@ package org.flexunit.runners {
 			 return classArray;
 		}
 
-		/** This will either be passed a builder, followed by an array of classes... (when there is not root class)
-		 *  Or it will be passed a root class and a builder.
+		/** 
+		 * This will either be passed a builder, followed by an array of classes... (when there is not root class)
+		 * Or it will be passed a root class and a builder.
 		 * 
 		 * So, the two signatures we are supporting are:
 		 * 

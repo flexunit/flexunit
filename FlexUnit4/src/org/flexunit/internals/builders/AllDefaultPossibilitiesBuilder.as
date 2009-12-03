@@ -31,9 +31,10 @@ package org.flexunit.internals.builders {
 	import org.flexunit.runners.model.RunnerBuilderBase;
 	
 	/**
-	 * Used to determine what type of <code>IRunner</code> can be used to run a specific testClass.
-	 * Each testClass will be compared against an array of <code>IRunner</code> builders.  The
-	 * <code>IRunner</code> used by the testClass is the first <code>IRunner</code> that can successfully
+	 * The <code>AllDeafultPossibilitiesBuilder</code> is used to determine what type of <code>IRunner</code> 
+	 * can be used to run a specific testClass.  The correct <code>IRunner</code> for each testClass is
+	 * found using builders.  Each testClass will be compared against an array of <code>IRunnerBuilders</code>.
+	 * The <code>IRunner</code> used by the testClass is the first <code>IRunner</code> that can successfully
 	 * be built by one of the builders.<p>
 	 * 
 	 * The order in which the builder's are checked is as follows:

@@ -32,7 +32,12 @@ package org.flexunit.internals.runners.model {
 	
 	/**
 	 * The <code>EachTestNotifier</code> is responsible for instructing a provided
-	 * <code>IRunNotifier</code> about the execution of a specific test.
+	 * <code>IRunNotifier</code> about the execution of a specific test.  The 
+	 * <code>EachTestNotifier</code> is provided with an <code>IRunNotifier</code>
+	 * and a corresponding <code>IDescription</code> of the test that is to be
+	 * executed.  It will report to the <code>IRunNotifier</code> as it is notified
+	 * about the execution of the test, providing the necessary description or failure
+	 * to the <code>IRunNotifier</code>.
 	 */
 	public class EachTestNotifier {
 		/**

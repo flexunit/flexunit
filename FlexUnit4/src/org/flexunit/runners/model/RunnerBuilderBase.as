@@ -33,10 +33,14 @@ package org.flexunit.runners.model {
 	import org.flexunit.runner.IRequest;
 	import org.flexunit.runner.IRunner;
 
-	//TODO: class description needed, similar to IRunnerBuilder's? Reference IRunnerBuilder?
 	/**
-	 * The <code>RunnerBuilderBase</code> is responsible for determining what runner is needed in order to run
-	 * a particular test class.
+	 * The <code>RunnerBuilderBase</code> is used as a base by other runner builders in FlexUnit4.  It
+	 * provides basic logic for the handling of constructing <code>IRunner</code>s for children of a
+	 * provided test class.  These children in turn may have children that will also need 
+	 * corresponding <code>IRunners</code>.<p>
+	 * 
+	 * The <code>RunnerBuilderBase</code>contains logic ensuring that a parent class does not reference 
+	 * itself or that a child class does not reference the parent, preventing a potential infinite loop.
 	 * 
 	 * @see org.flexunit.internals.builders.AllDefaultPossibilitiesBuilder
 	 */

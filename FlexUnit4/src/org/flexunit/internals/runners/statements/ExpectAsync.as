@@ -59,12 +59,12 @@ package org.flexunit.internals.runners.statements {
 	 * and works with the <code>Async</code> class.<p>
 	 * 
 	 * In order to expect an asynchronous response, a test method must include metadata indicating 
-	 * it is expecting asynchronous functionallity.<p>
+	 * it is expecting asynchronous functionality.<p>
 	 * 
 	 * <pre><code>
 	 * [Test(async)]
 	 * public function asyncTest():void {
-	 * 	//Test with asynchronous functionallity
+	 * 	//Test with asynchronous functionality
 	 * }
 	 * </code></pre>
 	 * 
