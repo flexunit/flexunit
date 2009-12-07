@@ -37,7 +37,11 @@ package org.flexunit.internals.builders {
 	import org.flexunit.runners.model.RunnerBuilderBase;
 	
 	/**
-	 * Builds a <code>FlexUnit1ClassRunner</code> for a test class.
+	 * The <code>FlexUnit1Builder</code> potentially builds a <code>FlexUnit1ClassRunner</code> for
+	 * a provided testClass.  It is determined whether the testClass descends from a FlexUnit1 
+	 * <code>flexunit.framework.TestCase</code> in the FlexUnit .9 library.  If it does, a 
+	 * <code>FlexUnit1ClassRunner</code> is created for the test class; however, if it does not fulfill 
+	 * this criteria, no <code>IRunner</code> will be generated.
 	 */
 	public class FlexUnit1Builder extends RunnerBuilderBase {
 		

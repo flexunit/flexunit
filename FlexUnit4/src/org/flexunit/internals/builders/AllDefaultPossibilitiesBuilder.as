@@ -31,9 +31,28 @@ package org.flexunit.internals.builders {
 	import org.flexunit.runners.model.RunnerBuilderBase;
 	
 	/**
-	 * Used to determine what type of <code>IRunner</code> can be used to run a specific testClass.
-	 * Each testClass will be compared to an array of <code>IRunner</code>s.  The first <code>IRunner</code>
-	 * that can be used to run the testClass will be the <code>IRunner</code> that is selected.
+	 * The <code>AllDeafultPossibilitiesBuilder</code> is used to determine what type of <code>IRunner</code> 
+	 * can be used to run a specific testClass.  The correct <code>IRunner</code> for each testClass is
+	 * found using builders.  Each testClass will be compared against an array of <code>IRunnerBuilders</code>.
+	 * The <code>IRunner</code> used by the testClass is the first <code>IRunner</code> that can successfully
+	 * be built by one of the builders.<p>
+	 * 
+	 * The order in which the builder's are checked is as follows:
+	 * <ul>
+	 * <li>IgnoreBuilder
+	 * <li>MetaDataBuilder
+	 * <li>SuiteMethodBuiler
+	 * <li>FlexUnit1Builder
+	 * <li>Fluint1Builder
+	 * <li>FlexUnit4Builder
+	 * </ul>
+	 * 
+	 * @see org.flexunit.internals.builders.IgnoreBuilder
+	 * @see org.flexunit.internals.builders.MetaDataBuilder
+	 * @see org.flexunit.internals.builders.SuiteMethodBuiler
+	 * @see org.flexunit.internals.builders.FlexUnit1Builder
+	 * @see org.flexunit.internals.builders.Fluint1Builder
+	 * @see org.flexunit.internals.builders.FlexUnit4Builder
 	 */
 	public class AllDefaultPossibilitiesBuilder extends RunnerBuilderBase {
 		/**
@@ -52,7 +71,18 @@ package org.flexunit.internals.builders {
 		}
 		
 		/**
-		 * Returns an <code>IRunner</code> that can be used by a specific <code>testClass</code>.
+		 * Returns an <code>IRunner</code> that can be used by the provided <code>testClass</code>.  The
+		 * <code>testClass</code> will be compared against builders until a suitable runner is determined.<p>
+		 * 
+		 * The order in which the builder's are checked is as follows:
+		 * <ul>
+		 * <li>IgnoreBuilder
+		 * <li>MetaDataBuilder
+		 * <li>SuiteMethodBuiler
+		 * <li>FlexUnit1Builder
+		 * <li>Fluint1Builder
+		 * <li>FlexUnit4Builder
+		 * </ul><p>
 		 * 
 		 * @param testClass The test class that needs a runner.
 		 * 

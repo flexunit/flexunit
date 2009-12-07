@@ -28,7 +28,9 @@
 package flex.lang.reflect.utils
 {
 	/**
-	 * The <code>MetadataTools</code> contains methods that are responsible for the parsing and interpretation of XML.
+	 * The <code>MetadataTools</code> contains methods that are responsible for the parsing and interpretation of XML
+	 * metadata.  It contains methods that are responsible for determing whether provided metadata contains a certain 
+	 * tag as well as methods used to obtain information from the metadata based on provided keys.
 	 */
 	public class MetadataTools
 	{

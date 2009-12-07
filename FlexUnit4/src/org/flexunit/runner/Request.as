@@ -38,19 +38,26 @@ package org.flexunit.runner {
 	use namespace classInternal;
 	
 	/**
-	 * TODO - I assume that the immediately following paragraph can simply be deleted, but I want to make
-	 * sure before doing so.
-	 *
-	 * <p>A <code>Request</code> is an abstract description of tests to be run.
-	 * Older versions of JUnit did not need such a concept-tests to be run were described either by classes containing
-	 * tests or a tree of org.junit.Tests. However, we want to support filtering and sorting,
-	 * so we need a more abstract specification than the tests themselves and a richer
-	 * specification than just the classes.</p>
+	 * A <code>Request</code> is an abstract description of tests to be run.  It represents an object that 
+	 * wraps tests when they are presented to the <code>FlexUnitCore</code>.  <code>Request<code>s can be 
+	 * filtered and sorted to control the subset and order of tests to be executed.<p>
 	 * 
-	 * <p>The flow when FlexUnit runs tests is that a <code>Request</code> specifies some tests to be run
-	 * a org.flexunit.runner.Runner is created for each class implied by the <code>Request</code> 
-	 * the org.flexunit.runner.Runner returns a detailed org.flexunit.runner.Description 
-	 * which is a tree structure of the tests to be run.</p>
+	 * The following static methods can be used to create requests:
+	 * <ul>
+	 * <li><code>#aClass()</code>
+	 * <li><code>#classes()</code>
+	 * <li><code>#runner()</code>
+	 * <li><code>#method()</code>
+	 * </ul><p>
+	 * 
+	 * The key property of the <code>Request</code> that the <code>FlexUnitCore</code> needs is the 
+	 * <code>IRunner</code>.  The <code>IRunner</code> is an interface implemented by any object 
+	 * capable of executing a specific type of test.<p>
+	 * 
+	 * The flow when FlexUnit4 runs tests is that a <code>Request</code> specifies some tests to be run.
+	 * The <code>IRunner</code> is created for each class implied by the <code>Request</code>.  The
+	 * <code>IRunner</code> provides a detailed <code>IDescription</code> of the class which is a tree 
+	 * structure of the tests to be run.
 	 */
 	public class Request implements IRequest {
 		/**

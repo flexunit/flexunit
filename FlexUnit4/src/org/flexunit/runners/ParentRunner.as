@@ -59,21 +59,26 @@ package org.flexunit.runners {
 	use namespace classInternal;
 
 	/**
-	 * Provides most of the functionality specific to an IRunner that implements a
-	 * "parent node" in the test tree,
+	 * The <code>ParentRunner</code> provides most of the functionality specific to an 
+	 * <code>IRunner</code> that implements a "parent node" in the test tree.  It is n
+	 * directly used as an <code>IRunner</code>; instead, it is inherited by subclesses
+	 * that then implement additional functionality.<p>
 	 * 
-	 *  //TODO: Does not define by a data type like in the java version
-	 *  //how do the matchups described below happen, or not, instead?
-	 *  with children defined by objects of some data
-	 * type {@code T}. (For <code> BlockJUnit4ClassRunner</code>, {@code T} is
-	 * <code> Method</code> . For <code> Suite</code>, {@code T} is <code> Class</code>.)
-	 * 
-	 *  Subclasses
-	 * must implement finding the children of the node, describing each child, and
-	 * running each child. ParentRunner will filter and sort children, handle
+	 * Subclasses must implement finding the children of the node, describing each child, and
+	 * running each child. The <code>ParentRunner</code> will filter and sort children, handle
 	 * <code>BeforeClass</code> and <code>AfterClass</code> methods, create a composite
 	 * <code>IDescription</code>, and run children sequentially.
+	 * 
+	 * @see org.flexunit.runners.BlockFlexUnit4ClassRunner
+	 * @see org.flexunit.runners.Suite
 	 */
+	/*
+	//TODO: Does not define by a data type like in the java version
+	*  //how do the matchups described below happen, or not, instead?
+	*  with children defined by objects of some data
+	* type {@code T}. (For <code> BlockJUnit4ClassRunner</code>, {@code T} is
+	* <code> Method</code> . For <code> Suite</code>, {@code T} is <code> Class</code>.)
+	*/
 	public class ParentRunner implements IRunner, ISortable {
 		/**
 		 * @private
@@ -111,8 +116,11 @@ package org.flexunit.runners {
 		 * 
 		 * @param klass The test class that is to be executed by the runner.
 		 * 
-		 * @throws org.flexunit.internals.runners.InitializationError //TODO: does it throw an InitializationError?
+		 * @throws org.flexunit.internals.runners.InitializationError
 		 */
+		/*
+		 * TODO: does it throw an InitializationError?
+		*/
 		public function ParentRunner( klass:Class ) {
 			this._testClass = new TestClass( klass );
 			validate();

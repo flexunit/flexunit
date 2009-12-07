@@ -30,7 +30,13 @@ package org.flexunit.token {
 	
 	/**
 	 * The <code>AsyncTestToken</code> is responsible for indicating that a given task has completed.  The token
-	 * can then notify other tasks and provide the results of the just completed task,.
+	 * can then notify other tasks and provide the results of the just completed task to the notified parent
+	 * task through the use of a notification method.  In order to notify a parent task about the completion of a
+	 * task performed by a child task, the parent task must add a notification method to the <code>AsyncTestToken</code>
+	 * using the <code>#addNotificationMethod()</code>.<p>
+	 * 
+	 * The <code>AsyncTestToken</code> is used throughout much of FlexUnit4.  It is used to notify <code>FlexUnitCore</code>,
+	 * runners, statements, and parts of a test when a certain activity has finished.
 	 */
 	dynamic public class AsyncTestToken {
 		/**

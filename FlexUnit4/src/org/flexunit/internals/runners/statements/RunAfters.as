@@ -33,7 +33,8 @@ package org.flexunit.internals.runners.statements
 	
 	/**
 	 * The <code>RunAfters</code> is a <code>SequencerWithDecoration</code> for potential methods that have
-	 * <code>After</code> metadata and should be run after a test has finished.
+	 * <code>After</code> metadata and should be run after a test has finished.  This class also determines
+	 * whether methods tagged as after methods are asynchronous.
 	 */
 	public class RunAfters extends SequencerWithDecoration implements IAsyncStatement {
 		

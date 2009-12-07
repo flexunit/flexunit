@@ -30,79 +30,104 @@ package org.flexunit.runner.notification {
 	import org.flexunit.runner.Result;
 	
 	/**
-	 * If you write custom runners, you may need to notify FlexUnit of your progress running tests.
-	 * Do this by invoking the <code>IRunNotifier</code> passed to your implementation of
-	 * <code> org.flexunit.runner.Runner#run(RunNotifier)</code>. Future evolution of this class is likely to 
-	 * move <code> #fireTestRunStarted(Description)</code> and <code> #fireTestRunFinished(Result)</code>
-	 * to a separate class since they should only be called once per run.
+	 * <code>IRunNotifier</code>s are a type of class that FlexUnit4 uses to notify others of an 
+	 * event that occurred during testing.  There is generally only one <code>IRunNotifier</code>
+	 * used in a test run at a time.  <code>IRunNotifier</code>s are used by the <code>IRunner</code> 
+	 * classes to notify others of the following conditions:
+	 * 
+	 * <ul>
+	 * <li>For the Test Run: Started/Finished
+	 * <li>For an Individual Test: Started/Failed/Ignored/Finished/AssumptionFailures
+	 * </ul><p>
+	 * 
+	 * A parallel can be drawn with <code>IEventDispatcher</code>; however, unlike an event dispatcher, 
+	 * <code>IRunNotifier<code>s have limitations on what types of objects can listen to their events.
+	 * An <code>IRunListeners</code>s are used to listen to events that are broadcast by 
+	 * <code>IRunNotifier</code>s.  Each <code>IRunNotifier</code> contain an <code>#addListener()</code>
+	 * and <code>#removeListener</code> method that accetps an <code>IRunListener</code> as an argument.<p>
+	 * 
+	 * If one writes an <code>IRunner</code>, they may need to notify FlexUnit4 of their progress while 
+	 * running tests.  This is accomplished by invoking the <code>IRunNotifier</code> passed to the
+	 * implementation of <code>org.flexunit.runner.IRunner#run(RunNotifier)</code>.
+	 * 
+	 * @see org.flexunit.runner.notification.IRunListener
 	 */
 	public interface IRunNotifier {
 		/**
-		 * Invoke to tell listeners that the test run is about to start.
-		 * @param description the description of the test run
+		 * Invoke to tell all registered <code>IRunListener</code>s that the test run has started.
+		 * 
+		 * @param description An <code>IDescription</code> of the top most <code>IRunner</code>.
 		 */
 		function fireTestRunStarted( description:IDescription ):void;
 		
 		/**
-		 * Invoke to tell listeners that the test run has finished.
-		 * @param result The results of the test run.
+		 * Invoke to tell all registered <code>IRunListener</code>s that the test run has finished.
+		 * 
+		 * @param result The <code>Result<code> of the test run.
 		 */
 		function fireTestRunFinished( result:Result ):void;
 		
 		/**
-		 * Invoke to tell listeners that an atomic test is about to start.
-		 * @param description the description of the atomic test (generally a class and method name)
+		 * Invoke to tell all registered <code>IRunListener</code>s that an atomic test has started.
+		 * 
+		 * @param description An <code>IDescription</code> of the atomic test (generally a class 
+		 * and method name).
 		 */
 		function fireTestStarted( description:IDescription ):void;
 		
 		/**
-		 * Invoke to tell listeners that an atomic test failed.
-		 * @param failure the description of the test that failed and the exception thrown
+		 * Invoke to tell all registered <code>IRunListener</code>s that an atomic test failed.
+		 * 
+		 * @param failure The <code>Failure</code> indicating why the test ended up failing.
 		 */
 		function fireTestFailure( failure:Failure ):void;
 		
 		/**
-		 * Invoke to tell listeners that an atomic test flagged that it assumed
-		 * something false.
+		 * Invoke to tell all registered <code>IRunListener</code>s that an atomic test flagged 
+		 * that it assumed something false.
 		 * 
-		 * @param failure
-		 *            the description of the test that failed and the
-		 *            <code> AssumptionViolatedException</code> thrown
+		 * @param failure The <code>Failure</code> indicating what 
+		 * <code>AssumptionViolatedException</code> was thrown.
 		 */
 		function fireTestAssumptionFailed( failure:Failure ):void;
 		
 		/**
-		 * Invoke to tell listeners that an atomic test was ignored.
-		 * @param description the description of the ignored test
+		 * Invoke to tell all registered <code>IRunListener</code>s that an atomic test was ignored.
+		 * 
+		 * @param description The <code>IDescription</code> of the ignored test.
 		 */
 		function fireTestIgnored( description:IDescription ):void;
 		
 		/**
-		 * Invoke to tell listeners that an atomic test finished. Always invoke 
-		 * <code> #fireTestFinished(Description)</code> if you invoke <code> #fireTestStarted(Description)</code> 
+		 * Invoke to tell all registered <code>IRunListener</code>s that an atomic test finished. Always invoke 
+		 * <code>#fireTestFinished(IDescription)</code> if you invoke <code>#fireTestStarted(IDescription)</code> 
 		 * as listeners are likely to expect them to come in pairs.
-		 * @param description the description of the test that finished
+		 * 
+		 * @param description The <code>IDescription</code> of the test that finished.
 		 */
 		function fireTestFinished( description:IDescription ):void;
 		
 		/**
-		 * Adds a listener to the list of listeners in the RunNotifier
+		 * Adds an <code>IRunListener</code> to the list of registered listeners in the 
+		 * <code>IRunNotifier</code>.
 		 * 
-		 * @param listener The <code>IRunListener</code> to add
+		 * @param listener The <code>IRunListener</code> to add.
 		 */
 		function addListener( listener:IRunListener ):void;
 		
 		/**
-		 * Adds a listener to the begining of the list of listeners in the RunNotifier
+		 * Adds <code>IRunListener</code> to the beginning of the list of registered listeners in the 
+		 * <code>IRunNotifier</code>.
 		 * 
-		 * @param listener The <code>IRunListener</code> to add
+		 * @param listener The <code>IRunListener</code> to add to the beginning.
 		 */
 		function addFirstListener( listener:IRunListener ):void;
 		
 		/**
-		 * Removes a listener from the list of listeners in the RunNotifier
+		 * Removes an <code>IRunListener</code> from the list of registered listeners in the 
+		 * <code>IRunNotifier</code>.
 		 * 
-		 * @param listener The <code>IRunListener</code> to remove
+		 * @param listener The <code>IRunListener</code> to remove.
 		 */
 		function removeListener( listener:IRunListener ):void;
 	}

@@ -30,15 +30,33 @@ package org.flexunit.runner.notification {
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.Result;
 	
-	/**
-	 * If you write custom runners, you may need to notify FlexUnit of your progress running tests.
-	 * Do this by invoking the <code>RunNotifier</code> passed to your implementation of
-	 * <code>org.flexunit.runner.Runner#run(RunNotifier)</code>. Future evolution of this class is likely to 
-	 * move <code>#fireTestRunStarted(IDescription)</code> and <code>#fireTestRunFinished(Result)</code>
-	 * to a separate class since they should only be called once per run.
+	/** 
+	 * The <code>RunNotifier</code> is a class that FlexUnit4 uses to notify registered <code>IRunListeners</code> 
+	 * of an event that occurred during testing.  There is generally only one <code>RunNotifier</code>
+	 * used in a test run at a time.  <code>RunNotifier</code> is used by the <code>IRunner</code> 
+	 * classes to notify others of the following conditions:
+	 * 
+	 * <ul>
+	 * <li>For the Test Run: Started/Finished
+	 * <li>For an Individual Test: Started/Failed/Ignored/Finished/AssumptionFailures
+	 * </ul><p>
+	 * 
+	 * Each <code>IRunListener</code> that is to be registered or unregistered to the <code>RunNotifier</code> needs 
+	 * to call either the <code>#addRunListener()</code> or the <code>#removeRunListener()</code> method.  When
+	 * the <code>RunNotifier</code> encounters one of the conditions stated above, all registered 
+	 * <code>IRunListeners</code> will be notified.<p>
+	 * 
+	 * The <code>RunNotifier</code> also contains a <code>#pleaseStop()</code> method.  This method is responsible for
+	 * halting the execution of the test run.  It seems a little odd to put this functionality in this class, but the 
+	 * <code>RunNotifier</code> is the only object guaranteed to be shared amongst the many <code>IRunners</code>
+	 * in the test run.<p>
+	 * 
+	 * If one writes an <code>IRunner</code>, they may need to notify FlexUnit4 of their progress while 
+	 * running tests.  This is accomplished by invoking the <code>IRunNotifier</code> passed to the
+	 * implementation of <code>org.flexunit.runner.IRunner#run(RunNotifier)</code>.
 	 * 
 	 * @see org.flexunit.runner.IRunner#run()
-	 * @see #fireTestRunFinished()
+	 * @see org.flexunit.runner.notification.IRunListener
 	 */
 	public class RunNotifier implements IRunNotifier {
 		private var listeners:Array = new Array();

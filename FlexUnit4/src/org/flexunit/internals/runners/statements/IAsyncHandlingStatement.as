@@ -34,7 +34,7 @@ package org.flexunit.internals.runners.statements
 	import org.fluint.sequence.SequenceRunner;
 	
 	/**
-	 * An <code>IAsyncHandlingStatement</code> is an interface for statements that handle asynchronous functionallity
+	 * An <code>IAsyncHandlingStatement</code> is an interface for statements that handle asynchronous functionality
 	 * for tests.  If a statement is going to be handlining asynchronous tests, it needs to implement this interface.
 	 */
 	public interface IAsyncHandlingStatement

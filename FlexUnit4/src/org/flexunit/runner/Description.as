@@ -33,23 +33,16 @@ package org.flexunit.runner {
 	import mx.utils.ObjectUtil;
 	
 	/**
-	 * A <code>Description</code> describes a test which is to be run or has been run. <code>Descriptions</code> 
-	 * can be atomic (a single test) or compound (containing children tests). <code>Description</code>s are used
-	 * to provide feedback about the tests that are about to run (for example, the tree view
-	 * visible in many IDEs) or tests that have been run (for example, the failures view).
+	 * A <code>Description</code> describes a suite, test case, or test which is to be run or has been run. 
+	 * <code>Descriptions</code> can be atomic (a single test) or compound (containing children tests). 
+	 * <code>Description</code>s are used to provide feedback about the tests that are about to run (for example, 
+	 * the tree view visible in many IDEs) or tests that have been run (for example, the failures view).
+	 * This information can be used to report the current progress of the test run.<p>
 	 * 
-	 * <p><code>Description</code>s are implemented as a single class rather than a Composite because
-	 * they are entirely informational. They contain no logic aside from counting their tests.</p>
+	 * <code>Description</code>s are implemented as a single class rather than a composite because
+	 * they are entirely informational. They contain no logic aside from counting their tests.<p>
 	 * 
-	 * <p>TODO: Link to appropriate flexunit directories or remove links if N/A</p>
-	 * 
-	 * <p>In the past, we used the raw junit.framework.TestCases and junit.framework.TestSuites
-	 * to display the tree of tests. This was no longer viable in JUnit 4 because atomic tests no longer have 
-	 * a superclass below Object. We needed a way to pass a class and name together. Description 
-	 * emerged from this.</p>
-	 * 
-	 * @see org.flexunit.runner.Request
-	 * @see org.flexunit.runner.Runner
+	 * @see org.flexunit.runner.IRunner
 	 */
 	public class Description implements IDescription {
 		public static var EMPTY:Description = new Description("Empty", null );

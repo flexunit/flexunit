@@ -28,8 +28,11 @@
 package org.flexunit.runner {
 	
 	/**
-	 * The <code>IDescription</code> interface is implemented by classes that are to be used to describe the metadata
-	 * of a test class that has or will be executed.
+	 * An <code>IDescription</code> class that is being used in a test run. An <code>IDescription</code>
+	 * can be atomic (a single test) or compound (containing children tests).  <code>IDescription</code>s 
+	 * are used to provide feedback about the tests that are about to run (for example, the tree view 
+	 * visible in many IDEs) or tests that have been run (for example, the failures view).
+	 * This information can be used to report the current progress of the test run.<p>
 	 */
 	public interface IDescription {
 		/**

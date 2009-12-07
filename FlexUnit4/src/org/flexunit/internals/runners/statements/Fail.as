@@ -31,8 +31,11 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.token.AsyncTestToken;
 	
 	/**
-	 * The <code>Fail</code> class is responsible for throwing a failure error when the 
-	 * statement is evaluated.
+	 * The <code>Fail</code> class is responsible for throwing a failure error when it
+	 * is evaluated.  A <code>Fail</code> is often created if a critical piece of infomration
+	 * is missing and another statement could not be properly generated.
+	 * 
+	 * @see org.flexunit.runners.BlockFlexUnit4ClassRunner
 	 */
 	public class Fail extends AsyncStatementBase implements IAsyncStatement {
 		/**

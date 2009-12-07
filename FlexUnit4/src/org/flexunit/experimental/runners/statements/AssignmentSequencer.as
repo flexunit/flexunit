@@ -39,8 +39,15 @@ package org.flexunit.experimental.runners.statements {
 	
 	/**
 	 * The <code>AssignmentSequencer</code> is responsible for the sequencing of parameters to be provided 
-	 * to a particular theory method test.  All permutations of potential parameters will be provided to the 
-	 * theory method.
+	 * to a particular theory method test.  It determines what potential parameters need to be provided to the 
+	 * parameters in the theory test method.<p>
+	 * 
+	 * Based on the number of parameters in the theory method test, additional <code>AssignmentSequencer</code>s will 
+	 * be created.  If there are still parameters that need to be assigned a value and there are still potential values 
+	 * to assign to those parameters, assign an unused value to the next parameter and create a new 
+	 * <code>AssignmentSequencer</code>, determining if all parameters have then been assigned a value.  Once all of the 
+	 * parameters in the theory method test have been assigned, that theory method will be run with that configuration.
+	 * All permutations of potential parameters will be provided to the theory method.
 	 */
 	public class AssignmentSequencer extends AsyncStatementBase implements IAsyncStatement {
 		

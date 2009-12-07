@@ -38,7 +38,13 @@ package org.flexunit.internals.builders {
 	import org.flexunit.runners.model.RunnerBuilderBase;
 	
 	/**
-	 * Builds a <code>Fluint1ClassRunner</code> for a test class.
+	 * The <code>Fluint1Builder</code> potentially builds a <code>Fluint1ClassRunner</code> for
+	 * a provided testClass.  It is determined whether the testClass is a Fluint suite or test case.
+	 * It accomplishes this by determining whether the given testClass descends from 
+	 * <code>net.digitalprimates.fluint.tests.TestCase</code> or 
+	 * <code>net.digitalprimates.fluint.tests.TestSuite</code> in the Fluint (presently 1.2) library.
+	 * If this is the case, a <code>Fluint1ClassRunner</code> is created for the test class; however, 
+	 * if it does not fulfill this criteria, no <code>IRunner</code> will be generated.
 	 */
 	public class Fluint1Builder extends RunnerBuilderBase {
 
