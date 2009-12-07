@@ -25,12 +25,12 @@ package org.flexunit.internals.runners.statements.cases
 			afters = null;
 		}
 		
-		[Test(description="Ensure that teh executeStep function correctly works when no exception is thrown")]
+		[Test(description="Ensure that the executeStep function correctly works when no exception is thrown")]
 		public function executeStepNoErrorTest():void {
 			
 		}
 		
-		[Test(description="Ensure that teh executeStep function correctly works when an exception is thrown")]
+		[Test(description="Ensure that the executeStep function correctly works when an exception is thrown")]
 		public function executeStepErrorTest():void {
 			
 		}

@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application 
-	xmlns:mx="http://www.adobe.com/2006/mxml"
-	creationComplete="runMe()" >
+	xmlns:mx="http://www.adobe.com/2006/mxml" >
 	
 	<mx:Script>
 		<![CDATA[
 			import compilationSuite.SuitesToRun;
 			
-			import org.flexunit.listeners.CIListener;
 			import org.flexunit.runner.FlexUnitCore;
 
 			private var core:FlexUnitCore;
 
-			public function runMe():void {
-				core = new FlexUnitCore();
-				core.addListener(new CIListener());
-				core.run( compilationSuite.SuitesToRun );
-			}
 		]]>
 	</mx:Script>
 </mx:Application>

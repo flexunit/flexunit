@@ -30,7 +30,7 @@ package org.flexunit.cases
 			Assert.assertEquals( Assert.assertionsMade, 1 );
 		}
 		
-		[Test(description="Ensure that the resetAssertionsFields function correctly resets teh assertCount")]
+		[Test(description="Ensure that the resetAssertionsFields function correctly resets the assertCount")]
 		public function testResetAssertionsFields():void {
 			Assert.assertEquals( 0, 0 );
 			//Ensure that the number of assertions are greater than zero

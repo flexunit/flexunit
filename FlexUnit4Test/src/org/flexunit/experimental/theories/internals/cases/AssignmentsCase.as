@@ -189,7 +189,7 @@ package org.flexunit.experimental.theories.internals.cases
 		}
 		
 		//TODO: Is there a way to verify that this method is correctly called using the AllMembersSupplier?  It seems the only current way to test this is to set
-		//expectations on teh parameter signature mock and determine when it gets called and make assertions based on the values it returns.
+		//expectations on the parameter signature mock and determine when it gets called and make assertions based on the values it returns.
 		[Test(description="Ensure that the potentialsForNextUnassigned function returns an array based on the parameter signatures in the unassigned array")]
 		public function potentialsForNextUnassignedTest():void {
 			var parameterSignatureMock:ParameterSignatureMock = new ParameterSignatureMock();
