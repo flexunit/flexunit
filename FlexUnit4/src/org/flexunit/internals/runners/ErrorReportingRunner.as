@@ -79,14 +79,14 @@ package org.flexunit.internals.runners {
 		 * @param notifier The notifer to notify about the cause Errors
 		 * @param token A token that will be alerted when the notifer has been notified for each cause Error
 		 */
-		public function run( notifier:IRunNotifier, token:AsyncTestToken ):void {
+		public function run( notifier:IRunNotifier, previousToken:AsyncTestToken ):void {
 			for ( var i:int=0; i<_causes.length; i++ ) {
 				description.addChild( describeCause( _causes[ i ] ) );
 				runCause( _causes[ i ], notifier );
 			}
 			
 			//notify our parent that we are good to continue
-			token.sendResult();
+			previousToken.sendResult();
 		}
 		
 		/**
