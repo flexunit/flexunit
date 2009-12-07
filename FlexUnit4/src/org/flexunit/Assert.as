@@ -46,6 +46,7 @@ package org.flexunit
 			return _assertCount;
 		}
 		
+		
 		/**
 		 * Resets the count for the number of assertions that have been made back to zero
 		 */
@@ -64,8 +65,11 @@ package org.flexunit
 		}
 
 		/**
-		 * Asserts that two provided values are equal. If three values are 
-		 * provided the first is the message to be displayed on fail.
+		 * Asserts that two provided values are equal.
+		 * 
+		 * @param rest
+		 * 			a comma-delimited list of arguments with possible length of 3. 
+		 * 			If the length is three the first item is used as the error message.
 		 */
 		public static function assertEquals(... rest):void
 		{
@@ -86,7 +90,12 @@ package org.flexunit
 		}
 	
 		/**
+		 * /**
 		 * Asserts that the provided values are strictly equal.
+		 * 
+		 * @param rest
+		 * 			a comma-delimited list of arguments with possible length of 3. 
+		 * 			If the length is three the first item is used as the error message.
 		 */
 		public static function assertStrictlyEquals(... rest):void
 		{
@@ -111,9 +120,8 @@ package org.flexunit
 		 * <code> AssertionFailedError</code> with the given message.
 		 * 
 		 * @param rest
-		 * 			array of length one or two. Contains the value to be
-		 * 			tested. If the length is two the first index contains
-		 * 			the error message to be thrown.
+		 * 			a comma-delimited list of arguments of length one or two. 
+		 * 			If the length is two the first item is used as the error message.
 		 */
 		public static function assertTrue(... rest):void
 		{
@@ -138,9 +146,8 @@ package org.flexunit
 		 * <code> AssertionFailedError</code> with the given message.
 		 * 
 		 * @param rest
-		 * 			array of length one or two. Contains the value to be
-		 * 			tested. If length is two the first index contains
-		 * 			the error message to be thrown.
+		 * 			a comma-delimited list of arguments of length one or two. 
+		 * 			If the length is two the first item is used as the error message.
 		 */
 		public static function assertFalse(... rest):void
 		{
@@ -166,9 +173,8 @@ package org.flexunit
 		 * is thrown with the given message.
 		 * 
 		 * @param rest
-		 * 			array of length one or two. Contains the Object to be
-		 * 			null checked. If the length is two the first index contains
-		 *          the identifying message for the <code> AssertionFailedError</code>
+		 * 			a comma-delimited list of arguments of length one or two. 
+		 * 			If the length is two the first item is used as the AssertionFailedError message. 
 		 * 			(<code>null</code> okay)
 		 */
 		public static function assertNull(... rest):void
@@ -195,9 +201,8 @@ package org.flexunit
 		 * thrown with the given message.
 		 * 
 		 * @param rest
-		 * 			array of length one or two. Contains the Object to be
-		 * 			null checked. If length is two the first index contains 
-		 * 			the identifying message for the <code> AssertionFailedError</code>
+		 * 			a comma-delimited list of arguments of length one or two. 
+		 * 			If the length is two the first item is used as the AssertionFailedError message. 
 		 * 			(<code>null</code> okay)
 		 */
 		public static function assertNotNull(... rest):void
