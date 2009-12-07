@@ -53,12 +53,18 @@ package org.flexunit
 		public static function resetAssertionsFields() : void {
 			_assertCount = 0;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public static function assertWithApply( asserter:Function, args:Array ):void {
 			_assertCount++;
 			asserter.apply( null, args );
 		}
 
+		/**
+		 * @private
+		 */
 		public static function assertWith( asserter:Function, ...rest ):void {
 			_assertCount++;
 			asserter.apply( null, rest );
@@ -68,8 +74,12 @@ package org.flexunit
 		 * Asserts that two provided values are equal.
 		 * 
 		 * @param rest
-		 * 			a comma-delimited list of arguments with possible length of 3. 
-		 * 			If the length is three the first item is used as the error message.
+		 * 			Must be passed at least 2 arguments of type Object to compare for equality.
+		 * 			If three arguments are passed, the first argument must be a String
+		 * 			and will be used as the error message.
+		 * 
+		 * 			<code>assertEquals( String, Object, Object );</code>
+		 * 			<code>assertEquals( Object, Object );</code>
 		 */
 		public static function assertEquals(... rest):void
 		{
@@ -94,8 +104,12 @@ package org.flexunit
 		 * Asserts that the provided values are strictly equal.
 		 * 
 		 * @param rest
-		 * 			a comma-delimited list of arguments with possible length of 3. 
-		 * 			If the length is three the first item is used as the error message.
+		 * 			Must be passed at least 2 arguments of type Object to compare for strict equality.
+		 * 			If three arguments are passed, the first argument must be a String
+		 * 			and will be used as the error message.
+		 * 
+		 * 			<code>assertStrictlyEquals( String, Object, Object );</code>
+		 * 			<code>assertStrictlyEquals( Object, Object );</code>
 		 */
 		public static function assertStrictlyEquals(... rest):void
 		{
@@ -120,8 +134,12 @@ package org.flexunit
 		 * <code> AssertionFailedError</code> with the given message.
 		 * 
 		 * @param rest
-		 * 			a comma-delimited list of arguments of length one or two. 
-		 * 			If the length is two the first item is used as the error message.
+		 * 			Accepts an argument of type Boolean.
+		 * 			If two arguments are passed the first argument must be a String 
+		 * 			and will be used as the error message.
+		 * 			
+		 * 			<code>assertTrue( String, Boolean );</code>
+		 * 			<code>assertTrue( Boolean );</code>
 		 */
 		public static function assertTrue(... rest):void
 		{
@@ -146,8 +164,12 @@ package org.flexunit
 		 * <code> AssertionFailedError</code> with the given message.
 		 * 
 		 * @param rest
-		 * 			a comma-delimited list of arguments of length one or two. 
-		 * 			If the length is two the first item is used as the error message.
+		 * 			Accepts an argument of type Boolean.
+		 * 			If two arguments are passed the first argument must be a String
+		 * 			and will be used as the error message.
+		 * 			
+		 * 			<code>assertFalse( String, Boolean );</code>
+		 * 			<code>assertFalse( Boolean );</code>
 		 */
 		public static function assertFalse(... rest):void
 		{
@@ -173,9 +195,13 @@ package org.flexunit
 		 * is thrown with the given message.
 		 * 
 		 * @param rest
-		 * 			a comma-delimited list of arguments of length one or two. 
-		 * 			If the length is two the first item is used as the AssertionFailedError message. 
-		 * 			(<code>null</code> okay)
+		 * 			Accepts an argument of type Object.
+		 * 			If two arguments are passed the first argument must be a String
+		 * 			and will be used as the error message.
+		 * 			
+		 * 			<code>assertNull( String, Object );</code>
+		 * 			<code>assertNull( Object );</code>
+		 * 
 		 */
 		public static function assertNull(... rest):void
 		{
@@ -201,9 +227,12 @@ package org.flexunit
 		 * thrown with the given message.
 		 * 
 		 * @param rest
-		 * 			a comma-delimited list of arguments of length one or two. 
-		 * 			If the length is two the first item is used as the AssertionFailedError message. 
-		 * 			(<code>null</code> okay)
+		 * 			Accepts an argument of type Object.
+		 * 			If two arguments are passed the first argument must be a String
+		 * 			and will be used as the error message.
+		 * 			
+		 * 			<code>assertNotNull( String, Object );</code>
+		 * 			<code>assertNotNull( Object );</code>
 		 */
 		public static function assertNotNull(... rest):void
 		{
