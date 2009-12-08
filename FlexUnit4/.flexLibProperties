@@ -11,6 +11,13 @@
     <classEntry path="org.flexunit.Assume"/>
     <classEntry path="org.flexunit.ComparisonFailure"/>
     <classEntry path="org.flexunit.assertThat"/>
+    <classEntry path="org.flexunit.asserts.assertEquals"/>
+    <classEntry path="org.flexunit.asserts.assertFalse"/>
+    <classEntry path="org.flexunit.asserts.assertNotNull"/>
+    <classEntry path="org.flexunit.asserts.assertNull"/>
+    <classEntry path="org.flexunit.asserts.assertStrictlyEquals"/>
+    <classEntry path="org.flexunit.asserts.assertTrue"/>
+    <classEntry path="org.flexunit.asserts.fail"/>
     <classEntry path="org.flexunit.assumeThat"/>
     <classEntry path="org.flexunit.async.Async"/>
     <classEntry path="org.flexunit.async.AsyncHandler"/>
