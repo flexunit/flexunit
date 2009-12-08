@@ -148,18 +148,16 @@ package org.flexunit.cases
 			var o:Object = new Object();
 			Assert.failNotStrictlyEquals( "Assert strictly equals fail", o, o );
 		}
-//TODO:: This test is not complete. Errors in my build prevented completion.
+
 		[Test(description="Ensure that the failNotStrictlyEquals function fails when two non-strictly equal values are provided")]
 		public function testFailNotStrictlyEqualsFails():void {
 			var failed:Boolean = false;
-/*			
 			try {
 				Assert.failNotStrictlyEquals( "Assert strictly equals fail", 5, "5" );
 			} catch ( error:AssertionFailedError ) {
 				failed = true;
-				Assert.assertEquals( "expected true but was false", error.message );
+				Assert.assertEquals( "Assert strictly equals fail - expected:<5> but was:<5>", error.message );
 			}
-*/
 			if ( !failed ) {
 				Assert.fail( "Assert strictly equals didn't fail" );
 			}
