@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="4.2.1" timestamp="Tue Dec 08 19:11:56 EST 2009">
+   <file name="/Users/dblegros/Documents/Flex Builder 3/flexunit/FlexUnit4CIListener/src/org/flexunit/listeners/closer/ApplicationCloser.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.flexunit.listeners.closer" class="ApplicationCloser.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="/Users/dblegros/Documents/Flex Builder 3/flexunit/FlexUnit4CIListener/src/org/flexunit/listeners/CIListener.as">
+      <violation beginline="59" endline="59" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.unused.UnusedField" ruleset="Unused Rules" package="org.flexunit.listeners" class="CIListener.as" externalInfoUrl="" priority="1">This private attribute (successes) does not seem to be used. 
+      </violation>
+      <violation beginline="60" endline="60" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.unused.UnusedField" ruleset="Unused Rules" package="org.flexunit.listeners" class="CIListener.as" externalInfoUrl="" priority="1">This private attribute (ignores) does not seem to be used. 
+      </violation>
+      <violation beginline="123" endline="123" begincolumn="20" endcolumn="20" rule="adobe.ac.pmd.rules.unused.UnusedPrivateMethod" ruleset="Unused Rules" package="org.flexunit.listeners" class="CIListener.as" externalInfoUrl="" priority="1">This private method (getTestCount) does not seem to be used. 
+      </violation>
+      <violation beginline="128" endline="128" begincolumn="35" endcolumn="35" rule="adobe.ac.pmd.rules.unused.UnusedParameter" ruleset="Unused Rules" package="org.flexunit.listeners" class="CIListener.as" externalInfoUrl="" priority="1">This parameter (description) of this function is not used. 
+      </violation>
+      <violation beginline="135" endline="135" begincolumn="36" endcolumn="36" rule="adobe.ac.pmd.rules.unused.UnusedParameter" ruleset="Unused Rules" package="org.flexunit.listeners" class="CIListener.as" externalInfoUrl="" priority="1">This parameter (result) of this function is not used. 
+      </violation>
+      <violation beginline="140" endline="140" begincolumn="32" endcolumn="32" rule="adobe.ac.pmd.rules.unused.UnusedParameter" ruleset="Unused Rules" package="org.flexunit.listeners" class="CIListener.as" externalInfoUrl="" priority="1">This parameter (description) of this function is not used. 
+      </violation>
+      <violation beginline="154" endline="154" begincolumn="42" endcolumn="42" rule="adobe.ac.pmd.rules.unused.UnusedParameter" ruleset="Unused Rules" package="org.flexunit.listeners" class="CIListener.as" externalInfoUrl="" priority="1">This parameter (failure) of this function is not used. 
+      </violation>
+      <violation beginline="254" endline="254" begincolumn="20" endcolumn="20" rule="adobe.ac.pmd.rules.unused.EmptyPrivateMethod" ruleset="Unused Rules" package="org.flexunit.listeners" class="CIListener.as" externalInfoUrl="" priority="1">This private method (handleConnect) is used but its content is empty. 
+      </violation>
+      <violation beginline="-1" endline="-1" begincolumn="-1" endcolumn="-1" rule="adobe.ac.pmd.rules.maintanability.ExcessiveImport" ruleset="Maintanability Rules" package="org.flexunit.listeners" class="CIListener.as" externalInfoUrl="" priority="3">A high number of imports can indicate a high degree of coupling within an object. (15 maximum but 17 actually). A high number of imports can indicate a high degree of coupling within an object. Rule counts the number of unique imports and reports a violation if the count is above the user defined threshold</violation>
+      <violation beginline="50" endline="50" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.sizing.TooManyFunction" ruleset="Sizing Rules" package="org.flexunit.listeners" class="CIListener.as" externalInfoUrl="" priority="3">Too many methods detected (10 maximum, but 16 actually). A class with too many methods is probably a good suspect for refactoring, in order to reduce its complexity and find a way to have more fine grained objects</violation>
+      <violation beginline="50" endline="50" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.sizing.TooManyFields" ruleset="Sizing Rules" package="org.flexunit.listeners" class="CIListener.as" externalInfoUrl="" priority="3">Too many field detected (5 maximum, but 9 actually). Classes that have too many fields could be redesigned to have fewer fields, possibly  through some nested object grouping of some of the information.  For example, a class with  city/state/zipcode fields could instead have one Address field</violation>
+      <violation beginline="59" endline="59" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.maintanability.ArrayFieldWithNoArrayElementType" ruleset="Maintanability Rules" package="org.flexunit.listeners" class="CIListener.as" externalInfoUrl="" priority="3">ArrayElementType metadata is not specified for this array-type field (successes). 
+        </violation>
+      <violation beginline="60" endline="60" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.maintanability.ArrayFieldWithNoArrayElementType" ruleset="Maintanability Rules" package="org.flexunit.listeners" class="CIListener.as" externalInfoUrl="" priority="3">ArrayElementType metadata is not specified for this array-type field (ignores). 
+        </violation>
+      <violation beginline="182" endline="182" begincolumn="8" endcolumn="8" rule="adobe.ac.pmd.rules.unused.UnusedLocalVariable" ruleset="Unused Rules" package="org.flexunit.listeners" class="CIListener.as" externalInfoUrl="" priority="3">This variable (methodName) is not used. 
+      </violation>
+   </file>
+   <file name="/Users/dblegros/Documents/Flex Builder 3/flexunit/FlexUnit4CIListener/src/org/flexunit/listeners/closer/StandAloneFlashPlayerCloser.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.flexunit.listeners.closer" class="StandAloneFlashPlayerCloser.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="/Users/dblegros/Documents/Flex Builder 3/flexunit/FlexUnit4CIListener/src/org/flexunit/listeners/TestCaseReport.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.flexunit.listeners" class="TestCaseReport.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="/Users/dblegros/Documents/Flex Builder 3/flexunit/FlexUnit4CIListener/src/org/flexunit/listeners/TestSuiteReport.as">
+      <violation beginline="3" endline="3" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.sizing.TooManyFields" ruleset="Sizing Rules" package="org.flexunit.listeners" class="TestSuiteReport.as" externalInfoUrl="" priority="3">Too many field detected (5 maximum, but 6 actually). Classes that have too many fields could be redesigned to have fewer fields, possibly  through some nested object grouping of some of the information.  For example, a class with  city/state/zipcode fields could instead have one Address field</violation>
+      <violation beginline="14" endline="14" begincolumn="14" endcolumn="14" rule="adobe.ac.pmd.rules.maintanability.ArrayFieldWithNoArrayElementType" ruleset="Maintanability Rules" package="org.flexunit.listeners" class="TestSuiteReport.as" externalInfoUrl="" priority="3">ArrayElementType metadata is not specified for this array-type field (methods). 
+        </violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.flexunit.listeners" class="TestSuiteReport.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="/Users/dblegros/Documents/Flex Builder 3/flexunit/FlexUnit4CIListener/src/org/flexunit/listeners/VisualDebuggerListener.mxml">
+      <violation beginline="117" endline="117" begincolumn="36" endcolumn="36" rule="adobe.ac.pmd.rules.unused.UnusedParameter" ruleset="Unused Rules" package="org.flexunit.listeners" class="VisualDebuggerListener.mxml" externalInfoUrl="" priority="1">This parameter (description) of this function is not used. 
+      </violation>
+      <violation beginline="124" endline="124" begincolumn="37" endcolumn="37" rule="adobe.ac.pmd.rules.unused.UnusedParameter" ruleset="Unused Rules" package="org.flexunit.listeners" class="VisualDebuggerListener.mxml" externalInfoUrl="" priority="1">This parameter (result) of this function is not used. 
+      </violation>
+      <violation beginline="129" endline="129" begincolumn="33" endcolumn="33" rule="adobe.ac.pmd.rules.unused.UnusedParameter" ruleset="Unused Rules" package="org.flexunit.listeners" class="VisualDebuggerListener.mxml" externalInfoUrl="" priority="1">This parameter (description) of this function is not used. 
+      </violation>
+      <violation beginline="143" endline="143" begincolumn="43" endcolumn="43" rule="adobe.ac.pmd.rules.unused.UnusedParameter" ruleset="Unused Rules" package="org.flexunit.listeners" class="VisualDebuggerListener.mxml" externalInfoUrl="" priority="1">This parameter (failure) of this function is not used. 
+      </violation>
+      <violation beginline="2" endline="2" begincolumn="7" endcolumn="7" rule="adobe.ac.pmd.rules.sizing.TooManyPublic" ruleset="Sizing Rules" package="org.flexunit.listeners" class="VisualDebuggerListener.mxml" externalInfoUrl="" priority="3">Too much public fields or functions detected (10 maximum, but 14 actually). A large number of public methods and attributes declared in a class can indicate the class may need to be broken up as increased effort will be required to thoroughly test it</violation>
+      <violation beginline="2" endline="2" begincolumn="7" endcolumn="7" rule="adobe.ac.pmd.rules.sizing.TooManyFunction" ruleset="Sizing Rules" package="org.flexunit.listeners" class="VisualDebuggerListener.mxml" externalInfoUrl="" priority="3">Too many methods detected (10 maximum, but 19 actually). A class with too many methods is probably a good suspect for refactoring, in order to reduce its complexity and find a way to have more fine grained objects</violation>
+      <violation beginline="2" endline="2" begincolumn="7" endcolumn="7" rule="adobe.ac.pmd.rules.sizing.TooManyFields" ruleset="Sizing Rules" package="org.flexunit.listeners" class="VisualDebuggerListener.mxml" externalInfoUrl="" priority="3">Too many field detected (5 maximum, but 10 actually). Classes that have too many fields could be redesigned to have fewer fields, possibly  through some nested object grouping of some of the information.  For example, a class with  city/state/zipcode fields could instead have one Address field</violation>
+      <violation beginline="4" endline="292" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.mxml.TooLongScriptBlock" ruleset="Basic MXML Rules" package="org.flexunit.listeners" class="VisualDebuggerListener.mxml" externalInfoUrl="" priority="3">This script block is too long (50 maximum, but 288 actually)</violation>
+      <violation beginline="46" endline="46" begincolumn="16" endcolumn="16" rule="adobe.ac.pmd.rules.maintanability.ArrayFieldWithNoArrayElementType" ruleset="Maintanability Rules" package="org.flexunit.listeners" class="VisualDebuggerListener.mxml" externalInfoUrl="" priority="3">ArrayElementType metadata is not specified for this array-type field (successes). 
+        </violation>
+      <violation beginline="47" endline="47" begincolumn="16" endcolumn="16" rule="adobe.ac.pmd.rules.maintanability.ArrayFieldWithNoArrayElementType" ruleset="Maintanability Rules" package="org.flexunit.listeners" class="VisualDebuggerListener.mxml" externalInfoUrl="" priority="3">ArrayElementType metadata is not specified for this array-type field (ignores). 
+        </violation>
+      <violation beginline="61" endline="61" begincolumn="0" endcolumn="16" rule="adobe.ac.pmd.rules.mxml.MoreThanTwoEntryPointsInMxml" ruleset="Basic MXML Rules" package="org.flexunit.listeners" class="VisualDebuggerListener.mxml" externalInfoUrl="" priority="3">There are more than 2 public variables in this MXML component</violation>
+      <violation beginline="171" endline="171" begincolumn="9" endcolumn="9" rule="adobe.ac.pmd.rules.unused.UnusedLocalVariable" ruleset="Unused Rules" package="org.flexunit.listeners" class="VisualDebuggerListener.mxml" externalInfoUrl="" priority="3">This variable (methodName) is not used. 
+      </violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.flexunit.listeners" class="VisualDebuggerListener.mxml" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+      <violation beginline="61" endline="61" begincolumn="0" endcolumn="16" rule="adobe.ac.pmd.rules.mxml.MoreThanOneEntryPointInMxml" ruleset="Basic MXML Rules" package="org.flexunit.listeners" class="VisualDebuggerListener.mxml" externalInfoUrl="" priority="5">There are more than 1 public variable in this MXML component</violation>
+   </file>
+</pmd>

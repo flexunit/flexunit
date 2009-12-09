@@ -5,7 +5,7 @@
 	<!-- Configuration -->
 	<property name="build.number" value="4.0.0" />
 	<property name="build.useFlex" value="true" />
-	<property name="build.artifact.name" value="flexunit-uirunner-${build.number}.swc" />
+	<property name="build.artifact.name" value="flexunit-uilistener-${build.number}.swc" />
 	<property name="build.namespace" value="http://www.adobe.com/2009/flexUnitUIRunner" />
 
 	<!-- Setup paths for build -->

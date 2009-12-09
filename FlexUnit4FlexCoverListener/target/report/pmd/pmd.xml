@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="4.2.1" timestamp="Tue Dec 08 19:12:20 EST 2009">
+   <file name="/Users/dblegros/Documents/Flex Builder 3/flexunit/FlexUnit4FlexCoverListener/src/org/flexunit/listeners/closer/FlexCoverCloser.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.flexunit.listeners.closer" class="FlexCoverCloser.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="/Users/dblegros/Documents/Flex Builder 3/flexunit/FlexUnit4FlexCoverListener/src/org/flexunit/listeners/FlexCoverListener.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.flexunit.listeners" class="FlexCoverListener.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+</pmd>
