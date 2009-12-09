@@ -26,5 +26,13 @@ package org.fluint.uiImpersonation.cases
 			//Remove the reference to the testEnvironment
 			testEnvironment = null;
 		}
+		
+		[Test(order=3,description="Ensure that a focus manager exists on an instance")]
+		public function getFocusManagerCreatedTest():void
+		{
+			testEnvironment = TestEnvironment.getInstance();
+			
+			Assert.assertNotNull( testEnvironment.focusManager );
+		}
 	}
 }

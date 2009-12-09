@@ -101,7 +101,6 @@ package org.flexunit.internals.runners {
 			
 			if ( klassOrTest is TestSuite ) {
 				if ( TestSuite( klassOrTest ).testArrayList.isEmpty() ) {
-					//Fix for FXU-71
 					throw new InitializationError("Empty test Suite!");
 				}
 			}

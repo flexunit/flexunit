@@ -234,6 +234,16 @@ class SafeNotifier {
 		this.listeners = listeners;
 	}
 	
+	/**
+	 * This method attempts to notify each listener.
+	 * Should a listener throw an error for any reason, it is assumed that the listener
+	 * is bad and should no longer be called.  The listener will be removed and will
+	 * no longer recieve any callbacks for any future notfications.  A "Test mechanism"
+	 * failure will be thrown should be a listener fail.
+	 * 
+	 * If a listener needs to be able to throw errors and continue to recieve callbacks,
+	 * it's up to the listener to use try/catch statements to handle the error.
+	 **/
 	public function run():void {
 		for ( var i:int=0; i<listeners.length; i++ ) {
 			try {
