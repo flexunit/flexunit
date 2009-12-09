@@ -1,0 +1,90 @@
+!SESSION 2009-12-08 17:13:35.834 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_17
+java.vendor=Apple Inc.
+BootLoader constants: OS=macosx, ARCH=x86, WS=carbon, NL=en_US
+Command-line arguments:  -os macosx -ws carbon -arch x86 -data /Users/simeon/Sites/projects/flexunit
+
+!ENTRY org.eclipse.core.net 1 0 2009-12-08 17:13:39.155
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY com.adobe.flexbuilder.project 4 43 2009-12-08 17:14:35.136
+!MESSAGE Could not traverse changed resources in project FlexUnit4SampleCIProject.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Resource '/FlexUnit4SampleCIProject/src/main/flex' does not exist.
+	at org.eclipse.core.internal.resources.Resource.checkExists(Resource.java:310)
+	at org.eclipse.core.internal.resources.Resource.checkAccessible(Resource.java:193)
+	at org.eclipse.core.internal.resources.Resource.accept(Resource.java:46)
+	at org.eclipse.core.internal.resources.Resource.accept(Resource.java:103)
+	at org.eclipse.core.internal.resources.Resource.accept(Resource.java:87)
+	at com.adobe.flexbuilder.project.compiler.internal.BuilderUtils.copyDependents(Unknown Source)
+	at com.adobe.flexbuilder.project.compiler.internal.FlexProjectBuilder.build(Unknown Source)
+	at com.adobe.flexbuilder.project.compiler.internal.FlexIncrementalBuilder.build(Unknown Source)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:624)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:166)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:197)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:246)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:249)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:334)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:137)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:235)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 org.eclipse.core.resources 4 368 2009-12-08 17:14:35.137
+!MESSAGE Resource '/FlexUnit4SampleCIProject/src/main/flex' does not exist.
+
+!ENTRY com.adobe.flexbuilder.project 4 43 2009-12-08 17:14:35.169
+!MESSAGE Could not traverse changed resources in project FlexUnit4Test.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Resource '/FlexUnit4Test/src' does not exist.
+	at org.eclipse.core.internal.resources.Resource.checkExists(Resource.java:310)
+	at org.eclipse.core.internal.resources.Resource.checkAccessible(Resource.java:193)
+	at org.eclipse.core.internal.resources.Resource.accept(Resource.java:46)
+	at org.eclipse.core.internal.resources.Resource.accept(Resource.java:103)
+	at org.eclipse.core.internal.resources.Resource.accept(Resource.java:87)
+	at com.adobe.flexbuilder.project.compiler.internal.BuilderUtils.copyDependents(Unknown Source)
+	at com.adobe.flexbuilder.project.compiler.internal.FlexProjectBuilder.build(Unknown Source)
+	at com.adobe.flexbuilder.project.compiler.internal.FlexIncrementalBuilder.build(Unknown Source)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:624)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:166)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:197)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:246)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:249)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:334)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:137)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:235)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 org.eclipse.core.resources 4 368 2009-12-08 17:14:35.169
+!MESSAGE Resource '/FlexUnit4Test/src' does not exist.
+
+!ENTRY com.adobe.flexbuilder.project 4 43 2009-12-08 17:14:35.202
+!MESSAGE Could not traverse changed resources in project FlexUnit4Turnkey.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Resource '/FlexUnit4Turnkey/src' does not exist.
+	at org.eclipse.core.internal.resources.Resource.checkExists(Resource.java:310)
+	at org.eclipse.core.internal.resources.Resource.checkAccessible(Resource.java:193)
+	at org.eclipse.core.internal.resources.Resource.accept(Resource.java:46)
+	at org.eclipse.core.internal.resources.Resource.accept(Resource.java:103)
+	at org.eclipse.core.internal.resources.Resource.accept(Resource.java:87)
+	at com.adobe.flexbuilder.project.compiler.internal.BuilderUtils.copyDependents(Unknown Source)
+	at com.adobe.flexbuilder.project.compiler.internal.FlexProjectBuilder.build(Unknown Source)
+	at com.adobe.flexbuilder.project.compiler.internal.FlexIncrementalBuilder.build(Unknown Source)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:624)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:166)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:197)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:246)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:249)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:334)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:137)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:235)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 org.eclipse.core.resources 4 368 2009-12-08 17:14:35.202
+!MESSAGE Resource '/FlexUnit4Turnkey/src' does not exist.
