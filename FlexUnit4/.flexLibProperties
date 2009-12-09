@@ -2,7 +2,7 @@
 <flexLibProperties version="1">
   <includeClasses>
     <classEntry path="flex.lang.reflect.Constructor"/>
-    <classEntry path="flex.lang.reflect.Field"/>
+	    <classEntry path="flex.lang.reflect.Field"/>
     <classEntry path="flex.lang.reflect.Klass"/>
     <classEntry path="flex.lang.reflect.Method"/>
     <classEntry path="flex.lang.reflect.utils.MetadataTools"/>
@@ -10,7 +10,6 @@
     <classEntry path="org.flexunit.AssertionError"/>
     <classEntry path="org.flexunit.Assume"/>
     <classEntry path="org.flexunit.ComparisonFailure"/>
-    <classEntry path="org.flexunit.IncludeFlexClasses"/>
     <classEntry path="org.flexunit.assertThat"/>
     <classEntry path="org.flexunit.asserts.assertEquals"/>
     <classEntry path="org.flexunit.asserts.assertFalse"/>
@@ -23,12 +22,7 @@
     <classEntry path="org.flexunit.async.Async"/>
     <classEntry path="org.flexunit.async.AsyncHandler"/>
     <classEntry path="org.flexunit.async.AsyncLocator"/>
-    <classEntry path="org.flexunit.async.AsyncTestResponder"/>
-    <classEntry path="org.flexunit.async.IAsyncTestResponder"/>
-    <classEntry path="org.flexunit.async.ITestResponder"/>
-    <classEntry path="org.flexunit.async.TestResponder"/>
     <classEntry path="org.flexunit.events.AsyncEvent"/>
-    <classEntry path="org.flexunit.events.AsyncResponseEvent"/>
     <classEntry path="org.flexunit.experimental.results.FailureList"/>
     <classEntry path="org.flexunit.experimental.results.PrintableResult"/>
     <classEntry path="org.flexunit.experimental.results.ResultMatchers"/>
@@ -54,12 +48,10 @@
     <classEntry path="org.flexunit.internals.AssumptionViolatedException"/>
     <classEntry path="org.flexunit.internals.FlexUnitSystem"/>
     <classEntry path="org.flexunit.internals.RealSystem"/>
-    <classEntry path="org.flexunit.internals.TextListener"/>
     <classEntry path="org.flexunit.internals.TraceListener"/>
     <classEntry path="org.flexunit.internals.builders.AllDefaultPossibilitiesBuilder"/>
     <classEntry path="org.flexunit.internals.builders.FlexUnit1Builder"/>
     <classEntry path="org.flexunit.internals.builders.FlexUnit4Builder"/>
-    <classEntry path="org.flexunit.internals.builders.Fluint1Builder"/>
     <classEntry path="org.flexunit.internals.builders.IgnoredBuilder"/>
     <classEntry path="org.flexunit.internals.builders.IgnoredClassRunner"/>
     <classEntry path="org.flexunit.internals.builders.MetaDataBuilder"/>
@@ -67,8 +59,6 @@
     <classEntry path="org.flexunit.internals.builders.SuiteMethodBuilder"/>
     <classEntry path="org.flexunit.internals.events.ExecutionCompleteEvent"/>
     <classEntry path="org.flexunit.internals.flexunit_internal"/>
-    <classEntry path="org.flexunit.internals.listeners.FluintDisplayListener"/>
-    <classEntry path="org.flexunit.internals.listeners.FluintDisplayListenerView"/>
     <classEntry path="org.flexunit.internals.matchers.Each"/>
     <classEntry path="org.flexunit.internals.namespaces.classInternal"/>
     <classEntry path="org.flexunit.internals.requests.ClassRequest"/>
@@ -79,7 +69,6 @@
     <classEntry path="org.flexunit.internals.runners.ErrorReportingRunner"/>
     <classEntry path="org.flexunit.internals.runners.FailedBefore"/>
     <classEntry path="org.flexunit.internals.runners.FlexUnit1ClassRunner"/>
-    <classEntry path="org.flexunit.internals.runners.Fluint1ClassRunner"/>
     <classEntry path="org.flexunit.internals.runners.InitializationError"/>
     <classEntry path="org.flexunit.internals.runners.MethodRoadie"/>
     <classEntry path="org.flexunit.internals.runners.MethodValidator"/>
@@ -104,7 +93,6 @@
     <classEntry path="org.flexunit.internals.runners.statements.StackAndFrameManagement"/>
     <classEntry path="org.flexunit.internals.runners.statements.StatementSequencer"/>
     <classEntry path="org.flexunit.matchers.FlexUnitMatchers"/>
-    <classEntry path="org.flexunit.reporting.FailureFormatter"/>
     <classEntry path="org.flexunit.runner.Description"/>
     <classEntry path="org.flexunit.runner.Descriptor"/>
     <classEntry path="org.flexunit.runner.FlexUnitCore"/>
@@ -117,16 +105,9 @@
     <classEntry path="org.flexunit.runner.RunnerLocator"/>
     <classEntry path="org.flexunit.runner.manipulation.Filter"/>
     <classEntry path="org.flexunit.runner.manipulation.IFilterable"/>
-    <classEntry path="org.flexunit.runner.manipulation.ISimpleCursor"/>
-    <classEntry path="org.flexunit.runner.manipulation.ISort"/>
-    <classEntry path="org.flexunit.runner.manipulation.ISortable"/>
-    <classEntry path="org.flexunit.runner.manipulation.ISorter"/>
-    <classEntry path="org.flexunit.runner.manipulation.MetadataSorter"/>
     <classEntry path="org.flexunit.runner.manipulation.NoTestsRemainException"/>
     <classEntry path="org.flexunit.runner.manipulation.Sorter"/>
     <classEntry path="org.flexunit.runner.notification.Failure"/>
-    <classEntry path="org.flexunit.runner.notification.IAsyncCompletionRunListener"/>
-    <classEntry path="org.flexunit.runner.notification.IAsyncRunListener"/>
     <classEntry path="org.flexunit.runner.notification.IAsyncStartupRunListener"/>
     <classEntry path="org.flexunit.runner.notification.IRunListener"/>
     <classEntry path="org.flexunit.runner.notification.IRunNotifier"/>
@@ -150,18 +131,6 @@
     <classEntry path="org.flexunit.token.AsyncTestToken"/>
     <classEntry path="org.flexunit.token.ChildResult"/>
     <classEntry path="org.flexunit.utils.ClassNameUtil"/>
-    <classEntry path="org.fluint.sequence.ISequenceAction"/>
-    <classEntry path="org.fluint.sequence.ISequencePend"/>
-    <classEntry path="org.fluint.sequence.ISequenceStep"/>
-    <classEntry path="org.fluint.sequence.SequenceBindingWaiter"/>
-    <classEntry path="org.fluint.sequence.SequenceCaller"/>
-    <classEntry path="org.fluint.sequence.SequenceDelay"/>
-    <classEntry path="org.fluint.sequence.SequenceEventDispatcher"/>
-    <classEntry path="org.fluint.sequence.SequenceRunner"/>
-    <classEntry path="org.fluint.sequence.SequenceSetter"/>
-    <classEntry path="org.fluint.sequence.SequenceWaiter"/>
-    <classEntry path="org.fluint.uiImpersonation.TestEnvironment"/>
-    <classEntry path="org.fluint.uiImpersonation.UIImpersonator"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
