@@ -33,63 +33,68 @@ package org.flexunit.runner {
 	import mx.utils.ObjectUtil;
 	
 	/**
-	 * A <code>Description</code> describes a test which is to be run or has been run. <code>Descriptions</code> 
-	 * can be atomic (a single test) or compound (containing children tests). <code>Descriptions</code> are used
-	 * to provide feedback about the tests that are about to run (for example, the tree view
-	 * visible in many IDEs) or tests that have been run (for example, the failures view).
+	 * A <code>Description</code> describes a suite, test case, or test which is to be run or has been run. 
+	 * <code>Descriptions</code> can be atomic (a single test) or compound (containing children tests). 
+	 * <code>Description</code>s are used to provide feedback about the tests that are about to run (for example, 
+	 * the tree view visible in many IDEs) or tests that have been run (for example, the failures view).
+	 * This information can be used to report the current progress of the test run.<p>
 	 * 
-	 * <p><code>Descriptions</code> are implemented as a single class rather than a Composite because
-	 * they are entirely informational. They contain no logic aside from counting their tests.</p>
+	 * <code>Description</code>s are implemented as a single class rather than a composite because
+	 * they are entirely informational. They contain no logic aside from counting their tests.<p>
 	 * 
-	 * <p>TODO: Link to appropriate flexunit directories or remove links if N/A</p>
-	 * 
-	 * <p>In the past, we used the raw junit.framework.TestCases and junit.framework.TestSuites
-	 * to display the tree of tests. This was no longer viable in JUnit 4 because atomic tests no longer have 
-	 * a superclass below Object. We needed a way to pass a class and name together. Description 
-	 * emerged from this.</p>
-	 * 
-	 * @see org.flexunit.runner.Request
-	 * @see org.flexunit.runner.Runner
+	 * @see org.flexunit.runner.IRunner
 	 */
 	public class Description implements IDescription {
 		public static var EMPTY:Description = new Description("Empty", null );
 		public static var TEST_MECHANISM:Description = new Description("Test mechanism", null );
-
+		
+		/**
+		 * @private
+		 */
 		private var _children:Array;
+		/**
+		 * @private
+		 */
 		private var _displayName:String = "";
+		/**
+		 * @private
+		 */
 		private var _metadata:XMLList;
+		/**
+		 * @private
+		 */
 		private var _isInstance:Boolean = false;
 		
 		/**
-		 * @return the receiver's children, if any
+		 * @return a list of the receiver's children, if any exists.
 		 */
 		public function get children():Array {
 			return _children;
 		}
 
 		/**
-		 * @return a user-understandable label
+		 * @return a user-understandable label.
 		 */
 		public function get displayName():String {
 			return _displayName;
 		}
 
 		/**
-		 * @return <code>true</code> if the receiver is a suite
+		 * @return <code>true</code> if the receiver is a suite.
 		 */
 		public function get isSuite():Boolean {
 			return !isTest;
 		}
 
 		/**
-		 * @return <code>true</code> if the receiver is an atomic test
+		 * @return <code>true</code> if the receiver is an atomic test.
 		 */
 		public function get isTest():Boolean {
 			return ( ( children == null ) || ( children && children.length == 0 ) );
 		}
 
 		/**
-		 * @return the total number of atomic tests in the receiver
+		 * @return the total number of atomic tests in the receiver.
 		 */
 		public function get testCount():int {
 			if ( isTest ) {
@@ -111,9 +116,13 @@ package org.flexunit.runner {
 		}
 
 		/**
-		 * @param type the name of the node to find
-		 * @return the metadata node as XML that is attached to this description if a node is found with a matching <code>type</code>, 
-		 * or null if no such node exists
+		 * Returns the metadata node that is attached to this description if a node is found with a matching <code>type</code> 
+		 * or a value of <code>null</code> if no such node exists.
+		 * 
+		 * @param type The name of the node to find in the description's metadta.
+		 * 
+		 * @return the metadata node that is attached to this description if a node is found with a matching <code>type</code> 
+		 * or a value of <code>null</code> if no such node exists.
 		 */
 		public function getMetadata( type:String ):XML {
 			//Extract specific needed node by type
@@ -121,6 +130,8 @@ package org.flexunit.runner {
 		}
 		
 		/**
+		 * Returns all of the metadata that is attached to this description node.
+		 * 
 		 * @return the metadata as XML that is attached to this description node, 
 		 * or null if none exists
 		 */
@@ -143,7 +154,8 @@ package org.flexunit.runner {
 		}
 
 		/**
-		 * Add <code>Description</code> as a child of the receiver.
+		 * Adds an <code>IDescription</code> as a child of the receiver.
+		 * 
 		 * @param description the soon-to-be child.
 		 */
 		public function addChild( description:IDescription ):void {
@@ -151,8 +163,11 @@ package org.flexunit.runner {
 		}
 		
 		/**
+		 * Returns a copy of this description, with no children (on the assumption that some of the
+		 * children will be added back).
+		 * 
 		 * @return a copy of this description, with no children (on the assumption that some of the
-		 * children will be added back)
+		 * children will be added back).
 		 */
 		public function childlessCopy():IDescription {
 			trace("Method not yet implemented");
@@ -160,8 +175,10 @@ package org.flexunit.runner {
 		}
 		
 		/**
-		 * Determines if the current description is equal to the provided <code>obj</code>
-		 * @param obj
+		 * Determines if the current description is equal to the provided <code>obj</code>.
+		 * 
+		 * @param obj The object to check against the current description.
+		 * 
 		 * @return true if this is a description of a Runner that runs no tests
 		 */
 		public function equals( obj:Object ):Boolean {
@@ -175,11 +192,14 @@ package org.flexunit.runner {
 		}		
 
 		/**
-		 * Create a <code>Description</code> named <code>name</code>.
-		 * Generally, you will add children to this <code>Description</code>.
-		 * @param suiteClassOrName the name of the <code>Description</code> or an existing Description 
-		 * @param metaData 
-		 * @return a <code>Description</code> named <code>name</code>
+		 * Creates an <code>IDescription</code> named <code>name</code>.
+		 * Generally, you will add children to this <code>IDescription</code>.
+		 * 
+		 * @param suiteClassOrName The class of the object to be described or the name of 
+		 * the class to be secribed.
+		 * @param metaData Metadata about the test.
+		 * 
+		 * @return an <code>IDescription</code> named <code>name</code>.
 		 */
 		public static function createSuiteDescription( suiteClassOrName:*, metaData:XMLList=null ):IDescription {
 			var description:Description;
@@ -194,18 +214,27 @@ package org.flexunit.runner {
 		}
 
 		/**
-		 * Create a <code>Description</code> of a single test named <code>name</code> in the class <code>testClassOrDescription</code>.
-		 * Generally, this will be a leaf <code>Description</code>.
-		 * @param testClassOrInstance the class of the test
-		 * @param name the name of the test (a method name for test annotated with org.junit.Test)
-		 * @param metadata meta-data about the test, for downstream interpreters
-		 * @return a <code>Description</code> named <code>name</code>
+		 * Creates a <code>Description</code> of a single test named <code>name</code> in the class <code>testClassOrDescription</code>.
+		 * Generally, this will be a leaf <code>IDescription</code>.
+		 * 
+		 * @param testClassOrInstance The class of the test.
+		 * @param name The name of the test.
+		 * @param metadata Metadata about the test.
+		 * 
+		 * @return an <code>IDescription</code> named <code>name</code>.
 		 */
 		public static function createTestDescription( testClassOrInstance:Class, name:String, metadata:XMLList=null ):IDescription {
 			var description:Description = new Description( getQualifiedClassName( testClassOrInstance) + '.' + name, metadata );
 			return description;
 		}
-
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param displayName The display name of the description node.
+		 * @param metadata The metadata of the description node.
+		 * @param isInstance A Boolean value indicating whether the descrption node is an instance.
+		 */
 		public function Description( displayName:String, metadata:XMLList, isInstance:Boolean=false ) {
 			//_testClassOrInstance = testClassOrInstance;
 			_displayName = displayName;

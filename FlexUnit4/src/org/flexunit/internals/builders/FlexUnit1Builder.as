@@ -37,17 +37,21 @@ package org.flexunit.internals.builders {
 	import org.flexunit.runners.model.RunnerBuilderBase;
 	
 	/**
-	 * Builds a <code>FlexUnit1ClassRunner</code> for a test class.
+	 * The <code>FlexUnit1Builder</code> potentially builds a <code>FlexUnit1ClassRunner</code> for
+	 * a provided testClass.  It is determined whether the testClass descends from a FlexUnit1 
+	 * <code>flexunit.framework.TestCase</code> in the FlexUnit .9 library.  If it does, a 
+	 * <code>FlexUnit1ClassRunner</code> is created for the test class; however, if it does not fulfill 
+	 * this criteria, no <code>IRunner</code> will be generated.
 	 */
 	public class FlexUnit1Builder extends RunnerBuilderBase {
 		
 		/**
-		 * Returns a <code>FlexUnit1ClassRunner</code> if the class is a test class prior to FlexUnit4.
+		 * Returns a <code>FlexUnit1ClassRunner</code> if the <code>testClass</code> is a test class prior to FlexUnit4.
 		 * 
 		 * @param testClass The class to check.
 		 * 
 		 * @return a <code>FlexUnit1ClassRunner</code> if the class is a test class prior to FlexUnit4; otherwise, a
-		 * value of null is returned.
+		 * value of <code>null</code> is returned.
 		 */
 		override public function runnerForClass( testClass:Class ):IRunner {
 			var klassInfo:Klass = new Klass( testClass );
@@ -58,11 +62,11 @@ package org.flexunit.internals.builders {
 		}
 		
 		/**
-		 * Determine if the provided <code>Klass</code> is a test class prior to FlexUnit4.
+		 * Determine if the provided <code>klassInfo</code> is a test class prior to FlexUnit4.
 		 * 
 		 * @param klassInfo The klass to check.
 		 * 
-		 * @return a Boolean value indicating whether the klass is a test class prior to FlexUnit4.
+		 * @return a Boolean value indicating whether the <code>klassInfo</code> is a test class prior to FlexUnit4.
 		 */
 		public function isPre4Test( klassInfo:Klass ):Boolean {
 			return klassInfo.descendsFrom( flexunit.framework.TestCase );

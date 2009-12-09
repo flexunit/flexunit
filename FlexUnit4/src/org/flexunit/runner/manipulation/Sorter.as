@@ -38,6 +38,9 @@ package org.flexunit.runner.manipulation
 	 */
 	public class Sorter implements ISorter
 	{	
+		/**
+		 * @private
+		 */
 		private var comparator:Function;
 		
 		/**

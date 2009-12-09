@@ -30,18 +30,19 @@ package org.flexunit.runner
 	import flash.utils.Dictionary;
 	
 	/**
-	 * A <code>RunnerLocator</code> either registers or
-	 * retrieves an <code>IRunner</code> for a particular test class.
-	 * 
+	 * The <code>RunnerLocator</code> is used to keep track of what runner a particular test class is using.
 	 */
 	public class RunnerLocator {
-
+		
+		/**
+		 * @private
+		 */
 		private var d:Dictionary = new Dictionary( true );
 		
 		/**
-		 * Registers the <code>IRunner</code> with a particular test class.
+		 * Registers the <code>runner</code> with the provided <code>test</code>.
 		 * 
-		 * @param test The test class used to register the <code>IRunner</code>.
+		 * @param test The test class used to register the <code>runner</code>.
 		 * @param runner The <code>IRunner</code> to be registered.
 		 */
 		public function registerRunnerForTest( test:Object, runner:IRunner ):void {
@@ -49,7 +50,7 @@ package org.flexunit.runner
 		}	
 		
 		/**
-		 * Retrieves the <code>IRunner<code> for a particular test class.  If no runner has been 
+		 * Retrieves the <code>IRunner<code> for a particular <code>test</code>.  If no runner has been 
 		 * registered for the test, a <code>null</code> value is returned.
 		 * 
 		 * @param test The test class used to determine if there is a registered <code>IRunner</code>.

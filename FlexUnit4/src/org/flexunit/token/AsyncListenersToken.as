@@ -30,14 +30,33 @@ package org.flexunit.token {
 	import org.flexunit.runner.IRunner;
 	
 	/**
-	 * The <code>AsyncListenersToken</code> is responsible for indicating the status of <code>IAsyncRunListener</code>s
-	 * and indicating when the <code>IAsyncRunListener</code>s are ready or have completed.
+	 * The <code>AsyncListenersToken</code> is responsible for indicating the statuses of <code>IAsyncRunListener</code>s
+	 * and indicating when the <code>IAsyncRunListener</code>s are ready or have completed.  Additionally, the token
+	 * keeps track of an <code>IRunner</code> that can be stored while waiting for listeners to report that they
+	 * are ready.  The <code>IRunner</code> can then be extracted an the test run can proceed.
+	 * 
+	 * @see org.flexunit.runner.FlexUnitCore#runRunner()
 	 */
 	public class AsyncListenersToken {
+		/**
+		 * @private
+		 */
 		private var methodsEntries:Array;
+		/**
+		 * @private
+		 */
 		private var _error:Error;
+		/**
+		 * @private
+		 */
 		private var debugClassName:String;
+		/**
+		 * @private
+		 */
 		private var _token:AsyncTestToken;
+		/**
+		 * @private
+		 */
 		private var _runner:IRunner;
 		
 		/**

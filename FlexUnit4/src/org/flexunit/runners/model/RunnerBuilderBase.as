@@ -33,18 +33,26 @@ package org.flexunit.runners.model {
 	import org.flexunit.runner.IRequest;
 	import org.flexunit.runner.IRunner;
 
-	//TODO: class description needed, similar to IRunnerBuilder's? Reference IRunnerBuilder?
 	/**
-	 * The <code>RunnerBuilderBase</code> is responsible for determining what runner is needed in order to run
-	 * a particular test class.
+	 * The <code>RunnerBuilderBase</code> is used as a base by other runner builders in FlexUnit4.  It
+	 * provides basic logic for the handling of constructing <code>IRunner</code>s for children of a
+	 * provided test class.  These children in turn may have children that will also need 
+	 * corresponding <code>IRunners</code>.<p>
+	 * 
+	 * The <code>RunnerBuilderBase</code>contains logic ensuring that a parent class does not reference 
+	 * itself or that a child class does not reference the parent, preventing a potential infinite loop.
+	 * 
+	 * @see org.flexunit.internals.builders.AllDefaultPossibilitiesBuilder
 	 */
 	public class RunnerBuilderBase implements IRunnerBuilder {
+		/**
+		 * @private
+		 */
 		private var parents:Dictionary = new Dictionary( true );
 
 		/**
 		 * Returns an <code>IRunner</code> that can safely run the provided <code>testClass</code>.
-		 * An <code>IRunner</code> will always be returned, even if it is just one that prints an error 
-		 * instead of running tests.
+		 * If no suitable <code>IRunner</code> can be found, a value of <code>null</code> is returned.
 		 * 
 		 * @param testClass The class to for which to determine an <code>IRunner</code>.
 		 * 

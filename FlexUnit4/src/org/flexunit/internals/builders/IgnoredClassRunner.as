@@ -33,9 +33,15 @@ package org.flexunit.internals.builders {
 	import org.flexunit.token.AsyncTestToken;
 	
 	/**
-	 * An <code>IRunner</code> for test classes that are to be ignored.
+	 * The <code>IgnoredClassRunner</code> is an <code>IRunner</code> for test classes that are 
+	 * to be ignored.  The runner will not run any tests in the provided test class.  Instead,
+	 * it will report that the class has been ignored, providing information about that tests that
+	 * are present in the ignored testClass.
 	 */
 	public class IgnoredClassRunner implements IRunner {
+		/**
+		 * @private
+		 */
 		private var testClass:Class;
 		
 		/** 
@@ -48,18 +54,22 @@ package org.flexunit.internals.builders {
 		}
 		
 		/**
-		 * Instruct the notifier that a class has been ignored and update the token
+		 * Instructs the <code>notifier</code> that a class has been ignored, indiciating how many
+		 * tests have been ignored in the process.  The provided <code>token</code> is then notified
+		 * that the <code>IgnoredClassRunner</code> has finished.
 		 * 
 		 * @param notifier The <code>IRunNotifier</code> to notify that the class has been ignored.
 		 * @param token The <code>AsyncTestToken</code> to notify that the test class has been ignored.
 		 */ 
-		public function run( notifier:IRunNotifier, token:AsyncTestToken ):void {
+		public function run( notifier:IRunNotifier, previousToken:AsyncTestToken ):void {
 			notifier.fireTestIgnored( description );
-			token.sendResult();
+			previousToken.sendResult();
 		}
 		
 		/**
-		 * Returns an <code>IDescription</code> of the testClass.
+		 * Returns an <code>IDescription</code> of the testClass.  This <code>IDescription</code>
+		 * is used to provide information about this testClass that can be used in order to determine
+		 * how many tests have been ignored.
 		 */ 
 		public function get description():IDescription {
 			return Description.createSuiteDescription( testClass );

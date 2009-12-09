@@ -44,18 +44,20 @@ package org.flexunit.runner.notification {
 	 * 	}
 	 * }
 	 * </pre>
-	 * </p>
 	 * 
 	 * <p>To invoke your listener, you need to run your tests through <code>FlexUnitCore</code>.
 	 * <pre>
 	 * core:FlexUnitCore = new FlexUnitCore();
 	 * core.addListener(new RingingListener());
 	 * core.run(MyTestClass);
-	 * </pre>
-	 * </p>
+	 * </pre></p>
+	 * 
 	 * @see org.flexunit.runner.FlexUnitCore
 	 */
 	public class RunListener implements IRunListener {
+		/**
+		 * The <code>Result</code> recieved for a finished test run.
+		 */
 		public var result:Result;
 
 		/**

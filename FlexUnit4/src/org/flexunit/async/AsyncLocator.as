@@ -32,30 +32,47 @@ package org.flexunit.async {
 	import org.flexunit.internals.runners.statements.IAsyncHandlingStatement;
 	
 	/**
-	 * The <code>AsyncLocator</code> is used to keep track of test cases that have implemented asynchronous functionallity.
+	 * The <code>AsyncLocator</code> is used to keep track of test cases that have implemented asynchronous 
+	 * functionality.  The test cases are registered with the <code>AsyncLocator</code> and reference an
+	 * object that implements <code>IAsyncHandlingStatement</code>.  Test cases are registered using the
+	 * method <code>#registerStatementForTest().<p>
+	 * 
+	 * The <code>IAsyncHandlingStatement</code> is then retrieved using the method <code>#getCallableForTest()</code>
+	 * and providing the test case.  If a test case has not been registered, an <code>AssertionError</code> will be
+	 * thrown.<p>
+	 * 
+	 * Once an asynchronous test has completed, the method <code>#cleanUpCallableForTest</code> should be called in 
+	 * order to disassociate the test case and the <code>IAsyncHandlingStatement</code>.
+	 * 
+	 * @see org.flexunit.async.Async
 	 */
 	public class AsyncLocator {
+		/**
+		 * @private
+		 */
 		private static var asyncHandlerMap:Dictionary = new Dictionary();
 		
 		/**
-		 * Registers the <code>IAsyncHandlingStatement</code> with a particular testCase.
+		 * Registers the <code>expectAsyncInstance</code> with the provided <code>testCase</code>.
 		 * 
-		 * @param <code>IAsyncHandlingStatement</code> the AsyncHandlingStatement to be registered.
-		 * @param testCase The test case to associate with the <code>IAsyncHandlingStatement</code>.
+		 * @param expectAsyncInstance the <code>IAsyncHandlingStatement</code> to be registered.
+		 * @param testCase The test case to associate with the particular <code>expectAsyncInstance</code>.
 		 */
 		public static function registerStatementForTest( expectAsyncInstance:IAsyncHandlingStatement, testCase:Object ):void {
 			asyncHandlerMap[ testCase ] = expectAsyncInstance;
 		} 
 		
 		/**
-		 * Retrieves the <code>IAsyncHandlingStatement</code> for a particular testCase.  If no AsyncHandlingStatement has been registered.
-		 * for the testCase, an <code>AssertionError</code> will be thrown.
+		 * Retrieves the <code>IAsyncHandlingStatement</code> for the provided <code>testCase</code>.  If no 
+		 * <code>IAsyncHandlingStatement</code> has been registered for the <code>testCase</code>, an 
+		 * <code>AssertionError</code> will be thrown.
 		 * 
 		 * @param testCase The test case used to retrieve the <code>IAsyncHandlingStatement</code>.
 		 * 
-		 * @return a <code>IAsyncHandlingStatement</code> associated with the <code>testCase</code>.
+		 * @return an <code>IAsyncHandlingStatement</code> associated with the <code>testCase</code>.
 		 * 
-		 * @throws org.flexunit.AssertionError Thrown if a handler could not be found for the <code>testCase</code>.
+		 * @throws org.flexunit.AssertionError Thrown if an <code>IAsyncHandlingStatement</code> was not registered
+		 * for the provided <code>testCase</code>.
 		 */
 		public static function getCallableForTest( testCase:Object ):IAsyncHandlingStatement {
 			var handler:IAsyncHandlingStatement = asyncHandlerMap[ testCase ];
@@ -69,7 +86,8 @@ package org.flexunit.async {
 		} 
 		
 		/**
-		 * Removes the <code>IAsyncHandlingStatement</code> for a particular testCase.
+		 * Removes the registration for the <code>IAsyncHandlingStatement</code> that was associated with the
+		 * provided <code>testCase</code>.
 		 * 
 		 * @param testCase The test case to remove the association with the <code>IAsyncHandlingStatement</code>.
 		 */

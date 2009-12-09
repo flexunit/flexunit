@@ -40,7 +40,7 @@ package org.flexunit.internals.runners.statements {
 	 * whether a specific test method throws an expected exception.  Normally, if a test method
 	 * throws an specific exception, the test will fail; however, if the test is expecting a 
 	 * specific exception and that exception is thrown, the test will be a success.  If an
-	 * exception is expected an is not encountered through the course of running the test, the
+	 * exception is expected and is not encountered through the course of running the test, the
 	 * test will be considered a failure.<p>
 	 * 
 	 * In order to expect an exception, a test method must include metadata indicating it is
@@ -55,9 +55,21 @@ package org.flexunit.internals.runners.statements {
 	 * </code></pre>
 	 */
 	public class ExpectException extends AsyncStatementBase implements IAsyncStatement {
+		/**
+		 * @private
+		 */
 		private var exceptionName:String;
+		/**
+		 * @private
+		 */
 		private var exceptionClass:Class;
+		/**
+		 * @private
+		 */
 		private var statement:IAsyncStatement;
+		/**
+		 * @private
+		 */
 		private var receivedError:Boolean = false;
 		
 		/**
@@ -73,18 +85,18 @@ package org.flexunit.internals.runners.statements {
 			//Get the excpetion class
 			exceptionClass = getDefinitionByName( exceptionName ) as Class;
 			
-			//Create a new token that will track when a potentially thrown exception has been thrown
+			//Create a new token that will alert this class when the provided statement has completed
 			myToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			myToken.addNotificationMethod( handleNextExecuteComplete );
 		}
 		
 		/**
-		 * Determine if a <code>FrameworkMethod</code> test is expecting an exception by checking its metadata to see if
+		 * Determine if a <code>method</code> test is expecting an exception by checking its metadata to see if
 		 * it contains either an "expects" or "expected" string.
 		 * 
 		 * @param method The <code>FrameworkMethod</code> to check to see if its expecting an exception.
 		 * 
-		 * @return a String containing the qualified path name of the expected exception if the <code>FrameworkMethod</code>
+		 * @return a String containing the qualified path name of the expected exception if the <code>method</code>
 		 * contains metadata that indicates the method is expecting an exception; otherwise, a value of <code>null</code> will be returned.
 		 */
 		public static function hasExpected( method:FrameworkMethod ):String {
@@ -149,10 +161,10 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Determines if the excpetion in the <code>ChildResult</code> is of the expected type.  If the exception is not
-		 * of the expected type, an error will be generated that includes the type of error that was encountered.
-		 * If no exception was thrown, a new error will be created because an excpetion should have been thrown in 
-		 * this instance.
+		 * Determines if the excpetion in the <code>result</code> contains an exception that is of the expected type.  
+		 * If the exception is not of the expected type, an error will be generated that includes the type of error that 
+		 * was encountered.  If no exception was thrown, a new error will be created because an excpetion should have been 
+		 * thrown in this instance.
 		 * 
 		 * @param result The <code>ChildResult</code> to check to see if there is an error was provided.
 		 */

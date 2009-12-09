@@ -30,12 +30,27 @@ package org.flexunit.internals.runners.statements
 	import org.flexunit.runners.model.FrameworkMethod;
 	
 	/**
-	 * Sequences classes methods that have decorations.
-	 * Example: "Before", "After", "BeforeClass", "AfterClass", ect.
+	 * Classes that inherit <code>SequencerWithDecoration</code> are used to run methods that run either
+	 * before or after a class or before or after a test.  The <code>SequencerWithDecoration</code>
+	 * is provided an array of statements during instantiation.  These statements can include information that
+	 * indicate that they need to be decorated.  If a  Additional tasks can be added using the 
+	 * <code>#addStep</code> method before the sequence is evaluated.<p>
+	 * 
+	 * The decorated statements can be executed using the <code>#evaluate</code> method and any errors encountered
+	 * during execution will be noted and reported.
+	 * 
+	 * @see org.flexunit.internals.runners.statements.RunBefores
+	 * @see org.flexunit.internals.runners.statements.RunAfters
 	 */
 	public class SequencerWithDecoration extends StatementSequencer
 	{
-		private var target:Object;	
+		/**
+		 * @private
+		 */
+		private var target:Object;
+		/**
+		 * @private
+		 */
 		private var afters:Array;
 		
 		/**
@@ -62,7 +77,7 @@ package org.flexunit.internals.runners.statements
 		}
 		
 		/**
-		 * Creats a object that implements an <code>IAsyncStatement</code> and decorates it
+		 * Creates an object that implements an <code>IAsyncStatement</code> and decorates it
 		 * 
 		 * @param method The <code>FrameworkMethod</code> to wrap
 		 * @param test The current test class

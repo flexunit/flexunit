@@ -34,24 +34,32 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.utils.ClassNameUtil;
 	
 	/**
-	 * The <code>InvokeMethod</code> is responsible for invoking a specific method in 
-	 * given test class.
+	 * The <code>InvokeMethod</code> is responsible for invoking a specific test method in 
+	 * given test class. This class will cause the test to run and will report whether the
+	 * test successfully passed with no encountered exceptions or if it exceptions were 
+	 * thrown during test execution.
 	 */
 	public class InvokeMethod extends AsyncStatementBase implements IAsyncStatement {
+		/**
+		 * @private
+		 */
 		private var testMethod:FrameworkMethod;
+		/**
+		 * @private
+		 */
 		private var target:Object;
 		
 		/**
 		 * Constructor.
 		 * 
-		 * @param testMethod A specific method in the test class.
+		 * @param testMethod A specific method in the <code>target</code> to test.
 		 * @param target The test class.
 		 */
 		public function InvokeMethod( testMethod:FrameworkMethod, target:Object ) {
 			this.testMethod = testMethod;
 			this.target = target;
 			
-			//Create a new token that will track the execution of the test method
+			//Create a new token that will alert this class when the provided statement has completed
 			myToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			myToken.addNotificationMethod( handleMethodExecuteComplete );
 		}

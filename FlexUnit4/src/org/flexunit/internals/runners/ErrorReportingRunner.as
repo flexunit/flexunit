@@ -37,7 +37,13 @@ package org.flexunit.internals.runners {
 	 * Runner responsible for reproting errors encountered when attempting to initialize a class instead of running tests
 	 */
 	public class ErrorReportingRunner implements IRunner {
+		/**
+		 * @private
+		 */
 		private var _causes:Array;
+		/**
+		 * @private
+		 */
 		private var _testClass:Class;
 		
 		/**
@@ -73,14 +79,14 @@ package org.flexunit.internals.runners {
 		 * @param notifier The notifer to notify about the cause Errors
 		 * @param token A token that will be alerted when the notifer has been notified for each cause Error
 		 */
-		public function run( notifier:IRunNotifier, token:AsyncTestToken ):void {
+		public function run( notifier:IRunNotifier, previousToken:AsyncTestToken ):void {
 			for ( var i:int=0; i<_causes.length; i++ ) {
 				description.addChild( describeCause( _causes[ i ] ) );
 				runCause( _causes[ i ], notifier );
 			}
 			
 			//notify our parent that we are good to continue
-			token.sendResult();
+			previousToken.sendResult();
 		}
 		
 		/**

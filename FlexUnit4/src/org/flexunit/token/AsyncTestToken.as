@@ -29,12 +29,31 @@
 package org.flexunit.token {
 	
 	/**
-	 * The <code>AsyncTestToken</code> is responsible for indicating that a given task has completed.
+	 * The <code>AsyncTestToken</code> is responsible for indicating that a given task has completed.  The token
+	 * can then notify other tasks and provide the results of the just completed task to the notified parent
+	 * task through the use of a notification method.  In order to notify a parent task about the completion of a
+	 * task performed by a child task, the parent task must add a notification method to the <code>AsyncTestToken</code>
+	 * using the <code>#addNotificationMethod()</code>.<p>
+	 * 
+	 * The <code>AsyncTestToken</code> is used throughout much of FlexUnit4.  It is used to notify <code>FlexUnitCore</code>,
+	 * runners, statements, and parts of a test when a certain activity has finished.
 	 */
 	dynamic public class AsyncTestToken {
+		/**
+		 * @private
+		 */
 		private var methodsEntries:Array;
+		/**
+		 * @private
+		 */
 		private var _error:Error;
+		/**
+		 * @private
+		 */
 		private var debugClassName:String;
+		/**
+		 * @private
+		 */
 		private var _token:AsyncTestToken;
 		
 		/**
@@ -56,7 +75,7 @@ package org.flexunit.token {
 		}
 		
 		/**
-		 * Adds a notification method to the <code>AsyncTestToken</code> and returns the token.
+		 * Adds a notification <code>method</code> to the <code>AsyncTestToken</code> and returns the token.
 		 * 
 		 * @param method A <code>Function</code> that will be invoked when results are sent.
 		 * @param debugClassName The name of the class.
@@ -72,6 +91,13 @@ package org.flexunit.token {
 			return this;
 		}
 		
+		/**
+		 * Creates a <code>ChildResult</code> using this <code>AsynctestToken</code> and the provided <code>error</code>.
+		 * 
+		 * @param error The error to provide to the <code>ChildResult</code>.
+		 * 
+		 * @return a <code>ChildResult</code> using this <code>AsynctestToken</code> and the provided <code>error</code>.
+		 */
 		private function createChildResult( error:Error ):ChildResult {
 			if ( error ) {
 				//trace("break here");

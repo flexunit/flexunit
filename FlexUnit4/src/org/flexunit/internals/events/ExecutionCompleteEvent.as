@@ -34,9 +34,6 @@ package org.flexunit.internals.events
 	 */
 	public class ExecutionCompleteEvent extends Event {
 		
-		/**
-		 * @private
-		 */
 		public static const COMPLETE:String = "complete";
 		
 		/** 

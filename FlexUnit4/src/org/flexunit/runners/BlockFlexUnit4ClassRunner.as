@@ -47,24 +47,46 @@ package org.flexunit.runners {
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.utils.ClassNameUtil;
 	
-	//TODO: Do statements referring to older versions apply to older flexUnits?
 	/**
-	 * Implements the FlexUnit 4 standard test case class model, as defined by the
-	 * annotations in the org.flexunit package. Many users will never notice this
-	 * class: it is now the default test class runner, but it should have exactly
-	 * the same behavior as the old test class runner (<code>FlexUnit4ClassRunner</code>).
-	 * 
-	 * BlockFlexUnit4ClassRunner has advantages for writers of custom FlexUnit runners
-	 * that are slight changes to the default behavior, however:
+	 * The <code>BlockFlexUnit4ClassRunner</code> is the heart of running FlexUnit4 
+	 * tests.  It is responsible for iterating through tests in a given class, 
+	 * determining if they are being implemented correctly, and executing them.
+	 * The following flow occurs for a provided class:
 	 * 
 	 * <ul>
-	 * <li>It has a much simpler implementation based on <code>Statement</code>s,
-	 * allowing new operations to be inserted into the appropriate point in the
-	 * execution flow.
+	 * <li>Any methods that contain a medadata tag of [BeforeClass] are executed.
+	 * <li>Once the [BeforeClass] methods have finished, each method labeled as [Test]
+	 * is sequenced with all methods that contain [Before] and [After] metadata tags.
+	 * Beofre each test, all methods marked as a [Before] method will execute.  After
+	 * this occurs, the actual test method will execute.  After the test has finished,
+	 * regardless of whether it succeeded or failed, all methods marked as an [After]
+	 * method will run.  This procedure will be repeated for all tests in the class.
+	 * <li>Any methods that contain a metdata tag of [AfterClass] are finally executed.
+	 * </ul><p>
 	 * 
-	 * <li>It is published, and extension and reuse are encouraged, whereas <code>
-	 * FlexUnit4ClassRunner</code> was in an internal package, and is now deprecated.
-	 * </ul>
+	 * While running tests, the <code>BlockFlexUnit4ClassRunner</code> uses two 
+	 * very important concepts: recursive sequences and decoration.<p>
+	 * 
+	 * The first sequence that is used in the <code>BlockFlexUnit4ClassRunner</code> is 
+	 * that of the before class sequence, the tests sequence, and after class sequence.
+	 * Both the before class and after class sequences consist of the before class and
+	 * after class methods.  The tests sequence consists of a sequence of individual test 
+	 * sequences.  Each individual test sequnce contains the before sequence, the test, 
+	 * and the after sequence.  The before and after sequences contain the before and
+	 * after methods.<p>
+	 * 
+	 * Before any before class, after class, before, after, or test methods are executed,
+	 * they are decorated in order to add functionality.  These decorations are used to
+	 * wrap the invocation of a method with code that should be executed before or after
+	 * the method in a synchronous nature.  Each decarator is applied to the method if
+	 * necessary; if it is not needed, the decorator is not applied.<p>
+	 * 
+	 * The wrapping of the actual test method can be seen in the <code>#withDecoration()</code> 
+	 * method.  This method determines if the tests needs certain decorators based on the
+	 * metadata of the test.
+	 * 
+	 * @see org.flexunit.internals.runners.statements.StatementSequencer
+	 * @see org.flexunit.internals.runners.statements.SequencerWithDecoration
 	 */
 	public class BlockFlexUnit4ClassRunner extends ParentRunner implements IFilterable {
 
@@ -306,7 +328,7 @@ package org.flexunit.runners {
 		}
 		
 		/**
-		 * Returns an <code>IAsyncStatement</code>: if <code>method</code>'s <code> Test</code> annotation
+		 * Returns an <code>IAsyncStatement</code>: if <code>method</code>'s <code>Test</code> annotation
 		 * has the <code>async</code> attribute, throw an exception if <code>next</code>
 		 * encounters an exception during execution.
 		 */

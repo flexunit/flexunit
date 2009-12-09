@@ -39,7 +39,8 @@ package org.flexunit.experimental.runners.statements {
 	use namespace classInternal;
 	
 	/**
-	 * Responsible for executing a theory method with a single set of parameters.
+	 * The <code>MethodCompleteWithParamsStaetement</code> is responsible for executing a theory method with a single 
+	 * set of parameters.
 	 */
 	public class MethodCompleteWithParamsStatement extends AsyncStatementBase implements IAsyncStatement {
 		/**
@@ -73,7 +74,7 @@ package org.flexunit.experimental.runners.statements {
 			this.freshInstance = freshInstance;
 			this.anchor = anchor;
 			
-			//Create a new token that will track the execution of the current theory method
+			//Create a new token that will alert this class when the provided statement has completed
 			myToken = new AsyncTestToken( "MethodCompleteWithParamsStatement" );
 			myToken.addNotificationMethod( handleChildExecuteComplete );
 		}	

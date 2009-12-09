@@ -53,8 +53,14 @@ package org.flexunit.runner.notification.async
 	 */
 	public class WaitingListener extends EventDispatcher implements IAsyncStartupRunListener
 	{
+		/**
+		 * @private
+		 */
 		private var _ready:Boolean = false;
 		
+		/**
+		 * @private
+		 */
 		private var msgQueue:Array = new Array();
 
 		/**

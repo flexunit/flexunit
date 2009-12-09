@@ -26,6 +26,10 @@
  * @version    
  **/ 
 package org.flexunit.async {
+	/**
+	 * An <code>ITestResponder</code> is an interface for to be implemented by classes that want to handle the results
+	 * of running a test.
+	 */
 	public interface ITestResponder {
 		/**
 		 * This method is called by TestCase when an error has been received.

@@ -31,7 +31,7 @@ package org.flexunit.runner
 	import org.flexunit.token.AsyncTestToken;
 	
 	/**
-	 * A <code>Runner</code> runs tests and notifies a <code> org.flexunit.runner.notification.RunNotifier</code>
+	 * An <code>IRunner</code> runs tests and notifies a <code> org.flexunit.runner.notification.RunNotifier</code>
 	 * of significant events as it does so. You will need to subclass <code>Runner</code>
 	 * to invoke a custom runner. When creating a custom runner, 
 	 * in addition to implementing the abstract methods here you must
@@ -50,6 +50,7 @@ package org.flexunit.runner
 		
 		/**
 		 * Run the tests for this runner.
+		 * 
 		 * @param notifier will be notified of events while tests are being run--tests being 
 		 * started, finishing, and failing
 		 */

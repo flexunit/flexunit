@@ -41,6 +41,9 @@ package org.flexunit.async {
 	 * failing to succeed.
 	 */
 	public class AsyncTestResponder extends EventDispatcher implements IAsyncTestResponder {
+		/**
+		 * @private
+		 */
 		private var originalResponder:*;		
 		
 		/**

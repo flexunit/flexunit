@@ -29,12 +29,13 @@ package org.flexunit.runners.model {
 	import org.flexunit.runner.IRunner;
 	
 	/**
-	 * An IRunnerBuilder is a strategy for constructing IRunners for classes. 
+	 * An <code>IRunnerBuilder</code> is a strategy for constructing <code>IRunner</code>s for classes.<p>
 	 * 
-	 * Only writers of custom runners should use <code>IRunnerBuilder</code>s.  A custom runner class with a constructor taking
-	 * an <code>IRunnerBuilder</code> parameter will be passed the instance of <code>IRunnerBuilder</code> used to build that runner itself.  
-	 * For example,
-	 * imagine a custom IRunner that builds suites based on a list of classes in a text file:
+	 * Only writers of custom runners should use <code>IRunnerBuilder</code>s.  A custom runner class with a constructor 
+	 * taking an <code>IRunnerBuilder</code> parameter will be passed the instance of <code>IRunnerBuilder</code> used 
+	 * to build that runner itself.<p>
+	 *  
+	 * For example, imagine a custom <code>IRunner</code> that builds suites based on a list of classes in a text file:
 	 * 
 	 * <pre>
 	 * RunWith(TextFileSuite.as)
@@ -55,8 +56,33 @@ package org.flexunit.runners.model {
 	 * @see org.flexunit.runners.Suite
 	 */
 	public interface IRunnerBuilder {
+		/**
+		 * Returns an <code>IRunner</code> that can safely run the provided <code>testClass</code>.
+		 * 
+		 * @param testClass The class to for which to determine an <code>IRunner</code>.
+		 * 
+		 * @return an <code>IRunner</code> that can run the <code>testClass</code>.
+		 */
 		function safeRunnerForClass( testClass:Class ):IRunner;
+		/**
+		 * Constructs and returns a list of <code>IRunner</code>s, one for each child class in
+		 * <code>children</code>.  Care is taken to avoid infinite recursion:
+		 * this builder will throw an exception if it is requested for another
+		 * runner for <code>parent</code> before this call completes.
+		 * 
+		 * @param parent The parent class that contains the <code>children</code>.
+		 * @param children The child classes for which to find <code>IRunner</code>.
+		 * 
+		 * @return a list of <code>IRunner</code>s, one for each child class.
+		 */
 		function runners( parent:Class, children:Array ):Array;
+		/**
+		 * Returns an <code>IRunner</code> for a specific <code>testClass</code>.
+		 * 
+		 * @param testClass The test class for which to determine an <code>IRunner</code>.
+		 * 
+		 * @return an <code>IRunner</code> that will run the <code>testClass</code>.
+		 */
 		function runnerForClass( testClass:Class ):IRunner;
 	}
 }

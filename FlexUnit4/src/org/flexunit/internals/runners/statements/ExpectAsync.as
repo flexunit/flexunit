@@ -52,38 +52,75 @@ package org.flexunit.internals.runners.statements {
 	use namespace flexunit_internal;
 	
 	/**
-	 * Responsible for determining whether a specific test method is expecting an asynchronous response
+	 * The <code>ExpectAsync</code> is a decorator that is responsible for determing 
+	 * whether a specific test method is expecting an asynchronous response.  As this 
+	 * infrastructure carries overhead, we only create it when the user specifics a 
+	 * given test is asynchronous.  The class implements <code>IAsyncHandlingStatement</code> 
+	 * and works with the <code>Async</code> class.<p>
+	 * 
+	 * In order to expect an asynchronous response, a test method must include metadata indicating 
+	 * it is expecting asynchronous functionality.<p>
+	 * 
+	 * <pre><code>
+	 * [Test(async)]
+	 * public function asyncTest():void {
+	 * 	//Test with asynchronous functionality
+	 * }
+	 * </code></pre>
+	 * 
+	 * @see org.flexunit.async.Async
 	 */
 	public class ExpectAsync extends AsyncStatementBase implements IAsyncStatement, IAsyncHandlingStatement {
+		/**
+		 * @private
+		 */
 		private var objectUnderTest:Object;
+		/**
+		 * @private
+		 */
 		private var statement:IAsyncStatement;
+		/**
+		 * @private
+		 */
 		private var returnMessageSent:Boolean = false;
 		
+		/**
+		 * @private
+		 */
 		private var testComplete:Boolean;
+		/**
+		 * @private
+		 */
 		private var pendingAsyncCalls:Array;
+		/**
+		 * @private
+		 */
 		private var asyncFailureConditions:Dictionary;
-
+		
+		/**
+		 * @private
+		 */
 		private var methodBodyExecuting:Boolean = false;
 		
 		/**
-		 * Returns a boolean indicating whether the method body is currently executing
+		 * Returns a Boolean value indicating whether the test method is current executing.
 		 */
 		public function get bodyExecuting():Boolean {
 			return methodBodyExecuting;
 		}
 		
 		/**
-		 * Returns whether the method has pending asynchronous calls
+		 * Returns a Boolean value indicating whether there are still any pending asynchronous calls.
 		 */
 		public function get hasPendingAsync():Boolean {
 			return ( pendingAsyncCalls.length > 0 );
 		}
 		
 		/**
-		 * Calls the method with the provided parameters
+		 * Attempts to call the provided <code>method</code> with the provided <code>rest</code> parameters.
 		 * 
-		 * @param method The function to call
-		 * @param rest An Array of parameters to provide the method
+		 * @param method The Function to call with the provided <code>rest</code> parameters.
+		 * @param rest The parameters supplied to the <code>method</code>.
 		 */
 		private function protect( method:Function, ... rest ):void {
 			try {
@@ -98,9 +135,9 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Removes asynchronous event listeners from the provided <code>AsyncHandler</code>
+		 * Removes asynchronous event listeners from the provided <code>asyncHandler</code>.
 		 * 
-		 * @param asyncHandler The handler to remove the event listeners from
+		 * @param asyncHandler The <code>AsyncHandler</code> from which to remove the event listeners.
 		 */
 		private function removeAsyncEventListeners( asyncHandler:AsyncHandler ):void {
 			asyncHandler.removeEventListener( AsyncHandler.EVENT_FIRED, handleAsyncEventFired, false );
@@ -108,9 +145,9 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Removes asynchronous error event listeners from the provided <code>AsyncHandler</code>
+		 * Removes asynchronous error event listeners from the provided <code>asyncHandler</code>.
 		 * 
-		 * @param asyncHandler The handler to remove the error event listeners from
+		 * @param asyncHandler The <code>AsyncHandler</code> from which to remove the error event listeners.
 		 */
 		private function removeAsyncErrorEventListeners( asyncHandler:AsyncHandler ):void {
 			asyncHandler.removeEventListener( AsyncHandler.EVENT_FIRED, handleAsyncErrorFired, false );
@@ -147,14 +184,19 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Creates an async handler
+		 * Creates an <code>AsyncHandler</code> that pend and either call the <code>eventHandler</code> or the
+		 * <code>timeoutHandler</code>, passing the <code>passThroughData</code>, depending on whether the
+		 * <code>timeout</code> period has been reached.
 		 * 
-		 * @param function The function that will be executed if the timeout has not expired
-		 * @param timeout The length of time in milliseconds before the async call will timeout
-		 * @param passThroughData An Object that can be given information about the current test, this information will be available for both the eventHandler and timeoutHandler
-		 * @param timeoutHandler The function that will be executed if the timeout time is reached
+		 * @param eventHandler The Function that will be executed if the handler is called before 
+		 * the <code>timeout</code> has expired.
+		 * @param timeout The length of time, in milliseconds, before the <code>timeoutHandler</code> will be executed.
+		 * @param passThroughData An Object that can be given information about the current test; this information will 
+		 * be available for both the <code>eventHandler</code> and the <code>timeoutHandler</code>.
+		 * @param timeoutHandler The Function that will be executed if the <code>timeout</code> time is reached prior to
+		 * the expected event being dispatched.
 		 * 
-		 * @return an event handler function
+		 * @return an event handler Function that will determine whether the <code>timeout</code> has been reached.
 		 */
 		public function asyncHandler( eventHandler:Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):Function { 
 			if ( testComplete ) {
@@ -169,22 +211,25 @@ package org.flexunit.internals.runners.statements {
 
 			return asyncHandler.handleEvent;
 		}
-
-		/**
-		 * Creates an async responder based on the provided responder
-		 * 
-		 * @param responder The responder to handle the test when it succeeds of fails
-		 * @param timeout The length of time in milliseconds before the async call will timeout
-		 * @param passThroughData An Object that can be given information about the current test, this information will be available for both the eventHandler and timeoutHandler
-		 * @param timeoutHandler The function that will be executed if the target does not dispatched the expected event before the timeout time is reached
-		 * 
-		 * @throws Error Object provided to responder parameter of asyncResponder is not a IResponder or ITestResponder
-		 * 
-		 * @return an object that implements <code>IResponder</code> and is waitng for an async response event
-		 */
+		
 		// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
 		// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
 		// flex classes since it will cause errors.
+		/**
+		 * Creates an <code>IAsyncTestResponder</code> that pend and either call the <code>eventHandler</code> or the
+		 * <code>timeoutHandler</code>, passing the <code>passThroughData</code>, depending on whether the
+		 * <code>timeout</code> period has been reached.
+		 * 
+		 * @param responder The responder that will be executed if the <code>IResponder</code> is called before 
+		 * the <code>timeout</code> has expired.
+		 * @param timeout The length of time, in milliseconds, before the <code>timeoutHandler</code> will be executed.
+		 * @param passThroughData An Object that can be given information about the current test; this information will 
+		 * be available for both the <code>eventHandler</code> and the <code>timeoutHandler</code>.
+		 * @param timeoutHandler The Function that will be executed if the <code>timeout</code> time is reached prior to
+		 * the expected event being dispatched.
+		 * 
+		 * @return an <code>IResponder</code> that will determine whether the <code>timeout</code> has been reached.
+		 */
 		CONFIG::useFlexClasses
 		public function asyncResponder( responder:*, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):IResponder { 
 
@@ -225,7 +270,7 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Removes all asynchronous event listeners for each pending call
+		 * Removes all asynchronous event listeners for each pending asynchronous call.
 		 */
 		private function removeAllAsyncEventListeners():void {
 			for ( var i:int=0; i<pendingAsyncCalls.length; i++ ) {
@@ -242,9 +287,11 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Handles an asynchronous timeout
+		 * Called when the asynchronous timeout has been reached for a given test.  This method attempts to
+		 * call a timeout handler that has been associated with the asychronous test.  If no handler has
+		 * been specified, an error will be generated and the <code>ExpectAsync</code> statement finishes.
 		 * 
-		 * @param event The event associated with an asynchronous timeout
+		 * @param event The event associated with the asynchronous timeout.
 		 */
 		private function handleAsyncTimeOut( event:Event ):void {
 			var asyncHandler:AsyncHandler = event.target as AsyncHandler; 
@@ -311,7 +358,14 @@ package org.flexunit.internals.runners.statements {
 		private function handleAsyncErrorFired( event:AsyncEvent ):void {
 			sendComplete( new Error( "Failing due to Async Event " + event?event:'' ) );
 		}
-	
+		
+		/**
+		 * Called when the asynchronous event has been fired prior to the timeout being reached.  This method attempts to
+		 * call event handler that has been associated with the asychronous test.  If no handler has
+		 * been specified, an error will be generated and the <code>ExpectAsync</code> statement finishes.
+		 * 
+		 * @param event The <code>AsyncEvent</code> event that has been dispatched.
+		 */
 		private function handleAsyncEventFired( event:AsyncEvent ):void {
 			//Receiving this event is a good things... IF it is the first one we are waiting for
 			//If it is not the first one on the stack though, we still need to fail.
@@ -321,9 +375,12 @@ package org.flexunit.internals.runners.statements {
 			
 			removeAsyncEventListeners( asyncHandler );
 			
+			//Determine if any async calls remain
 			if ( hasPendingAsync ) {
+				//Get the first async call
 				firstPendingAsync = pendingAsyncCalls.shift() as AsyncHandler;
 				
+				//Determine if this was the expected async handler
 				if ( firstPendingAsync === asyncHandler ) {
 					if ( asyncHandler.eventHandler != null  ) {
 						//this actually needs to be the event object from the previous event
@@ -360,10 +417,10 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Handles the next steps in a <code>SequenceRunner</code>
+		 * Handles the next steps in a <code>SequenceRunner</code>.
 		 * 
-		 * @param event The event boradcast by the last step in the sequence
-		 * @param sequenceRunner The runner responsible for running the steps in the sequence
+		 * @param event The event boradcast by the last step in the sequence.
+		 * @param sequenceRunner The runner responsible for running the steps in the sequence.
 		 */
 	    public function handleNextSequence( event:Event, sequenceRunner:SequenceRunner ):void {
 			if ( event && event.target ) {
@@ -415,7 +472,7 @@ package org.flexunit.internals.runners.statements {
 	    }
 		
 		/**
-		 * Starts the timers for each pending asynchronous call
+		 * Starts the timers for each pending asynchronous call.
 		 */
 		private function startAsyncTimers():void {
 			for ( var i:int=0; i<pendingAsyncCalls.length; i++ ) {
@@ -424,10 +481,10 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Notifies any other statement that this statement has finished execution
+		 * If the test has not yet been marked as complete, mark the <code>ExpectAsync</code> statement as having finished
+		 * and notify the parent token.
 		 * 
-		 * @param error The error to send to the parent token
-		 * @inheritDoc
+		 * @param error The potential error to send to the parent token.
 		 */
 		override protected function sendComplete( error:Error = null ):void {
 			//If the test has not completed, do not notify the parentToken that this statement has finished executing
@@ -441,9 +498,10 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Retrieves the object for registration
+		 * Retrieves the object used for registering this <code>ExpectAsync</code> which
+		 * implements <code>IAsyncHandlingStatement</code> 
 		 * 
-		 * @param obj The object used to get the registration object
+		 * @param obj The object used to obtain the registration object.
 		 */
 		private function getObjectForRegistration( obj:Object ):Object {
 			var registrationObj:Object;
@@ -458,10 +516,10 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Registers the statment for the current object that is being tested and evaluates the object that 
-		 * is implementing the <code>IAsyncStatement</code>
+		 * Registers the <code>ExpectAsync</code> statment for the current object being tested and evaluates the object that 
+		 * implements the <code>IAsyncStatement</code> that was provided to the <code>ExpectAsync</code> class.
 		 * 
-		 * @param parentToken The token to be notified when the asynchronous call have finished
+		 * @param parentToken The token to be notified when the potential asynchronous call have finished.
 		 */
 		public function evaluate( parentToken:AsyncTestToken ):void {
  			this.parentToken = parentToken;
@@ -475,29 +533,31 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * A handler method that is called in order to wait once an asynchronous event has completed
+		 * A handler method that is called in order to wait once an asynchronous event has been dispatched.
 		 * 
-		 * @param event The event that was received
-		 * @param passThroughData An object that contains information to pass to the handler
+		 * @param event The event that was received.
+		 * @param passThroughData An Object that contains information to pass to the handler.
 		 */
 		public function pendUntilComplete( event:Event, passThroughData:Object=null ):void {
 		}
 		
 		/**
-		 * A handler method that is called in order to fail for a given event once an asynchronous event has completed
+		 * A handler method that is called in order to fail for a given asynchronous event once an it
+		 * has been dispatched.
 		 * 
-		 * @param event The event that was received
-		 * @param passThroughData An object that contains information to pass to the handler
+		 * @param event The event that was received.
+		 * @param passThroughData An Object that contains information to pass to the handler.
 		 */
 		public function failOnComplete( event:Event, passThroughData:Object ):void {
 			sendComplete( new Error( "Unexpected event received " + event?event:'' ) );
 		}
 		
 		/**
-		 * Determines if there are any more pending asynchronous calls; if there are, keep running the calls if there are no errors.  If all
-		 * calls have finished or an error was encountered in the <code>ChildResult</code>, report any potential errors.
+		 * Determines if there are any more pending asynchronous calls; if there are, keep running the calls if there are 
+		 * no errors.  If all calls have finished or an error was encountered in the <code>result</code>, report the error
+		 * to the parent token and stop tracking the asynchronous events.
 		 * 
-		 * @param result The <code>ChildResult</code> to check to see if there is an error
+		 * @param result The <code>ChildResult</code> to check to see if there is an error.
 		 */
 		public function handleNextExecuteComplete( result:ChildResult ):void {
 			
@@ -516,12 +576,13 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Determine if a <code>FrameworkMethod</code> is an asynchronous method for the expected metadata type
+		 * Determine if the <code>method</code> is asynchronous for a test method that is of the expected 
+		 * metadata <code>type</code>.
 		 * 
-		 * @param method The <code>FrameworkMethod</code> to be determined if it is asynchronous
-		 * @param type The expected metadata type (ex: "Test", "Before", "After")
+		 * @param method The <code>FrameworkMethod</code> that is potentially asynchronous.
+		 * @param type The expected metadata type of the test method (ex: "Test", "Before", "After").
 		 * 
-		 * @return a Boolean value indicating whether the <code>FrameworkMethod</code> is asynchronous
+		 * @return a Boolean value indicating whether the provided <code>method</code> is asynchronous.
 		 */
 		public static function hasAsync( method:FrameworkMethod, type:String="Test" ):Boolean {
 			var async:String = method.getSpecificMetaDataArg( type, "async" );
@@ -533,14 +594,15 @@ package org.flexunit.internals.runners.statements {
 		/**
 		 * Constructor.
 		 * 
-		 * @param objectUnderTest The current object that is being tested
-		 * @param statement The current object that implements <code>IAsyncStatement</code> to decorate
+		 * @param objectUnderTest The current object that is being tested.
+		 * @param statement The current <code>IAsyncStatement</code> that will be decorated with the
+		 * the <code>ExpectAsync</code> class.
 		 */
 		public function ExpectAsync( objectUnderTest:Object, statement:IAsyncStatement ) {
 			this.objectUnderTest = objectUnderTest;
 			this.statement = statement;
 			
-			//Create a new token that will track when an async statement has finished executing
+			//Create a new token that will alert this class when the provided statement has completed
 			myToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			myToken.addNotificationMethod( handleNextExecuteComplete );
 			

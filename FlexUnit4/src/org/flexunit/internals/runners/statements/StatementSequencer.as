@@ -34,16 +34,29 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.utils.ClassNameUtil;
 	
 	/**
-	 * Sequences statments that are to be executed.
+	 * The <code>StatementSequencer</code> is a class that is responsible for the execution of
+	 * <code>IAsyncStatement</code>s.  These statements can be provided to the <code>StatementSequencer</code>
+	 * as an array during instantiation or added using the <code>#addStep</code> method.<p>
+	 * 
+	 * The list of statements can be executed using the <code>#evaluate</code> method and any errors encountered
+	 * during execution will be noted and reported.  Each statement will be run in sequence, meaning the next will not
+	 * start to be executed until the current statement has finished.
 	 */
 	public class StatementSequencer extends AsyncStatementBase implements IAsyncStatement {
+		/**
+		 * An array of queued statements to run.
+		 */
 		protected var queue:Array;
+		/**
+		 * An array of errors that have been encountered during the execution of statements.
+		 */
 		protected var errors:Array;
 		
 		/**
 		 * Constructor.
 		 * 
-		 * @param queue An <code>Array</code> containing object that implement <code>IAsyncStatment</code>.
+		 * @param queue An array containing objects that implement <code>IAsyncStatment</code> that are to be
+		 * evaluated by the sequencer.
 		 */
 		public function StatementSequencer( queue:Array=null ) {
 			super();
@@ -56,13 +69,14 @@ package org.flexunit.internals.runners.statements {
 			this.queue = queue.slice();
 			this.errors = new Array();		
 			
-			//Create a new token that will track the execution of this statement seqeuence
+			//Create a new token that will alert this class when the provided statement has completed
 			myToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			myToken.addNotificationMethod( handleChildExecuteComplete );
 		}
 		
 		/**
-		 * Adds an object that implements <code>IAsyncStatement</code> to the queue of statments to execute.
+		 * Adds a <code>child</code> that implements <code>IAsyncStatement</code> to the end of the queue of 
+		 * statments to execute by the sequencer.
 		 * 
 		 * @param child The object that implements <code>IAsyncStatement</code> to add.
 		 */
@@ -73,7 +87,8 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Evaluates the child if the child is an <code>IAsyncStatement</code>.
+		 * Evaluates the provided <code>child</code> if the <code>child</code> is an 
+		 * <code>IAsyncStatement</code>.
 		 * 
 		 * @param child The child object to be evaluated.
 		 */
@@ -84,9 +99,9 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Starts evaluating the queue of statements.
+		 * Starts evaluating the queue of statements that was provided to the sequencer.
 		 * 
-		 * @param parentToken The token to be notified when the statements have finished running.
+		 * @param parentToken The token to be notified when all statements have finished running.
 		 */
 		public function evaluate( parentToken:AsyncTestToken ):void {
 			this.parentToken = parentToken;
@@ -94,9 +109,16 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Executes the first step in the sequence.
+		 * Determine if any errors were encountered for a potential statement that has just run and returned the
+		 * provided <code>result</code>.  If an error was encountered during the last statement, add that error to
+		 * a list of errors encountered in every statement in the sequencer.<p>
 		 * 
-		 * @param parentToken The token to be notified when the setp has finished running.
+		 * If there are still statements that need to be evaluated, execute the first unexecuted step in the sequence.
+		 * Otherwise, if all statements have finished running, the <code>StatementSequencer</code> has finished and will
+		 * report any errors that have been encoutnred.
+		 * 
+		 * @param result A potential <code>ChildResult</code> that was encountered during the execution of the
+		 * previous statement.
 		 */
 		public function handleChildExecuteComplete( result:ChildResult ):void {
 			var step:*;
@@ -118,8 +140,10 @@ package org.flexunit.internals.runners.statements {
 		}
 
 		/**
-		 * Queues errors and sends them, either using MultipleFailureException
-		 * or the super sendComplete, if there is only one error in the queue.<p>
+		 * If an <code>error</code> is provided, it will be added to the list of errors encountered during the execution
+		 * of the statements.  If the error list contains more than one error, a <code>MultipleFailureException</code>
+		 * will be created an given the corresponding errors.  The parentToken will then be notified of any error
+		 * encountered during execution of the statements.
 		 * 
 		 * @inheritDoc
 		 */
