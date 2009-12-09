@@ -29,7 +29,8 @@ package org.flexunit.runners.model {
 	import flash.events.EventDispatcher;
 	
 	import flex.lang.reflect.Method;
-	import flex.lang.reflect.utils.MetadataTools;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
+	import flex.lang.reflect.metadata.MetaDataArgument;
 	
 	import org.flexunit.token.AsyncTestToken;
 	
@@ -81,7 +82,7 @@ package org.flexunit.runners.model {
 		/**
 		 * Returns the method's metadata.
 		 */
-		public function get metadata():XMLList {
+		public function get metadata():Array {
 			return method.metadata;
 		}
 
@@ -98,16 +99,16 @@ package org.flexunit.runners.model {
 		 * found for the given <code>metaDataTag</code>.
 		 */
 		public function getSpecificMetaDataArg( metaDataTag:String, key:String ):String {
-			var returnValue:String = MetadataTools.getArgValueFromMetaDataNode( method.methodXML, metaDataTag, key );
+			var metaDataAnnotation:MetaDataAnnotation = method.getMetaData( metaDataTag );
+			var metaDataArgument:MetaDataArgument;
+			var returnValue:String;
 			
-			if ( !returnValue || ( returnValue.length == 0 ) ) {
-				//if we didn't find that string, we try one more thing, which is to look for that value with a blank string
-				//this is important for cases where we use the key as a marker and not actually a name/value pair
-				var returnBool:Boolean = MetadataTools.checkForValueInBlankMetaDataNode( method.methodXML, metaDataTag, key );
-				
-				if ( returnBool ) {
-					returnValue = "true";
-				}
+			if ( metaDataAnnotation ) {
+				metaDataArgument = metaDataAnnotation.getArgument( key, true );
+			}
+			
+			if ( metaDataArgument ) {			
+				returnValue = metaDataArgument.value;
 			}
 			
 			return returnValue;
@@ -121,7 +122,7 @@ package org.flexunit.runners.model {
 		 * @return a Boolean value indicating if the method has specific metadata that matches the <code>metaDataTag</code>.
 		 */
 		public function hasMetaData( metaDataTag:String ):Boolean {
-			return MetadataTools.nodeHasMetaData( method.methodXML, metaDataTag );
+			return method.hasMetaData( metaDataTag );
 		}
 		
 		/**

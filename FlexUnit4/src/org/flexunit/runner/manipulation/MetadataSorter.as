@@ -26,7 +26,8 @@
  * @version    
  **/ 
 package org.flexunit.runner.manipulation {
-	import flex.lang.reflect.utils.MetadataTools;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
+	import flex.lang.reflect.metadata.MetaDataArgument;
 	
 	import org.flexunit.runner.IDescription;
 	
@@ -63,20 +64,20 @@ package org.flexunit.runner.manipulation {
 		private static function getOrderValueFrom( object:IDescription ):Number {
 			var order:Number = 0;		
 			
-			var metadataNodes:XMLList = object.getAllMetadata();
-			var metadata:XML;
+			var metadataArray:Array = object.getAllMetadata();
+			var metaDataAnnotation:MetaDataAnnotation;
 			
-			if ( metadataNodes.length() == 0 ) {
+			if ( metadataArray.length == 0 ) {
 				trace("Stop");				
 			}
 			
-			for ( var i:int=0; i<metadataNodes.length(); i++ ) {
-				metadata = metadataNodes[ i ];
+			for ( var i:int=0; i<metadataArray.length; i++ ) {
+				metaDataAnnotation = metadataArray[ i ] as MetaDataAnnotation;
 				
 				//Determine if the node contains an 'order' key, if it does, get the order number
-				var orderString:String = MetadataTools.getArgValueFromSingleMetaDataNode( metadata, "order" );
-				if ( orderString ) {
-					order = Number( orderString );
+				var metaArg:MetaDataArgument = metaDataAnnotation.getArgument( "order", true );
+				if ( metaArg ) {
+					order = Number( metaArg.value );
 					break;
 				}
 			} 
@@ -95,8 +96,8 @@ package org.flexunit.runner.manipulation {
 			var a:Number;
 			var b:Number; 
 			
-			var o1Meta:XMLList = o1.getAllMetadata();
-			var o2Meta:XMLList = o2.getAllMetadata();
+			var o1Meta:Array = o1.getAllMetadata();
+			var o2Meta:Array = o2.getAllMetadata();
 			
 			//Determine if the first object has an order
 			if ( o1Meta ) { 

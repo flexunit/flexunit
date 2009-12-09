@@ -30,6 +30,7 @@ package org.flexunit.runners.model {
 	
 	import flex.lang.reflect.Klass;
 	import flex.lang.reflect.Method;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
 	/**
 	 * The <code>TestClass</code> wraps a class that is to be executing, providing method 
@@ -89,22 +90,22 @@ package org.flexunit.runners.model {
 		 * based on the <code>FrameworkMethod</code>'s metadata tags.
 		 */
 		private function addToMetaDataDictionary( testMethod:FrameworkMethod ):void {
-			var metaDataList:XMLList = testMethod.metadata;
-			var metaTag:String;
+			var metaDataList:Array = testMethod.metadata;
+			var metaTag:MetaDataAnnotation;
 			var entry:Array;
 			
 			//Determine if metadata exists for this FrameworkMethod
 			if ( metaDataList ) {
-				for ( var i:int=0; i<metaDataList.length(); i++ ) {
-					metaTag = metaDataList[ i ].@name;
+				for ( var i:int=0; i<metaDataList.length; i++ ) {
+					metaTag = metaDataList[ i ];
 					
 					//Determine if a specific metaTag has already been registered for another FrameworkMethod; if not,
 					//create a new array to store these specific metaTags
-					entry = metaDataDictionary[ metaTag ];
+					entry = metaDataDictionary[ metaTag.name ];
 					
 					if ( !entry ) {
-						metaDataDictionary[ metaTag ] = new Array();
-						entry = metaDataDictionary[ metaTag ]
+						metaDataDictionary[ metaTag.name ] = new Array();
+						entry = metaDataDictionary[ metaTag.name ]
 					}
 					
 					var found:Boolean = false;
@@ -146,7 +147,7 @@ package org.flexunit.runners.model {
 		/**
 		 * Returns the metadata on this class.
 		 */
-		public function get metadata():XMLList {
+		public function get metadata():Array {
 			if ( !klassInfo ) {
 				return null;				
 			}

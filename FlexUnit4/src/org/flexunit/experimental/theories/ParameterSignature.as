@@ -45,7 +45,7 @@ package org.flexunit.experimental.theories {
 		/**
 		 * @private
 		 */
-		private var _metaDataList:XMLList;
+		private var _metaDataList:Array;
 		
 		/**
 		 * Creates an Array of <code>ParameterSignature<code>s for each parameter in a theory method.
@@ -77,7 +77,7 @@ package org.flexunit.experimental.theories {
 		 * 
 		 * @return an Array containing the <code>ParameterSignature<code> for each parameter in the signautre.
 		 */
-		private static function signatures( parameterTypes:Array, metadataList:XMLList ):Array {
+		private static function signatures( parameterTypes:Array, metadataList:Array ):Array {
 			var sigs:Array = new Array();
 			for ( var i:int= 0; i < parameterTypes.length; i++) {
 				sigs.push( new ParameterSignature( parameterTypes[i], metadataList ) );
@@ -197,7 +197,7 @@ package org.flexunit.experimental.theories {
 		 * @param type The Class type of the parameter.
 		 * @param metaDataList Associated metadata for the method the parameter is associated with.
 		 */
-		public function ParameterSignature( type:Class, metaDataList:XMLList ) {
+		public function ParameterSignature( type:Class, metaDataList:Array ) {
 			this._type= type;
 			this._metaDataList = metaDataList;
 		}

@@ -6,6 +6,7 @@ package flex.lang.reflect.mocks
 	import flex.lang.reflect.Field;
 	import flex.lang.reflect.Klass;
 	import flex.lang.reflect.Method;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
 
 	/**
 	 * KlassMock - Implementation mock 
@@ -33,7 +34,7 @@ package flex.lang.reflect.mocks
 			return mock.name;			
 		}
 
-		override public function get metadata():XMLList {
+		override public function get metadata():Array {
 			return mock.metaData;
 		}
 
@@ -81,8 +82,8 @@ package flex.lang.reflect.mocks
 			return mock.hasMetaData( name );
 		}
 		
-		override public function getMetaData( name:String, key:String="" ):String {
-			return mock.getMetaData( name, key );
+		override public function getMetaData( name:String ):MetaDataAnnotation {
+			return mock.getMetaData( name );
 		} 
 
 	}

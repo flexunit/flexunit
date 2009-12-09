@@ -26,6 +26,7 @@
  * @version    
  **/ 
 package flex.lang.reflect {
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	import flex.lang.reflect.utils.MetadataTools;
 	
 	public class Field {
@@ -105,9 +106,10 @@ package flex.lang.reflect {
 				return _elementType;
 			}
 			
-			if ( ( type == Array ) && ( hasMetaData( "ArrayElementType" ) ) ) {
+			var metaDataAnnotation:MetaDataAnnotation = getMetaData( "ArrayElementType" );
+			if ( ( type == Array ) && metaDataAnnotation && metaDataAnnotation.defaultArgument ) {
 				//we are an array at least, so let's go further;
-				var meta:String = getMetaData( "ArrayElementType" );
+				var meta:String = metaDataAnnotation.defaultArgument.key;
 				
 				//TODO : Shouldn't this throw an error rather than tracing it?
 				try {
@@ -157,8 +159,9 @@ package flex.lang.reflect {
 		 * <p>
 		 * @return Value of the corresponding metadata
 		 */
-		public function getMetaData( name:String, key:String="" ):String {
-			return MetadataTools.getArgValueFromMetaDataNode( _fieldXML, name, key );
+		public function getMetaData( name:String ):MetaDataAnnotation {
+			return null;
+			//return MetadataTools.getArgValueFromMetaDataNode( _fieldXML, name, key );
 		}
 
 		/**
