@@ -29,7 +29,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	import mx.collections.errors.ItemPendingError;
 	
 	import org.flexunit.Assert;
-	
+
 	/**
 	 * @private
 	 */
@@ -88,12 +88,16 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 		[Test(description="Ensure that the assertEquals function fails when two items are not equal")]
 		public function testAssertEqualsFails():void {
 			var failed:Boolean = false;
-			
+			var errMessage : String = "expected:<2> but was:<4>";
 			try {
 				Assert.assertEquals( 2, 4 );
 			} catch (error:AssertionFailedError) {
 				failed = true;
-				Assert.assertEquals( "expected:<2> but was:<4>", error.message );
+				//Cannot use Assert.assertEquals here since that is what we are testing.
+				if ( errMessage != error.message)
+				{
+					throw new AssertionFailedError( "expected:<" + errMessage + "> but was:<" + error.message + ">" );
+				}
 			}
 			if ( !failed ) {
 				Assert.fail( "Assert equals didn't fail" );
@@ -104,13 +108,17 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 		public function testAssertEqualsWithMessageFails():void {
 			var message:String = "Assert equals fail";
 			var failed:Boolean = false;
-			
+			var errMessage : String = "Assert equals fail - expected:<2> but was:<4>";
 			try {
 				Assert.assertEquals( message, 2, 4 );
-				// if we get an error with the right message we pass
+			// if we get an error with the right message we pass
 			} catch (error:AssertionFailedError) {
 				failed = true;
-				Assert.assertEquals( message + " - expected:<2> but was:<4>", error.message );
+				//Cannot use Assert.assertEquals here since that is what we are testing.
+				if ( errMessage != error.message)
+				{
+					throw new AssertionFailedError( "expected:<" + errMessage + "> but was:<" + error.message + ">" );
+				}
 			}
 			if ( !failed ) {
 				Assert.fail( "Assert equals didn't fail" );
@@ -177,7 +185,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 			var o:Object = new Object();
 			Assert.failNotStrictlyEquals( "Assert strictly equals fail", o, o );
 		}
-		
+
 		[Test(description="Ensure that the failNotStrictlyEquals function fails when two non-strictly equal values are provided")]
 		public function testFailNotStrictlyEqualsFails():void {
 			var failed:Boolean = false;
@@ -332,7 +340,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 		public function testAssertNullFails():void {
 			var o:Object = new Object();
 			var failed:Boolean = false;
-			
+
 			try {
 				Assert.assertNull( o )
 			} catch ( error:AssertionFailedError ) {
@@ -464,6 +472,6 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 		
 		protected function test( obj:Object ):void {
 			asserterCalled++;
-		}		
+		}
 	}
 }

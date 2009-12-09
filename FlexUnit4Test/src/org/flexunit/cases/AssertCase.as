@@ -28,9 +28,9 @@ package org.flexunit.cases
 	
 	import org.flexunit.Assert;
 
-    /**
-     * @private
-     */
+	/**
+	 * @private
+	 */
 	public class AssertCase
 	{
 		protected var asserterCalled:int = 0;
@@ -86,12 +86,16 @@ package org.flexunit.cases
 		[Test(description="Ensure that the assertEquals function fails when two items are not equal")]
 		public function testAssertEqualsFails():void {
 			var failed:Boolean = false;
-			
+			var errMessage : String = "expected:<2> but was:<4>";
 			try {
 				Assert.assertEquals( 2, 4 );
 			} catch (error:AssertionFailedError) {
 				failed = true;
-				Assert.assertEquals( "expected:<2> but was:<4>", error.message );
+				//Cannot use Assert.assertEquals here since that is what we are testing.
+				if ( errMessage != error.message)
+				{
+					throw new AssertionFailedError( "expected:<" + errMessage + "> but was:<" + error.message + ">" );
+				}
 			}
 			if ( !failed ) {
 				Assert.fail( "Assert equals didn't fail" );
@@ -102,13 +106,17 @@ package org.flexunit.cases
 		public function testAssertEqualsWithMessageFails():void {
 			var message:String = "Assert equals fail";
 			var failed:Boolean = false;
-			
+			var errMessage : String = "Assert equals fail - expected:<2> but was:<4>";
 			try {
 				Assert.assertEquals( message, 2, 4 );
 			// if we get an error with the right message we pass
 			} catch (error:AssertionFailedError) {
 				failed = true;
-				Assert.assertEquals( message + " - expected:<2> but was:<4>", error.message );
+				//Cannot use Assert.assertEquals here since that is what we are testing.
+				if ( errMessage != error.message)
+				{
+					throw new AssertionFailedError( "expected:<" + errMessage + "> but was:<" + error.message + ">" );
+				}
 			}
 			if ( !failed ) {
 				Assert.fail( "Assert equals didn't fail" );
