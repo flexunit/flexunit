@@ -53,7 +53,7 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		/**
-		 * Throws the error that was initially provided to <code>Faikl</code>.
+		 * Throws the error that was initially provided to <code>Fail</code>.
 		 * 
 		 * @param previousToken AsyncTestToken - Passed in, but not used in this method.
 		 */

@@ -9,9 +9,9 @@
 			
 			import org.flexunit.listeners.CIListener;
 			import org.flexunit.runner.FlexUnitCore;
-
+			
 			private var core:FlexUnitCore;
-
+			
 			public function runMe():void {
 				core = new FlexUnitCore();
 				core.addListener(new CIListener());

@@ -61,9 +61,9 @@ package org.flexunit.internals.builders {
 		 * @param notifier The <code>IRunNotifier</code> to notify that the class has been ignored.
 		 * @param token The <code>AsyncTestToken</code> to notify that the test class has been ignored.
 		 */ 
-		public function run( notifier:IRunNotifier, token:AsyncTestToken ):void {
+		public function run( notifier:IRunNotifier, previousToken:AsyncTestToken ):void {
 			notifier.fireTestIgnored( description );
-			token.sendResult();
+			previousToken.sendResult();
 		}
 		
 		/**
