@@ -1,4 +1,5 @@
-FlexUnit4/bin/
+FlexUnit4/bin/*
 */bin-debug
-FlexUnit4UIListener/bin/
+FlexUnit4UIListener/bin/*
+FlexUnit4CIListener/bin/*
 .metadata
