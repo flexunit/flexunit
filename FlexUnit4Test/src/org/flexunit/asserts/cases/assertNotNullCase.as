@@ -18,15 +18,14 @@ package org.flexunit.asserts.cases
 			Assert.assertNotNull( "Assert not null fail", o );
 		}
 		
-		[Test(description="Ensure that the assertNotNull function fails when a null value is provided",
-			expects="flexunit.framework.AssertionFailedError")]
+		[Test(description="Ensure that the assertNotNull function fails when a null value is provided")]
 		public function testAssertNotNullFails():void {
 			var failed:Boolean = false;
 			try {
 				Assert.assertNotNull( null )
 			} catch ( error:AssertionFailedError ) {
 				failed = true;
-				Assert.assertEquals( " - object was null: null", error.message );
+				Assert.assertEquals( "object was null: null", error.message );
 			}
 			if ( !failed ) {
 				Assert.fail( "Assert not null didn't fail" );

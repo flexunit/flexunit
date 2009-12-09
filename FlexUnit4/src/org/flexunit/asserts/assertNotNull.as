@@ -14,7 +14,7 @@ package org.flexunit.asserts {
 	 * 
 	 * @see org.flexunit.Assert assertNotNull 
 	 */
-	public static function assertNotNull(... rest):void {
+	public function assertNotNull(... rest):void {
 		Assert.assertNotNull.apply( null, rest );
 	}
 }
