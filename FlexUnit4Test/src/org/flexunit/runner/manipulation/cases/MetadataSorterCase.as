@@ -19,6 +19,16 @@ package org.flexunit.runner.manipulation.cases
 				</metadata>
 			</method>);
 		
+		protected var noOrderXML:XML = new XML(
+			<method>
+				<metadata name="Test">
+					<arg key="description" value="Description A"/>
+				</metadata>
+				<metadata name="__go_to_definition_help">
+				  <arg key="pos" value="719"/>
+				</metadata>
+			</method>);
+		
 		protected var higherXML:XML = new XML(
 			<method>
 				<metadata name="Test">
@@ -29,6 +39,8 @@ package org.flexunit.runner.manipulation.cases
 				  <arg key="pos" value="720"/>
 				</metadata>
 			</method>);
+		
+		protected var noOrderXMLList:XMLList = noOrderXML.metadata as XMLList;
 		
 		protected var lowerXMLList:XMLList = lowerXML.metadata as XMLList;
 			
@@ -80,6 +92,22 @@ package org.flexunit.runner.manipulation.cases
 			var o2:Description = new Description("b", higherXMLList);
 			
 			Assert.assertEquals(MetadataSorter.defaultSortFunction(o1, o2), -1 );
+		}
+	
+		[Test(description="Ensure the MetadataSorter returns a -1 when the second IDescription contains an XMLList with a greater order")]
+		public function firstNoOrderMetadataGreaterTest():void {
+			var o1:Description = new Description("a", noOrderXMLList);
+			var o2:Description = new Description("b", lowerXMLList);
+			
+			Assert.assertEquals(MetadataSorter.defaultSortFunction(o1, o2), -1 );
+		}
+
+		[Test(description="Ensure the MetadataSorter returns a 1 when the first IDescription contains an XMLList with a greater order")]
+		public function firstNoOrderMetadataLessTest():void {
+			var o1:Description = new Description("a", lowerXMLList);
+			var o2:Description = new Description("b", noOrderXMLList);
+			
+			Assert.assertEquals(MetadataSorter.defaultSortFunction(o1, o2), 1 );
 		}
 	}
 }
