@@ -119,7 +119,7 @@ package org.flexunit.runner {
 		 * Returns the version number.
 		 */
 		public static function get version():String {
-			return "4.0.0b2";
+			return "4.0.0rc1";
 		}
 
 		private function dealWithArgArray( ar:Array, foundClasses:Array, missingClasses:Array ):void {

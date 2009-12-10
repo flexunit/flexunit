@@ -102,12 +102,12 @@ package org.flexunit.internals.runners.statements {
 		public static function hasExpected( method:FrameworkMethod ):String {
 			//There is conflicting docs in the JUnit world about expects versus expected being the right metadata for this
 			//particular case, so we are going to support them both
-			var expected:String = method.getSpecificMetaDataArg( "Test", "expects" );
+			var expected:String = method.getSpecificMetaDataArgValue( "Test", "expects" );
 			var hasExpected:Boolean = expected && ( expected.length>0 );
 
 			if ( !hasExpected ) {
 				//check for the tag expected too, as it is documented both ways
-				expected = method.getSpecificMetaDataArg( "Test", "expected" );
+				expected = method.getSpecificMetaDataArgValue( "Test", "expected" );
 				hasExpected = expected && ( expected.length>0 );
 			} 
 			return hasExpected?expected:null;			

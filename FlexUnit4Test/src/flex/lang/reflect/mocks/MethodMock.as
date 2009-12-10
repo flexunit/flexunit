@@ -3,12 +3,13 @@ package flex.lang.reflect.mocks
 	import com.anywebcam.mock.Mock;
 	
 	import flex.lang.reflect.Method;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
 	public class MethodMock extends Method
 	{
 		public var mock:Mock;
 		
-		override public function get metadata():XMLList {
+		override public function get metadata():Array {
 			return mock.metadata;
 		}
 		
@@ -52,8 +53,8 @@ package flex.lang.reflect.mocks
 			return mock.hasMetaData(name);
 		}
 		
-		override public function getMetaData(name:String, key:String="") : String {
-			return mock.getMetaData(name, key);
+		override public function getMetaData(name:String) : MetaDataAnnotation {
+			return mock.getMetaData(name);
 		}
 		
 		public function MethodMock(methodXML:XML = null, isStatic:Boolean = false)

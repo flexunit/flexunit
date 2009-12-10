@@ -22,7 +22,7 @@ package org.flexunit.runners.model.mocks
 			return mock.name;
 		}
 		
-		override public function get metadata():XMLList {
+		override public function get metadata():Array {
 			return mock.metedata;
 		}
 		

@@ -3,6 +3,7 @@ package org.flexunit.internals.requests.cases
 	import org.flexunit.Assert;
 	import org.flexunit.internals.requests.FilterRequest;
 	import org.flexunit.internals.runners.ErrorReportingRunner;
+	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.manipulation.NoTestsRemainException;
 	import org.flexunit.runner.manipulation.mocks.FilterMock;
 	import org.flexunit.runner.mocks.RequestMock;
@@ -19,7 +20,7 @@ package org.flexunit.internals.requests.cases
 		[Before(description="Create an instance of FilterRequest")]
 		public function createFilterRequest():void {
 			requestMock = new RequestMock();
-			filterMock = new FilterMock();
+			filterMock = new FilterMock( shouldRunTest, describeTest );
 			filterRequest = new FilterRequest(requestMock, filterMock);
 		}
 		
@@ -68,5 +69,15 @@ package org.flexunit.internals.requests.cases
 			
 			filterMock.mock.verify();
 		}
+
+		public function shouldRunTest( description:IDescription ):Boolean {
+			// do something
+			return true;
+		}
+		
+		public function describeTest( description:IDescription ):String {
+			// do something
+			return "any";
+		}		
 	}
 }

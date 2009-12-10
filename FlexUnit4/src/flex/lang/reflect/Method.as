@@ -26,7 +26,8 @@
  * @version    
  **/ 
 package flex.lang.reflect {
-	import flex.lang.reflect.utils.MetadataTools;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
+	import flex.lang.reflect.metadata.MetaDataArgument;
 	
 	/**
 	 * Used to create XML style methods for use with FlexUnit
@@ -62,7 +63,7 @@ package flex.lang.reflect {
 		/**
 		 * @private
 		 */
-		private var _metaData:XMLList;
+		private var _metaData:Array;
 		
 		/**
 		 * @private
@@ -77,9 +78,15 @@ package flex.lang.reflect {
 		/**
 		 * Retrieves the metadata attributed to the <code>Method</code>
 		 */
-		public function get metadata():XMLList {
+		public function get metadata():Array {
 			if ( !_metaData ) {
-				_metaData = MetadataTools.nodeMetaData( methodXML );	
+				_metaData = new Array();
+				if ( methodXML && methodXML.metadata ) {
+					var methodMetaData:XMLList = methodXML.metadata;
+					for ( var i:int=0; i<methodMetaData.length(); i++ ) {
+						_metaData.push( new MetaDataAnnotation( methodMetaData[ i ] ) );
+					}
+				}
 			}
 
 			return _metaData;
@@ -142,10 +149,14 @@ package flex.lang.reflect {
 			
 			if ( ( returnType == Array ) && ( hasMetaData( "ArrayElementType" ) ) ) {
 				//we are an array at least, so let's go further;
-				var meta:String = getMetaData( "ArrayElementType" );
+				var meta:MetaDataAnnotation = getMetaData( "ArrayElementType" );
+				var potentialClassName:String;
 				
 				try {
-					_elementType = Klass.getClassFromName( meta );
+					if ( meta && meta.arguments ) {
+						potentialClassName = meta.defaultArgument.key;
+					}
+					_elementType = Klass.getClassFromName( potentialClassName );
 				} catch ( error:Error ) {
 					trace("Cannot find specified ArrayElementType("+meta+") in SWF");
 				}
@@ -282,7 +293,7 @@ package flex.lang.reflect {
 		 * @return <code>true</code> if found, else <code>false</code>
 		 */
 		public function hasMetaData( name:String ):Boolean {
-			return MetadataTools.nodeHasMetaData( _methodXML, name );
+			return ( getMetaData( name ) != null );
 		}
 		
 		/**
@@ -296,8 +307,18 @@ package flex.lang.reflect {
 		 * <p>
 		 * @return value of the metadata
 		 */
-		public function getMetaData( name:String, key:String="" ):String {
-			return MetadataTools.getArgValueFromMetaDataNode( _methodXML, name, key );
+		public function getMetaData( name:String ):MetaDataAnnotation {
+			var metadataAr:Array = metadata;
+			
+			if ( metadataAr.length ) {
+				for ( var i:int=0; i<metadataAr.length; i++ ) {
+					if ( ( metadataAr[ i ] as MetaDataAnnotation ).name == name ) {
+						return metadataAr[ i ];
+					}
+				}				
+			}
+
+			return null;
 		}
 
 		/**
@@ -312,11 +333,6 @@ package flex.lang.reflect {
 			_isStatic = isStatic;
 
 			_name = methodXML.@name;
-			
-/* 			_metaData = MetadataTools.nodeMetaData( methodXML );
-			_declaringClass = getDeclaringClassFromMeta( methodXML );
-			_returnType = getReturnTypeFromMeta( methodXML );
-			_parameterTypes = getParameterTypes( methodXML );
- */		}
+		}
 	}
 }

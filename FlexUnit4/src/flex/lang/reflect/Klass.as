@@ -31,6 +31,7 @@ package flex.lang.reflect {
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	import flex.lang.reflect.utils.MetadataTools;
 
 	/**
@@ -80,16 +81,16 @@ package flex.lang.reflect {
 		/**
 		 * @private
 		 */
-		private var _metaData:XMLList;
+		private var _metaData:Array;
 		
 		/**
 		 * Returns an <code>XMLList</code> of metadata contained in the Class
 		 * 
 		 * @return metadata contained in the Class
 		 */
-		public function get metadata():XMLList {
+		public function get metadata():Array {
 			if ( !_metaData ) {
-				_metaData = MetadataTools.nodeMetaData( classXML.factory[ 0 ] );	
+				_metaData = buildMetaData();
 			}
 
 			return _metaData;
@@ -244,7 +245,11 @@ package flex.lang.reflect {
 			//TODO : since type is an attribute of extendsClass, we need to ference it with @
 			//also, since all objects extend from object, we need to be sure we are only
 			//taking the type of the lowest level extend.
-			return getClassFromName( classXML.factory.extendsClass[0].@type );
+			if ( classXML.factory && classXML.factory.extendsClass ) {
+				return getClassFromName( classXML.factory.extendsClass[0].@type );	
+			} else {
+				return null;
+			}
 			//return getClassFromName( classXML.factory.extendsClass.type );
 		}
 
@@ -343,6 +348,30 @@ package flex.lang.reflect {
 		/**
 		 * @private
 		 */
+		private function buildMetaData():Array {
+			var metaDataAr:Array = new Array();
+			var metaDataList:XMLList;			
+
+			if ( classXML.factory && classXML.factory[ 0 ] ) {
+				try {
+					metaDataList = MetadataTools.nodeMetaData( classXML.factory[ 0 ] );
+					if ( metaDataList ) {
+						for ( var i:int=0; i<metaDataList.length(); i++ ) {
+							metaDataAr.push( new MetaDataAnnotation( metaDataList[ i ] ) );
+						}
+					}
+				}
+			
+				catch ( e:Error ) {
+					trace("YOOOOOOOOOOOOOOO");
+				}
+			}			
+			
+			return metaDataAr;
+		}
+		/**
+		 * @private
+		 */
 		private function buildFields():Array {
 			var fields:Array = new Array();
 			var fieldList:XMLList = classXML.factory.variable;			
@@ -393,21 +422,27 @@ package flex.lang.reflect {
 		 * <code>false</code>
 		 */
 		public function hasMetaData( name:String ):Boolean {
-			return MetadataTools.nodeHasMetaData( classXML.factory[ 0 ], name );
+			return ( getMetaData( name ) != null );
 		}
 		
 		/**
-		 * Retrieves the value of any metadata matching the name and key.
+		 * Retrieves the value of any metadata matching the name.
 		 * 
 		 * <p>
 		 * @param name of the metadata
-		 * @param key of the metadata (<code>null</code> ok)
 		 * 
 		 * <p>
 		 * @return value of metadata if found.  
 		 */
-		public function getMetaData( name:String, key:String="" ):String {
-			return MetadataTools.getArgValueFromMetaDataNode( classXML.factory[ 0 ], name, key );
+		public function getMetaData( name:String ):MetaDataAnnotation {
+			var len:int = metadata.length;
+			for ( var i:int=0; i<len; i++ ) {
+				if ( ( metadata[ i ] as MetaDataAnnotation ).name == name ) {
+					return metadata[ i ];
+				} 
+			}
+			
+			return null;
 		}
 		
 		/**

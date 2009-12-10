@@ -39,6 +39,6 @@ package org.flexunit.runner.manipulation
 		 * @param filter the <code> Filter</code> to apply
 		 * @throws NoTestsRemainException if all tests are filtered out
 		 */
-		function filter( filter:Filter ):void;	
+		function filter( filter:IFilter ):void;	
 	}
 }

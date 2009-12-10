@@ -73,7 +73,7 @@ package org.flexunit.runner.cases
 		// TODO : not sure how to test
 		[Test(description="Ensure that the filerWith function generates the correct filter when the parameter is a Filter")]
 		public function filterWithFilterTest():void {
-			var filter:FilterMock = new FilterMock();
+			var filter:FilterMock = new FilterMock( shouldRunTest, describeTest ) ;
 			
 			var newRequest:Request = request.filterWith( filter );
 			
@@ -125,5 +125,16 @@ package org.flexunit.runner.cases
 			
 			Assert.assertTrue( newRequest is FilterRequest );
 		}
+
+		public function shouldRunTest( description:IDescription ):Boolean {
+			// do something
+			return true;
+		}
+		
+		public function describeTest( description:IDescription ):String {
+			// do something
+			return "any";
+		}
+		
 	}
 }

@@ -2,6 +2,7 @@ package org.flexunit.experimental.theories.cases
 {
 	import flex.lang.reflect.Klass;
 	import flex.lang.reflect.Method;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	import flex.lang.reflect.mocks.ConstructorMock;
 	import flex.lang.reflect.mocks.FieldMock;
 	import flex.lang.reflect.mocks.KlassMock;
@@ -17,17 +18,26 @@ package org.flexunit.experimental.theories.cases
 		
 		protected var parameterSignature:ParameterSignature;
 		protected var type:Class;
-		protected var metadata:XMLList;
+		protected var metadata:Array;
 		protected var metadataXML:XML = 
 			<test>
 				<value name="Object"/>
 				<value name="Method"/>;
 			</test>;
+
+		private static function convertToMetaDataAnnotations( metaXML:XMLList ):Array {
+			var ar:Array = new Array();
+			for ( var i:int=0; i<metaXML.length(); i++ )  {
+				ar.push( new MetaDataAnnotation( metaXML[ i ] ) );
+			}
+			
+			return ar;
+		} 
 		
 		[Before(description="Create an instance of the ParameterSignature class")]
 		public function createParameterSignature():void {
 			type = Object;
-			metadata = metadataXML.value as XMLList;
+			metadata = convertToMetaDataAnnotations( metadataXML.value );
 			parameterSignature = new ParameterSignature(type, metadata);
 		}
 		
@@ -42,10 +52,10 @@ package org.flexunit.experimental.theories.cases
 		[Test(description="Ensure that an array ParameterSignatures is returned for a given Method")]
 		public function signatureByMethodTest():void {
 			var parameterTypes:Array = [Method, Object];
-			var xmlList:XMLList = new XMLList();
+			var ar:Array = new Array();
 			var methodMock:MethodMock = new MethodMock();
 			methodMock.mock.property("parameterTypes").returns(parameterTypes);
-			methodMock.mock.property("metadata").returns(xmlList);
+			methodMock.mock.property("metadata").returns(ar);
 			
 			//Check to see that the array was properly built
 			var signatures:Array = ParameterSignature.signaturesByMethod(methodMock);
@@ -188,8 +198,8 @@ package org.flexunit.experimental.theories.cases
 		//TODO: There currently is not a way to test a depth of 0, should there be a test for it; if so, what needs to be done?
 		[Test(description="Ensure the particular piece of metadata is found if its name matches the string type")]
 		public function findDeepAnnotationTest():void {
-			var xml:XML = <value name="Method"/>;
-			Assert.assertEquals( xml, parameterSignature.findDeepAnnotation("Method") );
+			//var xml:XML = <value name="Method"/>;
+			Assert.assertEquals( "Method", parameterSignature.findDeepAnnotation("Method").name );
 		}
 		
 		[Test(description="Ensure that the getAnnotationResult function returns null if the name in the metadata does not match the type")]
@@ -199,8 +209,8 @@ package org.flexunit.experimental.theories.cases
 		
 		[Test(description="Ensure that the getAnnotationResult function returns metadata if the name in the metadata matches the type")]
 		public function getAnnotationResultTest():void {
-			var xml:XML = <value name="Object"/>;
-			Assert.assertEquals( xml, parameterSignature.getAnnotation("Object") );
+//			var xml:XML = <value name="Object"/>;
+			Assert.assertEquals( "Object", parameterSignature.getAnnotation("Object").name );
 		}
 		
 		[Test(description="Ensure that the toString function returns the proper string value")]

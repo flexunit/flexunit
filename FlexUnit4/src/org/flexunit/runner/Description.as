@@ -28,7 +28,7 @@
 package org.flexunit.runner {
 	import flash.utils.getQualifiedClassName;
 	
-	import flex.lang.reflect.utils.MetadataTools;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
 	import mx.utils.ObjectUtil;
 	
@@ -59,7 +59,7 @@ package org.flexunit.runner {
 		/**
 		 * @private
 		 */
-		private var _metadata:XMLList;
+		private var _metadata:Array;
 		/**
 		 * @private
 		 */
@@ -124,10 +124,19 @@ package org.flexunit.runner {
 		 * @return the metadata node that is attached to this description if a node is found with a matching <code>type</code> 
 		 * or a value of <code>null</code> if no such node exists.
 		 */
-		public function getMetadata( type:String ):XML {
+/*		public function getMetadata( type:String ):Array {
+			var metaDataItems:Array = new Array();
+			var allMetaData:Array = getAllMetadata();
+			
+			for ( var i:int=0; i<allMetaData.length; i++ ) {
+				if ( ( allMetaData[ i ] as MetaDataAnnotation ).name == type ) {
+					metaDataItems.push( allMetaData[ i ] ); 
+				}
+			}
+			 
 			//Extract specific needed node by type
-			return MetadataTools.getMetaDataNodeFromNodesList( _metadata, type );
-		}
+			return metaDataItems;
+		}*/
 		
 		/**
 		 * Returns all of the metadata that is attached to this description node.
@@ -135,7 +144,7 @@ package org.flexunit.runner {
 		 * @return the metadata as XML that is attached to this description node, 
 		 * or null if none exists
 		 */
-		public function getAllMetadata():XMLList {
+		public function getAllMetadata():Array {
 			return _metadata;
 		}
 		
@@ -201,7 +210,7 @@ package org.flexunit.runner {
 		 * 
 		 * @return an <code>IDescription</code> named <code>name</code>.
 		 */
-		public static function createSuiteDescription( suiteClassOrName:*, metaData:XMLList=null ):IDescription {
+		public static function createSuiteDescription( suiteClassOrName:*, metaData:Array=null ):IDescription {
 			var description:Description;
 			if ( suiteClassOrName is String ) {
 				description = new Description( suiteClassOrName, metaData );
@@ -223,7 +232,7 @@ package org.flexunit.runner {
 		 * 
 		 * @return an <code>IDescription</code> named <code>name</code>.
 		 */
-		public static function createTestDescription( testClassOrInstance:Class, name:String, metadata:XMLList=null ):IDescription {
+		public static function createTestDescription( testClassOrInstance:Class, name:String, metadata:Array=null ):IDescription {
 			var description:Description = new Description( getQualifiedClassName( testClassOrInstance) + '.' + name, metadata );
 			return description;
 		}
@@ -235,7 +244,7 @@ package org.flexunit.runner {
 		 * @param metadata The metadata of the description node.
 		 * @param isInstance A Boolean value indicating whether the descrption node is an instance.
 		 */
-		public function Description( displayName:String, metadata:XMLList, isInstance:Boolean=false ) {
+		public function Description( displayName:String, metadata:Array, isInstance:Boolean=false ) {
 			//_testClassOrInstance = testClassOrInstance;
 			_displayName = displayName;
 			_isInstance = isInstance;

@@ -49,10 +49,10 @@ package org.flexunit.runners.model.cases
 		[Ignore("We have a Flex 4/Flex 3 compatibility issue here")]
 		[Test(description="Ensure that get metadata returns the expected metadata")]
 		public function getMetadataTest():void {
-			var metadata:XMLList = testClass.metadata;
+			var metadata:Array = testClass.metadata;
 			
-			Assert.assertTrue( metadata is XMLList );
-			Assert.assertEquals( 1, metadata.length() );
+			Assert.assertTrue( metadata is Array );
+			Assert.assertEquals( 1, metadata.length );
 		}
 		
 		[Test(description="Ensure that the getMetaDataMethods function correctly returns an array with the expected metadata")]

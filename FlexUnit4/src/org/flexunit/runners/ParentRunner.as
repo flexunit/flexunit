@@ -26,11 +26,7 @@
  * @version    
  **/ 
 package org.flexunit.runners {
-	import flash.events.EventDispatcher;
-	import flash.utils.Dictionary;
-	
 	import org.flexunit.internals.AssumptionViolatedException;
-	import org.flexunit.internals.events.ExecutionCompleteEvent;
 	import org.flexunit.internals.namespaces.classInternal;
 	import org.flexunit.internals.runners.ChildRunnerSequencer;
 	import org.flexunit.internals.runners.InitializationError;
@@ -42,12 +38,11 @@ package org.flexunit.runners {
 	import org.flexunit.runner.Description;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
-	import org.flexunit.runner.manipulation.Filter;
+	import org.flexunit.runner.manipulation.IFilter;
 	import org.flexunit.runner.manipulation.ISortable;
 	import org.flexunit.runner.manipulation.ISorter;
 	import org.flexunit.runner.manipulation.MetadataSorter;
 	import org.flexunit.runner.manipulation.NoTestsRemainException;
-	import org.flexunit.runner.manipulation.Sorter;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runner.notification.StoppedByUserException;
 	import org.flexunit.runners.model.FrameworkMethod;
@@ -92,7 +87,7 @@ package org.flexunit.runners {
 		/**
 		 * @private
 		 */
-		private var filterRef:Filter = null;
+		private var filterRef:IFilter = null;
 		/**
 		 * @private
 		 */
@@ -473,7 +468,7 @@ package org.flexunit.runners {
 		 * 
 		 * @throws org.flexunit.runner.manipulation.NoTestsRemainException Thrown if all children have been filtered.
 		 */
-		public function filter( filter:Filter ):void {
+		public function filter( filter:IFilter ):void {
 			if(filter == this.filterRef)
 				return;
 			

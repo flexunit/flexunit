@@ -1,21 +1,13 @@
 package flex.lang.reflect.cases
 {
-	import flex.lang.reflect.Field;
 	import flex.lang.reflect.Klass;
 	import flex.lang.reflect.Method;
-	import flex.lang.reflect.mocks.FieldMock;
-	import flex.lang.reflect.mocks.KlassMock;
-	
-	import mx.controls.Button;
-	import mx.core.UIComponent;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
+	import flex.lang.reflect.metadata.MetaDataArgument;
 	
 	import org.flexunit.Assert;
-	import org.flexunit.assertThat;
-	import org.flexunit.events.AsyncEvent;
 	import org.flexunit.runner.RunnerLocator;
 	import org.flexunit.runners.mocks.RunnerLocatorMock;
-	import org.hamcrest.collection.hasItem;
-	import org.hamcrest.object.equalTo;
 	
 	public class KlassCase
 	{
@@ -119,8 +111,10 @@ package flex.lang.reflect.cases
 		[Test(description="getMetadata")]
 		public function check_get_metadata():void {
 			klass = new Klass( RunnerLocatorMock );
-			var metadata:String = klass.getMetaData("Bindable","event");
-			Assert.assertEquals('testMetadata', metadata );
+
+			var metadata:MetaDataAnnotation = klass.getMetaData("Bindable" ); //,"event");
+			var metadataArg:MetaDataArgument = metadata.getArgument( "event" );
+			Assert.assertEquals('testMetadata', metadataArg.value );
 		}
 		
 		[Test(description='ensure class definition is returned properly')]

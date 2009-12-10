@@ -29,6 +29,7 @@ package org.flexunit.internals.builders {
 	import flash.utils.getDefinitionByName;
 	
 	import flex.lang.reflect.Klass;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
 	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.runner.IRunner;
@@ -104,7 +105,13 @@ package org.flexunit.internals.builders {
 			//Determine if the testClass references a runner in its metadata
 			if ( klassInfo.hasMetaData( RUN_WITH ) ) {
 				//Get the definition for the runner class
-				var runWithValue:String = klassInfo.getMetaData( RUN_WITH ); 
+				var runWithValue:String = ""; 
+				var runWithAnnotation:MetaDataAnnotation = klassInfo.getMetaData( RUN_WITH );
+				
+				if ( runWithAnnotation && runWithAnnotation.defaultArgument ) {
+					runWithValue = runWithAnnotation.defaultArgument.key;
+				}
+
 				return buildRunner( runWithValue, testClass);
 			}
 			

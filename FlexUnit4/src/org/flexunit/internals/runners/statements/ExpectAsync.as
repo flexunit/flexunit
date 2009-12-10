@@ -585,7 +585,7 @@ package org.flexunit.internals.runners.statements {
 		 * @return a Boolean value indicating whether the provided <code>method</code> is asynchronous.
 		 */
 		public static function hasAsync( method:FrameworkMethod, type:String="Test" ):Boolean {
-			var async:String = method.getSpecificMetaDataArg( type, "async" );
+			var async:String = method.getSpecificMetaDataArgValue( type, "async" );
 			var asyncBool:Boolean = ( async == "true" ); 
 			 
 			return asyncBool;			
