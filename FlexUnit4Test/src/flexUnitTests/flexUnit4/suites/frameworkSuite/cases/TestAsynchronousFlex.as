@@ -15,7 +15,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	import org.flexunit.async.Async;
 	import org.flexunit.async.TestResponder;
 
-	public class TestAsynchornousFlex
+	public class TestAsynchronousFlex
 	{
 		protected var timer:Timer;
 		protected static var LONG_TIME:int = 250;

@@ -1,6 +1,6 @@
 package org.flexunit
 {
-	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestAsynchornousFlex;
+	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestAsynchronousFlex;
 	
 	import org.flexunit.async.cases.AsyncFlexCase;
 	import org.flexunit.async.cases.AsyncTestResponderCase;
@@ -19,6 +19,6 @@ package org.flexunit
 		public var asyncResponseEventCase:AsyncResponseEventCase;
 		public var textListenerCase:TextListenerCase;
 		
-		public var testAsynchornousFlex:TestAsynchornousFlex;
+		public var testAsynchornousFlex:TestAsynchronousFlex;
 	}
 }
