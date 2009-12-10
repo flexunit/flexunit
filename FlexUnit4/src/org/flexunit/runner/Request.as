@@ -31,8 +31,10 @@ package org.flexunit.runner {
 	import org.flexunit.internals.requests.ClassRequest;
 	import org.flexunit.internals.requests.FilterRequest;
 	import org.flexunit.internals.requests.SortingRequest;
-	import org.flexunit.runner.manipulation.Filter;
+	import org.flexunit.runner.manipulation.IFilter;
 	import org.flexunit.runner.manipulation.ISort;
+	import org.flexunit.runner.manipulation.filters.DynamicFilter;
+	import org.flexunit.runner.manipulation.filters.MethodNameFilter;
 	import org.flexunit.runners.Suite;
 	
 	use namespace classInternal;
@@ -105,7 +107,7 @@ package org.flexunit.runner {
 		 * 
 		 * @return the filtered Request.
 		 */
-		protected function filterWithFilter( filter:Filter ):Request {
+		protected function filterWithFilter( filter:IFilter ):Request {
 			return new FilterRequest(this, filter);
 		}
 		
@@ -118,7 +120,7 @@ package org.flexunit.runner {
 		 * @return the filtered Request.
 		 */
 		protected function filterWithDescription( desiredDescription:IDescription ):Request {
-			var filter:Filter = new Filter(
+			var filter:DynamicFilter = new DynamicFilter(
 				function( description:IDescription ):Boolean {
 					if ( description.isTest )
 						return desiredDescription.equals(description);
@@ -152,8 +154,8 @@ package org.flexunit.runner {
 		public function filterWith( filterOrDescription:* ):Request {
 			if ( filterOrDescription is IDescription ) {
 				return filterWithDescription( filterOrDescription as IDescription );
-			} else if ( filterOrDescription is Filter ) {
-				return filterWithFilter( filterOrDescription as Filter );
+			} else if ( filterOrDescription is IFilter ) {
+				return filterWithFilter( filterOrDescription as IFilter );
 			}
 			
 			//If neither an IDescription or Filter is provided, return the current request
@@ -223,6 +225,10 @@ package org.flexunit.runner {
 		public static function method( clazz:Class, methodName:String ):Request {
 			var method:IDescription = Description.createTestDescription( clazz, methodName );
 			return Request.aClass(clazz).filterWith(method);
+		}
+
+		public static function methods( clazz:Class, methodNames:Array ):Request {
+			return Request.aClass(clazz).filterWith( new MethodNameFilter( methodNames ) );
 		}
 		
 		/**

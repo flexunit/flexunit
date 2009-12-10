@@ -30,8 +30,9 @@ package org.flexunit.internals.requests {
 	import org.flexunit.runner.IRequest;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.Request;
-	import org.flexunit.runner.manipulation.Filter;
+	import org.flexunit.runner.manipulation.IFilter;
 	import org.flexunit.runner.manipulation.NoTestsRemainException;
+	import org.flexunit.runner.manipulation.filters.AbstractFilter;
 
 	/**
 	 * A <code>Request</code> that filters a test class.
@@ -44,7 +45,7 @@ package org.flexunit.internals.requests {
 		/**
 		 * @private
 		 */
-		private var filter:Filter;
+		private var filter:IFilter;
 
 		/**
 		 * Constructor.
@@ -54,7 +55,7 @@ package org.flexunit.internals.requests {
 		 * @param classRequest An <code>IRequest</code> describing the tests.
 		 * @param filter <code>Filter</code> to apply to the tests described in classRequest.
 		 */
-		public function FilterRequest( classRequest:IRequest, filter:Filter ) {
+		public function FilterRequest( classRequest:IRequest, filter:IFilter ) {
 			super();
 			this.request = classRequest;
 			this.filter = filter;
@@ -67,7 +68,8 @@ package org.flexunit.internals.requests {
 				filter.apply( runner );
 				return runner;
 			} catch ( error:NoTestsRemainException ) {
-				return new ErrorReportingRunner( Filter, 
+				//TODO: Need to review what exactly is needed here
+				return new ErrorReportingRunner( AbstractFilter, 
 					new Error( "No tests found matching " + filter.describe + " from " + request ) );
 								
 			}

@@ -44,7 +44,7 @@ package org.flexunit.internals.runners {
 	import org.flexunit.runner.Description;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
-	import org.flexunit.runner.manipulation.Filter;
+	import org.flexunit.runner.manipulation.IFilter;
 	import org.flexunit.runner.manipulation.IFilterable;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.token.AsyncTestToken;
@@ -254,13 +254,13 @@ package org.flexunit.internals.runners {
 		/**
 		 * @private
 		 */
-		private var appliedFilter:Filter; 
+		private var appliedFilter:IFilter; 
 		/**
 		 * Will apply a <code>Filter</code> to the test object.
 		 * @param filter Filter
 		 * @see org.flexunit.runner.manipulation.Filter
 		 */
-		public function filter( filter:Filter ):void {
+		public function filter( filter:IFilter ):void {
 			if ( filter ) {
 				appliedFilter = filter;
 				Object( test ).filter = filterWithIFilter;

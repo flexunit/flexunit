@@ -25,7 +25,7 @@
  * @author     Michael Labriola 
  * @version    
  **/ 
-package org.flexunit.runner.manipulation {
+package org.flexunit.runner.manipulation.filters {
 	import org.flexunit.runner.IDescription;
 	
 	
@@ -44,50 +44,32 @@ package org.flexunit.runner.manipulation {
 	 * 
 	 * @see org.flexunit.runner.FlexUnitCore#run()
 	 */
-	public class Filter {
-
-		//only way I cold make this work
-		public static var ALL:Filter = buildAllFilter();
+	public class DynamicFilter extends AbstractFilter {
+		private var _shouldRunFunction:Function;
+		private var _describeFunction:Function;
 
 		/**
 		 * @param description the description of the test to be run
 		 * @return <code>true</code> if the test should be run
 		 */
-		public var shouldRun:Function; //shouldRun(Description description):Boolean;
+		override public function shouldRun( description:IDescription ):Boolean {
+			return _shouldRunFunction( description );
+		}
 		
 		/**
 		 * Returns a textual description of this Filter
 		 * @return a textual description of this Filter
 		 */
-		public var describe:Function; //describe():String
+		override public function describe( description:IDescription ):String {
+			return _describeFunction( description );			
+		}
 
-		/**
-		 * Invoke with a <code> org.flexunit.runner.IRunner</code> to cause all tests it intends to run
-		 * to first be checked with the filter. Only those that pass the filter will be run.
-		 * @param child the runner to be filtered by the receiver
-		 * @throws NoTestsRemainException if the receiver removes all tests
-		 */
-		public function apply( child:Object ):void {
-			if (!(child is IFilterable ))
-				return;
-			
-			var filterable:IFilterable = IFilterable( child );
-			filterable.filter(this);
-		}
-	
-		//TODO: Not sure if this comment should have gone here or where ALL is created and calls this
-		/**
-		 * A null <code>Filter</code> that passes all tests through.
-		 */
-		private static function buildAllFilter():Filter {
-			return new Filter(			
-				function( description:IDescription ):Boolean { return true; },
-				function():String { return "all tests"; } );
-		}
-		
-		public function Filter( shouldRun:Function=null, describe:Function=null ) {
-			this.shouldRun = shouldRun;
-			this.describe = describe;
+		public function DynamicFilter( shouldRunFunction:Function, describeFunction:Function ) {
+			if ( ( shouldRunFunction == null ) || ( describeFunction == null ) ) {
+				throw new TypeError("Must provide functions for comparison and description to Filter");
+			}
+			this._shouldRunFunction = shouldRunFunction;
+			this._describeFunction = describeFunction;
 		}
 	}
 }

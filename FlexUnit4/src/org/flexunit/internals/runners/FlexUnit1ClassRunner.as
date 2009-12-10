@@ -44,7 +44,7 @@ package org.flexunit.internals.runners {
 	import org.flexunit.runner.IDescribable;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
-	import org.flexunit.runner.manipulation.Filter;
+	import org.flexunit.runner.manipulation.IFilter;
 	import org.flexunit.runner.manipulation.IFilterable;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runners.model.FrameworkMethod;
@@ -76,7 +76,7 @@ package org.flexunit.internals.runners {
 		/**
 		 * @private
 		 */
-		private var filterRef:Filter = null;
+		private var filterRef:IFilter = null;
 		/**
 		 * @private
 		 */
@@ -138,7 +138,7 @@ package org.flexunit.internals.runners {
 		 * 
 		 * @return an <code>Array</code> of methods that should run.
 		 */
-		private function getMethodListFromFilter( klassInfo:Klass, filter:Filter ):Array {
+		private function getMethodListFromFilter( klassInfo:Klass, filter:IFilter ):Array {
 			var list:Array = [];
 
 			for ( var i:int=0; i<klassInfo.methods.length; i++ ) {
@@ -161,7 +161,7 @@ package org.flexunit.internals.runners {
 		 * 
 		 * @return a <code>TestSuite</code> that is filtered based on the provided <code>Filter</code>.
 		 */
-		private function createTestSuiteWithFilter( filter:Filter = null ):Test {
+		private function createTestSuiteWithFilter( filter:IFilter = null ):Test {
 			if ( !filter ) {
 				return new TestSuite( klassOrTest );
 			} else {
@@ -333,7 +333,7 @@ package org.flexunit.internals.runners {
 		 * @param filter Filter
 		 * @see org.flexunit.runner.manipulation.Filter
 		 */
-		public function filter( filter:Filter ):void {
+		public function filter( filter:IFilter ):void {
 			if ( test is IFilterable ) {
 				var adapter:IFilterable = IFilterable( test );
 				adapter.filter(filter);

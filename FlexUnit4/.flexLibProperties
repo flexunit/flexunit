@@ -103,7 +103,7 @@
     <classEntry path="org.flexunit.runner.Request"/>
     <classEntry path="org.flexunit.runner.Result"/>
     <classEntry path="org.flexunit.runner.RunnerLocator"/>
-    <classEntry path="org.flexunit.runner.manipulation.Filter"/>
+    <classEntry path="org.flexunit.runner.manipulation.filters.DynamicFilter"/>
     <classEntry path="org.flexunit.runner.manipulation.IFilterable"/>
     <classEntry path="org.flexunit.runner.manipulation.NoTestsRemainException"/>
     <classEntry path="org.flexunit.runner.manipulation.Sorter"/>
@@ -131,6 +131,10 @@
     <classEntry path="org.flexunit.token.AsyncTestToken"/>
     <classEntry path="org.flexunit.token.ChildResult"/>
     <classEntry path="org.flexunit.utils.ClassNameUtil"/>
+    <classEntry path="org.flexunit.runner.manipulation.IFilter"/>
+    <classEntry path="org.flexunit.runner.manipulation.filters.AbstractFilter"/>
+    <classEntry path="org.flexunit.runner.manipulation.filters.IncludeAllFilter"/>
+    <classEntry path="org.flexunit.runner.manipulation.filters.MethodNameFilter"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
