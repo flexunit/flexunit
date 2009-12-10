@@ -2,7 +2,7 @@
 <flexLibProperties includeAllClasses="false" version="1">
   <includeClasses>
     <classEntry path="flex.lang.reflect.Constructor"/>
-	<classEntry path="flex.lang.reflect.Field"/>
+    <classEntry path="flex.lang.reflect.Field"/>
     <classEntry path="flex.lang.reflect.Klass"/>
     <classEntry path="flex.lang.reflect.Method"/>
     <classEntry path="flex.lang.reflect.utils.MetadataTools"/>
