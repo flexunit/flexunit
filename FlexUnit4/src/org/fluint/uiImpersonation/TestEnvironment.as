@@ -23,13 +23,14 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  **/ 
 package org.fluint.uiImpersonation {
+	import flash.utils.getDefinitionByName;
+	
 	import mx.core.Container;
-	//import mx.core.FlexGlobals;
 	import mx.core.FlexVersion;
 	import mx.events.FlexEvent;
+	import mx.managers.FocusManager;
 	import mx.managers.ILayoutManagerClient;
 	import mx.managers.SystemManager;
-	import flash.utils.getDefinitionByName;
 
 	/** 
 	 * TestEnvironment is a singleton class that allows tests to have 
@@ -55,6 +56,7 @@ package org.fluint.uiImpersonation {
 				//need to eventually go this route
 				//instance = buildInstance();
 				instance = new TestEnvironment();
+				
 				var systemManager:SystemManager;
 
 				//TO-DO: need to deal with this, can't reference 4, likely 3_4 or some other # 				
@@ -67,11 +69,22 @@ package org.fluint.uiImpersonation {
 				}
 				
 				 //= ApplicationGlobals.application.systemManager;
-				systemManager.addChild( instance );				
+				systemManager.addChild( instance );
+				
+				//If the SystemManager tries to remove a child bridge from the instance, from say a SWFLoader,
+				//and there isn't a FocusManager, the SystemManager will throw an error.  To circumvent this,
+				//we'll give the instance a valid FocusManager.
+				//We need to be sure that the FocusManager is created *AFTER* adding the instance to the
+				//SystemManager, because the FocusManager uses the instance's SystemManager property
+				//during construction.
+				if ( !instance.focusManager ) {
+					instance.focusManager = new FocusManager(instance);
+				}
 			}
 			
 			return instance;
 		}
+		
 /*		
 		private static function buildInstance():TestEnvironment {
 			var child:TestEnvironment = new TestEnvironment();
