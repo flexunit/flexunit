@@ -109,11 +109,12 @@
 	</target>
 
 	<!-- Generate static code analysis with PMD and asdocs -->
-	<target name="report">
+	<target name="report" depends="identify-sdk,report-flex3,report-flex4">
 		<taskdef name="flexPmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" />
-
 		<flexPmd sourceDirectory="${main.src.loc}" outputDirectory="${report.pmd.loc}" />
-
+	</target>
+	
+	<target name="report-flex3" unless="build.isFlex4">
 		<java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
 			<arg line="+flexlib '${FLEX_HOME}/frameworks'" />
 			<arg line="-doc-sources '${main.src.loc}'" />
@@ -121,6 +122,19 @@
 			<arg line="-output '${doc.loc}'" />
 			<arg line="-library-path+='${lib.loc}'" />
 			<arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
+		</java>
+	</target>
+	
+	<target name="report-flex4" if="build.isFlex4">
+		<java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
+			<arg line="+flexlib '${FLEX_HOME}/frameworks'" />
+			<arg line="-namespace http://www.adobe.com/2006/mxml '${FLEX_HOME}/frameworks/halo-manifest.xml'" />
+			<arg line="-doc-sources '${main.src.loc}'" />
+			<arg line="-source-path+='${main.src.loc}'" />
+			<arg line="-output '${doc.loc}'" />
+			<arg line="-library-path+='${lib.loc}'" />
+			<arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
+			<arg line="-compatibility-version 3.0.0" />
 		</java>
 	</target>
 </project>
