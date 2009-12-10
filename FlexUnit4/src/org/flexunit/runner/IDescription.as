@@ -65,7 +65,7 @@ package org.flexunit.runner {
 		 * @return the metadata node that is attached to this description if a node is found with a matching <code>type</code> 
 		 * or a value of <code>null</code> if no such node exists.
 		 */
-		function getMetadata( type:String ):Array;
+		//function getMetadata( type:String ):MetaDataAnnotation;
 		/**
 		 * Returns all of the metadata that is attached to this description node.
 		 * 

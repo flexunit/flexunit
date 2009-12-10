@@ -27,7 +27,6 @@
  **/ 
 package flex.lang.reflect {
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
-	import flex.lang.reflect.utils.MetadataTools;
 	
 	public class Field {
 		/**
@@ -45,7 +44,7 @@ package flex.lang.reflect {
 		/**
 		 * @private
 		 */
-		private var _metaData:XMLList;
+		private var _metaData:Array;
 
 		/**
 		 * @private
@@ -126,9 +125,15 @@ package flex.lang.reflect {
 		/**
 		 * Retrieves the metadata of the <code>Field</code>
 		 */
-		public function get metadata():XMLList {
+		public function get metadata():Array {
 			if ( !_metaData ) {
-				_metaData = MetadataTools.nodeMetaData( _fieldXML );	
+				_metaData = new Array();
+				if ( _fieldXML && _fieldXML.metadata ) {
+					var fieldMetaData:XMLList = _fieldXML.metadata;
+					for ( var i:int=0; i<fieldMetaData.length(); i++ ) {
+						_metaData.push( new MetaDataAnnotation( fieldMetaData[ i ] ) );
+					}
+				}
 			}
 			
 			return _metaData;
@@ -144,7 +149,7 @@ package flex.lang.reflect {
 		 * @return <code>true</code> if <code>Field</code> has the metadata, else <code>false</code>.
 		 */
 		public function hasMetaData( name:String ):Boolean {
-			return MetadataTools.nodeHasMetaData( _fieldXML, name );
+			return ( getMetaData( name ) != null );
 		}
 		
 		/**
@@ -160,8 +165,17 @@ package flex.lang.reflect {
 		 * @return Value of the corresponding metadata
 		 */
 		public function getMetaData( name:String ):MetaDataAnnotation {
+			var metadataAr:Array = metadata;
+			
+			if ( metadataAr.length ) {
+				for ( var i:int=0; i<metadataAr.length; i++ ) {
+					if ( ( metadataAr[ i ] as MetaDataAnnotation ).name == name ) {
+						return metadataAr[ i ];
+					}
+				}				
+			}
+			
 			return null;
-			//return MetadataTools.getArgValueFromMetaDataNode( _fieldXML, name, key );
 		}
 
 		/**

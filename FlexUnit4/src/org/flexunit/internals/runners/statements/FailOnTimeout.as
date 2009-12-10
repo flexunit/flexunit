@@ -104,7 +104,7 @@ package org.flexunit.internals.runners.statements {
 		 * will be returned.
 		 */
 		public static function hasTimeout( method:FrameworkMethod ):String {
-			var timeout:String = String( method.getSpecificMetaDataArg( "Test", "timeout" ) );
+			var timeout:String = String( method.getSpecificMetaDataArgValue( "Test", "timeout" ) );
 			var hasTimeout:Boolean = timeout && ( timeout != "null" ) && ( timeout.length>0 );
 
 			return hasTimeout?timeout:null;			

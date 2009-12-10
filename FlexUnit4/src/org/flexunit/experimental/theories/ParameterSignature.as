@@ -29,6 +29,7 @@ package org.flexunit.experimental.theories {
 	import flex.lang.reflect.Constructor;
 	import flex.lang.reflect.Field;
 	import flex.lang.reflect.Method;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
 	import org.flexunit.runners.model.FrameworkMethod;
 	
@@ -140,12 +141,13 @@ package org.flexunit.experimental.theories {
 			return getAnnotation(type) != null;
 		}
 		
- 		public function findDeepAnnotation( type:String ):XML {
-			var metaDataList2:XMLList = _metaDataList.copy();
+ 		public function findDeepAnnotation( type:String ):MetaDataAnnotation {
+			//TODO
+			var metaDataList2:Array = _metaDataList.slice();
 			return privateFindDeepAnnotation( metaDataList2, type, 3);
 		}
 	
-		private function privateFindDeepAnnotation( metaDataList:XMLList, type:String, depth:int ):XML {
+		private function privateFindDeepAnnotation( metaDataList:Array, type:String, depth:int ):MetaDataAnnotation {
 			if (depth == 0)
 				return null;
 
@@ -170,12 +172,12 @@ package org.flexunit.experimental.theories {
 		 * 
 		 * @param type The name to check for in the metadata.
 		 * 
-		 * @return an XML that is the metadata that has a name attribute that matches the provided type.  If no name match is found,
+		 * @return a MetaDataAnnotation that is the metadata that has a name attribute that matches the provided type.  If no name match is found,
 		 * a value of null is returned.
 		 */
-		public function getAnnotation( type:String ):XML {
-			for ( var i:int=0;i<_metaDataList.length(); i++ ) {
-				if ( _metaDataList[ i ].@name == type ) {
+		public function getAnnotation( type:String ):MetaDataAnnotation {
+			for ( var i:int=0;i<_metaDataList.length; i++ ) {
+				if ( ( _metaDataList[ i ] as MetaDataAnnotation ).name == type ) {
 					return _metaDataList[ i ];
 				}
 			}

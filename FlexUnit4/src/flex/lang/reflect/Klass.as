@@ -355,8 +355,10 @@ package flex.lang.reflect {
 			if ( classXML.factory && classXML.factory[ 0 ] ) {
 				try {
 					metaDataList = MetadataTools.nodeMetaData( classXML.factory[ 0 ] );
-					for ( var i:int=0; i<metaDataList.length(); i++ ) {
-						metaDataAr.push( new MetaDataAnnotation( metaDataList[ i ] ) );
+					if ( metaDataList ) {
+						for ( var i:int=0; i<metaDataList.length(); i++ ) {
+							metaDataAr.push( new MetaDataAnnotation( metaDataList[ i ] ) );
+						}
 					}
 				}
 			

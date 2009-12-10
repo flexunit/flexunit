@@ -38,12 +38,7 @@ package org.flexunit.runner.mocks
 			return mock.testCount;
 		}
 		
-		public function getMetadata(type:String):XML
-		{
-			return mock.getMetadata( type );
-		}
-		
-		public function getAllMetadata():XMLList
+		public function getAllMetadata():Array
 		{
 			return mock.getAllMetadata;
 		}

@@ -124,7 +124,7 @@ package org.flexunit.runner {
 		 * @return the metadata node that is attached to this description if a node is found with a matching <code>type</code> 
 		 * or a value of <code>null</code> if no such node exists.
 		 */
-		public function getMetadata( type:String ):Array {
+/*		public function getMetadata( type:String ):Array {
 			var metaDataItems:Array = new Array();
 			var allMetaData:Array = getAllMetadata();
 			
@@ -136,7 +136,7 @@ package org.flexunit.runner {
 			 
 			//Extract specific needed node by type
 			return metaDataItems;
-		}
+		}*/
 		
 		/**
 		 * Returns all of the metadata that is attached to this description node.

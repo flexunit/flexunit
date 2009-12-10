@@ -109,7 +109,7 @@ package org.flexunit.internals.builders {
 				var runWithAnnotation:MetaDataAnnotation = klassInfo.getMetaData( RUN_WITH );
 				
 				if ( runWithAnnotation && runWithAnnotation.defaultArgument ) {
-					runWithValue = runWithAnnotation.defaultArgument.value;
+					runWithValue = runWithAnnotation.defaultArgument.key;
 				}
 
 				return buildRunner( runWithValue, testClass);

@@ -98,7 +98,7 @@ package org.flexunit.runners.model {
 		 * is an argument that has a value that matches the <code>key</code>, or an empty or null String if the key is not 
 		 * found for the given <code>metaDataTag</code>.
 		 */
-		public function getSpecificMetaDataArg( metaDataTag:String, key:String ):String {
+		public function getSpecificMetaDataArgValue( metaDataTag:String, key:String ):String {
 			var metaDataAnnotation:MetaDataAnnotation = method.getMetaData( metaDataTag );
 			var metaDataArgument:MetaDataArgument;
 			var returnValue:String;

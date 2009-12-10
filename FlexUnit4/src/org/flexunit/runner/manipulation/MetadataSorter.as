@@ -67,9 +67,9 @@ package org.flexunit.runner.manipulation {
 			var metadataArray:Array = object.getAllMetadata();
 			var metaDataAnnotation:MetaDataAnnotation;
 			
-			if ( metadataArray.length == 0 ) {
+/*			if ( metadataArray.length == 0 ) {
 				trace("Stop");				
-			}
+			}*/
 			
 			for ( var i:int=0; i<metadataArray.length; i++ ) {
 				metaDataAnnotation = metadataArray[ i ] as MetaDataAnnotation;

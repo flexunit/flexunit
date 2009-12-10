@@ -24,7 +24,7 @@ package org.flexunit.runners.model.mocks
 			return mock.metadata;
 		}
 		
-		override public function getSpecificMetaDataArg(metaDataTag:String, key:String):String {
+		override public function getSpecificMetaDataArgValue(metaDataTag:String, key:String):String {
 			return mock.getSpecificMetaDataArg(metaDataTag, key);
 		}
 		

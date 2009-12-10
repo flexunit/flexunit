@@ -19,8 +19,8 @@ package flex.lang.reflect.metadata {
 		public function get defaultArgument():MetaDataArgument {
 			var firstArg:MetaDataArgument;
 
-			if ( arguments && arguments.length > 0 ) {
-				firstArg = arguments[ 0 ];	
+			if ( this.arguments && this.arguments.length > 0 ) {
+				firstArg = this.arguments[ 0 ];	
 			}
 			
 			return firstArg;
