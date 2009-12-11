@@ -214,11 +214,12 @@ package org.flexunit.runners.model {
 		/**
 		 * Adds to <code>errors</code> if this method:
 		 * <ul>
-		 * <li>is not public, or
-		 * <li>takes parameters, or
-		 * <li>returns something other than void, or
-		 * <li>is static (given <code>isStatic</code> is <code>false</code>), or
-		 * <li>is not static (given <code>isStatic</code> is <code>true</code>).</ul>
+		 * <li>is not public, or</li>
+		 * <li>takes parameters, or</li>
+		 * <li>returns something other than void, or</li>
+		 * <li>is static (given <code>isStatic</code> is <code>false</code>), or</li>
+		 * <li>is not static (given <code>isStatic</code> is <code>true</code>).</li>
+		 * </ul>
 		 * 
 		 * @param isStatic A Boolean value indicating whether it is acceptable that the method
 		 * is a static method.
@@ -237,10 +238,11 @@ package org.flexunit.runners.model {
 		/**
 		 * Adds to <code>errors</code> if this method:
 		 * <ul>
-		 * <li>is not public, or
-		 * <li>returns something other than void, or
-		 * <li>is static (given <code>isStatic</code> is <code>false</code>), or
-		 * <li>is not static (given <code>isStatic</code> is <code>true</code>).</ul>
+		 * <li>is not public, or</li>
+		 * <li>returns something other than void, or</li>
+		 * <li>is static (given <code>isStatic</code> is <code>false</code>), or</li>
+		 * <li>is not static (given <code>isStatic</code> is <code>true</code>).</li>
+		 * </ul>
 		 * 
 		 * @param isStatic A Boolean value indicating whether it is acceptable that the method
 		 * is a static method.

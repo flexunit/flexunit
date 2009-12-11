@@ -31,6 +31,7 @@ package org.flexunit.runners {
 	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
+	import org.flexunit.runner.manipulation.IFilterable;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runners.model.IRunnerBuilder;
 	import org.flexunit.token.AsyncTestToken;
@@ -41,18 +42,18 @@ package org.flexunit.runners {
 	 * responsible for locating all non-static classes that it contains and obtaining an array of
 	 * <code>IRunner</code>s for each child that was found in this manner.  The 
 	 * <code>IRunnerBuilder</code> to be used to determine the runner for the child classes is
-	 * provided to the <code>Suite</code> during its instantiation.<p>
+	 * provided to the <code>Suite</code> during its instantiation.<br/>
 	 * 
 	 * When a <code>Suite</code> goes to run a child, it is telling another <code>IRunner</code> to
 	 * begin running, supplying the <code>IRunner</code> with an <code>IRunNotifier</code> in
 	 * order to keep track of the test run.  An <code>AsyncTestToken</code> is also provided to
 	 * the child <code>IRunner</code> in order to notify the <code>Suite</code> when the child has
-	 * finished.<p>
+	 * finished.<br/>
 	 * 
 	 * In order to declare a class as a suite class, the class must include a <code>[Suite]</code>
 	 * and <code>[RunWith("org.flexunit.runners.Suite")]</code> metadata tag.  The 
 	 * <code>[RunWith]</code> tag will instruct an <code>IRunnerBuilder</code> to use the
-	 * <code>Suite</code> <code>IRunner</code> for the class.<p>
+	 * <code>Suite</code> <code>IRunner</code> for the class.<br/>
 	 * 
 	 * <pre><code>
 	 * [Suite]
@@ -65,7 +66,7 @@ package org.flexunit.runners {
 	 * }
 	 * <code></pre>
 	 */
-	public class Suite extends ParentRunner {
+	public class Suite extends ParentRunner implements IFilterable {
 		/**
 		 * @private
 		 */

@@ -157,12 +157,12 @@ package org.flexunit.runners.model {
 		
 		/**
 		 * Returns, efficiently, all the non-overridden methods in this class and
-		 * its superclasses that contain the metadata tag <coede>metaTag</code>.
+		 * its superclasses that contain the metadata tag <code>metaTag</code>.
 		 * 
 		 * @param metaTag The tag used to locate the methods.
 		 * 
 		 * @return all the non-overridden methods in this class and
-		 * its superclasses that contain the metadata tag <coede>metaTag</code>.
+		 * its superclasses that contain the metadata tag <code>metaTag</code>.
 		 */
 		public function getMetaDataMethods( metaTag:String ):Array {
 			var methodArray:Array;

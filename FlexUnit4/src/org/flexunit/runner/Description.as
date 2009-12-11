@@ -37,10 +37,10 @@ package org.flexunit.runner {
 	 * <code>Descriptions</code> can be atomic (a single test) or compound (containing children tests). 
 	 * <code>Description</code>s are used to provide feedback about the tests that are about to run (for example, 
 	 * the tree view visible in many IDEs) or tests that have been run (for example, the failures view).
-	 * This information can be used to report the current progress of the test run.<p>
+	 * This information can be used to report the current progress of the test run.<br/>
 	 * 
 	 * <code>Description</code>s are implemented as a single class rather than a composite because
-	 * they are entirely informational. They contain no logic aside from counting their tests.<p>
+	 * they are entirely informational. They contain no logic aside from counting their tests.<br/>
 	 * 
 	 * @see org.flexunit.runner.IRunner
 	 */

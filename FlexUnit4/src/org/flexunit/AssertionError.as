@@ -38,7 +38,6 @@ package org.flexunit
 		 * Throws a new <code>Error</code> of type <code>AssertionError</code>
 		 * with the passed in message
 		 * 
-		 * <p>
 		 * @param message The message associated with the error (<code>null</code> okay)
 		 * @param id The id of the error if desired (<code>null</code> okay)
 		 */

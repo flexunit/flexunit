@@ -41,11 +41,11 @@ package org.flexunit.internals.runners.statements {
 	 * throws an specific exception, the test will fail; however, if the test is expecting a 
 	 * specific exception and that exception is thrown, the test will be a success.  If an
 	 * exception is expected and is not encountered through the course of running the test, the
-	 * test will be considered a failure.<p>
+	 * test will be considered a failure.<br/>
 	 * 
 	 * In order to expect an exception, a test method must include metadata indicating it is
 	 * expecting an exception.  The exception that it is expecting must be in the form of
-	 * the qualified class name of the exception class.<p>
+	 * the qualified class name of the exception class.<br/>
 	 * 
 	 * <pre><code>
 	 * [Test(expected="org.flexunit.runner.notification.StoppedByUserException")]

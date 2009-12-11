@@ -29,6 +29,7 @@ package org.flexunit.runners {
 	import org.flexunit.internals.AssumptionViolatedException;
 	import org.flexunit.internals.namespaces.classInternal;
 	import org.flexunit.internals.runners.ChildRunnerSequencer;
+	import org.flexunit.internals.runners.ErrorReportingRunner;
 	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.internals.runners.model.EachTestNotifier;
 	import org.flexunit.internals.runners.statements.IAsyncStatement;
@@ -57,7 +58,7 @@ package org.flexunit.runners {
 	 * The <code>ParentRunner</code> provides most of the functionality specific to an 
 	 * <code>IRunner</code> that implements a "parent node" in the test tree.  It is n
 	 * directly used as an <code>IRunner</code>; instead, it is inherited by subclesses
-	 * that then implement additional functionality.<p>
+	 * that then implement additional functionality.<br/>
 	 * 
 	 * Subclasses must implement finding the children of the node, describing each child, and
 	 * running each child. The <code>ParentRunner</code> will filter and sort children, handle
@@ -199,12 +200,12 @@ package org.flexunit.runners {
 		 * <li>Call <code>#runChild(Object, IRunNotifier, AsyncTestToken)</code> on each object returned by <code> #children()</code> (subject to any imposed filter and sort).</li>
 		 * <li>ALWAYS run all non-overridden <code>BeforeClass</code> methods on this class
 		 * and superclasses before the previous step; if any throws an
-		 * Exception, stop execution and pass the exception on.
+		 * Exception, stop execution and pass the exception on.</li>
 		 * <li>ALWAYS run all non-overridden <code>AfterClass</code> methods on this class
 		 * and superclasses before any of the previous steps; all AfterClass methods are
 		 * always executed: exceptions thrown by previous steps are combined, if
 		 * necessary, with exceptions from AfterClass methods into a
-		 * <code>MultipleFailureException</code>.
+		 * <code>MultipleFailureException</code>.</li>
 		 * </ul>
 		 * 
 		 * @param notifier The <code>IRunNotifier</code> to notify on the progress of the children.
@@ -289,11 +290,12 @@ package org.flexunit.runners {
 		 * <code>metaDataTag</code>, but:
 		 * 
 		 * <ul>
-		 * <li>is not public, or
-		 * <li>takes parameters, or
-		 * <li>returns something other than void, or
-		 * <li>is static (given <code>isStatic</code> is <code>false</code>), or
-		 * <li>is not static (given <code>isStatic</code> is <code>true</code>).</ul>
+		 * <li>is not public, or</li>
+		 * <li>takes parameters, or</li>
+		 * <li>returns something other than void, or</li>
+		 * <li>is static (given <code>isStatic</code> is <code>false</code>), or</li>
+		 * <li>is not static (given <code>isStatic</code> is <code>true</code>).</li>
+		 * </ul>
 		 * 
 		 * @param metaDataTag The metadata tag used to retrieve the methods.
 		 * @param isStatic a Boolean value indicating whether the methods should be static.
@@ -348,7 +350,7 @@ package org.flexunit.runners {
 							sortChild( child );
 							filtered.push( child );
 						} catch ( error:Error ) {
-							
+							//TODO!!! No trycatches without something to do in the catch
 						}
 					}
 				}
@@ -477,9 +479,27 @@ package org.flexunit.runners {
 			
 			//Determine if the filter has filtered out every child
 			for ( var i:int=0; i<children.length; i++ ) {
-				if ( shouldRun( children[ i ] ) ) {
-					//We are fine, at least one child has met the filter's criteria
-					return;
+				try {
+					filterChild( children[ i ] );
+					
+					if ( shouldRun( children[ i ] ) ) {
+						//We are fine, at least one child has met the filter's criteria
+						return;
+					}
+				} catch ( error:NoTestsRemainException ) {
+					//Deal with the situation where a single child doesn't have any available children
+					var child:IRunner = children[ i ] as IRunner;
+					var parentRunner:ParentRunner = child as ParentRunner;
+					var klass:Class = ParentRunner;
+					if ( parentRunner ) {
+						klass = parentRunner.testClass.asClass;
+					}
+					
+
+					//If we don't have any remaining tests, then make this an error reporting runner
+					children[ i ] = new ErrorReportingRunner( klass, 
+						new Error( "No tests found matching " + child.description.displayName ) );
+					
 				}
 			}
 			

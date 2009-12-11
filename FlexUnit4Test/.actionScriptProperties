@@ -7,11 +7,12 @@
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
       <libraryPathEntry kind="3" linkType="1" path="/FlexUnit4/bin/FlexUnit4.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="/FlexUnit4CIListener/bin/FlexUnit4CIListener.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/FlexUnit4UIListener/bin/FlexUnit4UIListener.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="FlexUnitApplication.mxml"/>
+    <application path="UIRunner.mxml"/>
     <application path="TestRunner.mxml"/>
   </applications>
   <modules/>

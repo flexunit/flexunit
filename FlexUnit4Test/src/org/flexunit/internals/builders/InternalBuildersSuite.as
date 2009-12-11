@@ -5,6 +5,8 @@ package org.flexunit.internals.builders
 	import org.flexunit.internals.builders.cases.FlexUnit4BuilderCase;
 	import org.flexunit.internals.builders.cases.IgnoredBuilderCase;
 	import org.flexunit.internals.builders.cases.IgnoredClassRunnerCase;
+	import org.flexunit.internals.builders.cases.MetaDataBuilderCase;
+	import org.flexunit.internals.builders.cases.NullBuilderCase;
 	import org.flexunit.internals.builders.cases.SuiteMethodBuilderCase;
 
 	[Suite]
@@ -18,7 +20,9 @@ package org.flexunit.internals.builders
 CONFIG::useFlexClasses
 		public var fluint1BuilderCase:org.flexunit.internals.builders.cases.Fluint1BuilderCase;
 
-		public var ignoreDbuilderCase:IgnoredBuilderCase;
+		public var ignoredBuilderCase:IgnoredBuilderCase;
+		public var metaDataBuilderCase:MetaDataBuilderCase;
+		public var nullBuilderCase:NullBuilderCase;
 		public var suiteMethodBuilderCase:SuiteMethodBuilderCase;
 	}
 }
