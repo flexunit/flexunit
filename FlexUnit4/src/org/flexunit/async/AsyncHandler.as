@@ -92,21 +92,17 @@ package org.flexunit.async {
 		protected var timerState:int = TIMER_NOT_STARTED; 
 
 		/** 
-		 * <p>
 		 * A reference to the event handler that should be called if the event named 
-		 * in the TestCase.asyncHandler() method fires before the timeout is reached. </p>
+		 * in the TestCase.asyncHandler() method fires before the timeout is reached. <br/>
 		 * 
-		 * <p>
-		 * The handler is expected to have the follow signature:</p>
+		 * The handler is expected to have the follow signature:<br/>
 		 * 
-		 * <p>
 		 * <code>public function handleEvent( event:Event, passThroughData:Object ):void {
-		 * }</code></p>
+		 * }</code><br/>
 		 * 
-		 * <p>
 		 * The first parameter is the original event object.
 		 * The second parameter is a generic object that can optionally be provided by 
-		 * the developer when starting a new asynchronous operation.</p>
+		 * the developer when starting a new asynchronous operation.<br/>
 		 */
 		public var eventHandler:Function;
 		
@@ -125,20 +121,17 @@ package org.flexunit.async {
 		public var passThroughData:Object = null
 		
 		/**
-		 * <p> 
 		 * A reference to the event handler that should be called if the event named in 
-		 * the TestCase.asyncHandler() method does not fire before the timeout is reached. </p>
+		 * the TestCase.asyncHandler() method does not fire before the timeout is reached. <br/>
 		 * 
-		 * <p>
-		 * The handler is expected to have the follow signature:</p>
+		 * The handler is expected to have the follow signature:<br/>
 		 * 
-		 * <p><code>
+		 * <code>
 		 * public function handleTimeoutEvent( passThroughData:Object ):void {
-		 * }</code></p>
+		 * }</code><br/>
 		 * 
-		 * <p>
 		 * The parameter is a generic object that can optionally be provided by the 
-		 * developer when starting a new asynchronous operation.</p>
+		 * developer when starting a new asynchronous operation.<br/>
 		 */
 		public var timeoutHandler:Function = null;
 

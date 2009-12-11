@@ -41,25 +41,25 @@ package org.flexunit.runner {
 	
 	/**
 	 * A <code>Request</code> is an abstract description of tests to be run.  It represents an object that 
-	 * wraps tests when they are presented to the <code>FlexUnitCore</code>.  <code>Request<code>s can be 
-	 * filtered and sorted to control the subset and order of tests to be executed.<p>
+	 * wraps tests when they are presented to the <code>FlexUnitCore</code>.  <code>Request</code>s can be 
+	 * filtered and sorted to control the subset and order of tests to be executed.
 	 * 
 	 * The following static methods can be used to create requests:
 	 * <ul>
-	 * <li><code>#aClass()</code>
-	 * <li><code>#classes()</code>
-	 * <li><code>#runner()</code>
-	 * <li><code>#method()</code>
-	 * </ul><p>
+	 * <li><code>#aClass()</code></li>
+	 * <li><code>#classes()</code></li>
+	 * <li><code>#runner()</code></li>
+	 * <li><code>#method()</code></li>
+	 * </ul>
 	 * 
-	 * The key property of the <code>Request</code> that the <code>FlexUnitCore</code> needs is the 
+	 * <p>The key property of the <code>Request</code> that the <code>FlexUnitCore</code> needs is the 
 	 * <code>IRunner</code>.  The <code>IRunner</code> is an interface implemented by any object 
-	 * capable of executing a specific type of test.<p>
+	 * capable of executing a specific type of test.</p>
 	 * 
-	 * The flow when FlexUnit4 runs tests is that a <code>Request</code> specifies some tests to be run.
+	 * <p>The flow when FlexUnit4 runs tests is that a <code>Request</code> specifies some tests to be run.
 	 * The <code>IRunner</code> is created for each class implied by the <code>Request</code>.  The
 	 * <code>IRunner</code> provides a detailed <code>IDescription</code> of the class which is a tree 
-	 * structure of the tests to be run.
+	 * structure of the tests to be run.</p>
 	 */
 	public class Request implements IRequest {
 		/**

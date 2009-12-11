@@ -35,11 +35,11 @@ package org.flexunit.async {
 	 * The <code>AsyncLocator</code> is used to keep track of test cases that have implemented asynchronous 
 	 * functionality.  The test cases are registered with the <code>AsyncLocator</code> and reference an
 	 * object that implements <code>IAsyncHandlingStatement</code>.  Test cases are registered using the
-	 * method <code>#registerStatementForTest().<p>
+	 * method <code>#registerStatementForTest()</code>.<br/>
 	 * 
 	 * The <code>IAsyncHandlingStatement</code> is then retrieved using the method <code>#getCallableForTest()</code>
 	 * and providing the test case.  If a test case has not been registered, an <code>AssertionError</code> will be
-	 * thrown.<p>
+	 * thrown.<br/>
 	 * 
 	 * Once an asynchronous test has completed, the method <code>#cleanUpCallableForTest</code> should be called in 
 	 * order to disassociate the test case and the <code>IAsyncHandlingStatement</code>.

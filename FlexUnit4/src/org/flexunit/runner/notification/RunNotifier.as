@@ -37,19 +37,19 @@ package org.flexunit.runner.notification {
 	 * classes to notify others of the following conditions:
 	 * 
 	 * <ul>
-	 * <li>For the Test Run: Started/Finished
-	 * <li>For an Individual Test: Started/Failed/Ignored/Finished/AssumptionFailures
-	 * </ul><p>
+	 * <li>For the Test Run: Started/Finished</li>
+	 * <li>For an Individual Test: Started/Failed/Ignored/Finished/AssumptionFailures</li>
+	 * </ul><br/>
 	 * 
 	 * Each <code>IRunListener</code> that is to be registered or unregistered to the <code>RunNotifier</code> needs 
 	 * to call either the <code>#addRunListener()</code> or the <code>#removeRunListener()</code> method.  When
 	 * the <code>RunNotifier</code> encounters one of the conditions stated above, all registered 
-	 * <code>IRunListeners</code> will be notified.<p>
+	 * <code>IRunListeners</code> will be notified.<br/>
 	 * 
 	 * The <code>RunNotifier</code> also contains a <code>#pleaseStop()</code> method.  This method is responsible for
 	 * halting the execution of the test run.  It seems a little odd to put this functionality in this class, but the 
 	 * <code>RunNotifier</code> is the only object guaranteed to be shared amongst the many <code>IRunners</code>
-	 * in the test run.<p>
+	 * in the test run.<br/>
 	 * 
 	 * If one writes an <code>IRunner</code>, they may need to notify FlexUnit4 of their progress while 
 	 * running tests.  This is accomplished by invoking the <code>IRunNotifier</code> passed to the

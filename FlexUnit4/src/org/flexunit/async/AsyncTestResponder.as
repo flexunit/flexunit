@@ -47,7 +47,7 @@ package org.flexunit.async {
 		private var originalResponder:*;		
 		
 		/**
-		 * Dispatches an AsyncResponseEvent with the orignalResponder, a "fault" status, and the provided info object.<p>
+		 * Dispatches an AsyncResponseEvent with the orignalResponder, a "fault" status, and the provided info object.
 		 * 
 		 * @inheritDoc
 		 *
@@ -57,7 +57,7 @@ package org.flexunit.async {
 		}
 		
 		/**
-		 * Dispatches an AsyncResponseEvent with the orignalResponder, a "result" status, and the provided info object.<p>
+		 * Dispatches an AsyncResponseEvent with the orignalResponder, a "result" status, and the provided info object.
 		 * 
 		 * @inheritDoc
 		 */

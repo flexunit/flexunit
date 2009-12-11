@@ -112,8 +112,8 @@ package flex.lang.reflect.cases
 		
 		 /* This test fails when I think it should pass. 
 		 * 
-		 * <p>It may be that the method nodeHasMetaData in 
-		 * class MetaDataTools is not determining if a node has metadata properly.</p>
+		 * It may be that the method nodeHasMetaData in 
+		 * class MetaDataTools is not determining if a node has metadata properly.<br/>
 		 */		
 		[Test(description="ensure if method has at least one metadata that call to method hasMetaData returns the correct value")]
 		public function check_hasMetaData_true():void {

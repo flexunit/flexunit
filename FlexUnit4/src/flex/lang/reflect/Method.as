@@ -191,14 +191,11 @@ package flex.lang.reflect {
 		/**
 		 * Calls <code>apply</code> associated with the method
 		 * 
-		 * <p>
 		 * @param obj the item to call
 		 * @argArray the paramaters to call with apply, if any
 		 * 
-		 * <p>
 		 * @return result of the apply
 		 * 
-		 * <p>
 		 * @see #invoke()
 		 */
 		public function apply( obj:Object, argArray:* ):* {
@@ -217,13 +214,10 @@ package flex.lang.reflect {
 		/**
 		 * Calls <code>apply</code> associated with the method
 		 * 
-		 * <p>
 		 * @param obj the item to call
 		 * @args the paramaters to call with apply, if any
 		 * 
-		 * <p>
 		 * @return result of the apply
-		 * <p>
 		 * @see #apply()
 		 */
 		public function invoke( obj:Object, ...args ):Object {
@@ -286,10 +280,8 @@ package flex.lang.reflect {
 		/**
 		 * Tests if the <code>Method</code> has the paramater metadata
 		 * 
-		 * <p>
 		 * @param name of the metadata
 		 * 
-		 * <p>
 		 * @return <code>true</code> if found, else <code>false</code>
 		 */
 		public function hasMetaData( name:String ):Boolean {
@@ -300,11 +292,9 @@ package flex.lang.reflect {
 		 * Retrieves the value of the metadata defined by the paramater name with the paramater key.
 		 * If key is left blank, will match the first metadata with the paramater name
 		 * 
-		 * <p>
 		 * @param name of the metadata
 		 * @param key matching the name (<code>null</code> ok)
 		 * 
-		 * <p>
 		 * @return value of the metadata
 		 */
 		public function getMetaData( name:String ):MetaDataAnnotation {
@@ -324,7 +314,6 @@ package flex.lang.reflect {
 		/**
 		 * <code>Method</code> Constructor
 		 * 
-		 * <p>
 		 * @param methodXML XML of the method to create
 		 * @param isStatic specifies wether the method is static or not
 		 */

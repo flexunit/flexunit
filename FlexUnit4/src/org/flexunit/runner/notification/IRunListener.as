@@ -36,18 +36,19 @@ package org.flexunit.runner.notification
 	 * to an <code>IRunNotifier</code> it will be notified of the following eventts:
 	 * 
 	 * <ul>
-	 * <li>A test run has started
-	 * <li>A test run has finished
-	 * <li>A test has started
-	 * <li>A test has finished
-	 * <li>A test has failed
-	 * <li>A test has violated an assumption
-	 * <li>A test has been ignored
-	 * </ul><p>
+	 * <li>A test run has started</li>
+	 * <li>A test run has finished</li>
+	 * <li>A test has started</li>
+	 * <li>A test has finished</li>
+	 * <li>A test has failed</li>
+	 * <li>A test has violated an assumption</li>
+	 * <li>A test has been ignored</li>
+	 * </ul>
+	 * <br/>
 	 * 
 	 * While there is generally only one <code>IRunNotifier</code> present in the system at any given time, 
-	 * there can be multiple <code>IRunListener</code>s.  <code>IRunListener<code>s listen to these 
-	 * messages from the <code>IRunNotifier</code> and optionally perform some action.<p> 
+	 * there can be multiple <code>IRunListener</code>s.  <code>IRunListener</code>s listen to these 
+	 * messages from the <code>IRunNotifier</code> and optionally perform some action.<br/> 
 	 * 
 	 * Examples of some <code>IRunNotifier</code>s built into FlexUnit4 include the 
 	 * <code>TraceListener</code> and <code>TextListener</code>.

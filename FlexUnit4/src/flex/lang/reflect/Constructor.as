@@ -243,13 +243,10 @@ package flex.lang.reflect {
 		/**
 		 * Creates a new instance of an object using the constructor definition
 		 * 
-		 * <p>
 		 * @param params An array of paramaters to be used by the constructor (max 5). 
 		 * 
-		 * <p>
 		 * @return A new instance of the object defined by the constructor
 		 * 
-		 * <p>
 		 * @see #newInstance()
 		 */
 		public function newInstanceApply( params:Array ):Object {
@@ -273,10 +270,8 @@ package flex.lang.reflect {
 		 * list is currently restriced to 5.  If more paramaters are needed, take a look at <code>
 		 * Constructor.as</code> on how to create your own.
 		 * 
-		 * <p>
 		 * @param args a comma list or array of elements to be used by the constructor as paramaters (max 5).
 		 * 
-		 * <p>
 		 * @return A new instance of the object defined by the constructor
 		 */
 		public function newInstance( ...args ):Object {
@@ -286,11 +281,9 @@ package flex.lang.reflect {
 		/**
 		 * Creates a new Constructor
 		 * 
-		 * <p>
 		 * @param constructorXML the constructor definition as XML
 		 * @param klass Klass which defines the contructor paramater
 		 * 
-		 * <p>
 		 * @see Klass
 		 */
 		public function Constructor( constructorXML:XML, klass:Klass ) {

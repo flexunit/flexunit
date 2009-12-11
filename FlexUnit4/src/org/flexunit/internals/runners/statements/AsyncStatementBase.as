@@ -33,7 +33,7 @@ package org.flexunit.internals.runners.statements {
 	 * The <code>AsyncStatementBase</code> is responsible for notifiying a parent token that a task has been completed.
 	 * Many statement classes extend from this class in order to notify a parent statement that it has finished.
 	 * Classes that extend from the <code>AsyncStatementBase</code> can communicate with a parent class that has provided
-	 * an <code>AsyncTestToken</code> and notify the parent class when the class has finished its specific task.<p>
+	 * an <code>AsyncTestToken</code> and notify the parent class when the class has finished its specific task.<br/>
 	 * 
 	 * A class that extends from the <code>AsyncStatementBase</code> calls the <code>#sendComplete()</code> method once
 	 * a parent <code>AsyncTestToken</code> is supplied.  The parent token will then be notified of a potential error

@@ -39,13 +39,13 @@
 	 * The <code>AsyncListenerWatcher</code> is responsible for determing whether all
 	 * <code>IAsyncStartupRunListener</code>s that it is watching are ready.  This is used
 	 * in order to make sure that all potential <code>IAsyncStartupRunListener</code>s that
-	 * are used in a test run are ready before the test run begins.<p>
+	 * are used in a test run are ready before the test run begins.<br/>
 	 * 
 	 * In order to track a <code>IAsyncStartupRunListener</code>, the listener must be watched
 	 * by calling the <code>#watchListener()</code> method.  Once a listener is being watched,
 	 * it will be counted as a pending listener.  Once the lister reports that it is ready or
 	 * it has failed, it will be removed as a pending listener.  Once all listeners are no longer
-	 * pending, the test run can begin.<p>
+	 * pending, the test run can begin.<br/>
 	 * 
 	 * In order to unwatch a listener, the <code>#unwatchListener()</code> method needs to be called,
 	 * providing the method with the <code>IAsyncStartupRunListener</code> to stop watching.
@@ -165,7 +165,7 @@
 		}
 		
 		/**
-		 * Stops listening when the listener will be ready, removes the listener from the <code>IRunNotifier<code>.
+		 * Stops listening when the listener will be ready, removes the listener from the <code>IRunNotifier</code>.
 		 * and determines if all other listeners are ready
 		 * 
 		 * @param event

@@ -36,7 +36,7 @@ package org.flexunit.internals.runners.statements {
 	/**
 	 * The <code>StatementSequencer</code> is a class that is responsible for the execution of
 	 * <code>IAsyncStatement</code>s.  These statements can be provided to the <code>StatementSequencer</code>
-	 * as an array during instantiation or added using the <code>#addStep</code> method.<p>
+	 * as an array during instantiation or added using the <code>#addStep</code> method.<br/>
 	 * 
 	 * The list of statements can be executed using the <code>#evaluate</code> method and any errors encountered
 	 * during execution will be noted and reported.  Each statement will be run in sequence, meaning the next will not
@@ -111,7 +111,7 @@ package org.flexunit.internals.runners.statements {
 		/**
 		 * Determine if any errors were encountered for a potential statement that has just run and returned the
 		 * provided <code>result</code>.  If an error was encountered during the last statement, add that error to
-		 * a list of errors encountered in every statement in the sequencer.<p>
+		 * a list of errors encountered in every statement in the sequencer.<br/>
 		 * 
 		 * If there are still statements that need to be evaluated, execute the first unexecuted step in the sequence.
 		 * Otherwise, if all statements have finished running, the <code>StatementSequencer</code> has finished and will

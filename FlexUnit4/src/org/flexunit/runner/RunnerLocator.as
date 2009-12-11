@@ -50,7 +50,7 @@ package org.flexunit.runner
 		}	
 		
 		/**
-		 * Retrieves the <code>IRunner<code> for a particular <code>test</code>.  If no runner has been 
+		 * Retrieves the <code>IRunner</code> for a particular <code>test</code>.  If no runner has been 
 		 * registered for the test, a <code>null</code> value is returned.
 		 * 
 		 * @param test The test class used to determine if there is a registered <code>IRunner</code>.
