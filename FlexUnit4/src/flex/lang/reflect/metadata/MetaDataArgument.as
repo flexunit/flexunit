@@ -51,6 +51,16 @@ package flex.lang.reflect.metadata {
 		}
 
 		/**
+		 * Compares two MetaDataArguments for key and value equality
+		 * 
+		 * @return Returns boolean indicating equality
+		 * 
+		 */
+		public function equals( item:MetaDataArgument ):Boolean {
+			return ( this.key == item.key && this.value == item.value );
+		}
+
+		/**
 		 * Constructor
 		 * Takes the XML that is passed in to it that represents an argument from a metadata annotation and stores it.
 		 * 
