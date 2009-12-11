@@ -33,6 +33,10 @@ to contribute to our CI process.
 	<property name="tests.loc" location="${basedir}/FlexUnit4Test" />
 	<property name="uirunner.loc" location="${basedir}/FlexUnit4UIListener" />
 	<property name="uirunner.artifact" value="flexunit-uilistener-${build.number}.swc" />
+	<property name="aircilistener.loc" location="${basedir}/FlexUnit4AirCIListener" />
+	<property name="aircilistener.artifact" value="flexunit-aircilistener-${build.number}.swc" />
+	<property name="flexcoverlistener.loc" location="${basedir}/FlexUnit4FlexCoverListener" />
+	<property name="flexcoverlistener.artifact" value="flexunit-flexcoverlistener-${build.number}.swc" />
 
 	<!-- Cleans up all projects -->
 	<target name="clean">
@@ -42,6 +46,8 @@ to contribute to our CI process.
 		<ant dir="${cilistener.loc}" target="clean" inheritall="false" />
 		<ant dir="${tests.loc}" target="clean" inheritall="false" />
 		<ant dir="${uirunner.loc}" target="clean" inheritall="false" />
+		<ant dir="${aircilistener.loc}" target="clean" inheritall="false" />
+		<ant dir="${flexcoverlistener.loc}" target="clean" inheritall="false" />
 
 		<!-- Clean up cross project dependencies -->
 		<delete file="${cilistener.loc}/libs/${core.artifact}" failonerror="false" />
@@ -51,6 +57,10 @@ to contribute to our CI process.
 		<delete file="${tests.loc}/libs/${core.instrument.metadata}" failonerror="false" />
 		<delete file="${tests.loc}/libs/${cilistener.artifact}" failonerror="false" />
 		<delete file="${uirunner.loc}/libs/${core.artifact}" failonerror="false" />
+		<delete file="${aircilistener.loc}/libs/${core.artifact}" failonerror="false" />
+		<delete file="${aircilistener.loc}/libs/${cilistener.artifact}" failonerror="false" />
+		<delete file="${flexcoverlistener.loc}/libs/${core.artifact}" failonerror="false" />
+		<delete file="${flexcoverlistener.loc}/libs/${cilistener.artifact}" failonerror="false" />
 		<delete file="${basedir}/${final.artifact.name}" failonerror="false" />
 	</target>
 
@@ -129,8 +139,34 @@ to contribute to our CI process.
 		</ant>
 	</target>
 
+	<!-- Prepares and builds the Air CI Listener project -->
+	<target name="aircilistener" depends="uirunner">
+		<!-- Copy over required libraries -->
+		<copy file="${core.loc}/target/${core.artifact}" todir="${aircilistener.loc}/libs" overwrite="true" />
+		<copy file="${cilistener.loc}/target/${cilistener.artifact}" todir="${aircilistener.loc}/libs" overwrite="true" />
+
+		<ant dir="${aircilistener.loc}" target="package" inheritall="false">
+			<propertyset>
+				<propertyref prefix="build" />
+			</propertyset>
+		</ant>
+	</target>
+	
+	<!-- Prepares and builds the FlexCover Listener project -->
+	<target name="flexcoverlistener" depends="aircilistener">
+		<!-- Copy over required libraries -->
+		<copy file="${core.loc}/target/${core.artifact}" todir="${flexcoverlistener.loc}/libs" overwrite="true" />
+		<copy file="${cilistener.loc}/target/${cilistener.artifact}" todir="${flexcoverlistener.loc}/libs" overwrite="true" />
+
+		<ant dir="${flexcoverlistener.loc}" target="package" inheritall="false">
+			<propertyset>
+				<propertyref prefix="build" />
+			</propertyset>
+		</ant>
+	</target>
+
 	<!-- Generates CI reporting and documentation for all projects -->
-	<target name="report" depends="uirunner">
+	<target name="report" depends="flexcoverlistener">
 		<ant dir="${anttasks.loc}" target="report" inheritall="false">
 			<propertyset>
 				<propertyref prefix="build" />
@@ -151,6 +187,16 @@ to contribute to our CI process.
 				<propertyref prefix="build" />
 			</propertyset>
 		</ant>
+		<ant dir="${aircilistener.loc}" target="report" inheritall="false">
+			<propertyset>
+				<propertyref prefix="build" />
+			</propertyset>
+		</ant>
+		<ant dir="${flexcoverlistener.loc}" target="report" inheritall="false">
+			<propertyset>
+				<propertyref prefix="build" />
+			</propertyset>
+		</ant>
 	</target>
 
 	<!-- Prepares and assembles the final zip artifact with all of the FlexUnit4 components and docs -->
@@ -159,7 +205,9 @@ to contribute to our CI process.
 			<zipfileset dir="${anttasks.loc}/target/docs" prefix="flexunit/docs/anttasks" />
 			<zipfileset dir="${core.loc}/target/docs" prefix="flexunit/docs/flexunit" />
 			<zipfileset dir="${cilistener.loc}/target/docs" prefix="flexunit/docs/cilistener" />
-			<zipfileset dir="${uirunner.loc}/target/docs" prefix="flexunit/docs/uirunner" />
+			<zipfileset dir="${uirunner.loc}/target/docs" prefix="flexunit/docs/uilistener" />
+			<zipfileset dir="${aircilistener.loc}/target/docs" prefix="flexunit/docs/aircilistener" />
+			<zipfileset dir="${flexcoverlistener.loc}/target/docs" prefix="flexunit/docs/flexcoverlistener" />
 
 			<zipfileset dir="${anttasks.loc}/target" prefix="flexunit">
 				<include name="${anttasks.artifact}" />
@@ -172,6 +220,12 @@ to contribute to our CI process.
 			</zipfileset>
 			<zipfileset dir="${uirunner.loc}/target" prefix="flexunit">
 				<include name="${uirunner.artifact}" />
+			</zipfileset>
+			<zipfileset dir="${aircilistener.loc}/target" prefix="flexunit">
+				<include name="${aircilistener.artifact}" />
+			</zipfileset>
+			<zipfileset dir="${flexcoverlistener.loc}/target" prefix="flexunit">
+				<include name="${flexcoverlistener.artifact}" />
 			</zipfileset>
 		</zip>
 	</target>
