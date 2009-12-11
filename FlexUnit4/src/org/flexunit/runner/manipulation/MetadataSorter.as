@@ -85,9 +85,23 @@ package org.flexunit.runner.manipulation {
 			return order;
 		}
 		
+		private static function getClassName( description:IDescription ):String {
+			var methodName:String;
+
+			if ( description && description.displayName ) {
+				var namePieces:Array = description.displayName.split( '.' );
+				if ( namePieces && namePieces.length > 1 ) {
+					methodName = namePieces[namePieces.length-1];
+				}
+			}
+			
+			return methodName;
+		}
+
 		/**
 		 * Compares its two arguments for order. Returns a negative integer, zero, or a positive integer 
-		 * as the first argument is less than, equal to, or greater than the second.
+		 * as the first argument is less than, equal to, or greater than the second. If the two objects are
+		 * of equal order number, then we are simply going to return them in alphabetical order..
 		 * 
 		 * @param o1 <code>IDescription</code> the first object to be compared.
 		 * @param o2 <code>IDescription</code> the second object to be compared.
@@ -117,6 +131,15 @@ package org.flexunit.runner.manipulation {
 			if (a < b)
 				return -1;
 			if (a > b)
+				return 1;
+			
+			var o1Name:String = getClassName( o1 );
+			var o2Name:String = getClassName( o2 );
+
+			//Determine the ordering of the two respected names
+			if (o1Name < o2Name)
+				return -1;
+			if (o1Name > o2Name)
 				return 1;
 			
 			return 0;
