@@ -59,7 +59,7 @@ package flex.lang.reflect.cases
 			Assert.assertTrue( method.isStatic );
 		}
 		
-		[Test(description="ensure one metada is retrieved properly when using metadata getter")]
+		[Test(description="ensure one metadata is retrieved properly when using metadata getter")]
 		public function check_get_one_metadata():void {
 			var metadataXMLStr:String = "<metadata name=\"Test\">" +
 										"<arg key=\"description\" value=\"my description\"/>" +
