@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<flexLibProperties version="1">
+<flexLibProperties includeAllClasses="false" version="1">
   <includeClasses>
     <classEntry path="flex.lang.reflect.Constructor"/>
     <classEntry path="flex.lang.reflect.Field"/>
@@ -135,6 +135,12 @@
     <classEntry path="org.flexunit.runner.manipulation.filters.AbstractFilter"/>
     <classEntry path="org.flexunit.runner.manipulation.filters.IncludeAllFilter"/>
     <classEntry path="org.flexunit.runner.manipulation.filters.MethodNameFilter"/>
+    <classEntry path="org.fluint.uiImpersonation.IVisualTestEnvironment"/>
+    <classEntry path="org.fluint.uiImpersonation.flex.FlexVisualTestEnvironment"/>
+    <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptVisualTestEnvironment"/>
+    <classEntry path="org.fluint.uiImpersonation.flex.FlexEnvironmentBuilder"/>
+    <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptEnvironmentBuilder"/>
+    <classEntry path="org.fluint.uiImpersonation.IVisualEnvironmentBuilder"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

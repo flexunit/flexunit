@@ -50,7 +50,9 @@ package org.flexunit.internals.runners {
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.utils.ClassNameUtil;
-	import org.fluint.uiImpersonation.TestEnvironment;
+	import org.fluint.uiImpersonation.flex.FlexVisualTestEnvironment;
+	import org.fluint.uiImpersonation.IVisualTestEnvironment;
+	import org.fluint.uiImpersonation.VisualTestEnvironmentBuilder;
 	
 	/**
 	 * Runs the associated testClass that is passed into the <code>Fluint1ClassRunner</class>.
@@ -73,7 +75,11 @@ package org.flexunit.internals.runners {
 		/**
 		 * @private
 		 */
-		private var flexUnitTestEnvironment:org.fluint.uiImpersonation.TestEnvironment;
+		private var flexUnitTestEnvironmentBuilder:org.fluint.uiImpersonation.IVisualEnvironmentBuilder;
+		/**
+		 * @private
+		 */
+		private var flexUnitTestEnvironment:org.fluint.uiImpersonation.IVisualTestEnvironment;
 		/**
 		 * @private
 		 */
@@ -97,7 +103,8 @@ package org.flexunit.internals.runners {
 			testClass = clazz;
 			test = klassInfo.constructor.newInstance();
 
-			flexUnitTestEnvironment = org.fluint.uiImpersonation.TestEnvironment.getInstance();
+			flexUnitTestEnvironmentBuilder = org.fluint.uiImpersonation.VisualTestEnvironmentBuilder.getInstance();
+			flexUnitTestEnvironment = flexUnitTestEnvironmentBuilder.buildVisualTestEnvironment();
 		}
 
 		/**

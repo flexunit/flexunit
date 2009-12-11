@@ -42,7 +42,7 @@ package org.flexunit
 	import org.fluint.sequence.SequenceRunner;
 	import org.fluint.sequence.SequenceSetter;
 	import org.fluint.sequence.SequenceWaiter;
-	import org.fluint.uiImpersonation.TestEnvironment;
+	import org.fluint.uiImpersonation.VisualTestEnvironmentBuilder;
 	import org.fluint.uiImpersonation.UIImpersonator;
 
 	/**
@@ -65,7 +65,7 @@ package org.flexunit
 		private var flu8:SequenceRunner;
 		private var flu9:SequenceSetter;
 		private var flu10:SequenceWaiter;
-		private var flu11:TestEnvironment;
+		private var flu11:VisualTestEnvironmentBuilder;
 		private var flu12:UIImpersonator;
 		
 		private var flu13:TextListener;
