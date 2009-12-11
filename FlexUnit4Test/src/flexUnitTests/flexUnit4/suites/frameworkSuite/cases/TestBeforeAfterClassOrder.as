@@ -56,7 +56,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 		public static function afterNoOrder():void {
 			setupOrderArray.push( "afterNoOrder" );
 			if ( setupOrderArray.length != 5 ) {
-				Assert.fail( "Incorrect order of AfterClass calls" );
+				Assert.fail( "Incorrect order of AfterClass calls" + setupOrderArray.length);
 			}
 		}
 
