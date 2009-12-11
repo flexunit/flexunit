@@ -40,7 +40,7 @@ package org.flexunit.runner {
 	 * This information can be used to report the current progress of the test run.<p>
 	 * 
 	 * <code>Description</code>s are implemented as a single class rather than a composite because
-	 * they are entirely informational. They contain no logic aside from counting their tests.<p>
+	 * they are entirely informational. They contain no logic aside from counting their tests.</p>
 	 * 
 	 * @see org.flexunit.runner.IRunner
 	 */
