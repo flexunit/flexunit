@@ -32,12 +32,10 @@ package org.flexunit
 	/**
 	 * Creates a hamcrest style assertion using assertThat
 	 * 
-	 * <p>
 	 * @param ...rest Rest may specify any values to be tested. It must include
 	 * 		a left and a right value as well as at least one matcher.  An error message
 	 * 		may also be passed if passed as the first argument.
 	 * 
-	 * <p>
 	 * 
 	 * @example
 	 * <listing version="3.0">

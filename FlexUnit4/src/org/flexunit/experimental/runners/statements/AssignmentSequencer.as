@@ -40,7 +40,7 @@ package org.flexunit.experimental.runners.statements {
 	/**
 	 * The <code>AssignmentSequencer</code> is responsible for the sequencing of parameters to be provided 
 	 * to a particular theory method test.  It determines what potential parameters need to be provided to the 
-	 * parameters in the theory test method.<p>
+	 * parameters in the theory test method.<br/>
 	 * 
 	 * Based on the number of parameters in the theory method test, additional <code>AssignmentSequencer</code>s will 
 	 * be created.  If there are still parameters that need to be assigned a value and there are still potential values 
@@ -82,7 +82,7 @@ package org.flexunit.experimental.runners.statements {
 		
 		/**
 		 * Constructor.
-		 * <p>
+		 * 
 		 * @param parameterAssignment The current parameter assignments for a theory method test.
 		 * @param frameworkMethod The theory method that is being tested.
 		 * @param testClass The test class that contains the theory method.
@@ -105,7 +105,7 @@ package org.flexunit.experimental.runners.statements {
 		 * Determines if all parameters have been assigned for a particular configuration of a theory method.  If they have 
 		 * all been assigned, run the theory with the particular parameter configuration.  If all parameter values have not 
 		 * been assinged, determine what parameters can be provided to the next unassigned parameter.
-		 * <p>
+		 * 
 		 * @param parentToken The token to be notified when the theory method has finished running for a particluar permutation
 		 * of parameters.
 		 */
@@ -126,14 +126,14 @@ package org.flexunit.experimental.runners.statements {
 		/**
 		 * Determine if any errors were encountered if the theory method test executed.  If the error was not an
 		 * <code>AssumptionViolatedException</code>, add it to the array of encountered errors and stop running the theory test.
-		 * <p>
+		 * 
 		 * If there are still parameters that need to be assigned a value and there are still potential values to assign to 
 		 * those parameters, assign an unused value to the next parameter and create a new <code>AssignmentSequencer</code>, 
 		 * determining if all parameters have then been assigned a value.
-		 * <p>
+		 * 
 		 * If there are no furuther potential values to assign a parameter or all values have already been assigned to a parameter,
 		 * this <code>AssignmentSequencer</code> has finished its duty to sequence parameters.
-		 * <p>
+		 * 
 		 * @param result A <code>ChildResult</code> that contains potential errors encountered during the theory's execution.
 		 */
 		public function handleChildExecuteComplete( result:ChildResult ):void {
@@ -163,7 +163,7 @@ package org.flexunit.experimental.runners.statements {
 		/**
 		 * Reports to the parentToken that the current configuration of parameter assignments have finished running in the theory
 		 * method test and determines if any error were encountered during execution of that test.
-		 * <p>
+		 * 
 		 * @param error A potential error that was encountered during a configuration of the theory meethod.
 		 */
 		override protected function sendComplete( error:Error=null ):void {
@@ -184,7 +184,7 @@ package org.flexunit.experimental.runners.statements {
 		
 		/**
 		 * Runs the theory for the <code>complete</code> set of assigned parameters.
-		 * <p>
+		 * 
 		 * @param complete Contains a permutation of current assigned parameter / value pairs to be supplied to the 
 		 * theory method test for this particular configuration.
 		 */

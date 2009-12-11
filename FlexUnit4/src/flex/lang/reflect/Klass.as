@@ -111,7 +111,6 @@ package flex.lang.reflect {
 		/**
 		 * Returns the constructor of the class as a <code>Constructor</code>
 		 * 
-		 * <p>
 		 * @see Constructor
 		 */
 		public function get constructor():Constructor {
@@ -124,13 +123,10 @@ package flex.lang.reflect {
 		/**
 		 * Returns the <code>Field</code> matching the paramater name.
 		 * 
-		 * <p>
 		 * @param name Name of the Field as a String
 		 * 
-		 * <p>
 		 * @return A reference to the <code>Field</code> if found. <code>Null</code> if not found.
 		 * 
-		 * <p>
 		 * @see Field
 		 */
 		public function getField( name:String ):Field {
@@ -165,9 +161,7 @@ package flex.lang.reflect {
 		/**
 		 * Returns the <code>Method</code> which matches the <code>String</code> paramater
 		 * 
-		 * <p>
 		 * @param name the name of the <code>Method</code>
-		 * <p>
 		 * @see Method
 		 */
 		public function getMethod( name:String ):Method {
@@ -189,10 +183,8 @@ package flex.lang.reflect {
 		 * Returns a list of all methods contained in the class as an
 		 * Array whose elements are of type <code>Method</code>
 		 * 
-		 * <p>
 		 * @return <code>Method</code>s in the class
 		 * 
-		 * <p>
 		 * @see Method
 		 */
 		public function get methods():Array {
@@ -212,7 +204,6 @@ package flex.lang.reflect {
 		 * Returns an <code>Array</code> of all interfaces as <code>Class</code> definitions 
 		 * implemented by the <code>Class</code>
 		 * 
-		 * <p>
 		 * @return <code>Interface</code>s implemented by the Class
 		 */
 		public function get interfaces():Array {
@@ -272,10 +263,8 @@ package flex.lang.reflect {
 		/**
 		 * Tests wether the class extends from the paramater class
 		 * 
-		 * <p>
 		 * @param clazz the class to test against
 		 * 
-		 * <p>
 		 * @return <code>true</code> if the class does extend from the paramater class,
 		 *  <code>false</code> otherwise.
 		 */
@@ -298,10 +287,8 @@ package flex.lang.reflect {
 		/**
 		 * Static method.  Returns the <code>Class</code> defined by the paramater name
 		 * 
-		 * <p>
 		 * @param name of the class definition needed
 		 * 
-		 * <p>
 		 * @return <code>Class</code> definition if found, <code>null</code> if not found.
 		 */
 		public static function getClassFromName( name:String ):Class {
@@ -414,10 +401,8 @@ package flex.lang.reflect {
 		/**
 		 * Tests if the class defined by the name paramater has any metadata
 		 * 
-		 * <p>
 		 * @param name of the Class
 		 * 
-		 * <p>
 		 * @return <code>true</code> if the class has metadata, else
 		 * <code>false</code>
 		 */
@@ -428,10 +413,8 @@ package flex.lang.reflect {
 		/**
 		 * Retrieves the value of any metadata matching the name.
 		 * 
-		 * <p>
 		 * @param name of the metadata
 		 * 
-		 * <p>
 		 * @return value of metadata if found.  
 		 */
 		public function getMetaData( name:String ):MetaDataAnnotation {
@@ -470,7 +453,6 @@ package flex.lang.reflect {
 		/**
 		 * Klass Constructor
 		 * 
-		 * <p>
 		 * @param clazz to create as an XML <code>Klass</code>
 		 */ 
 		public function Klass( clazz:Class ) {

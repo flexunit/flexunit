@@ -36,11 +36,11 @@ package org.flexunit.async
 	/**
 	 * The <code>Async</code> class contains static methods used in the handling of events in asynchronous
 	 * methods in a particular test case.  These methods may be called in an asynchronous test method in
-	 * order to exhibit specific behavior once the proper conditions are met.<p>
+	 * order to exhibit specific behavior once the proper conditions are met.<br/>
 	 * 
 	 * The asynchronous test methods must be labeled as asynchronous in order
 	 * to successfully use <code>Async</code>'s static methods; otherwise, the test will not be registered as
-	 * asynchronous and an <code>AssertionError</code> will be thrown.<p>
+	 * asynchronous and an <code>AssertionError</code> will be thrown.<br/>
 	 * 
 	 * <pre><code>
 	 * [Test(async)]

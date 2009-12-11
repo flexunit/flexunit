@@ -32,7 +32,7 @@ package org.flexunit.runner {
 	 * can be atomic (a single test) or compound (containing children tests).  <code>IDescription</code>s 
 	 * are used to provide feedback about the tests that are about to run (for example, the tree view 
 	 * visible in many IDEs) or tests that have been run (for example, the failures view).
-	 * This information can be used to report the current progress of the test run.<p>
+	 * This information can be used to report the current progress of the test run.<br/>
 	 */
 	public interface IDescription {
 		/**

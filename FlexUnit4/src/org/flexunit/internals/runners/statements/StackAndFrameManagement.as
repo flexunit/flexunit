@@ -42,7 +42,7 @@ package org.flexunit.internals.runners.statements {
 	 * The <code>StackAndFrameManagement</code> decorator implements green threading to deal with flash 
 	 * frames. This class allows us to break execution across frames and ensure a stack overflow does not 
 	 * occur. It does this by starting a timer when it is asked to evaluate itself. When the timer fires, 
-	 * which will be the following frame, execution will resume.<p>
+	 * which will be the following frame, execution will resume.<br/>
 	 * 
 	 * Each time we get to the beginning of a new test, we calculate the elapsed time versus the framerate.
 	 * If we get to the point where we have used mroe than about 80% of a given frame, we then defer until the

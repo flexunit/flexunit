@@ -78,7 +78,7 @@ package org.flexunit.experimental.runners.statements {
 		
 		/**
 		 * Creates a <code>MethodCompleteWithParamsStatement</code> that is used to execute the theory method for
-		 * a specific set of <code>Assignments</code>.<p>
+		 * a specific set of <code>Assignments</code>.
 		 * 
 		 * @inheritDoc
 		 */
