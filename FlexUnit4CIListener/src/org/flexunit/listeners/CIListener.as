@@ -193,7 +193,7 @@ package org.flexunit.listeners
 				xml =
 					"<testcase classname='"+descriptor.suite+"' name='"+descriptor.method+"' time='0.000'  status='"+ERROR+"'>"
 					+ "<error message='" + message + "' type='"+ type +"' >"
-					+ "<stackTraceInfo>" +stackTrace+ "</stackTraceInfo>"
+					+ "<![CDATA[" + stackTrace + "]]>"
 					+ "</error>"
 					+ "</testcase>";
 			}
@@ -202,7 +202,7 @@ package org.flexunit.listeners
 				xml =
 					"<testcase classname='"+descriptor.suite+"' name='"+descriptor.method+"' time='0.000'  status='"+FAILURE+"'>"
 					+ "<failure message='" + message + "' type='"+ type +"' >"
-					+ "<stackTraceInfo>" +stackTrace+ "</stackTraceInfo>"
+					+ "<![CDATA[" + stackTrace + "]]>"
 					+ "</failure>"
 					+ "</testcase>";
 			}
