@@ -41,7 +41,7 @@ package org.flexunit.runner {
 	
 	/**
 	 * <p>A <code>Request</code> is an abstract description of tests to be run.  It represents an object that 
-	 * wraps tests when they are presented to the <code>FlexUnitCore</code>.  <code>Request<code>s can be 
+	 * wraps tests when they are presented to the <code>FlexUnitCore</code>.  <code>Request</code>s can be 
 	 * filtered and sorted to control the subset and order of tests to be executed.</p>
 	 * 
 	 * The following static methods can be used to create requests:
