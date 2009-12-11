@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <actionScriptProperties mainApplicationPath="FlexUnit4CIListener.as" version="3">
-  <compiler additionalCompilerArguments="" copyDependentFiles="false" enableModuleDebug="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersion="9.0.124" htmlPlayerVersionCheck="true" outputFolderPath="bin" sourceFolderPath="src" strict="true" useApolloConfig="true" verifyDigests="true" warn="true">
+  <compiler additionalCompilerArguments="-link-report /Users/simeon/Desktop/link.xml" copyDependentFiles="false" enableModuleDebug="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersion="9.0.124" htmlPlayerVersionCheck="true" outputFolderPath="bin" sourceFolderPath="src" strict="true" useApolloConfig="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="1">
       <libraryPathEntry kind="4" path="">
@@ -13,8 +13,7 @@
           </libraryPathEntry>
         </modifiedEntries>
       </libraryPathEntry>
-      <libraryPathEntry kind="3" linkType="1" path="/FlexUnit4/bin/FlexUnit4.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="1" linkType="1" path="libs"/>
+      <libraryPathEntry kind="3" linkType="2" path="/FlexUnit4/bin/FlexUnit4.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>

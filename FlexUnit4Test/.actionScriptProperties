@@ -11,7 +11,6 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="FlexUnitApplication.mxml"/>
     <application path="TestRunner.mxml"/>
   </applications>
   <modules/>
