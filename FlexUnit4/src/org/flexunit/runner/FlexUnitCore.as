@@ -185,7 +185,11 @@ package org.flexunit.runner {
 		 * @param args The class arguments that are provided for the test run.
 		 */
 		public function runClasses( ...args ):void {
-			runRequest( Request.classes.apply( this, args ) );
+			if ( args && ( args.length == 1 ) && args[ 0 ] is IRequest ) {
+				runRequest( args[ 0 ] );
+			} else {
+				runRequest( Request.classes.apply( this, args ) );
+			}
 		}
 		
 		/**

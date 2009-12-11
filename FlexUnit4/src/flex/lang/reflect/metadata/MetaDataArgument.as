@@ -12,6 +12,10 @@ package flex.lang.reflect.metadata {
 			return _value;
 		}
 
+		public function equals( item:MetaDataArgument ):Boolean {
+			return ( this.key == item.key && this.value == item.value );
+		}
+
 		public function MetaDataArgument( argument:XML ) {
 			this.argument = argument;
 			
