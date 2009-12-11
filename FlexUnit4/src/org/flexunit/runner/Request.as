@@ -46,10 +46,10 @@ package org.flexunit.runner {
 	 * 
 	 * The following static methods can be used to create requests:
 	 * <ul>
-	 * <li><code>#aClass()</code>
-	 * <li><code>#classes()</code>
-	 * <li><code>#runner()</code>
-	 * <li><code>#method()</code>
+	 * <li><code>#aClass()</code></li>
+	 * <li><code>#classes()</code></li>
+	 * <li><code>#runner()</code></li>
+	 * <li><code>#method()</code></li>
 	 * </ul><p>
 	 * 
 	 * The key property of the <code>Request</code> that the <code>FlexUnitCore</code> needs is the 
