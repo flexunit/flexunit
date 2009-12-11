@@ -174,7 +174,7 @@ package org.flexunit.internals.builders {
 				return new runnerClass( testClass, suiteBuilder );
 			} catch ( e:Error ) {
 				if ( e is InitializationError ) {
-					throw e
+					throw e;
 				} else {
 					throw createInitializationError( UNSPECIFIED, runnerClassName );
 				}

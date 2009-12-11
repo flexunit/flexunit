@@ -29,6 +29,7 @@ package org.flexunit.runners {
 	import org.flexunit.internals.AssumptionViolatedException;
 	import org.flexunit.internals.namespaces.classInternal;
 	import org.flexunit.internals.runners.ChildRunnerSequencer;
+	import org.flexunit.internals.runners.ErrorReportingRunner;
 	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.internals.runners.model.EachTestNotifier;
 	import org.flexunit.internals.runners.statements.IAsyncStatement;
@@ -348,7 +349,7 @@ package org.flexunit.runners {
 							sortChild( child );
 							filtered.push( child );
 						} catch ( error:Error ) {
-							
+							//TODO!!! No trycatches without something to do in the catch
 						}
 					}
 				}
@@ -477,9 +478,27 @@ package org.flexunit.runners {
 			
 			//Determine if the filter has filtered out every child
 			for ( var i:int=0; i<children.length; i++ ) {
-				if ( shouldRun( children[ i ] ) ) {
-					//We are fine, at least one child has met the filter's criteria
-					return;
+				try {
+					filterChild( children[ i ] );
+					
+					if ( shouldRun( children[ i ] ) ) {
+						//We are fine, at least one child has met the filter's criteria
+						return;
+					}
+				} catch ( error:NoTestsRemainException ) {
+					//Deal with the situation where a single child doesn't have any available children
+					var child:IRunner = children[ i ] as IRunner;
+					var parentRunner:ParentRunner = child as ParentRunner;
+					var klass:Class = ParentRunner;
+					if ( parentRunner ) {
+						klass = parentRunner.testClass.asClass;
+					}
+					
+
+					//If we don't have any remaining tests, then make this an error reporting runner
+					children[ i ] = new ErrorReportingRunner( klass, 
+						new Error( "No tests found matching " + child.description.displayName ) );
+					
 				}
 			}
 			

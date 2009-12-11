@@ -31,6 +31,7 @@ package org.flexunit.runners {
 	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
+	import org.flexunit.runner.manipulation.IFilterable;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runners.model.IRunnerBuilder;
 	import org.flexunit.token.AsyncTestToken;
@@ -65,7 +66,7 @@ package org.flexunit.runners {
 	 * }
 	 * <code></pre>
 	 */
-	public class Suite extends ParentRunner {
+	public class Suite extends ParentRunner implements IFilterable {
 		/**
 		 * @private
 		 */
