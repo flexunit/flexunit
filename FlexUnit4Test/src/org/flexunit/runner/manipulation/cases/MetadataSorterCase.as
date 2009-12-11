@@ -9,6 +9,7 @@ package org.flexunit.runner.manipulation.cases
 	public class MetadataSorterCase
 	{
 		//TODO: Are these test correctly testing the MetadataSorter class
+		private var metaDataSorter:MetadataSorter;
 		
 		protected var lowerXML:XML = new XML(
 			<method>
@@ -51,6 +52,11 @@ package org.flexunit.runner.manipulation.cases
 			return ar;
 		} 
 		
+		[Before]
+		public function setupSorter():void {
+			metaDataSorter = new MetadataSorter();
+		}
+
 		protected var noOrderArray:Array = convertToMetaDataAnnotations( noOrderXML.metadata );
 		
 		protected var lowerArray:Array = convertToMetaDataAnnotations( lowerXML.metadata );
@@ -62,7 +68,7 @@ package org.flexunit.runner.manipulation.cases
 			var o1:Description = new Description("a", null);
 			var o2:Description = new Description("b", null);
 			
-			Assert.assertEquals(MetadataSorter.defaultSortFunction(o1, o2), 0 );
+			Assert.assertEquals(metaDataSorter.compare(o1, o2), 0 );
 		}
 		
 		[Test(description="Ensure the MetadataSorter returns a -1 when only the second IDescription contains a XMLList")]
@@ -70,7 +76,7 @@ package org.flexunit.runner.manipulation.cases
 			var o1:Description = new Description("a", null);
 			var o2:Description = new Description("b", higherArray);
 			
-			Assert.assertEquals(MetadataSorter.defaultSortFunction(o1, o2), -1 );
+			Assert.assertEquals(metaDataSorter.compare(o1, o2), -1 );
 		}
 		
 		[Test(description="Ensure the MetadataSorter returns a 1 when only the first IDescription contains a XMLList")]
@@ -78,7 +84,7 @@ package org.flexunit.runner.manipulation.cases
 			var o1:Description = new Description("a", higherArray);
 			var o2:Description = new Description("b", null);
 			
-			Assert.assertEquals(MetadataSorter.defaultSortFunction(o1, o2), 1 );
+			Assert.assertEquals(metaDataSorter.compare(o1, o2), 1 );
 		}
 		
 		[Test(description="Ensure the MetadataSorter returns a 0 when both IDescription contains an XMLList with equal ordering")]
@@ -86,7 +92,7 @@ package org.flexunit.runner.manipulation.cases
 			var o1:Description = new Description("a", lowerArray);
 			var o2:Description = new Description("b", lowerArray);
 			
-			Assert.assertEquals(MetadataSorter.defaultSortFunction(o1, o2), 0 );
+			Assert.assertEquals(metaDataSorter.compare(o1, o2), 0 );
 		}
 		
 		[Test(description="Ensure the MetadataSorter returns a 1 when the first IDescription contains an XMLList with a greater order")]
@@ -94,7 +100,7 @@ package org.flexunit.runner.manipulation.cases
 			var o1:Description = new Description("a", higherArray);
 			var o2:Description = new Description("b", lowerArray);
 			
-			Assert.assertEquals(MetadataSorter.defaultSortFunction(o1, o2), 1 );
+			Assert.assertEquals(metaDataSorter.compare(o1, o2), 1 );
 		}
 		
 		[Test(description="Ensure the MetadataSorter returns a -1 when the second IDescription contains an XMLList with a greater order")]
@@ -102,7 +108,7 @@ package org.flexunit.runner.manipulation.cases
 			var o1:Description = new Description("a", lowerArray);
 			var o2:Description = new Description("b", higherArray);
 			
-			Assert.assertEquals(MetadataSorter.defaultSortFunction(o1, o2), -1 );
+			Assert.assertEquals(metaDataSorter.compare(o1, o2), -1 );
 		}
 	
 		[Test(description="Ensure the MetadataSorter returns a -1 when the second IDescription contains an XMLList with a greater order")]
@@ -110,7 +116,7 @@ package org.flexunit.runner.manipulation.cases
 			var o1:Description = new Description("a", noOrderArray);
 			var o2:Description = new Description("b", lowerArray);
 			
-			Assert.assertEquals(MetadataSorter.defaultSortFunction(o1, o2), -1 );
+			Assert.assertEquals(metaDataSorter.compare(o1, o2), -1 );
 		}
 
 		[Test(description="Ensure the MetadataSorter returns a 1 when the first IDescription contains an XMLList with a greater order")]
@@ -118,7 +124,7 @@ package org.flexunit.runner.manipulation.cases
 			var o1:Description = new Description("a", lowerArray);
 			var o2:Description = new Description("b", noOrderArray);
 			
-			Assert.assertEquals(MetadataSorter.defaultSortFunction(o1, o2), 1 );
+			Assert.assertEquals(metaDataSorter.compare(o1, o2), 1 );
 		}
 	}
 }

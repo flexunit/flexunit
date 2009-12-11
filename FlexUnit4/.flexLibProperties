@@ -141,6 +141,7 @@
     <classEntry path="org.fluint.uiImpersonation.flex.FlexEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.IVisualEnvironmentBuilder"/>
+    <classEntry path="org.flexunit.runner.manipulation.MetadataAlphabeticalSorter"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

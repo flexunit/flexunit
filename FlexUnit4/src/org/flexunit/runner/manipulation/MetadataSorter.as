@@ -35,16 +35,16 @@ package org.flexunit.runner.manipulation {
 	 * A <code>MetadataSorter</code> compares two values to determine which value is greater.
 	 * 
 	 */
-	public class MetadataSorter {
+	public class MetadataSorter implements ISorter  {
 		/**
 		 * NULL is a <code>Sorter</code> that leaves elements in an undefined order
 		 */
-		public static var NULL:Sorter = new Sorter(none);
+		//public static var NULL:Sorter = new Sorter(none);
 		
 		/**
 		 * META is a <code>Sorter</code> that leaves elements in sorted order
 		 */
-		public static var META:Sorter = new Sorter(defaultSortFunction);
+		public static var META:ISorter = new MetadataSorter();
 		
 		/**
 		 * Does not compare its two arguments for order. Returns a zero regardless of the arguments being passed.
@@ -54,6 +54,18 @@ package org.flexunit.runner.manipulation {
 		 * */
 		private static function none( o1:IDescription, o2:IDescription ):int {
 			return 0;
+		}
+
+		/**
+		 * Sorts the test in <code>runner</code> using <code>compare function</code>.
+		 * 
+		 * @param object
+		 */
+		public function apply(object:Object):void {
+			if (object is ISortable) {
+				var sortable:ISortable = (object as ISortable);
+				sortable.sort(this);
+			}
 		}
 		
 		/**
@@ -84,19 +96,6 @@ package org.flexunit.runner.manipulation {
 			
 			return order;
 		}
-		
-		private static function getClassName( description:IDescription ):String {
-			var methodName:String;
-
-			if ( description && description.displayName ) {
-				var namePieces:Array = description.displayName.split( '.' );
-				if ( namePieces && namePieces.length > 1 ) {
-					methodName = namePieces[namePieces.length-1];
-				}
-			}
-			
-			return methodName;
-		}
 
 		/**
 		 * Compares its two arguments for order. Returns a negative integer, zero, or a positive integer 
@@ -106,7 +105,7 @@ package org.flexunit.runner.manipulation {
 		 * @param o1 <code>IDescription</code> the first object to be compared.
 		 * @param o2 <code>IDescription</code> the second object to be compared.
 		 * */
-		public static function defaultSortFunction( o1:IDescription, o2:IDescription ):int {
+		public function compare(o1:IDescription, o2:IDescription):int {
 			var a:Number;
 			var b:Number; 
 			
@@ -131,15 +130,6 @@ package org.flexunit.runner.manipulation {
 			if (a < b)
 				return -1;
 			if (a > b)
-				return 1;
-			
-			var o1Name:String = getClassName( o1 );
-			var o2Name:String = getClassName( o2 );
-
-			//Determine the ordering of the two respected names
-			if (o1Name < o2Name)
-				return -1;
-			if (o1Name > o2Name)
 				return 1;
 			
 			return 0;

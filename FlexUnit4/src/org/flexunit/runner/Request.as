@@ -163,12 +163,13 @@ package org.flexunit.runner {
 		}
 		
 		/**
-		 * @param comparator definition of the order of the tests in this Request.
+		 * @param sorterOrComparatorFunction is either an ISorted implementation or a comparator function to be used
+		 * to define the sort order of the tests in this Request.
 		 * 
 		 * @return a Request with ordered Tests.
 		 */
-		public function sortWith(comparator:Function):Request {
-			return new SortingRequest(this, comparator);
+		public function sortWith(sorterOrComparatorFunction:*):Request {
+			return new SortingRequest(this, sorterOrComparatorFunction);	
 		}
 		
 		/**
