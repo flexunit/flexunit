@@ -29,7 +29,7 @@ package org.flexunit.internals.runners.model {
 	/**
 	 * The <code>MultipleFailureExecption</code> is used to store information on multiple errors
 	 * that were encountered during the execution of a task.  It is used to package multiple
-	 * errors into a single error, which could be stored in a <code>ChildResult<code>.  The
+	 * errors into a single error, which could be stored in a <code>ChildResult</code>.  The
 	 * <code>MultipleFailureExecption</code> initially takes an array of errors during
 	 * instantiation; however, additional errors can be added using the <code>#addFailure()</code>
 	 * method.

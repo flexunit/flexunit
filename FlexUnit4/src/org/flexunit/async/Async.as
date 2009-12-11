@@ -62,7 +62,7 @@ package org.flexunit.async
 		 * @param eventName The name of the event being listend for by the <code>target</code>.
 		 * @param timeout The length of time, in milliseconds, before the calling the <code>timeoutHandler</code>
 		 * if the <code>eventName</code> event is not dispatched.
-		 * @param timeoutHandler The function that will be executed if the <code>target<code> does not 
+		 * @param timeoutHandler The function that will be executed if the <code>target</code> does not 
 		 * receive expected <code>eventName</code> before the <code>timeout</code> time is reached.
 		 */
 		public static function proceedOnEvent( testCase:Object, target:IEventDispatcher, eventName:String, timeout:int=500, timeoutHandler:Function = null ):void {
@@ -109,7 +109,7 @@ package org.flexunit.async
 		 * if the <code>eventName</code> event is not dispatched.
 		 * @param passThroughData An Object that can be given information about the current test, this information will be 
 		 * available to both the <code>eventHandler</code> and <code>timeoutHandler</code>.
-		 * @param timeoutHandler The function that will be executed if the <code>target<code> does not 
+		 * @param timeoutHandler The function that will be executed if the <code>target</code> does not 
 		 * receive expected <code>eventName</code> before the <code>timeout</code> time is reached.
 		 */
 		public static function handleEvent( testCase:Object, target:IEventDispatcher, eventName:String, eventHandler:Function, timeout:int=500, passThroughData:Object = null, timeoutHandler:Function = null ):void {

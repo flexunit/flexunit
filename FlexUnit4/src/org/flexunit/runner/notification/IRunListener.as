@@ -47,7 +47,7 @@ package org.flexunit.runner.notification
 	 * <br/>
 	 * 
 	 * While there is generally only one <code>IRunNotifier</code> present in the system at any given time, 
-	 * there can be multiple <code>IRunListener</code>s.  <code>IRunListener<code>s listen to these 
+	 * there can be multiple <code>IRunListener</code>s.  <code>IRunListener</code>s listen to these 
 	 * messages from the <code>IRunNotifier</code> and optionally perform some action.<br/> 
 	 * 
 	 * Examples of some <code>IRunNotifier</code>s built into FlexUnit4 include the 

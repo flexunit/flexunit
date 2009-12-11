@@ -49,11 +49,11 @@ package org.flexunit.experimental.theories {
 		private var _metaDataList:Array;
 		
 		/**
-		 * Creates an Array of <code>ParameterSignature<code>s for each parameter in a theory method.
+		 * Creates an Array of <code>ParameterSignature</code>s for each parameter in a theory method.
 		 * 
 		 * @param method The current theory method.
 		 * 
-		 * @return an Array containing the <code>ParameterSignature<code> for each parameter in the method.
+		 * @return an Array containing the <code>ParameterSignature</code> for each parameter in the method.
 		 */
  		public static function signaturesByMethod( method:Method ):Array {
  			//trace("yo");
@@ -61,22 +61,22 @@ package org.flexunit.experimental.theories {
 		}
 		
 		/**
-		 * Creates an Array of <code>ParameterSignature<code>s for each parameter in a theory constructor.
+		 * Creates an Array of <code>ParameterSignature</code>s for each parameter in a theory constructor.
 		 * 
 		 * @param constructor The current theory constructor.
 		 * 
-		 * @return an Array containing the <code>ParameterSignature<code> for each parameter in the constructor.
+		 * @return an Array containing the <code>ParameterSignature</code> for each parameter in the constructor.
 		 */
 		public static function signaturesByContructor( constructor:Constructor ):Array {
 			return signatures( constructor.parameterTypes, null );
 		}
 		
 		/**
-		 * Creates an Array of <code>ParameterSignature<code>s for each parameter in the parameter types array.
+		 * Creates an Array of <code>ParameterSignature</code>s for each parameter in the parameter types array.
 		 * 
 		 * @param parameterTypes An Array consisting of the types of parameters in a given signature.
 		 * 
-		 * @return an Array containing the <code>ParameterSignature<code> for each parameter in the signautre.
+		 * @return an Array containing the <code>ParameterSignature</code> for each parameter in the signautre.
 		 */
 		private static function signatures( parameterTypes:Array, metadataList:Array ):Array {
 			var sigs:Array = new Array();

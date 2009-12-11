@@ -53,7 +53,7 @@ package org.flexunit.internals.runners {
 	import org.fluint.uiImpersonation.TestEnvironment;
 	
 	/**
-	 * Runs the associated testClass that is passed into the <code>Fluint1ClassRunner</class>.
+	 * Runs the associated testClass that is passed into the <code>Fluint1ClassRunner</code>.
 	 * 
 	 */
 	public class Fluint1ClassRunner implements IRunner, IFilterable {

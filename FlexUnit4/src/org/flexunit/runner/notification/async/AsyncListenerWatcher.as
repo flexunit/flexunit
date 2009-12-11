@@ -165,7 +165,7 @@
 		}
 		
 		/**
-		 * Stops listening when the listener will be ready, removes the listener from the <code>IRunNotifier<code>.
+		 * Stops listening when the listener will be ready, removes the listener from the <code>IRunNotifier</code>.
 		 * and determines if all other listeners are ready
 		 * 
 		 * @param event

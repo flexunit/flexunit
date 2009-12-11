@@ -41,7 +41,7 @@ package org.flexunit.runner.notification {
 	 * </ul><br/>
 	 * 
 	 * A parallel can be drawn with <code>IEventDispatcher</code>; however, unlike an event dispatcher, 
-	 * <code>IRunNotifier<code>s have limitations on what types of objects can listen to their events.
+	 * <code>IRunNotifier</code>s have limitations on what types of objects can listen to their events.
 	 * An <code>IRunListeners</code>s are used to listen to events that are broadcast by 
 	 * <code>IRunNotifier</code>s.  Each <code>IRunNotifier</code> contain an <code>#addListener()</code>
 	 * and <code>#removeListener</code> method that accetps an <code>IRunListener</code> as an argument.<br/>
@@ -63,7 +63,7 @@ package org.flexunit.runner.notification {
 		/**
 		 * Invoke to tell all registered <code>IRunListener</code>s that the test run has finished.
 		 * 
-		 * @param result The <code>Result<code> of the test run.
+		 * @param result The <code>Result</code> of the test run.
 		 */
 		function fireTestRunFinished( result:Result ):void;
 		

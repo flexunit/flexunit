@@ -55,8 +55,7 @@ package org.fluint.sequence {
 		 * <p>
 		 * For example, if the target were a TextInput, a props defined like this: </p>
 		 * 
-		 * <p><code>
-		 * {text:'blah',enabled:false}</code></p>
+		 * <p><code>{text:'blah',enabled:false}</code></p>
 		 * 
 		 * <p>
 		 * Would set the text property to 'blah' and the enabled property to false.</p>

@@ -64,7 +64,7 @@ package org.flexunit.runners {
 	 * 	public var anotherTest:AnotherTest; //Another Test
 	 * 	public var differentSuite:DifferentSuite; //A Suite
 	 * }
-	 * <code></pre>
+	 * </code></pre>
 	 */
 	public class Suite extends ParentRunner implements IFilterable {
 		/**
