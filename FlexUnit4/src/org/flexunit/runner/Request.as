@@ -40,9 +40,9 @@ package org.flexunit.runner {
 	use namespace classInternal;
 	
 	/**
-	 * <p>A <code>Request</code> is an abstract description of tests to be run.  It represents an object that 
+	 * A <code>Request</code> is an abstract description of tests to be run.  It represents an object that 
 	 * wraps tests when they are presented to the <code>FlexUnitCore</code>.  <code>Request</code>s can be 
-	 * filtered and sorted to control the subset and order of tests to be executed.</p>
+	 * filtered and sorted to control the subset and order of tests to be executed.
 	 * 
 	 * The following static methods can be used to create requests:
 	 * <ul>
@@ -50,7 +50,7 @@ package org.flexunit.runner {
 	 * <li><code>#classes()</code></li>
 	 * <li><code>#runner()</code></li>
 	 * <li><code>#method()</code></li>
-	 * </ul><p>
+	 * </ul>
 	 * 
 	 * <p>The key property of the <code>Request</code> that the <code>FlexUnitCore</code> needs is the 
 	 * <code>IRunner</code>.  The <code>IRunner</code> is an interface implemented by any object 
