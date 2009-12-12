@@ -14,7 +14,7 @@ package org.flexunit.runner.manipulation.filters {
 			
 			if ( description && description.displayName ) {
 				var namePieces:Array = description.displayName.split( '.' );
-				if ( namePieces && namePieces.length > 1 ) {
+				if ( namePieces && namePieces.length > 0 ) {
 					methodName = namePieces[namePieces.length-1];
 				}
 			}

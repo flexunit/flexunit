@@ -35,16 +35,16 @@ package org.flexunit.runner.manipulation {
 	 * A <code>MetadataSorter</code> compares two values to determine which value is greater.
 	 * 
 	 */
-	public class MetadataSorter {
+	public class OrderArgumentSorter implements ISorter  {
 		/**
 		 * NULL is a <code>Sorter</code> that leaves elements in an undefined order
 		 */
-		public static var NULL:Sorter = new Sorter(none);
+		//public static var NULL:Sorter = new Sorter(none);
 		
 		/**
-		 * META is a <code>Sorter</code> that leaves elements in sorted order
+		 * ORDER_ARG_SORTER is an <code>ISorter</code> that sorts elements by their order argument
 		 */
-		public static var META:Sorter = new Sorter(defaultSortFunction);
+		public static var ORDER_ARG_SORTER:ISorter = new OrderArgumentSorter();
 		
 		/**
 		 * Does not compare its two arguments for order. Returns a zero regardless of the arguments being passed.
@@ -54,6 +54,18 @@ package org.flexunit.runner.manipulation {
 		 * */
 		private static function none( o1:IDescription, o2:IDescription ):int {
 			return 0;
+		}
+
+		/**
+		 * Sorts the test in <code>runner</code> using <code>compare function</code>.
+		 * 
+		 * @param object
+		 */
+		public function apply(object:Object):void {
+			if (object is ISortable) {
+				var sortable:ISortable = (object as ISortable);
+				sortable.sort(this);
+			}
 		}
 		
 		/**
@@ -84,15 +96,16 @@ package org.flexunit.runner.manipulation {
 			
 			return order;
 		}
-		
+
 		/**
 		 * Compares its two arguments for order. Returns a negative integer, zero, or a positive integer 
-		 * as the first argument is less than, equal to, or greater than the second.
+		 * as the first argument is less than, equal to, or greater than the second. If the two objects are
+		 * of equal order number, then we are simply going to return them in alphabetical order..
 		 * 
 		 * @param o1 <code>IDescription</code> the first object to be compared.
 		 * @param o2 <code>IDescription</code> the second object to be compared.
 		 * */
-		public static function defaultSortFunction( o1:IDescription, o2:IDescription ):int {
+		public function compare(o1:IDescription, o2:IDescription):int {
 			var a:Number;
 			var b:Number; 
 			
