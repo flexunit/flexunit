@@ -42,8 +42,10 @@ package org.flexunit
 	import org.fluint.sequence.SequenceRunner;
 	import org.fluint.sequence.SequenceSetter;
 	import org.fluint.sequence.SequenceWaiter;
-	import org.fluint.uiImpersonation.VisualTestEnvironmentBuilder;
 	import org.fluint.uiImpersonation.UIImpersonator;
+	import org.fluint.uiImpersonation.VisualTestEnvironmentBuilder;
+	import org.fluint.uiImpersonation.flex.FlexEnvironmentBuilder;
+	import org.fluint.uiImpersonation.flex.FlexVisualTestEnvironment;
 
 	/**
 	 * These classes should only be included in a Flex project
@@ -66,8 +68,9 @@ package org.flexunit
 		private var flu9:SequenceSetter;
 		private var flu10:SequenceWaiter;
 		private var flu11:VisualTestEnvironmentBuilder;
-		private var flu12:UIImpersonator;
 		
 		private var flu13:TextListener;
+		private var flu14:FlexVisualTestEnvironment;
+		private var flu15:FlexEnvironmentBuilder;
 	}
 }

@@ -35,16 +35,16 @@ package org.flexunit.runner.manipulation {
 	 * A <code>MetadataSorter</code> compares two values to determine which value is greater.
 	 * 
 	 */
-	public class MetadataSorter implements ISorter  {
+	public class OrderArgumentSorter implements ISorter  {
 		/**
 		 * NULL is a <code>Sorter</code> that leaves elements in an undefined order
 		 */
 		//public static var NULL:Sorter = new Sorter(none);
 		
 		/**
-		 * META is a <code>Sorter</code> that leaves elements in sorted order
+		 * ORDER_ARG_SORTER is an <code>ISorter</code> that sorts elements by their order argument
 		 */
-		public static var META:ISorter = new MetadataSorter();
+		public static var ORDER_ARG_SORTER:ISorter = new OrderArgumentSorter();
 		
 		/**
 		 * Does not compare its two arguments for order. Returns a zero regardless of the arguments being passed.

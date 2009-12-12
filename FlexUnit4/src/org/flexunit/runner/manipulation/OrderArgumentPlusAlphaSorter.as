@@ -35,9 +35,9 @@ package org.flexunit.runner.manipulation {
 	 * A <code>MetadataSorter</code> compares two values to determine which value is greater.
 	 * 
 	 */
-	public class MetadataAlphabeticalSorter implements ISorter  {
+	public class OrderArgumentPlusAlphaSorter implements ISorter  {
 
-		protected var metaDataSorter:ISorter; 
+		protected var orderArgumentSorter:ISorter; 
 
 		/**
 		 * Sorts the test in <code>runner</code> using <code>compare function</code>.
@@ -56,7 +56,7 @@ package org.flexunit.runner.manipulation {
 			
 			if ( description && description.displayName ) {
 				var namePieces:Array = description.displayName.split( '.' );
-				if ( namePieces && namePieces.length > 1 ) {
+				if ( namePieces && namePieces.length > 0 ) {
 					methodName = namePieces[namePieces.length-1];
 				}
 			}
@@ -73,10 +73,10 @@ package org.flexunit.runner.manipulation {
 		 * @param o2 <code>IDescription</code> the second object to be compared.
 		 * */
 		public function compare(o1:IDescription, o2:IDescription):int {
-			var metaDataSortDecision:int = metaDataSorter.compare( o1, o2 );
+			var orderSortDecision:int = orderArgumentSorter.compare( o1, o2 );
 
-			if ( metaDataSortDecision != 0 ) {
-				return metaDataSortDecision;
+			if ( orderSortDecision != 0 ) {
+				return orderSortDecision;
 			}
 
 			var o1Name:String = getClassName( o1 );
@@ -91,8 +91,8 @@ package org.flexunit.runner.manipulation {
 			return 0;
 		}
 		
-		public function MetadataAlphabeticalSorter() {
-			metaDataSorter = new MetadataSorter();
+		public function OrderArgumentPlusAlphaSorter() {
+			orderArgumentSorter = new OrderArgumentSorter();
 		}
 	}
 }

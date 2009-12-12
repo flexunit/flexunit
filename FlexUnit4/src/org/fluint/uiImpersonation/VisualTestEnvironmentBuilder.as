@@ -26,7 +26,6 @@ package org.fluint.uiImpersonation {
 	import flash.display.Sprite;
 	
 	import org.fluint.uiImpersonation.actionScript.ActionScriptEnvironmentBuilder;
-	import org.fluint.uiImpersonation.flex.FlexEnvironmentBuilder;
 
 	/** 
 	 * TestEnvironment is a singleton class that allows tests to have 
@@ -65,6 +64,7 @@ package org.fluint.uiImpersonation {
 			this.visualDisplayRoot = visualDisplayRoot;
 
 			CONFIG::useFlexClasses {
+				import org.fluint.uiImpersonation.flex.FlexEnvironmentBuilder;
 				builder = new FlexEnvironmentBuilder( visualDisplayRoot );
 			}
 			
