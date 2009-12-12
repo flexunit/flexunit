@@ -2,7 +2,6 @@ package org.hamcrest.mxml.core
 {
     import org.hamcrest.mxml.BaseMXMLMatcher;
     import org.hamcrest.mxml.MXMLMatcher;
-	import org.hamcrest.mxml.AbstractMXMLMatcherTestCase;
 
     public class BaseMXMLMatcherTest extends AbstractMXMLMatcherTestCase
     {

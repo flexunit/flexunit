@@ -2,6 +2,7 @@ package org.hamcrest
 {
     
     import org.hamcrest.collection.EveryTest;
+    import org.hamcrest.collection.InArrayTest;
     import org.hamcrest.collection.IsArrayContainingTest;
     import org.hamcrest.collection.IsArrayTest;
     import org.hamcrest.collection.IsArrayWithSizeTest;
@@ -56,6 +57,7 @@ package org.hamcrest
         public var t13:IsArrayTest;
         public var t14:IsArrayWithSizeTest;
         public var t15:IsArrayContainingTest;
+        public var inArray:InArrayTest;
         
         // number
         public var t16:BetweenTest;
