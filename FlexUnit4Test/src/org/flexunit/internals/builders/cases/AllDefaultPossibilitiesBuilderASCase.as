@@ -23,8 +23,11 @@ package org.flexunit.internals.builders.cases
 	{
 		private var flexunit1Class:FlexUnit1Class;
 		private var flexunit4Class:FlexUnit4Class;
+		CONFIG::useFlexClasses
+		{	
 		private var fluint1Class:Fluint1Class;
 		private var fluint1Suite:Fluint1Suite;
+		}
 		private var ignoredClass:IgnoredClass;
 		
 		[Test(description="Ensure if a FlexUnit1 style class is passed to runnerForClass a FlexUnit1ClassRunner is returned")]

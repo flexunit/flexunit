@@ -2,8 +2,6 @@ package org.flexunit.reporting.cases
 {
 	import flexunit.framework.AssertionFailedError;
 	
-	import net.digitalprimates.fluint.assertion.AssertionFailedError;
-	
 	import org.flexunit.Assert;
 	import org.flexunit.AssertionError;
 	import org.hamcrest.AssertionError;
@@ -32,10 +30,13 @@ package org.flexunit.reporting.cases
 		public function isErrorFlexUnitAssertionFailedErrorTest():void {
 			Assert.assertFalse( FailureFormatter.isError(new flexunit.framework.AssertionFailedError("test")) );
 		}
-		
+
+		CONFIG::useFlexClasses {
 		[Test(description="Ensure that a Fluint AssertionFailedError is not a failure")]
 		public function isErrorFluintAssertionFailedErrorTest():void {
+			import net.digitalprimates.fluint.assertion.AssertionFailedError;
 			Assert.assertFalse( FailureFormatter.isError(new net.digitalprimates.fluint.assertion.AssertionFailedError("test")) );
+		}
 		}
 		
 		[Test(description="Ensure that the message string is returned from the xmlEscapeMessage function")]
