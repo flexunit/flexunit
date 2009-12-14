@@ -233,14 +233,30 @@ package org.flexunit.runner.cases
 		[Test(description="Ensure metadata gets set properly during createSuiteDescription initialization with class definition")]
 		public function check_createSuiteDescription_initialize_metadata():void {
 			var metaDataAr:Array = generateLocalTestClassMetaDataArray();
-			var idescription:IDescription = Description.createSuiteDescription( new Klass(LocalTestClass) );
+			var idescription:IDescription = Description.createSuiteDescription( LocalTestClass );
 			//metaDataAr = idescription.getAllMetadata();
-			Assert.assertEquals( metaDataAr, idescription.getAllMetadata() );
+			
+			var idescriptionArray : Array = idescription.getAllMetadata() as Array;
+			for( var i : int =0; i < metaDataAr.length; i++ )
+			{
+				var itemFound : Boolean = false;
+				for( var j : int = 0; j < idescriptionArray.length; j++ )
+				{
+					var curItem : MetaDataAnnotation = idescriptionArray[j];
+					if( curItem.equals( metaDataAr[i] ) )
+					{	
+						itemFound = true;
+						break;
+					}
+				}
+				if( itemFound == false )
+					Assert.fail("couldn't find expected metaData in return" );
+			}
 		}
 		
 		[Test(description="Ensure isInstance gets set properly during createSuiteDescription initialization with class definition")]
 		public function check_createSuiteDescription_initialize_isInstance():void {
-			var idescription:IDescription = Description.createSuiteDescription( new Klass(LocalTestClass), null );
+			var idescription:IDescription = Description.createSuiteDescription( LocalTestClass, null );
 			// since this description gets created static, isStatic should always be false in this case
 			Assert.assertFalse( idescription.isInstance );
 		}

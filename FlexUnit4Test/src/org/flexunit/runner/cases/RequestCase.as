@@ -104,7 +104,7 @@ package org.flexunit.runner.cases
 		//TODO: Ensure that this test is testing this function in the proper manner
 		[Test(description="Ensure that the classes function returns a Request that has a Suite as its runner")]
 		public function classesTest():void {
-			var newRequest:Request = Request.classes(new Array());
+			var newRequest:Request = Request.classes(Object, Object);
 			
 			Assert.assertTrue( newRequest.iRunner is Suite );
 		}
