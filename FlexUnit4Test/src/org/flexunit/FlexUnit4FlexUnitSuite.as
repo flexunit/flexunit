@@ -40,10 +40,11 @@ package org.flexunit
 		
 		//Cases
 		public var assertCase:AssertCase;
+		public var assertionErrorCase:AssertionErrorCase;
 		public var assertThatCase:AssertThatCase;
 		public var assumeCase:AssumeCase;
 		public var assumeThatCase:AssumeThatCase;
-		public var assertionErrorCase:AssertionErrorCase;
+		public var includeFlexClassesCase : IncludeFlexClassesCase;
 		
 		//Assert Alias Cases
 		public var assertEqualsAliasCase:assertEqualsCase;

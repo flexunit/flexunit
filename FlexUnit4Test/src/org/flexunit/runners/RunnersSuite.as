@@ -13,10 +13,10 @@ package org.flexunit.runners
 	{
 		public var modelSuite:ModelSuite;
 		
-		public var parentRunnerCase:ParentRunnerCase;
-		public var blockFlexUnit4ClassRunnerCase:BlockFlexUnit4ClassRunnerCase;
-		public var suiteCase:SuiteCase;
 		public var allTestsCase:AllTestsCase;
+		public var blockFlexUnit4ClassRunnerCase:BlockFlexUnit4ClassRunnerCase;
+		public var parentRunnerCase:ParentRunnerCase;
 		public var parametizedCase:ParameterizedCase;
+		public var suiteCase:SuiteCase;
 	}
 }

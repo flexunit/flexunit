@@ -57,7 +57,7 @@ package org.flexunit.experimental.runners.statements.cases
 		[Test(description="Ensure that the reportParameterizedError function returns a ParameterizedAssertionError if additional parameters are passed")]
 		public function reportParameterizedErrorParamsTest():void {
 			var error:Error = new Error();
-			
+		***	frameworkMethodMock.mock.property("name").returns("test").once;
 			Assert.assertTrue( theoryAnchor.reportParameterizedError(error, "valueOne", "valueTwo") is ParameterizedAssertionError );
 		}
 		
