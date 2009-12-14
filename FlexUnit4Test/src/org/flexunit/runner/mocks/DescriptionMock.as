@@ -12,7 +12,7 @@ package org.flexunit.runner.mocks
 		{
 			mock = new Mock( this );
 		}
-
+		
 		public function get children():Array
 		{
 			return mock.children;

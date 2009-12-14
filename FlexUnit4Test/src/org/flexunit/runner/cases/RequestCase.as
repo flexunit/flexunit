@@ -57,7 +57,7 @@ package org.flexunit.runner.cases
 			var runnerMock:RunnerMock = new RunnerMock();
 			request._runner = runnerMock;
 			
-			Assert.assertEquals( runnerMock, request.getRunner() );
+			Assert.assertEquals( runnerMock, request.iRunner );
 		}
 		
 		// TODO : not sure how to test
