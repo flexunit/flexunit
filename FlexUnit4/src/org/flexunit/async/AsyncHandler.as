@@ -136,7 +136,7 @@ package org.flexunit.async {
 		public var timeoutHandler:Function = null;
 
 		/** 
-		 * A reference to the testCase which created this class. 
+		 * A reference to the runner executing the testCase being monitored. 
 		 */
 		public var runner:IRunner;
 
@@ -155,7 +155,9 @@ package org.flexunit.async {
 			//This will be a custom event			
 			if ( timerState >= 0 ) {
 				//Only enter this if statement if the timer is still running or has nto yet begun
-				timer.stop();
+				if ( timer ) { 
+					timer.stop();
+				}
 				timerState = TIMER_COMPLETE;
 				dispatchEvent( new AsyncEvent( EVENT_FIRED, false, false, event ) );
 			}
@@ -213,7 +215,7 @@ package org.flexunit.async {
 			this.passThroughData = passThroughData;
 			this.timeoutHandler = timeoutHandler; 
 			
-			if ( timeout ) {
+			if ( timeout ) {				
 				timer = new Timer( timeout, 1 );
 				timer.addEventListener(TimerEvent.TIMER_COMPLETE, handleTimeout );
 				timerState = TIMER_NOT_STARTED;
