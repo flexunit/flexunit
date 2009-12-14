@@ -52,10 +52,11 @@ package org.flexunit.async
 	public class Async
 	{	
 		/**
-		 * Proceeds for a given <code>testCase</code> based on the <code>IAsyncHandlingStatement</code> that has been 
-		 * associated with the test when an event with the name of <code>eventName</code> is encountered by the 
-		 * <code>target</code>.  If the event named <code>eventName</code> is not encountered by the <code>target</code> 
-		 * within the specified <code>timeout</code> period, the <code>timeoutHandler</code> will be called.
+		 * This method is used when you want to ensure that a specific event fires during an asynchronous test. When the event fires, the flex unit
+		 * framework simply acknowledges it internally. If there are additional outstanding asynchronous events, those will be processed individually.
+		 *  
+		 * This method is generally used when the existance of the event, and not the even't data is sufficient to indicate success. If you need to inspect
+		 * the event's data before making a decision, then use <code>handleEvent</code> instead. 
 		 * 
 		 * @param testCase The current asynchronous test case.
 		 * @param target The target that will listen for the dispatched <code>eventName</code>.
@@ -74,31 +75,65 @@ package org.flexunit.async
 		} 
 		
 		/**
-		 * Fails for a given <code>testCase</code> based on the <code>IAsyncHandlingStatement</code> that has been 
-		 * associated with the test when an event with the name of <code>eventName</code> is encountered by the 
-		 * <code>target</code>.  If the event named <code>eventName</code> is not encountered by the <code>target</code> 
-		 * within the specified <code>timeout</code> period, the <code>testCase</code> will not fail.
+		 * This method is used when you want to fail if a given event occurs, within a given amount of time, during an asynchronous test. When the event fires, 
+		 * the flex unit framework causes the test to fail. If the timout is reached before the failure occurs, then the framework will no longer watch for 
+		 * this event. So, for example, if you want to verify that you do not receive a failure within 300ms, this would be a good method to use.
+		 *  
+		 * This method is generally used when the existance of the event, and not the even't data is sufficient to indicate failure. If you need to inspect
+		 * the event's data before making a decision, then use <code>handleEvent</code> instead. 
 		 * 
 		 * @param testCase The current asynchronous test case.
 		 * @param target The target that will listen for the dispatched <code>eventName</code>.
 		 * @param eventName The name of the event being listend for by the <code>target</code>.
 		 * @param timeout The length of time, in milliseconds, before the calling the <code>timeoutHandler</code>
 		 * if the <code>eventName</code> event is not dispatched.
-		 * @param timeoutHandler
+		 * @param timeoutHandler The function that will be executed if the <code>target</code> does not 
+		 * receive expected <code>eventName</code> before the <code>timeout</code> time is reached.
 		 */
 		public static function failOnEvent( testCase:Object, target:IEventDispatcher, eventName:String, timeout:int=500, timeoutHandler:Function = null ):void {
 			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
 			var handler:Function;
-
-			handler = asyncHandlingStatement.asyncErrorConditionHandler( asyncHandlingStatement.failOnComplete, timeout, null, asyncHandlingStatement.pendUntilComplete );
+			
+			handler = asyncHandlingStatement.asyncHandler( asyncHandlingStatement.failOnComplete, timeout, null, asyncHandlingStatement.pendUntilComplete );
 			target.addEventListener( eventName, handler, false, 0, true );  
-		} 
+		}
 		
 		/**
-		 * Handles a given <code>testCase</code> based on the <code>IAsyncHandlingStatement</code> that has been 
-		 * associated with the test when an event with the name of <code>eventName</code> is encountered by the 
-		 * <code>target</code>.  If the event named <code>eventName</code> is not encountered by the <code>target</code> 
-		 * within the specified <code>timeout</code> period, the <code>timeoutHandler</code> will be called.
+		 * Causes the failure of the existing block (Before, After or the Test itself dependent upon where this statement is located) when an event occurs. In
+		 * practice, this method is used to handle an event dispatched from an object under test that, while not necessarily part of the test itself, would indicate
+		 * a failure if dispatched. A valid example might be an service call. You may want to test that the data is correct and returns within a given period of time,
+		 * however, if at any time during that test a Failure event is dispatched, you likely wish to end the test. 
+		 * 
+		 * @param testCase The current asynchronous test case.
+		 * @param target The target that will listen for the dispatched <code>eventName</code>.
+		 * @param eventName The name of the event being listend for by the <code>target</code>.
+		 * 
+		 * Example:
+		 * 		[Test(async)]
+		 *      public function doTest():void {
+		 *	      Async.registerFailureEvent( this, httpService, FaultEvent.FAULT );
+		 *	      Async.handleEvent( this, httpService, ResultEvent.RESULT, handleResult, 2000 );
+		 *        httpService.send();			
+		 *      }
+		 * 
+		 * Without the registerFailureEvent, you would need to wait 2 full seconds for the timeout to occur before declaring this test a failure when a fault
+		 * event occurs.
+		 * 
+		 */
+		public static function registerFailureEvent( testCase:Object, target:IEventDispatcher, eventName:String ):void {
+			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
+			var handler:Function;
+			
+			handler = asyncHandlingStatement.asyncErrorConditionHandler( asyncHandlingStatement.failOnComplete );
+			target.addEventListener( eventName, handler );
+			//Do not use a weak reference here or there is nothing to keep it in memory
+		}
+
+		/**
+		 * Allow you to continue a test while waiting for a given asynchronous event to occur. Normally a test ends when you reach the method closure at the end
+		 * of your test method. This event tells the FlexUnit framework to continue that test pending the dispatch of an event by the <code>target</code> of an
+		 * event named <code>eventName</code>. If that event does not occur within the <code>timeOut</code> then the timeout handler (if specified) will be called, 
+		 * else the test will be declared a failure. 
 		 * 
 		 * @param testCase The current asynchronous test case.
 		 * @param target The target that will listen for the dispatched <code>eventName</code>.
@@ -121,8 +156,8 @@ package org.flexunit.async
 		} 
 		
 		/**
-		 * Provides a handler function for the <code>testCase</code> based on the <code>IAsyncHandlingStatement</code> 
-		 * that has been associated with the test.
+		 * This method works similarly to the handleEvent, however, whereas the handleEvent does all of the work to handle a specific event,
+		 * this method simply returns an eventHandler (function) which you use within your own addEventListener() methods. 
 		 * 
 		 * @param testCase The current asynchronous test case.
 		 * @param eventHandler The function that will be executed if the <code>timemout</code> period has not been reached.
@@ -142,8 +177,7 @@ package org.flexunit.async
 		// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
 		// flex classes since it will cause errors.
 		/**
-		 * Provides a handler function for the <code>testCase</code> based on the <code>IAsyncHandlingStatement</code> 
-		 * that has been associated with the test.
+		 * This method works in a similar fashion to handleEvent, however, it is intended to work with AsyncTokens and Responders as opposed to events. 
 		 * 
 		 * @param testCase The current asynchronous test case.
 		 * @param responder The responder that will be executed if the <code>timemout</code> period has not been reached.

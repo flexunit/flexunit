@@ -23,9 +23,9 @@ package org.flexunit.internals.runners.statements.mock
 			return mock.asyncHandler(eventHandler, timeout, passThroughData, timeoutHandler);
 		}
 		
-		public function asyncErrorConditionHandler(eventHandler:Function, timeout:int=0, passThroughData:Object=null, timeoutHandler:Function=null):Function
+		public function asyncErrorConditionHandler(eventHandler:Function):Function
 		{
-			return mock.asyncErrorConditionHandler(eventHandler, timeout, passThroughData, timeoutHandler);
+			return mock.asyncErrorConditionHandler(eventHandler);
 		} 
 		
 		CONFIG::useFlexClasses
