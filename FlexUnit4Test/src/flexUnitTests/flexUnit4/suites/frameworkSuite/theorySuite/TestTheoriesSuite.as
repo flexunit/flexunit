@@ -48,7 +48,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite
 		[ArrayElementType("String")]
 		public static var stringValues:Array = ["one","two","three","four","five"];
 		
-				[DataPoints]
+		[DataPoints]
 		[ArrayElementType("int")]
 		public static var intValues:Array = [1,2,3,4,5,6,7,8,9];
 		
@@ -226,7 +226,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite
 			
 			assertEquals( booleanCount, allBooleanValues.length );
 			
-			testedIntArray = null;
+			testedBooleanArray = null;
 		}
 		
 		
@@ -242,7 +242,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite
 		} 		
 		
 		[Theory]
-		public function testDoubleStringOnly( value1:String, value2:String ):void {
+		public function testTwoStrings( value1:String, value2:String ):void {
 			testedTwoStringArray.push( value1 + value2 );
 		} 		
 		
