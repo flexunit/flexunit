@@ -133,6 +133,45 @@ package flex.lang.reflect.metadata {
 		}
 
 		/**
+		 * Compares two MetaDataAnnotations for name and argument equality
+		 * 
+		 * @return Returns boolean indicating equality
+		 * 
+		 */
+		public function equals( item:MetaDataAnnotation ):Boolean {
+			if ( !item ) {
+				return false;
+			}
+
+			var equiv:Boolean = this.name == item.name;
+			var localArgs:Array = arguments;
+			var remoteArgs:Array = item.arguments;
+
+			if ( equiv ) {
+				var localLen:int = localArgs?localArgs.length:0;
+				var remoteLen:int = remoteArgs?remoteArgs.length:0;
+				
+				if ( localLen != remoteLen ) {
+					return false;
+				}
+				
+				if ( localLen > 0) {
+					for ( var i:int=0; i<localLen; i++ ) {
+						var localArg:MetaDataArgument = localArgs[ i ];
+						var remoteArg:MetaDataArgument = remoteArgs[ i ];
+						
+						equiv = localArg.equals( remoteArg );
+						if (!equiv) {
+							break;
+						}
+					}
+				}
+			}
+
+			return equiv;
+		}
+		
+		/**
 		 * Constructor 
 		 * @param metaDataXML The metaDataXML that is passed to the class to be parsed to find
 		 * 						the annotation and arguments for a piece of metadata.
