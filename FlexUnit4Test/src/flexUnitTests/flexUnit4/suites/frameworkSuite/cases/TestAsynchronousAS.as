@@ -214,6 +214,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 	    	eventDispatcher.dispatchEvent( new DataEvent('immediate', false, false, '0123456789' ) ); 
 	    }
 
+		//why is this ignored?
 		[Ignore]
 		[Test(async)]
 	    public function testMultipleAsyncAllSucceed() : void {
@@ -222,6 +223,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 			testNotReallyAsynchronousPass();
 	    }
 
+		//why is this ignored?
 		[Ignore]
 		[Test(async)]
 	    public function testMultipleAsyncSuccessAndTimeout() : void {
