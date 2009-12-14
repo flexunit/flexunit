@@ -36,6 +36,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestIgnore;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestMethodOrder;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestSynchronousSetUpTearDown;
+	import flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite.TestTheoriesSuite;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite.TheorySuite;
 	
 	[Suite]
@@ -58,6 +59,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite
 		public var testSynchronousSetUpTearDown:TestSynchronousSetUpTearDown;
 		public var testAsynchronousSetUpTearDown:TestAsynchronousSetUpTearDown;
 		public var theory:TheorySuite;
+		public var testTheoriesCase:TestTheoriesSuite;
 		
 		//public var hamcrest:HamcrestSuite;
 		public var flexUnit1Tests:AllFrameworkTests;
