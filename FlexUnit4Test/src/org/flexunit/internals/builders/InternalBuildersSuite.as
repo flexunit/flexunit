@@ -21,8 +21,12 @@ CONFIG::useFlexClasses
 		public var fluint1BuilderCase:org.flexunit.internals.builders.cases.Fluint1BuilderCase;
 
 		public var ignoredBuilderCase:IgnoredBuilderCase;
-		public var metaDataBuilderCase:MetaDataBuilderCase;
-		public var nullBuilderCase:NullBuilderCase;
+		public var ignoredClassRunnerCase :IgnoredClassRunnerCase;
 		public var suiteMethodBuilderCase:SuiteMethodBuilderCase;
+		
+		public var metaDataBuilderCase : MetaDataBuilderCase;
+		
+		//empty test case
+		//public var nullBuilderCase : NullBuilderCase;
 	}
 }
