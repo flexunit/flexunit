@@ -31,6 +31,7 @@ package org.flexunit.internals.builders {
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.token.AsyncTestToken;
+	import org.flexunit.token.IAsyncTestToken;
 	
 	/**
 	 * The <code>IgnoredClassRunner</code> is an <code>IRunner</code> for test classes that are 
@@ -61,7 +62,7 @@ package org.flexunit.internals.builders {
 		 * @param notifier The <code>IRunNotifier</code> to notify that the class has been ignored.
 		 * @param token The <code>AsyncTestToken</code> to notify that the test class has been ignored.
 		 */ 
-		public function run( notifier:IRunNotifier, previousToken:AsyncTestToken ):void {
+		public function run( notifier:IRunNotifier, previousToken:IAsyncTestToken ):void {
 			notifier.fireTestIgnored( description );
 			previousToken.sendResult();
 		}

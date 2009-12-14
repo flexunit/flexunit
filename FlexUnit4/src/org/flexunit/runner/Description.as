@@ -28,6 +28,7 @@
 package org.flexunit.runner {
 	import flash.utils.getQualifiedClassName;
 	
+	import flex.lang.reflect.Klass;
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
 	import mx.utils.ObjectUtil;
@@ -216,7 +217,8 @@ package org.flexunit.runner {
 				description = new Description( suiteClassOrName, metaData );
 			} else {
 				//description = new Description(suiteClassOrName.name, suiteClassOrName.metaData );
-				description = new Description( getQualifiedClassName( suiteClassOrName ), suiteClassOrName.metaData );
+				var klass:Klass = new Klass( suiteClassOrName );
+				description = new Description( getQualifiedClassName( suiteClassOrName ), klass.metadata );
 			}
 
 			return description;

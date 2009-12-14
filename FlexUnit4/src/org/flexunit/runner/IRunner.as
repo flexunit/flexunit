@@ -29,6 +29,7 @@ package org.flexunit.runner
 {
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.token.AsyncTestToken;
+	import org.flexunit.token.IAsyncTestToken;
 	
 	/**
 	 * An <code>IRunner</code> runs tests and notifies a <code> org.flexunit.runner.notification.RunNotifier</code>
@@ -54,7 +55,7 @@ package org.flexunit.runner
 		 * @param notifier will be notified of events while tests are being run--tests being 
 		 * started, finishing, and failing
 		 */
-		function run( notifier:IRunNotifier, previousToken:AsyncTestToken ):void;
+		function run( notifier:IRunNotifier, previousToken:IAsyncTestToken ):void;
 		function get description():IDescription;
 	}
 }

@@ -42,14 +42,15 @@ package org.flexunit.runners {
 	import org.flexunit.runner.manipulation.IFilter;
 	import org.flexunit.runner.manipulation.ISortable;
 	import org.flexunit.runner.manipulation.ISorter;
-	import org.flexunit.runner.manipulation.OrderArgumentSorter;
 	import org.flexunit.runner.manipulation.NoTestsRemainException;
+	import org.flexunit.runner.manipulation.OrderArgumentSorter;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runner.notification.StoppedByUserException;
 	import org.flexunit.runners.model.FrameworkMethod;
 	import org.flexunit.runners.model.TestClass;
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
+	import org.flexunit.token.IAsyncTestToken;
 	import org.flexunit.utils.ClassNameUtil;
 	
 	use namespace classInternal;
@@ -400,7 +401,7 @@ package org.flexunit.runners {
 		 * 
 		 * @throws org.flexunit.runner.notification.StoppedByUserException The user has stopped the test run.
 		 */
-		public function run( notifier:IRunNotifier, previousToken:AsyncTestToken ):void {
+		public function run( notifier:IRunNotifier, previousToken:IAsyncTestToken ):void {
 			var testNotifier:EachTestNotifier = new EachTestNotifier(notifier, description );
 			var resendError:Error;
 			

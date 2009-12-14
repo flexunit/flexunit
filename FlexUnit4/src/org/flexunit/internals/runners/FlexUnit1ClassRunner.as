@@ -50,6 +50,7 @@ package org.flexunit.internals.runners {
 	import org.flexunit.runners.model.FrameworkMethod;
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
+	import org.flexunit.token.IAsyncTestToken;
 	import org.flexunit.utils.ClassNameUtil;
 	
 	/**
@@ -210,7 +211,7 @@ package org.flexunit.internals.runners {
 		 * @param notifier The notifier that is notified about issues encountered during the execution of the test class.
 		 * @param previousToken The token that is to be notified when the runner has finished execution of the test class.
 		 */
-		public function run( notifier:IRunNotifier, previousToken:AsyncTestToken ):void {
+		public function run( notifier:IRunNotifier, previousToken:IAsyncTestToken ):void {
 			var token:AsyncTestToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			token.parentToken = previousToken;
 			token.addNotificationMethod( handleTestComplete );
