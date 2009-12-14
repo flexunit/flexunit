@@ -144,7 +144,7 @@ package flex.lang.reflect.metadata {
 			}
 
 			var equiv:Boolean = this.name == item.name;
-			var localArgs:Array = arguments;
+			var localArgs:Array = this.arguments;
 			var remoteArgs:Array = item.arguments;
 
 			if ( equiv ) {

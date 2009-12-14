@@ -29,7 +29,6 @@ package org.flexunit.runner {
 	import flash.utils.getQualifiedClassName;
 	
 	import flex.lang.reflect.Klass;
-	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
 	import mx.utils.ObjectUtil;
 	
@@ -206,18 +205,19 @@ package org.flexunit.runner {
 		 * Generally, you will add children to this <code>IDescription</code>.
 		 * 
 		 * @param suiteClassOrName The class of the object to be described or the name of 
-		 * the class to be secribed.
+		 * the class to be subscribed.
 		 * @param metaData Metadata about the test.
 		 * 
 		 * @return an <code>IDescription</code> named <code>name</code>.
 		 */
 		public static function createSuiteDescription( suiteClassOrName:*, metaData:Array=null ):IDescription {
-			var description:Description;
+			var description:Description;			
 			if ( suiteClassOrName is String ) {
 				description = new Description( suiteClassOrName, metaData );
 			} else {
 				//description = new Description(suiteClassOrName.name, suiteClassOrName.metaData );
-				var klass:Klass = new Klass( suiteClassOrName );
+				//instantiating a new Klass with suiteClassOrName passed in.  Necessary to get the metadata for the description.
+				var klass : Klass = new Klass( suiteClassOrName );
 				description = new Description( getQualifiedClassName( suiteClassOrName ), klass.metadata );
 			}
 
