@@ -14,6 +14,7 @@ package org.flexunit
 	import org.flexunit.cases.AssumeCase;
 	import org.flexunit.cases.AssumeThatCase;
 	import org.flexunit.cases.ComparisonFailureCase;
+	import org.flexunit.cases.IncludeFlexClassesCase;
 	import org.flexunit.events.EventsSuite;
 	import org.flexunit.experimental.ExperimentSuite;
 	import org.flexunit.internals.InternalsSuite;
