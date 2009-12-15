@@ -14,10 +14,7 @@ package org.flexunit
 	import org.flexunit.cases.AssumeCase;
 	import org.flexunit.cases.AssumeThatCase;
 	import org.flexunit.cases.ComparisonFailureCase;
-	CONFIG::useFlexClasses
-	{
-	import org.flexunit.cases.IncludeFlexClassesCase;
-	}
+
 	import org.flexunit.events.EventsSuite;
 	import org.flexunit.experimental.ExperimentSuite;
 	import org.flexunit.internals.InternalsSuite;
@@ -48,10 +45,6 @@ package org.flexunit
 		public var assertThatCase:AssertThatCase;
 		public var assumeCase:AssumeCase;
 		public var assumeThatCase:AssumeThatCase;
-		CONFIG::useFlexClasses
-		{
-		public var includeFlexClassesCase : IncludeFlexClassesCase;
-		}
 		
 		//Assert Alias Cases
 		public var assertEqualsAliasCase:assertEqualsCase;
