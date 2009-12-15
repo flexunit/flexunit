@@ -134,7 +134,6 @@ package org.flexunit.internals.runners.statements {
 				sendComplete( error );
 			}
 			
-			//Adding this line 
 			if ( hasPendingAsync ) { 
 				startAsyncTimers(); 
 			} 
