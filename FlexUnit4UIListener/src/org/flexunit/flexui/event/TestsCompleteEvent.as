@@ -32,11 +32,11 @@ package org.flexunit.flexui.event
 
    public class TestsCompleteEvent extends Event
    {
-      public static const EVENT_NAME : String = "testsComplete";
+	  public static const TESTS_COMPLETE : String = "testsComplete";
 
       public function TestsCompleteEvent()
       {
-         super( EVENT_NAME );
+         super( TESTS_COMPLETE );
       }
 
       public override function clone() : Event
