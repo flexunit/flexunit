@@ -23,11 +23,6 @@ package org.flexunit.internals.builders.cases
 	{
 		private var flexunit1Class:FlexUnit1Class;
 		private var flexunit4Class:FlexUnit4Class;
-		CONFIG::useFlexClasses
-		{	
-		private var fluint1Class:Fluint1Class;
-		private var fluint1Suite:Fluint1Suite;
-		}
 		private var ignoredClass:IgnoredClass;
 		
 		[Test(description="Ensure if a FlexUnit1 style class is passed to runnerForClass a FlexUnit1ClassRunner is returned")]
@@ -80,35 +75,6 @@ package org.flexunit.internals.builders.cases
 			Assert.assertTrue( flexUnit4Builder() is FlexUnit4Builder );
 		}
 
-CONFIG::useFlexClasses
-{	
-		import org.flexunit.internals.builders.Fluint1Builder;
-		import org.flexunit.internals.runners.Fluint1ClassRunner;
-		
-		[Test(description="Ensure if a Fluint1 style class is passed to runnerForClass a Fluint1ClassRunner is returned")]
-		public function testFluint1TestRunnerForClass() : void {
-			var runner:IRunner;
-			runner = runnerForClass( Fluint1Class );
-			Assert.assertTrue( runner is Fluint1ClassRunner );
-		}
-		
-		[Test(description="Ensure if a Fluint1 style suite is passed to runnerForClass a Fluint1ClassRunner is returned")]
-		public function testFluint1SuiteRunnerForClass() : void {
-			var runner:IRunner;
-			runner = runnerForClass( Fluint1Suite );
-			Assert.assertTrue( runner is Fluint1ClassRunner );
-		}
-		
-		//TODO: How can it be verified that it is currently in an AS only case?  CONFIG::useFlexClasses?
-		[Test(description="Ensure fluint1Builder returns the proper type")]
-		public function testFluint1Builder() : void {
-			try {
-				Assert.assertTrue( fluint1Builder() is Fluint1Builder );
-			} catch ( error : AssertionFailedError ) {
-				Assert.assertTrue( fluint1Builder is NullBuilder );
-			}
-		}
-}		
 		public function AllDefaultPossibilitiesBuilderASCase() {
 			super( false );
 		}

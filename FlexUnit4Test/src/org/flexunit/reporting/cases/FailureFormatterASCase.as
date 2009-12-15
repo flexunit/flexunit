@@ -7,7 +7,7 @@ package org.flexunit.reporting.cases
 	import org.hamcrest.AssertionError;
 	import org.flexunit.reporting.FailureFormatter;
 
-	public class FailureFormatterCase
+	public class FailureFormatterASCase
 	{
 		//TODO: Ensure that the tests and test case are being implemented correctly
 		
@@ -31,14 +31,6 @@ package org.flexunit.reporting.cases
 			Assert.assertFalse( FailureFormatter.isError(new flexunit.framework.AssertionFailedError("test")) );
 		}
 
-		CONFIG::useFlexClasses {
-		[Test(description="Ensure that a Fluint AssertionFailedError is not a failure")]
-		public function isErrorFluintAssertionFailedErrorTest():void {
-			import net.digitalprimates.fluint.assertion.AssertionFailedError;
-			Assert.assertFalse( FailureFormatter.isError(new net.digitalprimates.fluint.assertion.AssertionFailedError("test")) );
-		}
-		}
-		
 		[Test(description="Ensure that the message string is returned from the xmlEscapeMessage function")]
 		public function xmlEscapeMessageWithMessageTest():void {
 			var testMessage:String= "testMessage";

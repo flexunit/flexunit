@@ -1,19 +1,23 @@
 package org.flexunit.internals.builders.cases
 {
+	import net.digitalprimates.fluint.assertion.AssertionFailedError;
+	
+	import org.flexunit.Assert;
 	import org.flexunit.internals.builders.AllDefaultPossibilitiesBuilder;
 	import org.flexunit.internals.builders.FlexUnit1Builder;
 	import org.flexunit.internals.builders.Fluint1Builder;
+	import org.flexunit.internals.builders.NullBuilder;
 	import org.flexunit.internals.builders.definitions.Fluint1Class;
 	import org.flexunit.internals.builders.definitions.Fluint1Suite;
 	import org.flexunit.internals.runners.Fluint1ClassRunner;
-	
-	public class AllDefaultPossibilitiesBuilderFluintCase extends AllDefaultPossibilitiesBuilder
-	{
-		
+	import org.flexunit.runner.IRunner;
+
+	public class AllDefaultPossibilitiesBuilderFlexCase extends AllDefaultPossibilitiesBuilder
+	{		
 		private var fluint1Class:Fluint1Class;
 		private var fluint1Suite:Fluint1Suite;
-
-		public function AllDefaultPossibilitiesBuilderFluintCase() {
+		
+		public function AllDefaultPossibilitiesBuilderFlexCase() {
 			super( false );
 		}
 		
@@ -45,5 +49,7 @@ package org.flexunit.internals.builders.cases
 				Assert.assertTrue( fluint1Builder is NullBuilder );
 			}
 		}
+		
+		
 	}
 }

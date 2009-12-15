@@ -11,7 +11,6 @@ package org.fluint
 	[RunWith("org.flexunit.runners.Suite")]
 	public class FlexUnit4FluintSuite
 	{
-		//public var allDefaultPossibilitesFluintCase:AllDefaultPossibilitiesBuilderFluintCase;
 		
 		public var sequenceSuite:SequenceSuite;
 		public var uiImpersonationSuite:UIImpersonationSuite;

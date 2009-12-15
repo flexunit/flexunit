@@ -13,13 +13,19 @@ package org.flexunit.internals.builders
 	[RunWith("org.flexunit.runners.Suite")]
 	public class InternalBuildersSuite
 	{
+	CONFIG::useFlexClasses
+	{	
+		import org.flexunit.internals.builders.cases.*;
+			
+		public var allDefaultPossibilitesFlexCase : AllDefaultPossibilitiesBuilderFlexCase;
+		public var fluint1BuilderCase:org.flexunit.internals.builders.cases.Fluint1BuilderCase;
+	}
+
 		public var ignoreClassRunnerCase:IgnoredClassRunnerCase;
 		public var allDefaultPossibilitiesCase:AllDefaultPossibilitiesBuilderASCase;
 		public var flexUnit1BuilderCase:FlexUnit1BuilderCase;
 		public var flexUnit4BuilderCase:FlexUnit4BuilderCase;
-CONFIG::useFlexClasses
-		public var fluint1BuilderCase:org.flexunit.internals.builders.cases.Fluint1BuilderCase;
-
+	
 		public var ignoredBuilderCase:IgnoredBuilderCase;
 		public var ignoredClassRunnerCase :IgnoredClassRunnerCase;
 		public var suiteMethodBuilderCase:SuiteMethodBuilderCase;
