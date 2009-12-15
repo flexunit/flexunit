@@ -6,6 +6,7 @@ package org.hamcrest
     import org.hamcrest.mxml.collection.EveryItemTest;
     import org.hamcrest.mxml.collection.HasItemTest;
     import org.hamcrest.mxml.collection.HasItemsTest;
+    import org.hamcrest.mxml.collection.InArrayTest;
     import org.hamcrest.mxml.core.AllOfTest;
     import org.hamcrest.mxml.core.AnyOfTest;
     import org.hamcrest.mxml.core.AnythingTest;
@@ -43,6 +44,7 @@ package org.hamcrest
         public var everyItem:EveryItemTest;
         public var hasItem:HasItemTest;
         public var hasItems:HasItemsTest;
+        public var inArray:InArrayTest;
 
         // core 
         public var allOf:AllOfTest;
