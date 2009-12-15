@@ -7,8 +7,6 @@ package org.flexunit.async
 	}
 	import org.flexunit.async.cases.AsyncHandlerCase;
 	import org.flexunit.async.cases.AsyncLocatorCase;
-	import org.flexunit.async.cases.AsyncTestResponderCase;
-	import org.flexunit.async.cases.TestResponderCase;
 
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
@@ -18,10 +16,12 @@ package org.flexunit.async
 		CONFIG::useFlexClasses
 		{
 		public var asyncFlexCase : AsyncFlexCase;
+		import org.flexunit.async.cases.AsyncTestResponderCase;
+		public var asyncTestRespondingCase : AsyncTestResponderCase;
+		import org.flexunit.async.cases.TestResponderCase;
+		public var testResponderCase : TestResponderCase;
 		}
 		public var asyncHandlerCase:AsyncHandlerCase;
 		public var asyncLocatorCase:AsyncLocatorCase;
-		public var asyncTestRespondingCase : AsyncTestResponderCase;
-		public var testResponderCase : TestResponderCase;
 	}
 }
