@@ -30,7 +30,6 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
      * @private
      */
 	public class TestMethodOrder {
-		
 		protected static var testUnassignedComplete:Boolean = false;
 		protected static var testOneComplete:Boolean = false;
 		protected static var testTwoComplete:Boolean = false;
@@ -38,6 +37,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 		protected static var testFourComplete:Boolean = false;
 		protected static var testNinetyComplete:Boolean = false;
 
+		
 		[Test]
 		public function testOrderUnassigned() : void {
 			testUnassignedComplete = true
@@ -107,7 +107,5 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	    	Assert.assertFalse( testNinetyComplete );
 
 	    }
-		
-		
 	}
 }
