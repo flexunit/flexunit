@@ -3,16 +3,17 @@ package org.flexunit.token.mocks
 	import com.anywebcam.mock.Mock;
 	
 	import org.flexunit.token.AsyncTestToken;
+	import org.flexunit.token.IAsyncTestToken;
 	
 	public class AsyncTestTokenMock extends AsyncTestToken
 	{
 		public var mock:Mock;
 		
-		override public function get parentToken():AsyncTestToken {
+		override public function get parentToken():IAsyncTestToken {
 			return mock.parentToken;
 		}
 		
-		override public function set parentToken(value:AsyncTestToken):void {
+		override public function set parentToken(value:IAsyncTestToken):void {
 			mock.parentToken = value;
 		}
 		
@@ -20,7 +21,7 @@ package org.flexunit.token.mocks
 			return mock.error;
 		}
 		
-		override public function addNotificationMethod(method:Function, debugClassName:String=null):AsyncTestToken {
+		override public function addNotificationMethod(method:Function, debugClassName:String=null):IAsyncTestToken {
 			return mock.addNotificationMethod(method, debugClassName);
 		}
 		
