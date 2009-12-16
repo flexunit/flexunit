@@ -8,10 +8,5 @@ package org.flexunit.reporting
 	{
 		public var ffASCase:FailureFormatterASCase;
 			
-		CONFIG::useFlexClasses {
-			import org.flexunit.reporting.cases.FailureFormatterFlexCase;
-			
-			public var ffFlexCase : FailureFormatterFlexCase;
-		}
 	}
 }
