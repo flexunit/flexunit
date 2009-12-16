@@ -123,7 +123,7 @@ package org.flexunit.internals.runners.statements {
 		 * @param method The Function to call with the provided <code>rest</code> parameters.
 		 * @param rest The parameters supplied to the <code>method</code>.
 		 */
-		private function protect( method:Function, ... rest ):void {
+		protected function protect( method:Function, ... rest ):void {
 			try {
 				if ( rest && rest.length>0 ) {
 					method.apply( this, rest );
@@ -506,7 +506,7 @@ package org.flexunit.internals.runners.statements {
 				testComplete = true;
 				AsyncLocator.cleanUpCallableForTest( objectUnderTest );
 				removeAllAsyncEventListeners();
-				parentToken.sendResult( error );			
+				parentToken.sendResult( error );
 			}
 		}
 		

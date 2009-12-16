@@ -83,6 +83,7 @@ package org.flexunit.async.cases
 			asyncHandler.startTimer();
 		}
 		
+		///
 		[Test(async, description="Call a method with an Async handler within it and making sure the timeout happens.")]
 		public function handleCallAsyncMethodShouldTimeout() : void {
 			asyncShouldTimeout();
@@ -90,16 +91,16 @@ package org.flexunit.async.cases
 		
 		[Test(async, description="Running two timers, and ensuring that the second Async handler calls it's timeoutHandler and the first timer completes, even when the second timer isn't started.")]
 		public function handleTwoAsyncTest() : void {
-			var t1:Timer = new Timer( 400, 1 );
+			var t1:Timer = new Timer( 500, 1 );
 			var t2:Timer = new Timer( 400, 1 );
 			//Second timer isn't started, expecting that it will timeout and that the first timer will complete.
-			t1.addEventListener(TimerEvent.TIMER, Async.asyncHandler( this, handleTimerFinished, 600, null, null) );
-			t2.addEventListener(TimerEvent.TIMER_COMPLETE, Async.asyncHandler( this, handleTimer2Finished, 800, null, handleTwoAsyncTimeout) );
+			t1.addEventListener(TimerEvent.TIMER, Async.asyncHandler( this, handleTimerFinished, 600, null, handleTimer) );
+			t2.addEventListener(TimerEvent.TIMER_COMPLETE, Async.asyncHandler( this, null, 800, null, handleAsyncTimeout) );
 			t1.start();
 		}
 		
 		[Test(async, description="Ensure this method calls to secondTimerStart method, and the Async handler there timesout without starting the timer associated with it.")]
-		public function testChainedTimersAsyncCall():void
+		public function handleChainedTimersAsyncCall():void
 		{
 			
 			var t:Timer = new Timer( 400, 1 );
@@ -107,32 +108,22 @@ package org.flexunit.async.cases
 				( TimerEvent.TIMER
 					, Async.asyncHandler
 					( this
-						, secondTimerStart
-						, 500
-						, {}
+						, secondTimerStart, 500, null
 						, function(data:Object = null):void{ Assert.fail( "first timer event not received." ); }
 					)
 				);
 			t.start();
 		}
 		
-		protected function asyncShouldTimeout() : void
-		{
-			var t1:Timer = new Timer( 400, 1 );
-			t1.addEventListener(TimerEvent.TIMER, Async.asyncHandler( this, null, 600, null, handleTwoAsyncTimeout) );
-		}
-		
+		//This methods Async handler should timeout, if not this test is a failure.
 		protected function secondTimerStart( event:TimerEvent, data:Object = null ):void
 		{
-			
-			var t:Timer = new Timer( 400, 1 );
+			var t:Timer = new Timer( 700, 1 );
 			t.addEventListener
 				( TimerEvent.TIMER
 					, Async.asyncHandler
 					( this
-						, handleTimer
-						, 500
-						, {}
+						, handleTimer, 500, null
 						, function(data:Object = null):void{ Assert.assertTrue( "timeout happened as expected", true ); }
 					)
 				);
@@ -141,24 +132,28 @@ package org.flexunit.async.cases
 			
 		}
 		
-		protected function handleTimerFinished( event : TimerEvent, data : Object = null ) : void
+		//This method is being called from a test and the Async is expected to timeout even when the timer isn't started.
+		protected function asyncShouldTimeout() : void
 		{
-			Assert.assertTrue( true );
-		}
-
-		protected function handleTimer2Finished( event : TimerEvent, data : Object = null ) : void
-		{
-			Assert.fail( "timer actually completed, but we wanted it to timeout" );
-		}
-		
-		protected function handleTwoAsyncTimeout(passThroughData:Object):void {
-			Assert.assertTrue( "timeout happened as expected", true );
+			var t1:Timer = new Timer( 400, 1 );
+			t1.addEventListener(TimerEvent.TIMER, Async.asyncHandler( this, null, 600, null, handleAsyncTimeout) );
 		}
 		
 		protected function handleTimer( event:TimerEvent, data:Object = null ):void
 		{
 			Assert.fail( "timer actually completed, but we wanted it to timeout" );
 		}
+		
+		protected function handleAsyncTimeout(passThroughData:Object):void {
+			Assert.assertTrue( "timeout happened as expected", true );
+		}
+		
+		protected function handleTimerFinished( event : TimerEvent, data : Object = null ) : void
+		{
+			Assert.assertTrue( true );
+		}
+		////
+		
 		
 		protected function handleEventListener(asyncEvent:AsyncEvent, passThroughData:Object):void {
 			var event:Event = passThroughData.event as Event;
@@ -174,9 +169,6 @@ package org.flexunit.async.cases
 		protected function handleListenerTimeout(passThroughData:Object):void {
 			Assert.fail("The timeout has been reached.");
 		}
-		
-		
-		
-		
+	
 	}
 }
