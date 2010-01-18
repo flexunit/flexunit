@@ -14,17 +14,16 @@ import org.flexunit.ant.FlexUnitSocketServer;
 import org.flexunit.ant.FlexUnitSocketThread;
 import org.flexunit.ant.LoggingUtil;
 import org.flexunit.ant.launcher.FlexUnitLauncher;
+import org.flexunit.ant.launcher.OperatingSystem;
 import org.flexunit.ant.report.Reports;
 
 public class FlexUnitTask extends Task
 {
    private static final String TRUE = "true";
    private static final String DEFAULT_REPORT_PATH = ".";
-   private static final String DEFAULT_SNAPSHOT_FILENAME = "snapshot.jpg";
    private static final int FLOOR_FOR_PORT = 1;
    private static final int SHORTEST_SOCKET_TIMEOUT = 5000; //ms
    private static final List<String> VALID_PLAYERS = Arrays.asList(new String[]{"flash", "air"});
-   private static final List<String> VALID_XCOMMANDS = Arrays.asList(new String[]{"xvfb", "xvnc"});
 
    // Suite building variables
    private Reports reports;
@@ -35,13 +34,11 @@ public class FlexUnitTask extends Task
    private int socketTimeout = 60000; //milliseconds
    private int serverBufferSize = 262144; //bytes
    private boolean failOnTestFailure = false;
-   private boolean isLocalTrusted = false;
+   private boolean isLocalTrusted = true;
    private String failureProperty = "flexunit.failed";
    private String player = "flash";
    private boolean headless = false;
-   private String xcommand = "xvfb";
-   private boolean snapshot = false;
-   private File snapshotFile = null;
+   private int display = 99;
    private File swf = null;
    private File reportDir = null;
 
@@ -152,20 +149,10 @@ public class FlexUnitTask extends Task
    {
       this.headless = headless;
    }
-
-   public void setXcommand(String xcommand)
+   
+   public void setDisplay(int number)
    {
-      this.xcommand = xcommand;
-   }
-
-   public void setSnapshot(boolean snapshot)
-   {
-      this.snapshot = snapshot;
-   }
-
-   public void setSnapshotFile(String filename)
-   {
-      this.snapshotFile = getProject().resolveFile(filename);
+	   this.display = number;
    }
 
    /**
@@ -230,14 +217,14 @@ public class FlexUnitTask extends Task
       
       if(headless)
       {
-         if(!VALID_XCOMMANDS.contains(xcommand))
+         if(OperatingSystem.identify() != OperatingSystem.UNIX)
          {
-            throw new BuildException("The provided 'xcommand' property value [" + xcommand + "] must be either of the following values: " + VALID_XCOMMANDS.toString() + ".");
+            throw new BuildException("Headless mode can only be used on Linux with vncserver installed.");
          }
          
-         if(snapshotFile != null && !snapshotFile.getParentFile().exists())
+         if(display < 1)
          {
-            LoggingUtil.log("Provided path specified in 'snapshotFile' [" + snapshotFile.getPath() + "] cannot be created; the parent directory does not exist.");
+            throw new BuildException("The provided 'display' number must be set higher than 0.  99 or higher is recommended.");
          }
       }
    }
@@ -259,13 +246,6 @@ public class FlexUnitTask extends Task
       //create directory just to be sure it exists, already existing dirs will not be overwritten
       reportDir.mkdir();
       
-      //generate snapshot file handle
-      if(snapshotFile == null || !snapshotFile.getParentFile().exists())
-      {
-         snapshotFile = getProject().resolveFile(reportDir.getAbsoluteFile() + "/" + DEFAULT_SNAPSHOT_FILENAME);
-         LoggingUtil.log("Using default snapshot file path [" + snapshotFile.getAbsolutePath() + "]");
-      }
-      
       //show the resulting defaults and provided values
       logInputValues();
    }
@@ -278,16 +258,14 @@ public class FlexUnitTask extends Task
       LoggingUtil.log("Using the following settings:");
       LoggingUtil.log("\thaltonfailure: [" + failOnTestFailure + "]");
       LoggingUtil.log("\theadless: [" + headless + "]");
+      LoggingUtil.log("\tdisplay: [" + display + "]");
       LoggingUtil.log("\tlocalTrusted: [" + isLocalTrusted + "]");
       LoggingUtil.log("\tplayer: [" + player + "]");
       LoggingUtil.log("\tport: [" + port + "]");
-      LoggingUtil.log("\tsnapshot: [" + snapshot + "]");
-      LoggingUtil.log("\tsnapshotFile: [" + (snapshotFile != null ? snapshotFile.getAbsolutePath() : null) + "]");
       LoggingUtil.log("\tswf: [" + swf + "]");
       LoggingUtil.log("\ttimeout: [" + socketTimeout + "ms]");
       LoggingUtil.log("\ttoDir: [" + reportDir.getAbsolutePath() + "]");
       LoggingUtil.log("\tverbose: [" + verbose + "]");
-      LoggingUtil.log("\txcommand: [" + xcommand + "]");
    }
    
    /**
@@ -295,7 +273,7 @@ public class FlexUnitTask extends Task
     */
    private void launchTestSuite()
    {
-      final FlexUnitLauncher browser = new FlexUnitLauncher(getProject(), isLocalTrusted, headless, player, xcommand, snapshot, snapshotFile);
+      final FlexUnitLauncher browser = new FlexUnitLauncher(getProject(), isLocalTrusted, headless, display, player);
 
       try
       {

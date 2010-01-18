@@ -45,19 +45,4 @@ public class CommandFactory
       
       return command;
    }
-   
-   public static void createHeadlessStart(String xcommand)
-   {
-      //TODO: Implement factory method
-   }
-   
-   public static void createHeadlessStop(String xcommand)
-   {
-      //TODO: Implement factory method
-   }
-   
-   public static void createSnapshot(boolean headless, String xcommand)
-   {
-      //TODO: Implement factory method
-   }
 }
