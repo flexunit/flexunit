@@ -1,3 +1,6 @@
+------------------------------------------------------------------------
+Configuration
+------------------------------------------------------------------------
 This is a sample project showing how the FlexUnit4 Ant task can be used to build a project.  Below is a description of the 
 possible configuration options for the FlexUnit4 Ant task:
 
@@ -9,8 +12,11 @@ possible configuration options for the FlexUnit4 Ant task:
 	verbose="true|false"
 	localTrusted="true|false"
 	port="<port number on which to run the XMLSocket>"
+	buffer="<size in bytes of buffer for incoming data from flash movie"
 	timeout="<timeout for the runner in milliseconds>"
-	failureproperty="<property name to set to "true" if any tests fail>" />
+	failureproperty="<property name to set to 'true' if any tests fail>" 
+	headless="true|false"
+	display="<X-Windows display # to use in headless mode" />
 
 Below is a more detailed description of each attribute of the task:
 
@@ -46,13 +52,50 @@ Below is a more detailed description of each attribute of the task:
        - Setting this attribute informs the task to listen for test results on the specified port.  Using this attribute implies 
          that the port on the CIListener instance registered on the FlexUnitCore is registered with the same port number.
          
+- buffer - DEFAULT : 262144
+         - Data buffer size (in bytes) for incoming communication from the Flash movie to the task.  Useful to increase for large
+           sets of tests with potentially lots of failures/errors.  Current set to ~256K which should never typically need to
+           be changed.
+         
 - timeout - DEFAULT: 60000 (60s)
           - Setting this attribute will dictate the amount of time the task listens for test results until it times out.
 
 - failureproperty - DEFAULT: flexunit.failed
                   - If a test failure occurs during the test run, the property name set in this attribute will receive a value of 
-                    true.  Per Ant conventions, this property will not exist unless a test in the run has failed or errored. 
+                    true.  Per Ant conventions, this property will not exist unless a test in the run has failed or errored.
 
+- headless - DEFAULT : false
+           - Setting this attribute to true allows the task to execute tests headlessly via Xvnc.  See below for more details on 
+             running headlessly.
+
+- display - DEFAULT : 99
+          - The base display number used by Xvnc for headless support in the task.  See below for more details on running 
+            headlessly.
+
+------------------------------------------------------------------------
+Xvnc Support
+------------------------------------------------------------------------
+The Ant task has support to execute a test SWF under a headless environment for Linux platforms with Xvnc support; currently 
+there is no built in support for executing a text execution headlessly on Windows although this is possible.  The current
+support is a port of the Xvnc Hudson Plugin found at http://wiki.hudson-ci.org/display/HUDSON/Xvnc+Plugin.  By
+marking headless="true", the task will attempt to do the following to supplement the execution of the test SWF:
+
+   1. Attempt to execute the command "vncserver :<display>", where display is the value of the display attribute which defaults
+      to 99.
+   2. If the display value is in use by X-Windows, then the task will increment the display number up to 3 additional times to 
+      attempt to successfully execute the above command.
+   3. Once the vncserver has been started, the player command will be issued with the environment variable "DISPLAY" set to a value
+      of ":<display>".  This will cause all windowing output for the duration of the player command, to be transferred to the
+      display on which the vncserver is executing.
+   4. Once the player command has completed, the command "vncserver -kill :<display>" will be issued closing the vncserver on the
+      appropriate display.
+
+Please note that X-Windows, an implementation of vncserver, and their respective dependencies (determined per platform) are 
+required to utilize this support.
+
+------------------------------------------------------------------------
+Configuration
+------------------------------------------------------------------------
 In terms of this sample project, the project folder layout is as such:
 
 - bin-debug
@@ -125,13 +168,15 @@ The Maven build file using FlexMojos, when run successfully, will produce a fold
 - build.xml
 - pom.xml
 
-The builds in the sample project were tested using Ant 1.7.1, Maven 2.0.10, and FlexMojos 3.4.2.  The FlexUnit4 Ant task JAR 
-was built using Java 5.  The source for the sample project was built using Flex 3.4.0.9271 and Flash Player 10.  Please consult 
-the individual build files for more details on each's implementation of the build process.  Currently there are plans to support 
-xvfb in the next release of the Ant task, but currently this feature is not available, making truly headless builds using 
-FlexUnit4 not possible at this time.   
+------------------------------------------------------------------------
+Disclaimer and support
+------------------------------------------------------------------------
+The builds in the sample project were tested using Ant 1.7.1, Maven 2.0.10, and FlexMojos 3.5.0.  The FlexUnit4 Ant task JAR 
+was built using Java 5.  The source for the sample project was built using Flex 3.5.0.12683 and Flash Player 10.0 r42.  Please consult 
+the individual build files for more details on each's implementation of the build process.
 
 Please keep in mind, these Ant and Maven builds have been created as suggestions for how to employ FlexUnit4 in a project's build
 process.  These build files are not intended to dictate good practice with respect to using Ant or Maven.  For more details 
 on the Apache Ant project visit http://ant.apache.org/, for Apache Maven visit http://maven.apache.org/, and for FlexMojos visit 
-http://flexmojos.sonatype.org/.
+http://flexmojos.sonatype.org/.  If you require assistance in using this Ant task, please utilize the user forums listed at 
+http://flexunit.org as well as the wiki at the same location.
