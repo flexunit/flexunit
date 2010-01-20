@@ -35,7 +35,8 @@ package org.flexunit.runner.notification {
 	 * and override the appropriate methods. If a listener throws an exception while processing a 
 	 * test event, it will be removed for the remainder of the test run.
 	 * 
-	 * <p>For example, suppose you have a <code>Cowbell</code>
+	 * <p>
+	 * For example, suppose you have a <code>Cowbell</code>
 	 * class that you want to make a noise whenever a test fails. You could write:
 	 * <pre>
 	 * public class RingingListener extends RunListener {
@@ -44,6 +45,7 @@ package org.flexunit.runner.notification {
 	 * 	}
 	 * }
 	 * </pre>
+	 * </p>
 	 * 
 	 * <p>To invoke your listener, you need to run your tests through <code>FlexUnitCore</code>.
 	 * <pre>

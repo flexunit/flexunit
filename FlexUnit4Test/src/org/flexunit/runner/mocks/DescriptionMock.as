@@ -12,7 +12,7 @@ package org.flexunit.runner.mocks
 		{
 			mock = new Mock( this );
 		}
-
+		
 		public function get children():Array
 		{
 			return mock.children;
@@ -38,12 +38,7 @@ package org.flexunit.runner.mocks
 			return mock.testCount;
 		}
 		
-		public function getMetadata(type:String):XML
-		{
-			return mock.getMetadata( type );
-		}
-		
-		public function getAllMetadata():XMLList
+		public function getAllMetadata():Array
 		{
 			return mock.getAllMetadata;
 		}

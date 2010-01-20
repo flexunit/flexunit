@@ -58,14 +58,14 @@ package org.flexunit.async {
 		 * Constructor.
 		 * 
 		 * @param result A <code>Function</code> that handles results and expects an info and passThroughData parameter.
-		 * <p>
+		 * 
 		 * <code>public function result( info:Object, passThroughData:Object ):void { ...
-		 * }</code></p>
+		 * }</code><br/>
 		 * 
 		 * @param fault A <code>Function</code> that handles faults and expects a data and passThroughData parameter.
-		 * <p>
+		 * 
 		 * <code>public function fault( data:Object, passThroughData:Object ):void { ...
-		 * }</code></p>
+		 * }</code><br/>
 		 */
 		public function TestResponder( result:Function, fault:Function ) {
 			resultFunction = result;

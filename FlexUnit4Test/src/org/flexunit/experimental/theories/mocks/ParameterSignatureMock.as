@@ -3,6 +3,7 @@ package org.flexunit.experimental.theories.mocks
 	import com.anywebcam.mock.Mock;
 	
 	import flex.lang.reflect.Field;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
 	import org.flexunit.experimental.theories.ParameterSignature;
 	import org.flexunit.runners.model.FrameworkMethod;
@@ -32,11 +33,11 @@ package org.flexunit.experimental.theories.mocks
 			return mock.hasMetadata(type);
 		}
 		
-		override public function findDeepAnnotation(type:String):XML {
+		override public function findDeepAnnotation(type:String):MetaDataAnnotation {
 			return mock.findDeepAnnotation(type);
 		}
 		
-		override public function getAnnotation(type:String):XML {
+		override public function getAnnotation(type:String):MetaDataAnnotation {
 			return mock.getAnnotation(type);
 		}
 		
@@ -44,7 +45,7 @@ package org.flexunit.experimental.theories.mocks
 			return mock.toString();
 		}
 		
-		public function ParameterSignatureMock(type:Class = null, metaDataList:XMLList = null) {
+		public function ParameterSignatureMock(type:Class = null, metaDataList:Array = null) {
 			mock = new Mock(this);
 			
 			super(type, metaDataList);

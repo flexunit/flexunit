@@ -36,15 +36,15 @@ package org.flexunit.runner.notification {
 	 * classes to notify others of the following conditions:
 	 * 
 	 * <ul>
-	 * <li>For the Test Run: Started/Finished
-	 * <li>For an Individual Test: Started/Failed/Ignored/Finished/AssumptionFailures
-	 * </ul><p>
+	 * <li>For the Test Run: Started/Finished</li>
+	 * <li>For an Individual Test: Started/Failed/Ignored/Finished/AssumptionFailures</li>
+	 * </ul><br/>
 	 * 
 	 * A parallel can be drawn with <code>IEventDispatcher</code>; however, unlike an event dispatcher, 
-	 * <code>IRunNotifier<code>s have limitations on what types of objects can listen to their events.
+	 * <code>IRunNotifier</code>s have limitations on what types of objects can listen to their events.
 	 * An <code>IRunListeners</code>s are used to listen to events that are broadcast by 
 	 * <code>IRunNotifier</code>s.  Each <code>IRunNotifier</code> contain an <code>#addListener()</code>
-	 * and <code>#removeListener</code> method that accetps an <code>IRunListener</code> as an argument.<p>
+	 * and <code>#removeListener</code> method that accetps an <code>IRunListener</code> as an argument.<br/>
 	 * 
 	 * If one writes an <code>IRunner</code>, they may need to notify FlexUnit4 of their progress while 
 	 * running tests.  This is accomplished by invoking the <code>IRunNotifier</code> passed to the
@@ -63,7 +63,7 @@ package org.flexunit.runner.notification {
 		/**
 		 * Invoke to tell all registered <code>IRunListener</code>s that the test run has finished.
 		 * 
-		 * @param result The <code>Result<code> of the test run.
+		 * @param result The <code>Result</code> of the test run.
 		 */
 		function fireTestRunFinished( result:Result ):void;
 		

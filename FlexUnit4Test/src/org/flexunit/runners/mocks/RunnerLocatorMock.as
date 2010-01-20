@@ -21,7 +21,8 @@ package org.flexunit.runners.mocks
 		 * @param param5
 		 * @param param6
 		 * 
-		 * <p>All six params are generic arguments for use in testing Constructor.as
+		 * <br/>
+		 * All six params are generic arguments for use in testing Constructor.as
 		 * See ConstructorCase check_newInstance_valid_number_of_agruments method 
 		 */
 		public function RunnerLocatorMock( param1:String=null,

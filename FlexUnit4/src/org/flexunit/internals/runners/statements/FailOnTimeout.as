@@ -41,10 +41,10 @@ package org.flexunit.internals.runners.statements {
 	 * whether a specific test method has exceeded a timeout period for execution.  A test
 	 * method normally will run to completion regardless of how long it takes the test to
 	 * execute; however, if a timeout is imposed on the test method, the test will
-	 * fail if the test does not finish within the time limit.<p>
+	 * fail if the test does not finish within the time limit.<br/>
 	 * 
 	 * In order to fail on a timeout, a test method must include metadata indicating it has
-	 * a timeout time limit.  The timeout time limit is expected to be provided in milliseconds.<p>
+	 * a timeout time limit.  The timeout time limit is expected to be provided in milliseconds.<br/>
 	 * 
 	 * <pre><code>
 	 * [Test(timeout=100)]
@@ -104,7 +104,7 @@ package org.flexunit.internals.runners.statements {
 		 * will be returned.
 		 */
 		public static function hasTimeout( method:FrameworkMethod ):String {
-			var timeout:String = String( method.getSpecificMetaDataArg( "Test", "timeout" ) );
+			var timeout:String = String( method.getSpecificMetaDataArgValue( "Test", "timeout" ) );
 			var hasTimeout:Boolean = timeout && ( timeout != "null" ) && ( timeout.length>0 );
 
 			return hasTimeout?timeout:null;			

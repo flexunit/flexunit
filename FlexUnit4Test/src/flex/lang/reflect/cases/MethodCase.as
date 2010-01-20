@@ -1,6 +1,8 @@
 package flex.lang.reflect.cases
 {
 	import flex.lang.reflect.Method;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
+	import flex.lang.reflect.metadata.MetaDataArgument;
 	
 	import org.flexunit.Assert;
 	
@@ -57,7 +59,7 @@ package flex.lang.reflect.cases
 			Assert.assertTrue( method.isStatic );
 		}
 		
-		[Test(description="ensure one metada is retrieved properly when using metadata getter")]
+		[Test(description="ensure one metadata is retrieved properly when using metadata getter")]
 		public function check_get_one_metadata():void {
 			var metadataXMLStr:String = "<metadata name=\"Test\">" +
 										"<arg key=\"description\" value=\"my description\"/>" +
@@ -70,15 +72,18 @@ package flex.lang.reflect.cases
 			
 			method = new Method( methodXML );
 			
-			var xmlListStrExpected:String = XMLList( metadataXMLStr ).toString();
-			var xmlListStrActual:String = method.metadata.toString();
-			Assert.assertEquals( xmlListStrExpected, xmlListStrActual );
+			Assert.assertEquals( 1, method.metadata.length );
+			Assert.assertEquals( 1, ( method.metadata[ 0 ] as MetaDataAnnotation ).arguments.length );
+			Assert.assertEquals( "Test", ( method.metadata[ 0 ] as MetaDataAnnotation ).name );
+			Assert.assertEquals( "description", ( ( method.metadata[ 0 ] as MetaDataAnnotation ).arguments[ 0 ] as MetaDataArgument ).key );
+			Assert.assertEquals( "my description", ( ( method.metadata[ 0 ] as MetaDataAnnotation ).arguments[ 0 ] as MetaDataArgument ).value );
 		}
 		
 		[Test(description="ensure multiple metadata are retrieved properly")]
 		public function check_get_multiple_metadata():void {
 			var metadataXMLStr:String = "<metadata name=\"Test\">" +
 										"<arg key=\"description\" value=\"my description\"/>" +
+										"<arg key=\"\" value=\"async\"/>" +
 									"</metadata>" +
 									"<metadata name=\"ArrayElementType\">" +
 										"<arg key=\"\" value=\"Object\"/>" +
@@ -91,15 +96,24 @@ package flex.lang.reflect.cases
 			
 			method = new Method( methodXML );
 			
-			var xmlListStrExpected:String = XMLList( metadataXMLStr ).toString();
-			var xmlListStrActual:String = method.metadata.toString();
-			Assert.assertEquals( xmlListStrExpected, xmlListStrActual );
+			Assert.assertEquals( 2, method.metadata.length );
+			Assert.assertEquals( 2, ( method.metadata[ 0 ] as MetaDataAnnotation ).arguments.length );
+			Assert.assertEquals( "Test", ( method.metadata[ 0 ] as MetaDataAnnotation ).name );
+			Assert.assertEquals( "description", ( ( method.metadata[ 0 ] as MetaDataAnnotation ).arguments[ 0 ] as MetaDataArgument ).key );
+			Assert.assertEquals( "my description", ( ( method.metadata[ 0 ] as MetaDataAnnotation ).arguments[ 0 ] as MetaDataArgument ).value );
+			Assert.assertEquals( "async", ( ( method.metadata[ 0 ] as MetaDataAnnotation ).arguments[ 1 ] as MetaDataArgument ).key );
+			Assert.assertEquals( "true", ( ( method.metadata[ 0 ] as MetaDataAnnotation ).arguments[ 1 ] as MetaDataArgument ).value );
+
+			Assert.assertEquals( 1, ( method.metadata[ 1 ] as MetaDataAnnotation ).arguments.length );
+			Assert.assertEquals( "ArrayElementType", ( method.metadata[ 1 ] as MetaDataAnnotation ).name );
+			Assert.assertEquals( "Object", ( ( method.metadata[ 1 ] as MetaDataAnnotation ).arguments[ 0 ] as MetaDataArgument ).key );
+			Assert.assertEquals( "true", ( ( method.metadata[ 1 ] as MetaDataAnnotation ).arguments[ 0 ] as MetaDataArgument ).value );
 		}
 		
 		 /* This test fails when I think it should pass. 
 		 * 
-		 * <p>It may be that the method nodeHasMetaData in 
-		 * class MetaDataTools is not determining if a node has metadata properly.</p>
+		 * It may be that the method nodeHasMetaData in 
+		 * class MetaDataTools is not determining if a node has metadata properly.<br/>
 		 */		
 		[Test(description="ensure if method has at least one metadata that call to method hasMetaData returns the correct value")]
 		public function check_hasMetaData_true():void {
@@ -129,8 +143,11 @@ package flex.lang.reflect.cases
 								</method>;
 			
 			method = new Method( methodXML );
-			var metadata:String = method.getMetaData("Test", "description2");
-			Assert.assertEquals( "my description2", metadata );
+			var metadata:MetaDataAnnotation = method.getMetaData( "Test" );
+			var metaDataArg:MetaDataArgument = metadata.getArgument( "description" );
+
+			Assert.assertEquals( "Test", metadata.name );
+			Assert.assertEquals( "my description", metaDataArg.value );
 		}
 		
 		[Test(description="ensure returnType is retrieved properly")]

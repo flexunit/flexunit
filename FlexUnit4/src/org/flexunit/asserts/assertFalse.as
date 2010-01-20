@@ -15,7 +15,7 @@ package org.flexunit.asserts {
 	 * @see org.flexunit.Assert assertFalse 
 	 */
 
-	public static function assertFalse(... rest):void {
+	public function assertFalse(... rest):void {
 		Assert.assertFalse.apply( null, rest );
 	}
 }

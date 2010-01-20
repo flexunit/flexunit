@@ -1,6 +1,8 @@
 package flex.lang.reflect.cases
 {
 	import flex.lang.reflect.Field;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
+	import flex.lang.reflect.metadata.MetaDataArgument;
 	
 	import org.flexunit.Assert;
 	
@@ -102,8 +104,9 @@ package flex.lang.reflect.cases
     							</metadata>
     						</variable>;
 			field = new Field( xml, false, LocalTestClass, false );
-			var metadata:String = field.getMetaData( "ArrayElementType", "Boogie" );
-			Assert.assertEquals( "Board", metadata );
+			var metadata:MetaDataAnnotation = field.getMetaData( "ArrayElementType" );//, "Boogie" );
+			var metadataArg:MetaDataArgument = metadata.getArgument("Boogie");
+			Assert.assertEquals( "Board", metadataArg.value );
 		}
 		
 		[Test(description="ensure field type is retrieved properly")]

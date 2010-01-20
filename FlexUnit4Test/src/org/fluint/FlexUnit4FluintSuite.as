@@ -4,6 +4,7 @@ package org.fluint
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestBindingUse;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestMXMLComponentUse;
 	
+	import org.flexunit.internals.builders.cases.Fluint1BuilderCase;
 	import org.fluint.sequence.SequenceSuite;
 	import org.fluint.uiImpersonation.UIImpersonationSuite;
 
@@ -11,7 +12,6 @@ package org.fluint
 	[RunWith("org.flexunit.runners.Suite")]
 	public class FlexUnit4FluintSuite
 	{
-		//public var allDefaultPossibilitesFluintCase:AllDefaultPossibilitiesBuilderFluintCase;
 		
 		public var sequenceSuite:SequenceSuite;
 		public var uiImpersonationSuite:UIImpersonationSuite;
@@ -19,5 +19,6 @@ package org.fluint
 		public var testASComponentUse:TestASComponentUse;
 		public var testMXMLComponentUse:TestMXMLComponentUse;
 		public var testBindingUse:TestBindingUse;
+		public var fluint1BuilderCase:Fluint1BuilderCase;
 	}
 }

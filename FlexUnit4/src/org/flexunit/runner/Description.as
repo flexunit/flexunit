@@ -28,7 +28,7 @@
 package org.flexunit.runner {
 	import flash.utils.getQualifiedClassName;
 	
-	import flex.lang.reflect.utils.MetadataTools;
+	import flex.lang.reflect.Klass;
 	
 	import mx.utils.ObjectUtil;
 	
@@ -37,10 +37,10 @@ package org.flexunit.runner {
 	 * <code>Descriptions</code> can be atomic (a single test) or compound (containing children tests). 
 	 * <code>Description</code>s are used to provide feedback about the tests that are about to run (for example, 
 	 * the tree view visible in many IDEs) or tests that have been run (for example, the failures view).
-	 * This information can be used to report the current progress of the test run.<p>
+	 * This information can be used to report the current progress of the test run.<br/>
 	 * 
 	 * <code>Description</code>s are implemented as a single class rather than a composite because
-	 * they are entirely informational. They contain no logic aside from counting their tests.<p>
+	 * they are entirely informational. They contain no logic aside from counting their tests.<br/>
 	 * 
 	 * @see org.flexunit.runner.IRunner
 	 */
@@ -59,7 +59,7 @@ package org.flexunit.runner {
 		/**
 		 * @private
 		 */
-		private var _metadata:XMLList;
+		private var _metadata:Array;
 		/**
 		 * @private
 		 */
@@ -124,10 +124,19 @@ package org.flexunit.runner {
 		 * @return the metadata node that is attached to this description if a node is found with a matching <code>type</code> 
 		 * or a value of <code>null</code> if no such node exists.
 		 */
-		public function getMetadata( type:String ):XML {
+/*		public function getMetadata( type:String ):Array {
+			var metaDataItems:Array = new Array();
+			var allMetaData:Array = getAllMetadata();
+			
+			for ( var i:int=0; i<allMetaData.length; i++ ) {
+				if ( ( allMetaData[ i ] as MetaDataAnnotation ).name == type ) {
+					metaDataItems.push( allMetaData[ i ] ); 
+				}
+			}
+			 
 			//Extract specific needed node by type
-			return MetadataTools.getMetaDataNodeFromNodesList( _metadata, type );
-		}
+			return metaDataItems;
+		}*/
 		
 		/**
 		 * Returns all of the metadata that is attached to this description node.
@@ -135,7 +144,7 @@ package org.flexunit.runner {
 		 * @return the metadata as XML that is attached to this description node, 
 		 * or null if none exists
 		 */
-		public function getAllMetadata():XMLList {
+		public function getAllMetadata():Array {
 			return _metadata;
 		}
 		
@@ -196,18 +205,20 @@ package org.flexunit.runner {
 		 * Generally, you will add children to this <code>IDescription</code>.
 		 * 
 		 * @param suiteClassOrName The class of the object to be described or the name of 
-		 * the class to be secribed.
+		 * the class to be subscribed.
 		 * @param metaData Metadata about the test.
 		 * 
 		 * @return an <code>IDescription</code> named <code>name</code>.
 		 */
-		public static function createSuiteDescription( suiteClassOrName:*, metaData:XMLList=null ):IDescription {
-			var description:Description;
+		public static function createSuiteDescription( suiteClassOrName:*, metaData:Array=null ):IDescription {
+			var description:Description;			
 			if ( suiteClassOrName is String ) {
 				description = new Description( suiteClassOrName, metaData );
 			} else {
 				//description = new Description(suiteClassOrName.name, suiteClassOrName.metaData );
-				description = new Description( getQualifiedClassName( suiteClassOrName ), suiteClassOrName.metaData );
+				//instantiating a new Klass with suiteClassOrName passed in.  Necessary to get the metadata for the description.
+				var klass : Klass = new Klass( suiteClassOrName );
+				description = new Description( getQualifiedClassName( suiteClassOrName ), klass.metadata );
 			}
 
 			return description;
@@ -223,7 +234,7 @@ package org.flexunit.runner {
 		 * 
 		 * @return an <code>IDescription</code> named <code>name</code>.
 		 */
-		public static function createTestDescription( testClassOrInstance:Class, name:String, metadata:XMLList=null ):IDescription {
+		public static function createTestDescription( testClassOrInstance:Class, name:String, metadata:Array=null ):IDescription {
 			var description:Description = new Description( getQualifiedClassName( testClassOrInstance) + '.' + name, metadata );
 			return description;
 		}
@@ -235,7 +246,7 @@ package org.flexunit.runner {
 		 * @param metadata The metadata of the description node.
 		 * @param isInstance A Boolean value indicating whether the descrption node is an instance.
 		 */
-		public function Description( displayName:String, metadata:XMLList, isInstance:Boolean=false ) {
+		public function Description( displayName:String, metadata:Array, isInstance:Boolean=false ) {
 			//_testClassOrInstance = testClassOrInstance;
 			_displayName = displayName;
 			_isInstance = isInstance;

@@ -33,6 +33,7 @@ package org.flexunit.internals.runners.statements {
 	import mx.rpc.IResponder;
 	
 	import org.flexunit.Assert;
+	import org.flexunit.AssertionError;
 	import org.flexunit.async.AsyncHandler;
 	import org.flexunit.async.AsyncLocator;
 	import org.flexunit.async.AsyncTestResponder;
@@ -56,10 +57,10 @@ package org.flexunit.internals.runners.statements {
 	 * whether a specific test method is expecting an asynchronous response.  As this 
 	 * infrastructure carries overhead, we only create it when the user specifics a 
 	 * given test is asynchronous.  The class implements <code>IAsyncHandlingStatement</code> 
-	 * and works with the <code>Async</code> class.<p>
+	 * and works with the <code>Async</code> class.<br/>
 	 * 
 	 * In order to expect an asynchronous response, a test method must include metadata indicating 
-	 * it is expecting asynchronous functionality.<p>
+	 * it is expecting asynchronous functionality.<br/>
 	 * 
 	 * <pre><code>
 	 * [Test(async)]
@@ -122,16 +123,23 @@ package org.flexunit.internals.runners.statements {
 		 * @param method The Function to call with the provided <code>rest</code> parameters.
 		 * @param rest The parameters supplied to the <code>method</code>.
 		 */
-		private function protect( method:Function, ... rest ):void {
+		protected function protect( method:Function, ... rest ):void {
 			try {
 				if ( rest && rest.length>0 ) {
 					method.apply( this, rest );
 				} else {
 					method();
 				}
-			} catch (error:Error) {
+				
+				if ( hasPendingAsync ) { 
+					startAsyncTimers(); 
+				} 
+			
+			} 
+			catch (error:Error) {
 				sendComplete( error );
 			}
+			
 		}
 		
 		/**
@@ -169,12 +177,12 @@ package org.flexunit.internals.runners.statements {
 		 * @return 
 		 * 
 		 */
-		public function asyncErrorConditionHandler( eventHandler:Function, timeout:int=0, passThroughData:Object = null, timeoutHandler:Function = null ):Function {
+		public function asyncErrorConditionHandler( eventHandler:Function ):Function {
 			if ( testComplete ) {
 				sendComplete( new Error("Test Completed, but additional async event added") );
 			}
 
-			var asyncHandler:AsyncHandler = new AsyncHandler( this, eventHandler, timeout, passThroughData, timeoutHandler )
+			var asyncHandler:AsyncHandler = new AsyncHandler( this, eventHandler )
 			asyncHandler.addEventListener( AsyncHandler.EVENT_FIRED, handleAsyncErrorFired, false, 0, true );
 			//asyncHandler.addEventListener( AsyncHandler.TIMER_EXPIRED, handleAsyncTimeOut, false, 0, true );
 
@@ -303,8 +311,8 @@ package org.flexunit.internals.runners.statements {
 			if ( asyncHandler.timeoutHandler != null ) {
 				protect( asyncHandler.timeoutHandler, asyncHandler.passThroughData ); 
 			} else {
-				failure = true;
-				sendComplete( new Error( "Timeout Occurred before expected event" ) );
+				failure = true;				
+				sendComplete( new AssertionError( "Timeout Occurred before expected event" ) );
 				//protect( Assert.fail, "Timeout Occurred before expected event" );
 			}
 
@@ -355,8 +363,13 @@ package org.flexunit.internals.runners.statements {
 			}
 		}
 		
-		private function handleAsyncErrorFired( event:AsyncEvent ):void {
-			sendComplete( new Error( "Failing due to Async Event " + event?event:'' ) );
+		private function handleAsyncErrorFired( event:AsyncEvent ):void {			
+			var message:String = "Failing due to Async Event ";
+			if ( event && event.originalEvent ) {
+				message += String( event.originalEvent );
+			}
+
+			sendComplete( new AssertionError( message ) );
 		}
 		
 		/**
@@ -390,14 +403,14 @@ package org.flexunit.internals.runners.statements {
 					//The first one on the stack is not the one we received. 
 					//We received this one out of order, which is a failure condition
 					failure = true;
-					sendComplete( new Error( "Asynchronous Event Received out of Order" ) );
+					sendComplete( new AssertionError( "Asynchronous Event Received out of Order" ) );
 					//protect( Assert.fail, "Asynchronous Event Received out of Order" ); 
 				}
 			} else {
 				//We received an event, but we were not waiting for one, failure
 				//protect( Assert.fail, "Unexpected Asynchronous Event Occurred" );
 				failure = true; 
-				sendComplete( new Error( "Unexpected Asynchronous Event Occurred" ) );				
+				sendComplete( new AssertionError( "Unexpected Asynchronous Event Occurred" ) );				
 			}
 			
 			if ( !hasPendingAsync && !methodBodyExecuting && !failure ) {
@@ -493,7 +506,7 @@ package org.flexunit.internals.runners.statements {
 				testComplete = true;
 				AsyncLocator.cleanUpCallableForTest( objectUnderTest );
 				removeAllAsyncEventListeners();
-				parentToken.sendResult( error );			
+				parentToken.sendResult( error );
 			}
 		}
 		
@@ -549,7 +562,12 @@ package org.flexunit.internals.runners.statements {
 		 * @param passThroughData An Object that contains information to pass to the handler.
 		 */
 		public function failOnComplete( event:Event, passThroughData:Object ):void {
-			sendComplete( new Error( "Unexpected event received " + event?event:'' ) );
+			var message:String = "Unexpected event received ";
+			if ( event ) {
+				message += String( event );
+			}
+			
+			sendComplete( new AssertionError( message ) );
 		}
 		
 		/**
@@ -585,7 +603,7 @@ package org.flexunit.internals.runners.statements {
 		 * @return a Boolean value indicating whether the provided <code>method</code> is asynchronous.
 		 */
 		public static function hasAsync( method:FrameworkMethod, type:String="Test" ):Boolean {
-			var async:String = method.getSpecificMetaDataArg( type, "async" );
+			var async:String = method.getSpecificMetaDataArgValue( type, "async" );
 			var asyncBool:Boolean = ( async == "true" ); 
 			 
 			return asyncBool;			

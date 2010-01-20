@@ -29,6 +29,7 @@ package org.flexunit.internals.builders {
 	import flash.utils.getDefinitionByName;
 	
 	import flex.lang.reflect.Klass;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
 	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.runner.IRunner;
@@ -40,10 +41,10 @@ package org.flexunit.internals.builders {
 	 * in the metadata tag for a specific test class.  If no metadata tag is present or the <code>IRunner</code>
 	 * fails to build, no <code>IRunner</code> will be generated.  If a test class wants to use a defined
 	 * <code>IRunner</code>, it should include the [RunWith] tag that lists the full class name of
-	 * the <code>IRunner</code>.<p>
+	 * the <code>IRunner</code>.<br/>
 	 * 
 	 * The <code>MetaDataBuilder</code> provides a hug hook for extensibility, allowing many different types of
-	 * <code>IRunner</code>s to be created and used to run tests.<p>
+	 * <code>IRunner</code>s to be created and used to run tests.<br/>
 	 * 
 	 * <pre><code>
 	 * [RunWith("org.flexunit.runners.Suite")]
@@ -51,22 +52,22 @@ package org.flexunit.internals.builders {
 	 * 	[Test]
 	 * 	public function testMe():void { ...
 	 * 	}
-	 * }</code></pre><p>
+	 * }</code></pre><br/>
 	 * 
 	 * The <code>IRunner</code> that is to be built by the <code>MetaDataBuilder</code> should have a constructor 
-	 * implemented in one of the two following manners:<p>
+	 * implemented in one of the two following manners:<br/>
 	 * 
 	 * <pre><code>
 	 * public function RunnerClass( testClass:Object ) { ...
 	 * }
-	 * </code></pre><p>
+	 * </code></pre><br/>
 	 * 
-	 * Where testClass is the class to be run.<p>
+	 * Where testClass is the class to be run.<br/>
 	 * 
 	 * <pre><code>
 	 * public function RunnerClass( testClass:Object, suiteBuilder:IRunnerBuilder ) { ...
 	 * }
-	 * </code></pre><p>
+	 * </code></pre><br/>
 	 * 
 	 * Where testClass is the class to be run and suiteBuilder is an <code>IRunnerBuilder</code>.
 	 */
@@ -104,7 +105,13 @@ package org.flexunit.internals.builders {
 			//Determine if the testClass references a runner in its metadata
 			if ( klassInfo.hasMetaData( RUN_WITH ) ) {
 				//Get the definition for the runner class
-				var runWithValue:String = klassInfo.getMetaData( RUN_WITH ); 
+				var runWithValue:String = ""; 
+				var runWithAnnotation:MetaDataAnnotation = klassInfo.getMetaData( RUN_WITH );
+				
+				if ( runWithAnnotation && runWithAnnotation.defaultArgument ) {
+					runWithValue = runWithAnnotation.defaultArgument.key;
+				}
+
 				return buildRunner( runWithValue, testClass);
 			}
 			
@@ -167,7 +174,7 @@ package org.flexunit.internals.builders {
 				return new runnerClass( testClass, suiteBuilder );
 			} catch ( e:Error ) {
 				if ( e is InitializationError ) {
-					throw e
+					throw e;
 				} else {
 					throw createInitializationError( UNSPECIFIED, runnerClassName );
 				}

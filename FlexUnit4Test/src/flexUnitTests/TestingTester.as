@@ -1,7 +1,5 @@
 package flexUnitTests
 {
-	import flashx.textLayout.debug.assert;
-	
 	import flexunit.framework.TestCase;
 	
 	public class TestingTester extends TestCase

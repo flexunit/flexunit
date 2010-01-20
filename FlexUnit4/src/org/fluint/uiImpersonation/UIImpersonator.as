@@ -30,12 +30,18 @@
 {
 	import flash.display.DisplayObject;
 	
-	import org.fluint.uiImpersonation.TestEnvironment;
-	
 	import org.flexunit.Assert;
+	import org.fluint.uiImpersonation.VisualTestEnvironmentBuilder;
 
 	public class UIImpersonator extends Assert
 	{
+		/** Returns a test environment of either a Flex Container or a Sprite if in AS Only mode **/
+		private static function get testEnvironment():IVisualTestEnvironment {
+			var testEnvironment:IVisualEnvironmentBuilder = VisualTestEnvironmentBuilder.getInstance();
+			var environment:IVisualTestEnvironment = testEnvironment.buildVisualTestEnvironment();
+			return environment;
+		}
+
 	    /**
 	     *  Adds a child DisplayObject to the TestEnvironment.
 	     *  The child is added after other existing children,
@@ -59,7 +65,6 @@
 	     *  @tiptext Adds a child object to this container.
 	     */
 		public static function addChild(child:DisplayObject):DisplayObject {
-			var testEnvironment:TestEnvironment = TestEnvironment.getInstance();
 			return testEnvironment.addChild( child );
 		}
 
@@ -84,7 +89,6 @@
 	     *  @see mx.core.Container
 	     */
 		public static function addChildAt(child:DisplayObject, index:int):DisplayObject {
-			var testEnvironment:TestEnvironment = TestEnvironment.getInstance();
 			return testEnvironment.addChildAt( child, index );
 		}  
 
@@ -103,7 +107,6 @@
 	     *  or to the type of the removed component.
 	     */
 		public static function removeChild(child:DisplayObject):DisplayObject {
-			var testEnvironment:TestEnvironment = TestEnvironment.getInstance();
 			return testEnvironment.removeChild( child );
 		} 
 
@@ -123,7 +126,6 @@
 	     *  or to the type of the removed component.
 	     */
 		public static function removeChildAt(index:int):DisplayObject {
-			var testEnvironment:TestEnvironment = TestEnvironment.getInstance();
 			return testEnvironment.removeChildAt( index );
 		} 
 
@@ -131,7 +133,6 @@
 	     *  Removes all children from the child list of this container.
 	     */
 		public static function removeAllChildren():void {
-			var testEnvironment:TestEnvironment = TestEnvironment.getInstance();
 			return testEnvironment.removeAllChildren();
 		} 
 
@@ -149,7 +150,6 @@
 	     *  or to the type of a specific Flex control, such as ComboBox or TextArea.
 	     */
 	    public static function getChildAt(index:int):DisplayObject {
-			var testEnvironment:TestEnvironment = TestEnvironment.getInstance();
 	    	return testEnvironment.getChildAt( index );
 	    }
 
@@ -163,7 +163,6 @@
 	     *  or to the type of a specific Flex control, such as ComboBox or TextArea.
 	     */
 	    public static function getChildByName(name:String):DisplayObject {
-			var testEnvironment:TestEnvironment = TestEnvironment.getInstance();
 	    	return testEnvironment.getChildByName( name );
 	    }
 
@@ -203,7 +202,6 @@
 	     *  @return Number between 0 and (numChildren - 1).
 	     */
 	    public static function getChildIndex(child:DisplayObject):int {
-			var testEnvironment:TestEnvironment = TestEnvironment.getInstance();
 	    	return testEnvironment.getChildIndex( child );
 	    }
 
@@ -218,7 +216,6 @@
 	     *  Must be an integer between 0 and (numChildren - 1).
 	     */
 		public static function setChildIndex(child:DisplayObject, newIndex:int):void {
-			var testEnvironment:TestEnvironment = TestEnvironment.getInstance();
 			testEnvironment.setChildIndex( child, newIndex );
 		} 
 
@@ -234,7 +231,6 @@
 	     *  or <code>removeAllChildren()</code>.</p>
 	     */
 		public static function get numChildren():int {
-			var testEnvironment:TestEnvironment = TestEnvironment.getInstance();
 			return testEnvironment.numChildren;
 		}
 	}

@@ -33,12 +33,12 @@ package org.flexunit.token {
 	 * can then notify other tasks and provide the results of the just completed task to the notified parent
 	 * task through the use of a notification method.  In order to notify a parent task about the completion of a
 	 * task performed by a child task, the parent task must add a notification method to the <code>AsyncTestToken</code>
-	 * using the <code>#addNotificationMethod()</code>.<p>
+	 * using the <code>#addNotificationMethod()</code>.<br/>
 	 * 
 	 * The <code>AsyncTestToken</code> is used throughout much of FlexUnit4.  It is used to notify <code>FlexUnitCore</code>,
 	 * runners, statements, and parts of a test when a certain activity has finished.
 	 */
-	dynamic public class AsyncTestToken {
+	dynamic public class AsyncTestToken implements IAsyncTestToken {
 		/**
 		 * @private
 		 */
@@ -54,16 +54,16 @@ package org.flexunit.token {
 		/**
 		 * @private
 		 */
-		private var _token:AsyncTestToken;
+		private var _token:IAsyncTestToken;
 		
 		/**
 		 * Returns the parentToken of the <code>AsyncTestToken</code>.
 		 */
-		public function get parentToken():AsyncTestToken {
+		public function get parentToken():IAsyncTestToken {
 			return _token;
 		}
 
-		public function set parentToken( value:AsyncTestToken ):void {
+		public function set parentToken( value:IAsyncTestToken ):void {
 			_token = value;
 		}
 		
@@ -82,7 +82,7 @@ package org.flexunit.token {
 		 * 
 		 * @return this <code>AsyncTestToken</code> with the added <code>method</code>.
 		 */
-		public function addNotificationMethod( method:Function, debugClassName:String=null ):AsyncTestToken {
+		public function addNotificationMethod( method:Function, debugClassName:String=null ):IAsyncTestToken {
 			if (methodsEntries == null)
 				methodsEntries = [];
 	

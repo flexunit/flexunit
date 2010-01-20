@@ -3,6 +3,7 @@ package flex.lang.reflect.mocks
 	import com.anywebcam.mock.Mock;
 	
 	import flex.lang.reflect.Field;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
 
 	public class FieldMock extends Field
 	{
@@ -51,8 +52,8 @@ package flex.lang.reflect.mocks
 			return mock.hasMetaData( name );
 		}
 
-		override public function getMetaData( name:String, key:String="" ):String {
-			return mock.getMetaData( name, key );
+		override public function getMetaData( name:String ):MetaDataAnnotation {
+			return mock.getMetaData( name );
 		}
 
 		override public function get type():Class {

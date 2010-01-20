@@ -37,7 +37,7 @@ package org.flexunit.runners.model {
 	 * The <code>RunnerBuilderBase</code> is used as a base by other runner builders in FlexUnit4.  It
 	 * provides basic logic for the handling of constructing <code>IRunner</code>s for children of a
 	 * provided test class.  These children in turn may have children that will also need 
-	 * corresponding <code>IRunners</code>.<p>
+	 * corresponding <code>IRunners</code>.<br/>
 	 * 
 	 * The <code>RunnerBuilderBase</code>contains logic ensuring that a parent class does not reference 
 	 * itself or that a child class does not reference the parent, preventing a potential infinite loop.

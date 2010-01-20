@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties version="1">
-<includeClasses>
-<classEntry path="org.flexunit.listeners.VisualDebuggerListener"/>
-<classEntry path="org.flexunit.listeners.closer.FlexCoverCloser"/>
-<classEntry path="org.flexunit.listeners.closer.ApplicationCloser"/>
-<classEntry path="org.flexunit.listeners.CIListener"/>
-<classEntry path="org.flexunit.listeners.closer.StandAloneFlashPlayerCloser"/>
-</includeClasses>
-<includeResources/>
-<namespaceManifests/>
+  <includeClasses>
+    <classEntry path="org.flexunit.listeners.VisualDebuggerListener"/>
+    <classEntry path="org.flexunit.listeners.CIListener"/>
+    <classEntry path="org.flexunit.listeners.closer.ApplicationCloser"/>
+    <classEntry path="org.flexunit.listeners.closer.StandAloneFlashPlayerCloser"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
 </flexLibProperties>

@@ -1,9 +1,36 @@
+/**
+ * Copyright (c) 2007 Digital Primates IT Consulting Group
+ * 
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following
+ * conditions:
+ * 
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ **/ 
 package org.flexunit.cases
 {
 	import flexunit.framework.AssertionFailedError;
 	
 	import org.flexunit.Assert;
 
+	/**
+	 * @private
+	 */
 	public class AssertCase
 	{
 		protected var asserterCalled:int = 0;
@@ -59,12 +86,16 @@ package org.flexunit.cases
 		[Test(description="Ensure that the assertEquals function fails when two items are not equal")]
 		public function testAssertEqualsFails():void {
 			var failed:Boolean = false;
-			
+			var errMessage : String = "expected:<2> but was:<4>";
 			try {
 				Assert.assertEquals( 2, 4 );
 			} catch (error:AssertionFailedError) {
 				failed = true;
-				Assert.assertEquals( "expected:<2> but was:<4>", error.message );
+				//Cannot use Assert.assertEquals here since that is what we are testing.
+				if ( errMessage != error.message)
+				{
+					throw new AssertionFailedError( "expected:<" + errMessage + "> but was:<" + error.message + ">" );
+				}
 			}
 			if ( !failed ) {
 				Assert.fail( "Assert equals didn't fail" );
@@ -75,13 +106,17 @@ package org.flexunit.cases
 		public function testAssertEqualsWithMessageFails():void {
 			var message:String = "Assert equals fail";
 			var failed:Boolean = false;
-			
+			var errMessage : String = "Assert equals fail - expected:<2> but was:<4>";
 			try {
 				Assert.assertEquals( message, 2, 4 );
 			// if we get an error with the right message we pass
 			} catch (error:AssertionFailedError) {
 				failed = true;
-				Assert.assertEquals( message + " - expected:<2> but was:<4>", error.message );
+				//Cannot use Assert.assertEquals here since that is what we are testing.
+				if ( errMessage != error.message)
+				{
+					throw new AssertionFailedError( "expected:<" + errMessage + "> but was:<" + error.message + ">" );
+				}
 			}
 			if ( !failed ) {
 				Assert.fail( "Assert equals didn't fail" );
@@ -210,10 +245,19 @@ package org.flexunit.cases
 			Assert.failNotTrue( "Fail not true fail", true );
 		}
 		
-		[Test(description="Ensure that the failNotTrue function fails when a value of false is provided",
-			expects="flexunit.framework.AssertionFailedError")]
+		[Test(description="Ensure that the failNotTrue function fails when a value of false is provided")]
 		public function testFailNotTrueFails():void {
-			Assert.failNotTrue( "Fail not true fail", false );
+			var failed:Boolean = false;
+			
+			try {
+				Assert.failNotTrue( "Fail not true fail", false );
+			} catch ( error:AssertionFailedError ) {
+				failed = true;
+				Assert.assertEquals( "Fail not true fail - expected true but was false", error.message );
+			}
+			if ( !failed ) {
+				Assert.fail( "Fail not true fail didn't fail" );
+			}
 		}
 		
 		[Test(description="Ensure that the assertFalse function correctly works when a value of false is provided")]
@@ -263,10 +307,21 @@ package org.flexunit.cases
 			Assert.failTrue( "Fail true fail", false );
 		}
 		
-		[Test(description="Ensure that the failTrue function fails when a value of true is provided",
-			expects="flexunit.framework.AssertionFailedError")]
+		[Test(description="Ensure that the failTrue function fails when a value of true is provided")]
 		public function testFailTrueFails():void {
-			Assert.failTrue( "Fail true fail", true );
+			var message:String = "Fail true fail";
+			var failed:Boolean = false;
+			
+			try {
+				Assert.failTrue( message, true );
+				// if we get an error with the right message we pass
+			} catch ( error:AssertionFailedError ) {
+				failed = true;
+				Assert.assertEquals( message + " - expected false but was true", error.message );
+			}
+			if ( !failed ) {
+				Assert.fail( "Fail true fail didn't fail" );
+			}
 		}
 		
 		[Test(description="Ensure that the assertNull function correctly works when a value of null is provided")]
@@ -318,10 +373,19 @@ package org.flexunit.cases
 			Assert.failNull( "Fail null fail", o );
 		}
 		
-		[Test(description="Ensure that the failNull function fails when a null value is provided",
-			expects="flexunit.framework.AssertionFailedError")]
+		[Test(description="Ensure that the failNull function fails when a null value is provided")]
 		public function testFailNullFails():void {
-			Assert.failNull( "Fail null fail", null );
+			var failed:Boolean = false;
+			var message:String = "Fail null fail";
+			try {
+				Assert.failNull( message, null );
+			} catch ( error:AssertionFailedError ) {
+				failed = true;
+				Assert.assertEquals( message + " - object was null: null", error.message );
+			}
+			if ( !failed ) {
+				Assert.fail( "Fail null fail didn't fail" );
+			}
 		}
 		
 		[Test(description="Ensure the the assertNotNull function correctly works when a non-null value is provided")]

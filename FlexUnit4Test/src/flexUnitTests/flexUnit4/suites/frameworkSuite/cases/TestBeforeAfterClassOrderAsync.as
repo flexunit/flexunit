@@ -35,10 +35,18 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
      */
 	public class TestBeforeAfterClassOrderAsync {
 		private static const TIMER_LENGTH:int = 10;
-		private static const TIME_OUT:int = 15;
+		private static const TIME_OUT:int = 50;
 
 		private static var timer:Timer = new Timer( TIMER_LENGTH, 1 );
 		protected static var setupOrderArray:Array = new Array();
+
+		[BeforeClass(async)]
+		public static function beginNoOrder():void {
+			setupOrderArray.push( "beginNoOrder" );
+			timer.reset();
+			Async.proceedOnEvent( TestBeforeAfterClassOrderAsync, timer, TimerEvent.TIMER_COMPLETE, TIME_OUT );
+			timer.start();
+		}
 
 		[BeforeClass(async,order=1)]
 		public static function beginOne():void {
@@ -59,6 +67,14 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 		[BeforeClass(async,order=2)]
 		public static function beginTwo():void {
 			setupOrderArray.push( "beginTwo" );
+			timer.reset();
+			Async.proceedOnEvent( TestBeforeAfterClassOrderAsync, timer, TimerEvent.TIMER_COMPLETE, TIME_OUT );
+			timer.start();
+		}
+
+		[AfterClass(async)]
+		public static function afterNoOrder():void {
+			setupOrderArray.push( "afterNoOrder" );
 			timer.reset();
 			Async.proceedOnEvent( TestBeforeAfterClassOrderAsync, timer, TimerEvent.TIMER_COMPLETE, TIME_OUT );
 			timer.start();
@@ -100,10 +116,11 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 		[Test(order=1)]
 	    public function checkingBeforeOrder() : void {
 	    	//3 begins
-	    	if ( setupOrderArray.length == 3 ) {
-	    		Assert.assertEquals( setupOrderArray[ 0 ], "beginOne" );
-	    		Assert.assertEquals( setupOrderArray[ 1 ], "beginTwo" );
-	    		Assert.assertEquals( setupOrderArray[ 2 ], "beginSeventy" );
+	    	if ( setupOrderArray.length == 4 ) {
+	    		Assert.assertEquals( setupOrderArray[ 0 ], "beginNoOrder" );
+	    		Assert.assertEquals( setupOrderArray[ 1 ], "beginOne" );
+	    		Assert.assertEquals( setupOrderArray[ 2 ], "beginTwo" );
+	    		Assert.assertEquals( setupOrderArray[ 3 ], "beginSeventy" );
 	    	} else {
 	    		Assert.fail("Incorrect number of begin calls");
 	    	}

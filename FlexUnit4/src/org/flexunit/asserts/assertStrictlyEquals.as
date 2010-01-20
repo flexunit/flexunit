@@ -16,6 +16,6 @@ package org.flexunit.asserts
 	 * @see org.flexunit.Assert assertStrictlyEquals 
 	 */
 	public function assertStrictlyEquals(... rest):void {
-		Assert.assertEquals.apply( null, rest );
+		Assert.assertStrictlyEquals.apply( null, rest );
 	}
 }

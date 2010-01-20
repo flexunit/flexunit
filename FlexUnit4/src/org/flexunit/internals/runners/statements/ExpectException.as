@@ -41,11 +41,11 @@ package org.flexunit.internals.runners.statements {
 	 * throws an specific exception, the test will fail; however, if the test is expecting a 
 	 * specific exception and that exception is thrown, the test will be a success.  If an
 	 * exception is expected and is not encountered through the course of running the test, the
-	 * test will be considered a failure.<p>
+	 * test will be considered a failure.<br/>
 	 * 
 	 * In order to expect an exception, a test method must include metadata indicating it is
 	 * expecting an exception.  The exception that it is expecting must be in the form of
-	 * the qualified class name of the exception class.<p>
+	 * the qualified class name of the exception class.<br/>
 	 * 
 	 * <pre><code>
 	 * [Test(expected="org.flexunit.runner.notification.StoppedByUserException")]
@@ -102,12 +102,12 @@ package org.flexunit.internals.runners.statements {
 		public static function hasExpected( method:FrameworkMethod ):String {
 			//There is conflicting docs in the JUnit world about expects versus expected being the right metadata for this
 			//particular case, so we are going to support them both
-			var expected:String = method.getSpecificMetaDataArg( "Test", "expects" );
+			var expected:String = method.getSpecificMetaDataArgValue( "Test", "expects" );
 			var hasExpected:Boolean = expected && ( expected.length>0 );
 
 			if ( !hasExpected ) {
 				//check for the tag expected too, as it is documented both ways
-				expected = method.getSpecificMetaDataArg( "Test", "expected" );
+				expected = method.getSpecificMetaDataArgValue( "Test", "expected" );
 				hasExpected = expected && ( expected.length>0 );
 			} 
 			return hasExpected?expected:null;			

@@ -1,6 +1,6 @@
 package org.fluint.sequence.cases
 {
-	import net.digitalprimates.fluint.sequence.SequenceRunner;
+	import org.fluint.sequence.SequenceRunner;
 	
 	import org.flexunit.Assert;
 	import org.fluint.sequence.mocks.SequenceStepMock;

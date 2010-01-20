@@ -8,7 +8,7 @@ package org.flexunit.async
 	[RunWith("org.flexunit.runners.Suite")]
 	public class AsyncSuite
 	{	
-		public var ayncCase:AsyncASCase;
+		public var asyncCase:AsyncASCase;
 		public var asyncHandlerCase:AsyncHandlerCase;
 		public var asyncLocatorCase:AsyncLocatorCase;
 	}

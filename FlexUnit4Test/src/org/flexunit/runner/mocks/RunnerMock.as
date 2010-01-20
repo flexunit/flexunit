@@ -6,12 +6,13 @@ package org.flexunit.runner.mocks
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.token.AsyncTestToken;
+	import org.flexunit.token.IAsyncTestToken;
 	
 	public class RunnerMock implements IRunner
 	{
 		public var mock:Mock;
 		
-		public function run(notifier:IRunNotifier, previousToken:AsyncTestToken):void
+		public function run(notifier:IRunNotifier, previousToken:IAsyncTestToken):void
 		{
 			mock.run(notifier, previousToken);
 		}

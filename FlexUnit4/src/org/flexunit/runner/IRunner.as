@@ -29,6 +29,7 @@ package org.flexunit.runner
 {
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.token.AsyncTestToken;
+	import org.flexunit.token.IAsyncTestToken;
 	
 	/**
 	 * An <code>IRunner</code> runs tests and notifies a <code> org.flexunit.runner.notification.RunNotifier</code>
@@ -37,7 +38,7 @@ package org.flexunit.runner
 	 * in addition to implementing the abstract methods here you must
 	 * also provide a constructor that takes as an argument the <code> Class</code> containing
 	 * the tests.
-	 * <p/>
+	 * <br/>
 	 * The default runner implementation guarantees that the instances of the test case
 	 * class will be constructed immediately before running the test and that the runner
 	 * will retain no reference to the test case instances, generally making them 
@@ -54,7 +55,7 @@ package org.flexunit.runner
 		 * @param notifier will be notified of events while tests are being run--tests being 
 		 * started, finishing, and failing
 		 */
-		function run( notifier:IRunNotifier, previousToken:AsyncTestToken ):void;
+		function run( notifier:IRunNotifier, previousToken:IAsyncTestToken ):void;
 		function get description():IDescription;
 	}
 }

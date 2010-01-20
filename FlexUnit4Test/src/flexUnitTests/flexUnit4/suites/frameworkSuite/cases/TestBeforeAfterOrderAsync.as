@@ -40,6 +40,14 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 		private var timer:Timer = new Timer( TIMER_LENGTH, 1 );
 		protected static var setupOrderArray:Array = new Array();
 
+		[Before(async)]
+		public function beginNoOrder():void {
+			setupOrderArray.push( "beginNoOrder" );
+			timer.reset();
+			Async.proceedOnEvent( this, timer, TimerEvent.TIMER_COMPLETE, TIME_OUT );
+			timer.start();
+		}
+
 		[Before(async,order=1)]
 		public function beginOne():void {
 			setupOrderArray.push( "beginOne" );
@@ -59,6 +67,14 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 		[Before(async,order=2)]
 		public function beginTwo():void {
 			setupOrderArray.push( "beginTwo" );
+			timer.reset();
+			Async.proceedOnEvent( this, timer, TimerEvent.TIMER_COMPLETE, TIME_OUT );
+			timer.start();
+		}
+
+		[After(async)]
+		public function afterNoOrder():void {
+			setupOrderArray.push( "afterNoOrder" );
 			timer.reset();
 			Async.proceedOnEvent( this, timer, TimerEvent.TIMER_COMPLETE, TIME_OUT );
 			timer.start();
@@ -99,11 +115,12 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 		//This depends on the test order also working, so we should always run this test after the method order has been verified
 		[Test(order=1)]
 	    public function checkingBeforeOrderWithAsync() : void {
-	    	//3 begins
-	    	if ( setupOrderArray.length == 3 ) {
-	    		Assert.assertEquals( setupOrderArray[ 0 ], "beginOne" );
-	    		Assert.assertEquals( setupOrderArray[ 1 ], "beginTwo" );
-	    		Assert.assertEquals( setupOrderArray[ 2 ], "beginSeventy" );
+	    	//4 begins
+	    	if ( setupOrderArray.length == 4 ) {
+	    		Assert.assertEquals( setupOrderArray[ 0 ], "beginNoOrder" );
+	    		Assert.assertEquals( setupOrderArray[ 1 ], "beginOne" );
+	    		Assert.assertEquals( setupOrderArray[ 2 ], "beginTwo" );
+	    		Assert.assertEquals( setupOrderArray[ 3 ], "beginSeventy" );
 	    	} else {
 	    		Assert.fail("Incorrect number of begin calls");
 	    	}
@@ -111,14 +128,15 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 
 		[Test(order=2)]
 	    public function checkingAfterOrderWithAsync() : void {
-	    	//3 begins
-	    	//4 afters
-	    	//3 more begins
-	    	if ( setupOrderArray.length == 10 ) {
-	    		Assert.assertEquals( setupOrderArray[ 3 ], "afterOne" );
-	    		Assert.assertEquals( setupOrderArray[ 4 ], "afterTwo" );
-	    		Assert.assertEquals( setupOrderArray[ 5 ], "afterEight" );
-	    		Assert.assertEquals( setupOrderArray[ 6 ], "afterThirty" );
+	    	//4 begins
+	    	//5 afters
+	    	//4 more begins
+	    	if ( setupOrderArray.length == 13 ) {
+	    		Assert.assertEquals( setupOrderArray[ 4 ], "afterNoOrder" );
+	    		Assert.assertEquals( setupOrderArray[ 5 ], "afterOne" );
+	    		Assert.assertEquals( setupOrderArray[ 6 ], "afterTwo" );
+	    		Assert.assertEquals( setupOrderArray[ 7 ], "afterEight" );
+	    		Assert.assertEquals( setupOrderArray[ 8 ], "afterThirty" );
 	    	} else {
 	    		Assert.fail("Incorrect number of after calls");
 	    	}

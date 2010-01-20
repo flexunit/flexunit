@@ -34,7 +34,7 @@ package org.flexunit.internals.runners.statements
 	 * before or after a class or before or after a test.  The <code>SequencerWithDecoration</code>
 	 * is provided an array of statements during instantiation.  These statements can include information that
 	 * indicate that they need to be decorated.  If a  Additional tasks can be added using the 
-	 * <code>#addStep</code> method before the sequence is evaluated.<p>
+	 * <code>#addStep</code> method before the sequence is evaluated.<br/>
 	 * 
 	 * The decorated statements can be executed using the <code>#evaluate</code> method and any errors encountered
 	 * during execution will be noted and reported.

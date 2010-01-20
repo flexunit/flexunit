@@ -29,6 +29,7 @@ package org.flexunit.experimental.theories {
 	import flex.lang.reflect.Constructor;
 	import flex.lang.reflect.Field;
 	import flex.lang.reflect.Method;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
 	import org.flexunit.runners.model.FrameworkMethod;
 	
@@ -45,14 +46,14 @@ package org.flexunit.experimental.theories {
 		/**
 		 * @private
 		 */
-		private var _metaDataList:XMLList;
+		private var _metaDataList:Array;
 		
 		/**
-		 * Creates an Array of <code>ParameterSignature<code>s for each parameter in a theory method.
+		 * Creates an Array of <code>ParameterSignature</code>s for each parameter in a theory method.
 		 * 
 		 * @param method The current theory method.
 		 * 
-		 * @return an Array containing the <code>ParameterSignature<code> for each parameter in the method.
+		 * @return an Array containing the <code>ParameterSignature</code> for each parameter in the method.
 		 */
  		public static function signaturesByMethod( method:Method ):Array {
  			//trace("yo");
@@ -60,24 +61,24 @@ package org.flexunit.experimental.theories {
 		}
 		
 		/**
-		 * Creates an Array of <code>ParameterSignature<code>s for each parameter in a theory constructor.
+		 * Creates an Array of <code>ParameterSignature</code>s for each parameter in a theory constructor.
 		 * 
 		 * @param constructor The current theory constructor.
 		 * 
-		 * @return an Array containing the <code>ParameterSignature<code> for each parameter in the constructor.
+		 * @return an Array containing the <code>ParameterSignature</code> for each parameter in the constructor.
 		 */
 		public static function signaturesByContructor( constructor:Constructor ):Array {
 			return signatures( constructor.parameterTypes, null );
 		}
 		
 		/**
-		 * Creates an Array of <code>ParameterSignature<code>s for each parameter in the parameter types array.
+		 * Creates an Array of <code>ParameterSignature</code>s for each parameter in the parameter types array.
 		 * 
 		 * @param parameterTypes An Array consisting of the types of parameters in a given signature.
 		 * 
-		 * @return an Array containing the <code>ParameterSignature<code> for each parameter in the signautre.
+		 * @return an Array containing the <code>ParameterSignature</code> for each parameter in the signautre.
 		 */
-		private static function signatures( parameterTypes:Array, metadataList:XMLList ):Array {
+		private static function signatures( parameterTypes:Array, metadataList:Array ):Array {
 			var sigs:Array = new Array();
 			for ( var i:int= 0; i < parameterTypes.length; i++) {
 				sigs.push( new ParameterSignature( parameterTypes[i], metadataList ) );
@@ -140,12 +141,13 @@ package org.flexunit.experimental.theories {
 			return getAnnotation(type) != null;
 		}
 		
- 		public function findDeepAnnotation( type:String ):XML {
-			var metaDataList2:XMLList = _metaDataList.copy();
+ 		public function findDeepAnnotation( type:String ):MetaDataAnnotation {
+			//TODO
+			var metaDataList2:Array = _metaDataList.slice();
 			return privateFindDeepAnnotation( metaDataList2, type, 3);
 		}
 	
-		private function privateFindDeepAnnotation( metaDataList:XMLList, type:String, depth:int ):XML {
+		private function privateFindDeepAnnotation( metaDataList:Array, type:String, depth:int ):MetaDataAnnotation {
 			if (depth == 0)
 				return null;
 
@@ -170,12 +172,12 @@ package org.flexunit.experimental.theories {
 		 * 
 		 * @param type The name to check for in the metadata.
 		 * 
-		 * @return an XML that is the metadata that has a name attribute that matches the provided type.  If no name match is found,
+		 * @return a MetaDataAnnotation that is the metadata that has a name attribute that matches the provided type.  If no name match is found,
 		 * a value of null is returned.
 		 */
-		public function getAnnotation( type:String ):XML {
-			for ( var i:int=0;i<_metaDataList.length(); i++ ) {
-				if ( _metaDataList[ i ].@name == type ) {
+		public function getAnnotation( type:String ):MetaDataAnnotation {
+			for ( var i:int=0;i<_metaDataList.length; i++ ) {
+				if ( ( _metaDataList[ i ] as MetaDataAnnotation ).name == type ) {
 					return _metaDataList[ i ];
 				}
 			}
@@ -197,7 +199,7 @@ package org.flexunit.experimental.theories {
 		 * @param type The Class type of the parameter.
 		 * @param metaDataList Associated metadata for the method the parameter is associated with.
 		 */
-		public function ParameterSignature( type:Class, metaDataList:XMLList ) {
+		public function ParameterSignature( type:Class, metaDataList:Array ) {
 			this._type= type;
 			this._metaDataList = metaDataList;
 		}

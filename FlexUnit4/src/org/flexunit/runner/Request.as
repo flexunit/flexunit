@@ -31,33 +31,35 @@ package org.flexunit.runner {
 	import org.flexunit.internals.requests.ClassRequest;
 	import org.flexunit.internals.requests.FilterRequest;
 	import org.flexunit.internals.requests.SortingRequest;
-	import org.flexunit.runner.manipulation.Filter;
+	import org.flexunit.runner.manipulation.IFilter;
 	import org.flexunit.runner.manipulation.ISort;
+	import org.flexunit.runner.manipulation.filters.DynamicFilter;
+	import org.flexunit.runner.manipulation.filters.MethodNameFilter;
 	import org.flexunit.runners.Suite;
 	
 	use namespace classInternal;
 	
 	/**
 	 * A <code>Request</code> is an abstract description of tests to be run.  It represents an object that 
-	 * wraps tests when they are presented to the <code>FlexUnitCore</code>.  <code>Request<code>s can be 
-	 * filtered and sorted to control the subset and order of tests to be executed.<p>
+	 * wraps tests when they are presented to the <code>FlexUnitCore</code>.  <code>Request</code>s can be 
+	 * filtered and sorted to control the subset and order of tests to be executed.
 	 * 
 	 * The following static methods can be used to create requests:
 	 * <ul>
-	 * <li><code>#aClass()</code>
-	 * <li><code>#classes()</code>
-	 * <li><code>#runner()</code>
-	 * <li><code>#method()</code>
-	 * </ul><p>
+	 * <li><code>#aClass()</code></li>
+	 * <li><code>#classes()</code></li>
+	 * <li><code>#runner()</code></li>
+	 * <li><code>#method()</code></li>
+	 * </ul>
 	 * 
-	 * The key property of the <code>Request</code> that the <code>FlexUnitCore</code> needs is the 
+	 * <p>The key property of the <code>Request</code> that the <code>FlexUnitCore</code> needs is the 
 	 * <code>IRunner</code>.  The <code>IRunner</code> is an interface implemented by any object 
-	 * capable of executing a specific type of test.<p>
+	 * capable of executing a specific type of test.</p>
 	 * 
-	 * The flow when FlexUnit4 runs tests is that a <code>Request</code> specifies some tests to be run.
+	 * <p>The flow when FlexUnit4 runs tests is that a <code>Request</code> specifies some tests to be run.
 	 * The <code>IRunner</code> is created for each class implied by the <code>Request</code>.  The
 	 * <code>IRunner</code> provides a detailed <code>IDescription</code> of the class which is a tree 
-	 * structure of the tests to be run.
+	 * structure of the tests to be run.</p>
 	 */
 	public class Request implements IRequest {
 		/**
@@ -105,7 +107,7 @@ package org.flexunit.runner {
 		 * 
 		 * @return the filtered Request.
 		 */
-		protected function filterWithFilter( filter:Filter ):Request {
+		protected function filterWithFilter( filter:IFilter ):Request {
 			return new FilterRequest(this, filter);
 		}
 		
@@ -118,7 +120,7 @@ package org.flexunit.runner {
 		 * @return the filtered Request.
 		 */
 		protected function filterWithDescription( desiredDescription:IDescription ):Request {
-			var filter:Filter = new Filter(
+			var filter:DynamicFilter = new DynamicFilter(
 				function( description:IDescription ):Boolean {
 					if ( description.isTest )
 						return desiredDescription.equals(description);
@@ -152,8 +154,8 @@ package org.flexunit.runner {
 		public function filterWith( filterOrDescription:* ):Request {
 			if ( filterOrDescription is IDescription ) {
 				return filterWithDescription( filterOrDescription as IDescription );
-			} else if ( filterOrDescription is Filter ) {
-				return filterWithFilter( filterOrDescription as Filter );
+			} else if ( filterOrDescription is IFilter ) {
+				return filterWithFilter( filterOrDescription as IFilter );
 			}
 			
 			//If neither an IDescription or Filter is provided, return the current request
@@ -161,12 +163,13 @@ package org.flexunit.runner {
 		}
 		
 		/**
-		 * @param comparator definition of the order of the tests in this Request.
+		 * @param sorterOrComparatorFunction is either an ISorted implementation or a comparator function to be used
+		 * to define the sort order of the tests in this Request.
 		 * 
 		 * @return a Request with ordered Tests.
 		 */
-		public function sortWith(comparator:Function):Request {
-			return new SortingRequest(this, comparator);
+		public function sortWith(sorterOrComparatorFunction:*):Request {
+			return new SortingRequest(this, sorterOrComparatorFunction);	
 		}
 		
 		/**
@@ -223,6 +226,10 @@ package org.flexunit.runner {
 		public static function method( clazz:Class, methodName:String ):Request {
 			var method:IDescription = Description.createTestDescription( clazz, methodName );
 			return Request.aClass(clazz).filterWith(method);
+		}
+
+		public static function methods( clazz:Class, methodNames:Array ):Request {
+			return Request.aClass(clazz).filterWith( new MethodNameFilter( methodNames ) );
 		}
 		
 		/**

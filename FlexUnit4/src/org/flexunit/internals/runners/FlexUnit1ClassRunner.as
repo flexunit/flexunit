@@ -44,12 +44,13 @@ package org.flexunit.internals.runners {
 	import org.flexunit.runner.IDescribable;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
-	import org.flexunit.runner.manipulation.Filter;
+	import org.flexunit.runner.manipulation.IFilter;
 	import org.flexunit.runner.manipulation.IFilterable;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runners.model.FrameworkMethod;
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
+	import org.flexunit.token.IAsyncTestToken;
 	import org.flexunit.utils.ClassNameUtil;
 	
 	/**
@@ -76,7 +77,7 @@ package org.flexunit.internals.runners {
 		/**
 		 * @private
 		 */
-		private var filterRef:Filter = null;
+		private var filterRef:IFilter = null;
 		/**
 		 * @private
 		 */
@@ -101,7 +102,6 @@ package org.flexunit.internals.runners {
 			
 			if ( klassOrTest is TestSuite ) {
 				if ( TestSuite( klassOrTest ).testArrayList.isEmpty() ) {
-					//Fix for FXU-71
 					throw new InitializationError("Empty test Suite!");
 				}
 			}
@@ -139,7 +139,7 @@ package org.flexunit.internals.runners {
 		 * 
 		 * @return an <code>Array</code> of methods that should run.
 		 */
-		private function getMethodListFromFilter( klassInfo:Klass, filter:Filter ):Array {
+		private function getMethodListFromFilter( klassInfo:Klass, filter:IFilter ):Array {
 			var list:Array = [];
 
 			for ( var i:int=0; i<klassInfo.methods.length; i++ ) {
@@ -162,7 +162,7 @@ package org.flexunit.internals.runners {
 		 * 
 		 * @return a <code>TestSuite</code> that is filtered based on the provided <code>Filter</code>.
 		 */
-		private function createTestSuiteWithFilter( filter:Filter = null ):Test {
+		private function createTestSuiteWithFilter( filter:IFilter = null ):Test {
 			if ( !filter ) {
 				return new TestSuite( klassOrTest );
 			} else {
@@ -211,7 +211,7 @@ package org.flexunit.internals.runners {
 		 * @param notifier The notifier that is notified about issues encountered during the execution of the test class.
 		 * @param previousToken The token that is to be notified when the runner has finished execution of the test class.
 		 */
-		public function run( notifier:IRunNotifier, previousToken:AsyncTestToken ):void {
+		public function run( notifier:IRunNotifier, previousToken:IAsyncTestToken ):void {
 			var token:AsyncTestToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			token.parentToken = previousToken;
 			token.addNotificationMethod( handleTestComplete );
@@ -334,7 +334,7 @@ package org.flexunit.internals.runners {
 		 * @param filter Filter
 		 * @see org.flexunit.runner.manipulation.Filter
 		 */
-		public function filter( filter:Filter ):void {
+		public function filter( filter:IFilter ):void {
 			if ( test is IFilterable ) {
 				var adapter:IFilterable = IFilterable( test );
 				adapter.filter(filter);

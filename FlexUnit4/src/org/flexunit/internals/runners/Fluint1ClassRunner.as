@@ -44,16 +44,19 @@ package org.flexunit.internals.runners {
 	import org.flexunit.runner.Description;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
-	import org.flexunit.runner.manipulation.Filter;
+	import org.flexunit.runner.manipulation.IFilter;
 	import org.flexunit.runner.manipulation.IFilterable;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
+	import org.flexunit.token.IAsyncTestToken;
 	import org.flexunit.utils.ClassNameUtil;
-	import org.fluint.uiImpersonation.TestEnvironment;
+	import org.fluint.uiImpersonation.IVisualTestEnvironment;
+	import org.fluint.uiImpersonation.VisualTestEnvironmentBuilder;
+	import org.fluint.uiImpersonation.flex.FlexVisualTestEnvironment;
 	
 	/**
-	 * Runs the associated testClass that is passed into the <code>Fluint1ClassRunner</class>.
+	 * Runs the associated testClass that is passed into the <code>Fluint1ClassRunner</code>.
 	 * 
 	 */
 	public class Fluint1ClassRunner implements IRunner, IFilterable {
@@ -73,7 +76,11 @@ package org.flexunit.internals.runners {
 		/**
 		 * @private
 		 */
-		private var flexUnitTestEnvironment:org.fluint.uiImpersonation.TestEnvironment;
+		private var flexUnitTestEnvironmentBuilder:org.fluint.uiImpersonation.IVisualEnvironmentBuilder;
+		/**
+		 * @private
+		 */
+		private var flexUnitTestEnvironment:org.fluint.uiImpersonation.IVisualTestEnvironment;
 		/**
 		 * @private
 		 */
@@ -97,7 +104,8 @@ package org.flexunit.internals.runners {
 			testClass = clazz;
 			test = klassInfo.constructor.newInstance();
 
-			flexUnitTestEnvironment = org.fluint.uiImpersonation.TestEnvironment.getInstance();
+			flexUnitTestEnvironmentBuilder = org.fluint.uiImpersonation.VisualTestEnvironmentBuilder.getInstance();
+			flexUnitTestEnvironment = flexUnitTestEnvironmentBuilder.buildVisualTestEnvironment();
 		}
 
 		/**
@@ -118,7 +126,7 @@ package org.flexunit.internals.runners {
 		 * @param notifier The notifier that is notified about issues encountered during the execution of the test class.
 		 * @param previousToken The token that is to be notified when the runner has finished execution of the test class.
 		 */
-		public function run( notifier:IRunNotifier, previousToken:AsyncTestToken ):void {
+		public function run( notifier:IRunNotifier, previousToken:IAsyncTestToken ):void {
 			token = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			token.parentToken = previousToken;
 			token.addNotificationMethod( handleTestComplete );
@@ -254,13 +262,13 @@ package org.flexunit.internals.runners {
 		/**
 		 * @private
 		 */
-		private var appliedFilter:Filter; 
+		private var appliedFilter:IFilter; 
 		/**
 		 * Will apply a <code>Filter</code> to the test object.
 		 * @param filter Filter
 		 * @see org.flexunit.runner.manipulation.Filter
 		 */
-		public function filter( filter:Filter ):void {
+		public function filter( filter:IFilter ):void {
 			if ( filter ) {
 				appliedFilter = filter;
 				Object( test ).filter = filterWithIFilter;

@@ -54,18 +54,18 @@ package org.flexunit.runners {
 	 * The following flow occurs for a provided class:
 	 * 
 	 * <ul>
-	 * <li>Any methods that contain a medadata tag of [BeforeClass] are executed.
+	 * <li>Any methods that contain a medadata tag of [BeforeClass] are executed.</li>
 	 * <li>Once the [BeforeClass] methods have finished, each method labeled as [Test]
 	 * is sequenced with all methods that contain [Before] and [After] metadata tags.
 	 * Beofre each test, all methods marked as a [Before] method will execute.  After
 	 * this occurs, the actual test method will execute.  After the test has finished,
 	 * regardless of whether it succeeded or failed, all methods marked as an [After]
-	 * method will run.  This procedure will be repeated for all tests in the class.
-	 * <li>Any methods that contain a metdata tag of [AfterClass] are finally executed.
-	 * </ul><p>
+	 * method will run.  This procedure will be repeated for all tests in the class.</li>
+	 * <li>Any methods that contain a metdata tag of [AfterClass] are finally executed.</li>
+	 * </ul><br/>
 	 * 
 	 * While running tests, the <code>BlockFlexUnit4ClassRunner</code> uses two 
-	 * very important concepts: recursive sequences and decoration.<p>
+	 * very important concepts: recursive sequences and decoration.<br/>
 	 * 
 	 * The first sequence that is used in the <code>BlockFlexUnit4ClassRunner</code> is 
 	 * that of the before class sequence, the tests sequence, and after class sequence.
@@ -73,13 +73,13 @@ package org.flexunit.runners {
 	 * after class methods.  The tests sequence consists of a sequence of individual test 
 	 * sequences.  Each individual test sequnce contains the before sequence, the test, 
 	 * and the after sequence.  The before and after sequences contain the before and
-	 * after methods.<p>
+	 * after methods.<br/>
 	 * 
 	 * Before any before class, after class, before, after, or test methods are executed,
 	 * they are decorated in order to add functionality.  These decorations are used to
 	 * wrap the invocation of a method with code that should be executed before or after
 	 * the method in a synchronous nature.  Each decarator is applied to the method if
-	 * necessary; if it is not needed, the decorator is not applied.<p>
+	 * necessary; if it is not needed, the decorator is not applied.<br/>
 	 * 
 	 * The wrapping of the actual test method can be seen in the <code>#withDecoration()</code> 
 	 * method.  This method determines if the tests needs certain decorators based on the
@@ -255,29 +255,29 @@ package org.flexunit.runners {
 		 * Returns an IStatement that, when executed, either returns normally if
 		 * <code>method</code> passes, or throws an exception if <code>method</code> fails.
 		 * 
-		 * <p>Here is an outline of the default implementation:
+		 * <p>Here is an outline of the default implementation:</p>
 		 * 
 		 * <ul>
 		 * <li>Invoke <code>method</code> on <code>test</code>, and
-		 * throw any exceptions thrown by either operation.
+		 * throw any exceptions thrown by either operation.</li>
 		 * <li>HOWEVER, if <code>method</code>'s <code>Test</code> annotation has the <code>
 		 * expecting</code> attribute, return normally only if the previous step threw an
-		 * exception of the correct type, and throw an exception otherwise.
+		 * exception of the correct type, and throw an exception otherwise.</li>
 		 * <li>HOWEVER, if <code>method</code>'s <code>Test</code> annotation has the <code>
 		 * timeout</code> attribute, throw an exception if the previous step takes more
-		 * than the specified number of milliseconds.
+		 * than the specified number of milliseconds.</li>
 		 * <li>ALWAYS run all non-overridden <code>Before</code> methods on this class
 		 * and superclasses before any of the previous steps; if any throws an
-		 * Exception, stop execution and pass the exception on.
+		 * Exception, stop execution and pass the exception on.</li>
 		 * <li>ALWAYS run all non-overridden <code>After</code> methods on this class
 		 * and superclasses before any of the previous steps; all After methods are
 		 * always executed: exceptions thrown by previous steps are combined, if
 		 * necessary, with exceptions from After methods into a
-		 * <code>MultipleFailureException</code>.
+		 * <code>MultipleFailureException</code>.</li>
 		 * </ul>
 		 * 
 		 * <p>This can be overridden in subclasses, either by overriding this method,
-		 * or the implementations creating each sub-statement.
+		 * or the implementations creating each sub-statement.</p>
 		 */
 		protected function methodBlock( method:FrameworkMethod ):IAsyncStatement {
 			var c:Class;

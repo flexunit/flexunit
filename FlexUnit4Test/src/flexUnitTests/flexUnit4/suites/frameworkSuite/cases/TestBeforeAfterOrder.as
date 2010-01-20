@@ -32,6 +32,11 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	public class TestBeforeAfterOrder {
 		protected static var setupOrderArray:Array = new Array();
 
+		[Before]
+		public function beginNoOrder():void {
+			setupOrderArray.push( "beginNoOrder" );
+		}
+
 		[Before(order=1)]
 		public function beginOne():void {
 			setupOrderArray.push( "beginOne" );
@@ -47,6 +52,11 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 			setupOrderArray.push( "beginTwo" );
 		}
 
+		[After]
+		public function afterNoOrder() : void {
+			setupOrderArray.push( "afterNoOrder" );
+		}
+		
 		[After(order=1)]
 		public function afterOne():void {
 			setupOrderArray.push( "afterOne" );
@@ -70,11 +80,12 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 		//This depends on the test order also working, so we should always run this test after the method order has been verified
 		[Test(order=1)]
 	    public function checkingBeforeOrder() : void {
-	    	//3 begins
-	    	if ( setupOrderArray.length == 3 ) {
-	    		Assert.assertEquals( setupOrderArray[ 0 ], "beginOne" );
-	    		Assert.assertEquals( setupOrderArray[ 1 ], "beginTwo" );
-	    		Assert.assertEquals( setupOrderArray[ 2 ], "beginSeventy" );
+	    	//4 begins
+	    	if ( setupOrderArray.length == 4 ) {
+	    		Assert.assertEquals( setupOrderArray[ 0 ], "beginNoOrder" );
+	    		Assert.assertEquals( setupOrderArray[ 1 ], "beginOne" );
+	    		Assert.assertEquals( setupOrderArray[ 2 ], "beginTwo" );
+	    		Assert.assertEquals( setupOrderArray[ 3 ], "beginSeventy" );
 	    	} else {
 	    		Assert.fail("Incorrect number of begin calls");
 	    	}
@@ -82,14 +93,15 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 
 		[Test(order=2)]
 	    public function checkingAfterOrder() : void {
-	    	//3 begins
-	    	//4 afters
-	    	//3 more begins
-	    	if ( setupOrderArray.length == 10 ) {
-	    		Assert.assertEquals( setupOrderArray[ 3 ], "afterOne" );
-	    		Assert.assertEquals( setupOrderArray[ 4 ], "afterTwo" );
-	    		Assert.assertEquals( setupOrderArray[ 5 ], "afterEight" );
-	    		Assert.assertEquals( setupOrderArray[ 6 ], "afterThirty" );
+	    	//4 begins
+	    	//5 afters
+	    	//4 more begins
+	    	if ( setupOrderArray.length == 13 ) {
+	    		Assert.assertEquals( setupOrderArray[ 4 ], "afterNoOrder" );
+	    		Assert.assertEquals( setupOrderArray[ 5 ], "afterOne" );
+	    		Assert.assertEquals( setupOrderArray[ 6 ], "afterTwo" );
+	    		Assert.assertEquals( setupOrderArray[ 7 ], "afterEight" );
+	    		Assert.assertEquals( setupOrderArray[ 8 ], "afterThirty" );
 	    	} else {
 	    		Assert.fail("Incorrect number of after calls");
 	    	}

@@ -32,7 +32,7 @@ package org.flexunit.runner {
 	 * can be atomic (a single test) or compound (containing children tests).  <code>IDescription</code>s 
 	 * are used to provide feedback about the tests that are about to run (for example, the tree view 
 	 * visible in many IDEs) or tests that have been run (for example, the failures view).
-	 * This information can be used to report the current progress of the test run.<p>
+	 * This information can be used to report the current progress of the test run.<br/>
 	 */
 	public interface IDescription {
 		/**
@@ -65,14 +65,14 @@ package org.flexunit.runner {
 		 * @return the metadata node that is attached to this description if a node is found with a matching <code>type</code> 
 		 * or a value of <code>null</code> if no such node exists.
 		 */
-		function getMetadata( type:String ):XML;
+		//function getMetadata( type:String ):MetaDataAnnotation;
 		/**
 		 * Returns all of the metadata that is attached to this description node.
 		 * 
 		 * @return the metadata as XML that is attached to this description node, 
 		 * or null if none exists
 		 */
-		function getAllMetadata():XMLList;
+		function getAllMetadata():Array;
 		/**
 		 * @return <code>true</code> if the receiver is an instance
 		 */

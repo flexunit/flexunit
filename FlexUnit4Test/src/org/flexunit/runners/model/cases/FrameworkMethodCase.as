@@ -1,20 +1,27 @@
 package org.flexunit.runners.model.cases
 {
-	import flash.utils.describeType;
-	
-	import flex.lang.reflect.Method;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	import flex.lang.reflect.mocks.KlassMock;
 	import flex.lang.reflect.mocks.MethodMock;
 	
 	import org.flexunit.Assert;
-	import org.flexunit.token.mocks.AsyncTestTokenMock;
 	import org.flexunit.runners.model.FrameworkMethod;
+	import org.flexunit.token.mocks.AsyncTestTokenMock;
 
 	public class FrameworkMethodCase
 	{
 		//TODO: Ensure that the tests and this test case are being implemented correctly. Also, it appears that asyncComplete function
 		//is never called in the FrameworkMethod class.
-		
+
+		private static function convertToMetaDataAnnotations( metaXML:XMLList ):Array {
+			var ar:Array = new Array();
+			for ( var i:int=0; i<metaXML.length(); i++ )  {
+				ar.push( new MetaDataAnnotation( metaXML[ i ] ) );
+			}
+			
+			return ar;
+		} 
+
 		protected var frameworkMethod:FrameworkMethod;
 		protected var methodMock:MethodMock;
 		
@@ -45,10 +52,10 @@ package org.flexunit.runners.model.cases
 		
 		[Test(description="Ensure that getMetadata correctly returns the proper value")]
 		public function getMetadataTest():void {
-			var testXMLList:XMLList = new XMLList();
-			methodMock.mock.property("metadata").returns(testXMLList);
+			var sampleMetaDataArray:Array = new Array();
+			methodMock.mock.property("metadata").returns(sampleMetaDataArray);
 			
-			Assert.assertEquals(testXMLList, frameworkMethod.metadata);
+			Assert.assertStrictlyEquals(sampleMetaDataArray, frameworkMethod.metadata);
 		}
 		
 		[Test(description="Ensure that the getSpecificMetaDataArg method correctly operates when there is a return value")]
@@ -61,10 +68,11 @@ package org.flexunit.runners.model.cases
 					<arg key="description" value="Test Value"/>
 				</metadata>
 			</method>;
+
+			var annotationsArray:Array = convertToMetaDataAnnotations( methodXML.metadata );
+			methodMock.mock.method("getMetaData").withArgs("Test").returns( annotationsArray[0] );
 			
-			methodMock.mock.property("methodXML").returns(methodXML);
-			
-			Assert.assertEquals("Test Value", frameworkMethod.getSpecificMetaDataArg("Test", "description") );
+			Assert.assertEquals("Test Value", frameworkMethod.getSpecificMetaDataArgValue("Test", "description") );
 		}
 		
 		//TODO: The MetadataTools function call won't return an empty string for a key, should this test be altered?
@@ -82,7 +90,7 @@ package org.flexunit.runners.model.cases
 			
 			methodMock.mock.property("methodXML").returns(methodXML);
 			
-			Assert.assertEquals("", frameworkMethod.getSpecificMetaDataArg("Test", "description") );
+			Assert.assertEquals("", frameworkMethod.getSpecificMetaDataArgValue("Test", "description") );
 		}
 		
 		[Test(description="Ensure that the getSpecificMetaDataArg method correctly operates when a nonboolean value is received")]
@@ -96,11 +104,11 @@ package org.flexunit.runners.model.cases
 					</metadata>
 				</method>;
 			
-			methodMock.mock.property("methodXML").returns(methodXML);
+			methodMock.mock.method("getMetaData").withArgs("Test");
 			
-			Assert.assertNull( frameworkMethod.getSpecificMetaDataArg("Test", "notAKey") );
+			Assert.assertNull( frameworkMethod.getSpecificMetaDataArgValue("Test", "notAKey") );
 		}
-		
+
 		[Test(description="Ensure that the getSpecificMetaDataArg method correctly operates when a boolean value is received")]
 		public function getSpecificMetaDataArgNullReturnBoolTest():void {
 			var methodXML:XML = 
@@ -113,9 +121,11 @@ package org.flexunit.runners.model.cases
 					</metadata>
 				</method>;
 			
-			methodMock.mock.property("methodXML").returns(methodXML);
+			var annotationsArray:Array = convertToMetaDataAnnotations( methodXML.metadata );
 			
-			Assert.assertEquals("true", frameworkMethod.getSpecificMetaDataArg("Test", "Test") );
+			methodMock.mock.method("getMetaData").withArgs("Test").returns( annotationsArray[0] );
+			
+			Assert.assertEquals("true", frameworkMethod.getSpecificMetaDataArgValue("Test", "Test") );
 		}
 		
 		[Test(description="Ensure that the metadata exists when an existing tag is passed")]
@@ -128,8 +138,11 @@ package org.flexunit.runners.model.cases
 						<arg key="description" value="Test Value"/>
 					</metadata>
 				</method>;
+
+			var annotationsArray:Array = convertToMetaDataAnnotations( methodXML.metadata );
 			
-			methodMock.mock.property("methodXML").returns(methodXML);
+			methodMock.mock.method("hasMetaData").withArgs("Test").returns( true );
+			methodMock.mock.method("getMetaData").withArgs("Test").returns( annotationsArray[0] );
 			
 			Assert.assertTrue( frameworkMethod.hasMetaData("Test") );
 		}
@@ -144,8 +157,11 @@ package org.flexunit.runners.model.cases
 						<arg key="description" value="Test Value"/>
 					</metadata>
 				</method>;
+
+			var annotationsArray:Array = convertToMetaDataAnnotations( methodXML.metadata );
 			
-			methodMock.mock.property("methodXML").returns(methodXML);
+			methodMock.mock.method("hasMetaData").withArgs("No Test").returns( false );
+			methodMock.mock.method("getMetaData").withArgs("No Test").returns( null );
 			
 			Assert.assertFalse( frameworkMethod.hasMetaData("No Test") );
 		}

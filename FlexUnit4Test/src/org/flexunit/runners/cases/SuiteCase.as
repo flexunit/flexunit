@@ -16,7 +16,7 @@ package org.flexunit.runners.cases
 		}
 		
 		// TODO: Is this good enough?
-		// TODO: This is throwing an error do to being an empty test suite.
+		// TODO: This is throwing an error, due to being an empty test suite.
 		[Ignore]
 		[Test]
 		public function testClassRunnerCreation():void {

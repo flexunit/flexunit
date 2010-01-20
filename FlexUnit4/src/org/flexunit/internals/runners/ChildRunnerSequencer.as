@@ -36,7 +36,7 @@ package org.flexunit.internals.runners {
 	 * The <code>ChildRunnerSequencer</code> is used to sequence children of specific class.  These children are 
 	 * evaluted using a function provided to the sequencer in its constructor.  These children can be provided to 
 	 * the <code>ChildRunnerSequencer</code> as an array during instantiation or added using the <code>#addStep</code> 
-	 * method.<p>
+	 * method.<br/>
 	 * 
 	 * The list of children can be evaluated using the <code>#evaluate</code> method and any errors encountered
 	 * during execution will be noted and reported.  Each child will be run in sequence, waiting for the previous 

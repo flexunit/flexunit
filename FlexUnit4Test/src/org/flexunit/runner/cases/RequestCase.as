@@ -57,7 +57,7 @@ package org.flexunit.runner.cases
 			var runnerMock:RunnerMock = new RunnerMock();
 			request._runner = runnerMock;
 			
-			Assert.assertEquals( runnerMock, request.getRunner() );
+			Assert.assertEquals( runnerMock, request.iRunner );
 		}
 		
 		// TODO : not sure how to test
@@ -73,7 +73,7 @@ package org.flexunit.runner.cases
 		// TODO : not sure how to test
 		[Test(description="Ensure that the filerWith function generates the correct filter when the parameter is a Filter")]
 		public function filterWithFilterTest():void {
-			var filter:FilterMock = new FilterMock();
+			var filter:FilterMock = new FilterMock( shouldRunTest, describeTest ) ;
 			
 			var newRequest:Request = request.filterWith( filter );
 			
@@ -104,7 +104,7 @@ package org.flexunit.runner.cases
 		//TODO: Ensure that this test is testing this function in the proper manner
 		[Test(description="Ensure that the classes function returns a Request that has a Suite as its runner")]
 		public function classesTest():void {
-			var newRequest:Request = Request.classes(new Array());
+			var newRequest:Request = Request.classes(Object, Object);
 			
 			Assert.assertTrue( newRequest.iRunner is Suite );
 		}
@@ -125,5 +125,16 @@ package org.flexunit.runner.cases
 			
 			Assert.assertTrue( newRequest is FilterRequest );
 		}
+
+		public function shouldRunTest( description:IDescription ):Boolean {
+			// do something
+			return true;
+		}
+		
+		public function describeTest( description:IDescription ):String {
+			// do something
+			return "any";
+		}
+		
 	}
 }
