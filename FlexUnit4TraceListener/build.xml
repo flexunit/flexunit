@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="FlexUnit4FlexCoverListener" basedir="." default="package">
+<project name="FlexUnit4TraceListener" basedir="." default="package">
 	<property environment="env" />
 
 	<!-- Configuration -->
 	<property name="build.number" value="4.0.0" />
 	<property name="build.useFlex" value="true" />
-	<property name="build.artifact.name" value="flexunit-flexcoverlistener-${build.number}.swc" />
+	<property name="build.artifact.name" value="flexunit-tracelistener-${build.number}.swc" />
 
 	<!-- Setup paths for build -->
 	<property name="main.src.loc" location="${basedir}/src" />

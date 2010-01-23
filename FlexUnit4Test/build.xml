@@ -71,7 +71,7 @@ dependency which would be more difficult to manage from a build perspective.
 		<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks-${build.number}.jar" />
 		
 		<!-- Run FlexUnit Ant Task -->
-		<flexunit swf="${bin.loc}/${test.artifact.name}" toDir="${report.xunit.loc}" haltonfailure="false" verbose="true" localTrusted="false" />
+		<flexunit swf="${bin.loc}/${test.artifact.name}" toDir="${report.xunit.loc}" haltonfailure="false" verbose="true" localTrusted="true" />
 	</target>
 
 	<target name="test-and-instrument" depends="test-compile" if="build.instrument">
