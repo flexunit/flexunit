@@ -8,20 +8,28 @@ If you are using the build file directly, below is the suggested call:
 <project name="FlexUnit4Core" basedir="." default="package">
    <property environment="env" />
 
+   <property name="build.groupId" value="org.flexunit" />
+   <property name="build.artifactId.flex" value="flexunit-core-flex" />
+   <property name="build.artifactId.as3" value="flexunit-core-as3" />
+   <property name="build.version" value="4.x.x" />
+   <property name="build.number" value="x" />
+   <property name="build.sdk" value="3.5" />
+   <property name="build.finalName.flex" value="${build.artifactId.flex}-${build.version}.${build.number}-sdk${build.sdk}.swc" />
+   <property name="build.finalName.as3" value="${build.artifactId.as3}-${build.version}.${build.number}-sdk${build.sdk}.swc" />
+   
    <!-- Configuration -->
-   <property name="build.number" value="4.0.0" />
-   <property name="build.flex.artifact.name" value="flexunit-${build.number}.swc" />
-   <property name="build.as3.artifact.name" value="flexunit-as3-${build.number}.swc" />
    <property name="instrument.artifact.name" value="flexunit-instrument-${build.number}.swc" />
    <property name="instrument.metadata" value="flexunit-instrument-${build.number}.cvm" />
 
-   <!-- Setup paths for build -->
+   <!-- Existing -->
    <property name="src.loc" location="${basedir}/src" />
    <property name="lib.loc" location="${basedir}/libs" />
+
+   <!-- Generated -->
+   <property name="dist.loc" location="${basedir}/target" />
    <property name="bin.loc" location="${basedir}/target/bin" />
    <property name="report.loc" location="${basedir}/target/report" />
    <property name="doc.loc" location="${basedir}/target/docs" />
-   <property name="dist.loc" location="${basedir}/target" />
 
    <!-- Setup Flex Ant Resources -->
    <property name="FLEX_HOME" location="${env.FLEX_HOME}" />
@@ -90,10 +98,10 @@ If you are using the build file directly, below is the suggested call:
       <property file="${bin.loc}/flexLib.properties" />
 
       <!-- Compile Flex version -->
-      <compile-swc sdk="${FLEX_HOME}" artifact="${build.flex.artifact.name}" classes="${src.class-list}" useflex="true" />
+      <compile-swc sdk="${FLEX_HOME}" artifact="${build.finalName.flex}" classes="${src.class-list}" useflex="true" />
 
       <!-- Compile AS3 version and verify -->
-      <compile-swc sdk="${FLEX_HOME}" artifact="${build.as3.artifact.name}" classes="${src.class-list}" useflex="false" />
+      <compile-swc sdk="${FLEX_HOME}" artifact="${build.finalName.as3}" classes="${src.class-list}" useflex="false" />
    </target>
 
    <target name="verify-as3-swc">
@@ -127,8 +135,8 @@ If you are using the build file directly, below is the suggested call:
    <target name="package" depends="package-default,package-instrument" />
 
    <target name="package-default" depends="compile">
-      <copy file="${bin.loc}/${build.flex.artifact.name}" todir="${dist.loc}" />
-      <copy file="${bin.loc}/${build.as3.artifact.name}" todir="${dist.loc}" />
+      <copy file="${bin.loc}/${build.finalName.flex}" todir="${dist.loc}" />
+      <copy file="${bin.loc}/${build.finalName.as3}" todir="${dist.loc}" />
    </target>
 
    <target name="package-instrument" depends="instrument-compile" if="build.instrument">
