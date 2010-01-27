@@ -11,12 +11,12 @@ If you are using the build file directly, below is the suggested call:
    <property name="build.groupId" value="org.flexunit" />
    <property name="build.artifactId.flex" value="flexunit-core-flex" />
    <property name="build.artifactId.as3" value="flexunit-core-as3" />
-   <property name="build.version" value="4.x.x" />
+   <property name="build.version" value="4.0.0" />
    <property name="build.number" value="x" />
-   <property name="build.sdk" value="3.5" />
+   <property name="build.sdk" value="y.y.y.y" />
    <property name="build.finalName.flex" value="${build.artifactId.flex}-${build.version}.${build.number}-sdk${build.sdk}.swc" />
    <property name="build.finalName.as3" value="${build.artifactId.as3}-${build.version}.${build.number}-sdk${build.sdk}.swc" />
-   
+
    <!-- Configuration -->
    <property name="instrument.artifact.name" value="flexunit-instrument-${build.number}.swc" />
    <property name="instrument.metadata" value="flexunit-instrument-${build.number}.cvm" />
@@ -75,12 +75,6 @@ If you are using the build file directly, below is the suggested call:
    </target>
 
    <target name="init">
-      <echo message="Project: ${ant.project.name}" />
-      <echo message="SDK: ${FLEX_HOME}" />
-      <echo message="FlexCover SDK: ${FLEX_COVER_HOME}" />
-      <echo message="Use Flex: ${build.useFlex}" />
-      <echo message="" />
-
       <!-- Create paths -->
       <mkdir dir="${bin.loc}" />
       <mkdir dir="${report.loc}" />
