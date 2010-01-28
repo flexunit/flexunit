@@ -27,6 +27,13 @@
       <mkdir dir="${lib.loc}" />
       <mkdir dir="${bin.loc}" />
       <mkdir dir="${doc.loc}" />
+
+      <!-- Copy required dependencies -->
+      <copy todir="${lib.loc}" overwrite="true" failonerror="false">
+         <fileset dir="${basedir}/../FlexUnit4/target">
+            <include name="*-flex-*.swc" />
+         </fileset>
+      </copy>
    </target>
 
    <target name="compile" depends="init">
