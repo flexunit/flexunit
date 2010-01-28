@@ -17,8 +17,7 @@ to contribute to our CI process.
 	<property environment="env" />
 
 	<!-- Configuration -->
-	<property name="build.number" value="4.0.0" />
-	<property name="build.useFlex" value="true" />
+	<property name="build.number" value="4.x.x.x" />
 	<property name="final.artifact.name" value="flexunit-${build.number}.zip" />
 
 	<!-- Project locations -->
