@@ -1,89 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="FlexUnit4CIListener" basedir="." default="package">
-	<property environment="env" />
+   <property environment="env" />
 
-	<!-- Configuration -->
-	<property name="build.number" value="4.0.0" />
-	<property name="build.useFlex" value="true" />
-	<property name="build.artifact.name" value="flexunit-cilistener-${build.number}.swc" />
+   <!-- Version info -->
+   <property file="${basedir}/version.properties" />
 
-	<!-- Setup paths for build -->
-	<property name="main.src.loc" location="${basedir}/src" />
-	<property name="lib.loc" location="${basedir}/libs" />
-	<property name="bin.loc" location="${basedir}/target/bin" />
-	<property name="report.xunit.loc" location="${basedir}/target/report/xunit" />
-	<property name="report.pmd.loc" location="${basedir}/target/report/pmd" />
-	<property name="doc.loc" location="${basedir}/target/docs" />
-	<property name="dist.loc" location="${basedir}/target" />
+   <!-- Existing -->
+   <property name="src.loc" location="${basedir}/src" />
+   <property name="lib.loc" location="${basedir}/libs" />
 
-	<!-- Setup Flex Ant Resources -->
-	<property name="FLEX_HOME" location="${env.FLEX_HOME}" />
-	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+   <!-- Generated -->
+   <property name="dist.loc" location="${basedir}/target" />
+   <property name="bin.loc" location="${basedir}/target/bin" />
+   <property name="doc.loc" location="${basedir}/target/docs" />
 
-	<target name="clean">
-		<delete includeemptydirs="true" failonerror="false">
-			<fileset dir="${dist.loc}" defaultexcludes="false">
-				<include name="**/*" />
-			</fileset>
-		</delete>
-	</target>
+   <!-- Setup Flex Ant Resources -->
+   <property name="FLEX_HOME" location="${env.FLEX_HOME}" />
+   <taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 
-	<target name="init">
-		<echo message="Project: ${ant.project.name}" />
-		<echo message="SDK: ${FLEX_HOME}" />
-		<echo message="Use Flex: ${build.useFlex}" />
-		<echo message="" />
+   <target name="clean">
+      <delete dir="${dist.loc}" />
+   </target>
 
-		<mkdir dir="${lib.loc}" />
-		<mkdir dir="${bin.loc}" />
-		<mkdir dir="${dist.loc}" />
-		<mkdir dir="${doc.loc}" />
-		<mkdir dir="${report.xunit.loc}" />
-		<mkdir dir="${report.pmd.loc}" />
-	</target>
+   <target name="init">
+      <mkdir dir="${dist.loc}" />
+      <mkdir dir="${lib.loc}" />
+      <mkdir dir="${bin.loc}" />
+      <mkdir dir="${doc.loc}" />
+   </target>
 
-	<target name="compile" depends="init">
-		<compc output="${bin.loc}/${build.artifact.name}">
-			<include-sources dir="${main.src.loc}" includes="*" append="true" />
-			<source-path path-element="${main.src.loc}" />
-			<define name="CONFIG::useFlexClasses" value="${build.useFlex}" />
-			<compiler.external-library-path dir="${lib.loc}" append="true">
-				<include name="*.swc" />
-			</compiler.external-library-path>
-			<compiler.external-library-path dir="${FLEX_HOME}/frameworks/libs" append="true">
-				<include name="flex.swc" />
-				<include name="framework.swc" />
-				<include name="rpc.swc" />
-				<include name="utilities.swc" />
-				<include name="air/airglobal.swc" />
-			</compiler.external-library-path>
-			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
-			<compiler.headless-server>true</compiler.headless-server>
-			<target-player>10.0.0</target-player>
-		</compc>
-	</target>
+   <target name="compile" depends="init">
+      <compc output="${bin.loc}/${build.finalName}">
+         <include-sources dir="${src.loc}" includes="*" append="true" />
+         <source-path path-element="${src.loc}" />
+         <compiler.external-library-path dir="${lib.loc}" append="true">
+            <include name="*.swc" />
+         </compiler.external-library-path>
+         <compiler.external-library-path dir="${FLEX_HOME}/frameworks/libs" append="true">
+            <include name="flex.swc" />
+            <include name="framework.swc" />
+            <include name="rpc.swc" />
+            <include name="utilities.swc" />
+         </compiler.external-library-path>
+         <compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
+         <compiler.headless-server>true</compiler.headless-server>
+      </compc>
+   </target>
 
-	<target name="test" depends="compile" />
-	
-	<target name="package" depends="test">
-		<copy file="${bin.loc}/${build.artifact.name}" tofile="${dist.loc}/${build.artifact.name}" />
-	</target>
+   <target name="package" depends="compile">
+      <copy file="${bin.loc}/${build.finalName}" todir="${dist.loc}" />
+   </target>
 
-	<!-- Generate static code analysis with PMD and asdocs -->
-	<target name="report">
-		<taskdef name="flexPmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" />
-					
-		<flexPmd sourceDirectory="${main.src.loc}" outputDirectory="${report.pmd.loc}" />
-		
-		<java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
-			<arg line="+flexlib '${FLEX_HOME}/frameworks'" />
-			<arg line="-doc-sources '${main.src.loc}'" />
-			<arg line="-source-path+='${main.src.loc}'" />
-			<arg line="-output '${doc.loc}'" />
-			<arg line="-library-path+='${lib.loc}'" />
-			<arg line="-library-path+='${FLEX_HOME}/frameworks/libs/air/airglobal.swc'" />
-			<arg line="-target-player=10.0.0" />
-			<arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
-		</java>
-	</target>
+   <!-- Generate static code analysis with PMD and asdocs -->
+   <target name="report">
+      <java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
+         <arg line="+flexlib '${FLEX_HOME}/frameworks'" />
+         <arg line="-doc-sources '${src.loc}'" />
+         <arg line="-source-path+='${src.loc}'" />
+         <arg line="-output '${doc.loc}'" />
+         <arg line="-library-path+='${lib.loc}'" />
+      </java>
+   </target>
 </project>
