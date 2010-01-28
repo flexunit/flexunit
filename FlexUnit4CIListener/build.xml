@@ -20,11 +20,15 @@
 
    <target name="clean">
       <delete dir="${dist.loc}" />
+      <delete>
+         <fileset dir="${lib.loc}">
+            <include name="*.swc" />
+         </fileset>
+      </delete>
    </target>
 
    <target name="init">
       <mkdir dir="${dist.loc}" />
-      <mkdir dir="${lib.loc}" />
       <mkdir dir="${bin.loc}" />
       <mkdir dir="${doc.loc}" />
 
