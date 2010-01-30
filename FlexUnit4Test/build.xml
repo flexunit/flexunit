@@ -5,119 +5,190 @@ projects.  If the tests resided with the core project, then core and cilistener 
 dependency which would be more difficult to manage from a build perspective.
 -->
 <project name="FlexUnit4Test" basedir="." default="test">
-	<property environment="env" />
+   <property environment="env" />
 
-	<!-- Configuration -->
-	<property name="build.number" value="4.0.0" />
-	<property name="build.useFlex" value="true" />
-	<property name="test.artifact.name" value="TestRunner.swf" />
-	<property name="instrument.metadata" value="flexunit-instrument-${build.number}.cvm" />
-	<property name="instrument.report.flexcover" value="flexunit-instrument-${build.number}.cvr" />
-	<property name="instrument.report.cobertura" value="coverage.xml" />
+   <!-- Configuration -->
+   <property name="test.artifact.flex" value="TestRunner-flex.swf" />
+   <property name="test.artifact.as3" value="TestRunner-as3.swf" />
+   <property name="instrument.metadata" value="flexunit-instrument.cvm" />
+   <property name="instrument.report.flexcover" value="flexunit-instrument.cvr" />
+   <property name="instrument.report.cobertura" value="coverage.xml" />
 
-	<!-- Setup paths for build -->
-	<property name="main.src.loc" location="${basedir}/../FlexUnit4/src" />
-	<property name="test.src.loc" location="${basedir}/src" />
-	<property name="lib.loc" location="${basedir}/libs" />
-	<property name="bin.loc" location="${basedir}/target/bin" />
-	<property name="report.xunit.loc" location="${basedir}/target/report/xunit" />
-	<property name="report.flexcover.loc" location="${basedir}/target/report/flexcover" />
-	<property name="dist.loc" location="${basedir}/target" />
+   <!-- Existing -->
+   <property name="main.src.loc" location="${basedir}/../FlexUnit4/src" />
+   <property name="test.src.loc" location="${basedir}/src" />
+   <property name="lib.loc" location="${basedir}/libs" />
+   <property name="build.lib.loc" location="${lib.loc}/build" />
 
-	<!-- Setup Flex Ant Resources -->
-	<property name="FLEX_HOME" location="${env.FLEX_HOME}" />
-	<property name="FLEX_COVER_VIEWER" location="${env.FLEX_COVER_VIEWER}" />
-	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+   <!-- Generated -->
+   <property name="dist.loc" location="${basedir}/target" />
+   <property name="bin.loc" location="${basedir}/target/bin" />
+   <property name="report.xunit.flex.loc" location="${basedir}/target/report/xunit/flex" />
+   <property name="report.xunit.as3.loc" location="${basedir}/target/report/xunit/as3" />
+   <property name="report.flexcover.flex.loc" location="${basedir}/target/report/flexcover/flex" />
+   <property name="report.flexcover.as3.loc" location="${basedir}/target/report/flexcover/as3" />
 
-	<target name="clean">
-		<delete includeemptydirs="true" failonerror="false">
-			<fileset dir="${dist.loc}" defaultexcludes="false">
-				<include name="**/*" />
-			</fileset>
-		</delete>
-	</target>
+   <!-- Setup Flex Ant Resources -->
+   <property name="FLEX_HOME" location="${env.FLEX_HOME}" />
+   <property name="FLEX_COVER_VIEWER" location="${env.FLEX_COVER_VIEWER}" />
+   <taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 
-	<target name="init">
-		<echo message="Project: ${ant.project.name}" />
-		<echo message="Flex SDK: ${FLEX_HOME}" />
-		<echo message="Use Flex: ${build.useFlex}" />
-		<echo message="" />
+   <target name="clean">
+      <delete dir="${dist.loc}" />
+      <delete>
+         <fileset dir="${lib.loc}">
+            <exclude name="FlexUnit1Lib.swc" />
+            <exclude name="hamcrest-1.0.2.swc" />
+            <exclude name="mock-as3.swc" />
+            <exclude name="build/saxon*.jar" />
+         </fileset>
+      </delete>
+   </target>
 
-		<!-- Create paths -->
-		<mkdir dir="${bin.loc}" />
-		<mkdir dir="${report.xunit.loc}" />
-		<mkdir dir="${report.flexcover.loc}" />
-		<mkdir dir="${dist.loc}" />
-	</target>
+   <target name="init">
+      <mkdir dir="${dist.loc}" />
+      <mkdir dir="${bin.loc}" />
+      <mkdir dir="${report.xunit.flex.loc}" />
+      <mkdir dir="${report.xunit.as3.loc}" />
+      <mkdir dir="${report.flexcover.flex.loc}" />
+      <mkdir dir="${report.flexcover.as3.loc}" />
 
-	<target name="test-compile" depends="init">
-		<!-- Are we running the deafult test runner or Flex Cover's runner? -->
-		<condition property="test.application.name" value="InstrumentTestRunner.mxml" else="TestRunner.mxml">
-			<available file="${lib.loc}/${instrument.metadata}" />
-		</condition>
-		
-		<!-- Build test swf -->
-		<mxmlc file="${test.src.loc}/${test.application.name}" output="${bin.loc}/${test.artifact.name}">
-			<library-path dir="${lib.loc}" append="true">
-				<include name="*.swc" />
-			</library-path>
-			<define name="CONFIG::useFlexClasses" value="${build.useFlex}" />
-			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
-			<compiler.headless-server>true</compiler.headless-server>
-		</mxmlc>
-	</target>
+      <!-- Copy dependencies -->
+      <copy todir="${lib.loc}" overwrite="true">
+         <fileset dir="${basedir}/../FlexUnit4/target">
+            <include name="*.swc" />
+         </fileset>
+         <fileset dir="${basedir}/../FlexUnit4CIListener/target">
+            <include name="*.swc" />
+         </fileset>
+         <fileset dir="${basedir}/../FlexUnit4FlexCoverListener/target">
+            <include name="*.swc" />
+         </fileset>
+      </copy>
+      <copy todir="${build.lib.loc}" overwrite="true">
+         <fileset dir="${basedir}/../FlexUnit4AntTasks/target">
+            <include name="*.jar" />
+         </fileset>
+      </copy>
+   </target>
 
-	<target name="test-only" depends="test-compile" unless="build.instrument">
-		<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks-${build.number}.jar" />
-		
-		<!-- Run FlexUnit Ant Task -->
-		<flexunit swf="${bin.loc}/${test.artifact.name}" toDir="${report.xunit.loc}" haltonfailure="false" verbose="true" localTrusted="true" />
-	</target>
+   <target name="test" depends="test-compile,test-only,test-and-instrument" />
 
-	<target name="test-and-instrument" depends="test-compile" if="build.instrument">
-		<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks-${build.number}.jar" />
-		
-		<parallel>
-			<!-- Use CoverageViewer to generate coverage report and translate to Cobertura format -->
-			<sequential>
-				<exec executable="${FLEX_COVER_VIEWER}" dir="${bin.loc}" spawn="true">
-					<arg line="-output '${report.flexcover.loc}/${instrument.report.flexcover}'" />
-					<arg line="'${lib.loc}/${instrument.metadata}'" />
-				</exec>
-				<waitfor checkevery="3" checkeveryunit="second">
-					<available file="${report.flexcover.loc}/${instrument.report.flexcover}" />
-				</waitfor>
-				<tstamp>
-					<format property="instrument.timestamp" pattern="MM/dd/yyyy HH:mm:ss.SSS"/>
-				</tstamp>
-				<xslt in="${report.flexcover.loc}/${instrument.report.flexcover}" out="${report.flexcover.loc}/${instrument.report.cobertura}" style="${basedir}/fc-to-cobertura.xsl">
-					<classpath>
-						<fileset dir="${lib.loc}">
-							<include name="*.jar" />
-						</fileset>
-					</classpath>
-					<param name="sourcePath" expression="${main.src.loc}" />
-					<param name="timestamp" expression="${instrument.timestamp}" />
-					<param name="version" expression="0.81" />
-				</xslt>
-			</sequential>
-			<!-- Launch FlexUnit tests after a short delay -->
-			<sequential>
-				<sleep seconds="30" />
-				<flexunit swf="${bin.loc}/${test.artifact.name}" toDir="${report.xunit.loc}" haltonfailure="false" verbose="true" localTrusted="false" />
-			</sequential>
-		</parallel>
-	</target>
+   <target name="test-compile" depends="init">
+      <macrodef name="compile-test-swf">
+         <attribute name="artifact" />
+         <attribute name="useFlex" />
+         <attribute name="exclude" />
+         <sequential>
+            <mxmlc file="${test.src.loc}/${test.application}" output="${bin.loc}/@{artifact}">
+               <library-path dir="${lib.loc}" append="true">
+                  <include name="*.swc" />
+                  <exclude name="*-@{exclude}-*.swc" />
+               </library-path>
+               <define name="CONFIG::useFlexClasses" value="@{useFlex}" />
+               <compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
+               <compiler.headless-server>true</compiler.headless-server>
+            </mxmlc>
+         </sequential>
+      </macrodef>
 
-	<target name="test" depends="test-only,test-and-instrument" />
+      <!-- Are we running the default test runner or Flex Cover's runner? -->
+      <condition property="test.application" value="InstrumentTestRunner.mxml" else="TestRunner.mxml">
+         <available file="${lib.loc}/${instrument.metadata}" />
+      </condition>
 
-	<target name="report">
-		<!-- generate html reports based on test data -->
-		<junitreport todir="${report.xunit.loc}">
-			<fileset dir="${report.xunit.loc}">
-				<include name="TEST-*.xml" />s
-			</fileset>
-			<report format="frames" todir="${report.xunit.loc}/html" />
-		</junitreport>
-	</target>
+      <!-- Build test swf for Flex -->
+      <compile-test-swf artifact="${test.artifact.flex}" useFlex="true" exclude="as3" />
+
+      <!-- Build test swf for AS3 -->
+      <compile-test-swf artifact="${test.artifact.as3}" useFlex="false" exclude="flex" />
+   </target>
+
+   <target name="test-only" unless="build.instrument">
+      <taskdef resource="flexUnitTasks.tasks">
+         <classpath>
+            <fileset dir="${build.lib.loc}">
+               <include name="flexUnitTasks*.jar" />
+            </fileset>
+         </classpath>
+      </taskdef>
+
+      <!-- Run FlexUnit Ant Task for Flex -->
+      <flexunit swf="${bin.loc}/${test.artifact.flex}" toDir="${report.xunit.flex.loc}" haltonfailure="false" verbose="true" localTrusted="true" />
+
+      <!-- Run FlexUnit Ant Task for Flex -->
+      <flexunit swf="${bin.loc}/${test.artifact.as3}" toDir="${report.xunit.as3.loc}" haltonfailure="false" verbose="true" localTrusted="true" />
+   </target>
+
+   <target name="test-and-instrument" if="build.instrument">
+      <taskdef resource="flexUnitTasks.tasks">
+         <classpath>
+            <fileset dir="${build.lib.loc}">
+               <include name="flexUnitTasks*.jar" />
+            </fileset>
+         </classpath>
+      </taskdef>
+
+      <macrodef name="flexcover">
+         <attribute name="artifact" />
+         <attribute name="report.xunit" />
+         <attribute name="report.flexcover" />
+         <sequential>
+            <parallel>
+               <!-- Use CoverageViewer to generate coverage report and translate to Cobertura format -->
+               <sequential>
+                  <exec executable="${FLEX_COVER_VIEWER}" dir="${bin.loc}" spawn="true">
+                     <arg line="-output '@{report.flexcover}/${instrument.report.flexcover}'" />
+                     <arg line="'${lib.loc}/${instrument.metadata}'" />
+                  </exec>
+                  <waitfor checkevery="3" checkeveryunit="second">
+                     <available file="@{report.flexcover}/${instrument.report.flexcover}" />
+                  </waitfor>
+                  <tstamp>
+                     <format property="instrument.timestamp" pattern="MM/dd/yyyy HH:mm:ss.SSS" />
+                  </tstamp>
+                  <xslt in="@{report.flexcover}/${instrument.report.flexcover}" out="@{report.flexcover}/${instrument.report.cobertura}" style="${basedir}/fc-to-cobertura.xsl">
+                     <classpath>
+                        <fileset dir="${build.lib.loc}">
+                           <include name="*.jar" />
+                        </fileset>
+                     </classpath>
+                     <param name="sourcePath" expression="${main.src.loc}" />
+                     <param name="timestamp" expression="${instrument.timestamp}" />
+                     <param name="version" expression="0.81" />
+                  </xslt>
+               </sequential>
+               <!-- Launch FlexUnit tests after a short delay -->
+               <sequential>
+                  <sleep seconds="30" />
+                  <flexunit swf="${bin.loc}/@{artifact}" toDir="@{report.xunit}" haltonfailure="false" verbose="true" localTrusted="false" />
+               </sequential>
+            </parallel>
+         </sequential>
+      </macrodef>
+
+      <!-- Execute flexcover process for Flex -->
+      <flexcover artifact="${test.artifact.flex}" report.xunit="${report.xunit.flex.loc}" report.flexcover="${report.flexcover.flex.loc}" />
+
+      <!-- Execute flexcover process for AS3 -->
+      <flexcover artifact="${test.artifact.as3}" report.xunit="${report.xunit.as3.loc}" report.flexcover="${report.flexcover.as3.loc}" />
+   </target>
+
+   <target name="report">
+      <!-- generate html reports based on test data for flex-->
+      <junitreport todir="${report.xunit.flex.loc}">
+         <fileset dir="${report.xunit.flex.loc}">
+            <include name="TEST-*.xml" />
+         </fileset>
+         <report format="frames" todir="${report.xunit.flex.loc}/html" />
+      </junitreport>
+
+      <!-- generate html reports based on test data for as3-->
+      <junitreport todir="${report.xunit.as3.loc}">
+         <fileset dir="${report.xunit.as3.loc}">
+            <include name="TEST-*.xml" />
+         </fileset>
+         <report format="frames" todir="${report.xunit.as3.loc}/html" />
+      </junitreport>
+   </target>
 </project>
