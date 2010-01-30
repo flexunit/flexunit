@@ -21,9 +21,7 @@
    <target name="clean">
       <delete dir="${dist.loc}" />
       <delete>
-         <fileset dir="${lib.loc}">
-            <exclude name="CoverageAgent.swc" />
-         </fileset>
+         <fileset dir="${lib.loc}" />
       </delete>
    </target>
 
