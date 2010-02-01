@@ -2,9 +2,13 @@ package org.flexunit.ant.report;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.MessageFormat;
+import java.util.Date;
 
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.util.DateUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -25,6 +29,8 @@ public class Report
    private static final String IGNORE_ATTRIBUTE_LABEL = "skipped";
    private static final String TIME_ATTRIBUTE_LABEL = "time";
    private static final String TESTS_ATTRIBUTE_LABEL = "tests";
+   private static final String HOSTNAME_ATTRIBUTE_LABEL = "hostname";
+   private static final String TIMESTAMP_ATTRIBUTE_LABEL = "timestamp";
 
    private static final String FILENAME_PREFIX = "TEST-";
    private static final String FILENAME_EXTENSION = ".xml";
@@ -46,18 +52,23 @@ public class Report
    public Report(Suite suite)
    {
       this.suite = suite;
-      
+
       // Create a new XML document
       document = DocumentHelper.createDocument();
-      
+
       // Add the test suite attributes to the document
-      document.addElement(TEST_SUITE)
-         .addAttribute(NAME_ATTRIBUTE_LABEL, suite.getName())
-         .addAttribute(TESTS_ATTRIBUTE_LABEL, String.valueOf(suite.getTests()))
-         .addAttribute(FAILURE_ATTRIBUTE_LABEL, String.valueOf(suite.getFailures()))
-         .addAttribute(ERROR_ATTRIBUTE_LABEL, String.valueOf(suite.getErrors()))
-         .addAttribute(IGNORE_ATTRIBUTE_LABEL, String.valueOf(suite.getSkips()))
-         .addAttribute(TIME_ATTRIBUTE_LABEL, String.valueOf(suite.getTime()));
+      document
+            .addElement(TEST_SUITE)
+            .addAttribute(NAME_ATTRIBUTE_LABEL, suite.getName())
+            .addAttribute(TESTS_ATTRIBUTE_LABEL,
+                  String.valueOf(suite.getTests()))
+            .addAttribute(FAILURE_ATTRIBUTE_LABEL,
+                  String.valueOf(suite.getFailures()))
+            .addAttribute(ERROR_ATTRIBUTE_LABEL,
+                  String.valueOf(suite.getErrors()))
+            .addAttribute(IGNORE_ATTRIBUTE_LABEL,
+                  String.valueOf(suite.getSkips()))
+            .addAttribute(TIME_ATTRIBUTE_LABEL, String.valueOf(suite.getTime()));
    }
 
    /**
@@ -71,16 +82,17 @@ public class Report
       // Add the test to the report document
       Element root = test.getRootElement();
       document.getRootElement().add(root);
-      
+
       // Check for special status adjustments to make to suite
       checkForStatus(test);
    }
 
    /**
-    * Updates counts for failed, error, and ignore on suite as well as logs what failed if
-    * told to use logging.
+    * Updates counts for failed, error, and ignore on suite as well as logs what
+    * failed if told to use logging.
     * 
-    * @param test Test XML document
+    * @param test
+    *           Test XML document
     */
    private void checkForStatus(Document test)
    {
@@ -94,13 +106,11 @@ public class Report
       {
          format = FAILED_TEST;
          suite.addFailure();
-      }
-      else if (status.equals(ERROR))
+      } else if (status.equals(ERROR))
       {
          format = ERRORED_TEST;
          suite.addError();
-      }
-      else if (status.equals(IGNORE))
+      } else if (status.equals(IGNORE))
       {
          format = IGNORED_TEST;
          suite.addSkip();
@@ -109,23 +119,26 @@ public class Report
       // Creates the fail message for use with verbose
       if (format != null)
       {
-         final String message = MessageFormat.format(format, new Object[] { name, suite });
+         final String message = MessageFormat.format(format, new Object[]
+         { name, suite });
          LoggingUtil.log(message);
       }
    }
 
    /**
-    * Determines if any failures (errors or failures) have occurred in this report.
+    * Determines if any failures (errors or failures) have occurred in this
+    * report.
     */
    public boolean hasFailures()
    {
       return (suite.getErrors() > 0 || suite.getFailures() > 0);
    }
-   
+
    /**
     * Write the report XML document out to file
     * 
-    * @param reportDir Directory to hold report file.
+    * @param reportDir
+    *           Directory to hold report file.
     */
    public void save(File reportDir) throws BuildException
    {
@@ -140,6 +153,10 @@ public class Report
          root.addAttribute(ERROR_ATTRIBUTE_LABEL, String.valueOf(suite.getErrors()));
          root.addAttribute(TESTS_ATTRIBUTE_LABEL, String.valueOf(suite.getTests()));
          root.addAttribute(IGNORE_ATTRIBUTE_LABEL, String.valueOf(suite.getSkips()));
+         root.addAttribute(HOSTNAME_ATTRIBUTE_LABEL, getHostname());
+         
+         final String timestamp = DateUtils.format(new Date(), DateUtils.ISO8601_DATETIME_PATTERN);
+         root.addAttribute(TIMESTAMP_ATTRIBUTE_LABEL, timestamp);
 
          // Write the updated suite
          final OutputFormat format = OutputFormat.createPrettyPrint();
@@ -152,27 +169,34 @@ public class Report
          throw new BuildException(ERROR_SAVING_REPORT, e);
       }
    }
-   
+
+   private String getHostname()
+   {
+      try
+      {
+         return InetAddress.getLocalHost().getHostName();
+      } catch (UnknownHostException e)
+      {
+         return "localhost";
+      }
+   }
+
    public String getSummary()
    {
       String summary = "";
-      
+
       try
       {
-         summary = MessageFormat.format(TEST_INFO, new Object[] { 
-               new String(suite.getName()), 
-               new Integer(suite.getTests()), 
-               new Integer(suite.getFailures()), 
-               new Integer(suite.getErrors()),
-               new Integer(suite.getSkips()),
-               new Double(suite.getTime())
-            });
-      }
-      catch (Exception e)
+         summary = MessageFormat.format(TEST_INFO, new Object[]
+         { new String(suite.getName()), new Integer(suite.getTests()),
+               new Integer(suite.getFailures()),
+               new Integer(suite.getErrors()), new Integer(suite.getSkips()),
+               new Double(suite.getTime()) });
+      } catch (Exception e)
       {
          // ignore
       }
-      
+
       return summary;
    }
 }
