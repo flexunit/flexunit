@@ -22,8 +22,8 @@
    <taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 
    <target name="clean">
-      <delete dir="${dist.loc}" />
-      <delete>
+      <delete dir="${dist.loc}" failonerror="false" />
+      <delete failonerror="false">
          <fileset dir="${lib.loc}" />
       </delete>
    </target>
