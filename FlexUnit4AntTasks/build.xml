@@ -32,7 +32,11 @@
       </javac>
    </target>
 
-   <target name="package" depends="compile">
+   <target name="report" depends="compile">
+      <javadoc destdir="${doc.loc}" packagenames="org.flexunit.ant.*" sourcepath="${src.loc}" access="private" Author="true" version="true" Use="true" noindex="true" Windowtitle="FlexUnit Ant Tasks " Doctitle="FlexUnit Ant Tasks" failonerror="true" />
+   </target>
+
+   <target name="package" depends="report">
       <copy file="${src.loc}/flexUnitTasks.tasks" todir="${bin.loc}" />
       <copy file="${src.loc}/flexUnitDescriptor.template" todir="${bin.loc}" />
 
@@ -44,10 +48,5 @@
             <include name="**/*" />
          </fileset>
       </jar>
-   </target>
-
-   <!-- Generate static code analysis with PMD and javadocs -->
-   <target name="report">
-      <javadoc destdir="${doc.loc}" packagenames="org.flexunit.ant.*" sourcepath="${src.loc}" access="private" Author="true" version="true" Use="true" noindex="true" Windowtitle="FlexUnit Ant Tasks " Doctitle="FlexUnit Ant Tasks" failonerror="true" />
    </target>
 </project>

@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-Do not set dependency between package and test|report targets, allow parent build script to manage relationship.
-If you are using the build file directly, below is the suggested call:
-
-	ant -v clean package report
--->
 <project name="FlexUnit4Core" basedir="." default="package">
    <property environment="env" />
 
@@ -12,8 +6,9 @@ If you are using the build file directly, below is the suggested call:
    <property file="${basedir}/version.properties" />
 
    <!-- Configuration -->
-   <property name="instrument.artifact.name" value="flexunit-instrument-${build.number}.swc" />
-   <property name="instrument.metadata" value="flexunit-instrument-${build.number}.cvm" />
+   <property name="build.useFlex" value="true" />
+   <property name="instrument.finalName" value="flexunit-instrument.swc" />
+   <property name="instrument.metadata" value="flexunit-instrument.cvm" />
 
    <!-- Existing -->
    <property name="src.loc" location="${basedir}/src" />
@@ -69,30 +64,49 @@ If you are using the build file directly, below is the suggested call:
    </target>
 
    <target name="init">
+      <echo message="Project: ${ant.project.name}" />
+      <echo message="SDK: ${FLEX_HOME}" />
+      <echo message="FlexCover SDK: ${FLEX_COVER_HOME}" />
+      <echo message="Use Flex: ${build.useFlex}" />
+      <echo message="" />
+
       <!-- Create paths -->
+      <mkdir dir="${dist.loc}" />
       <mkdir dir="${bin.loc}" />
       <mkdir dir="${report.loc}" />
-      <mkdir dir="${dist.loc}" />
       <mkdir dir="${doc.loc}" />
 
       <!-- Create properties file from .flexLibProperties -->
       <xslt in="${basedir}/.flexLibProperties" out="${bin.loc}/flexLib.properties" style="${basedir}/flexLibProperties.xsl" />
+
+      <!-- Pick final name to use -->
+      <condition property="build.finalName" value="${build.finalName.flex}" else="${build.finalName.as3}">
+         <equals arg1="${build.useFlex}" arg2="true" />
+      </condition>
    </target>
 
-   <target name="compile" depends="init,compile-default,verify-as3-swc" />
-
-   <target name="compile-default">
+   <target name="compile" depends="init">
       <!-- Pull in class file list for compc -->
       <property file="${bin.loc}/flexLib.properties" />
 
-      <!-- Compile Flex version -->
-      <compile-swc sdk="${FLEX_HOME}" artifact="${build.finalName.flex}" classes="${src.class-list}" useflex="true" />
-
-      <!-- Compile AS3 version and verify -->
-      <compile-swc sdk="${FLEX_HOME}" artifact="${build.finalName.as3}" classes="${src.class-list}" useflex="false" />
+      <!-- Compile distributable SWC -->
+      <compile-swc sdk="${FLEX_HOME}" artifact="${build.finalName}" classes="${src.class-list}" useflex="${build.useFlex}" />
    </target>
 
-   <target name="verify-as3-swc">
+   <target name="instrument-compile" depends="compile" if="build.instrument">
+      <!-- Pull in class file list for compc -->
+      <property file="${bin.loc}/flexLib.properties" />
+
+      <!-- Compile SWC using FlexCover SDK for flex -->
+      <compile-swc sdk="${FLEX_COVER_HOME}" artifact="${instrument.finalName}" classes="${src.class-list}" useflex="${build.useFlex}">
+         <args>
+            <arg line="-coverage" />
+            <arg line="-coverage-metadata='${bin.loc}/${instrument.metadata}'" />
+         </args>
+      </compile-swc>
+   </target>
+
+   <target name="as3-linker-check">
       <!-- Create properties file from link report -->
       <xslt in="${bin.loc}/link-report.xml" out="${bin.loc}/flex-dependencies.txt" style="${basedir}/link-report.xsl" />
 
@@ -107,32 +121,7 @@ If you are using the build file directly, below is the suggested call:
       </fail>
    </target>
 
-   <target name="instrument-compile" depends="init" if="build.instrument">
-      <!-- Pull in class file list for compc -->
-      <property file="${bin.loc}/flexLib.properties" />
-
-      <!-- Compile SWC using FlexCover SDK for testing -->
-      <compile-swc sdk="${FLEX_COVER_HOME}" artifact="${instrument.artifact.name}" classes="${src.class-list}" useflex="true">
-         <args>
-            <arg line="-coverage" />
-            <arg line="-coverage-metadata='${bin.loc}/${instrument.metadata}'" />
-         </args>
-      </compile-swc>
-   </target>
-
-   <target name="package" depends="package-default,package-instrument" />
-
-   <target name="package-default" depends="compile">
-      <copy file="${bin.loc}/${build.finalName.flex}" todir="${dist.loc}" />
-      <copy file="${bin.loc}/${build.finalName.as3}" todir="${dist.loc}" />
-   </target>
-
-   <target name="package-instrument" depends="instrument-compile" if="build.instrument">
-      <copy file="${bin.loc}/${instrument.metadata}" todir="${dist.loc}" />
-      <copy file="${bin.loc}/${instrument.artifact.name}" todir="${dist.loc}" />
-   </target>
-
-   <target name="report" depends="init">
+   <target name="report">
       <taskdef name="pmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" />
       <taskdef name="cpd" classname="com.adobe.ac.cpd.ant.FlexCpdAntTask" />
       <taskdef name="metrics" classname="com.adobe.ac.pmd.metrics.ant.FlexMetricsAntTask" />
@@ -159,7 +148,19 @@ If you are using the build file directly, below is the suggested call:
          <arg line="-source-path+='${src.loc}'" />
          <arg line="-output '${doc.loc}'" />
          <arg line="-library-path+='${lib.loc}'" />
-         <arg line="-define=CONFIG::useFlexClasses,true" />
+         <arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
       </java>
    </target>
+
+   <target name="package" depends="package-default,package-instrument,report" />
+
+   <target name="package-default" depends="compile,as3-linker-check">
+      <copy file="${bin.loc}/${build.finalName}" todir="${dist.loc}" />
+   </target>
+
+   <target name="package-instrument" depends="instrument-compile" if="build.instrument">
+      <copy file="${bin.loc}/${instrument.metadata}" todir="${dist.loc}" />
+      <copy file="${bin.loc}/${instrument.finalName}" todir="${dist.loc}" />
+   </target>
+
 </project>

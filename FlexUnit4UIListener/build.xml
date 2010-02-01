@@ -7,6 +7,7 @@
 
    <!-- Configuration -->
    <property name="build.namespace" value="http://www.adobe.com/2009/flexUnitUIRunner" />
+   <property name="build.useFlex" value="true" />
 
    <!-- Existing -->
    <property name="src.loc" location="${basedir}/src" />
@@ -36,7 +37,7 @@
       <!-- Copy required dependencies -->
       <copy todir="${lib.loc}" overwrite="true" failonerror="false">
          <fileset dir="${basedir}/../FlexUnit4/target">
-            <include name="*-flex-*.swc" />
+            <include name="*core*.swc" />
          </fileset>
       </copy>
 
@@ -78,6 +79,7 @@
          </compiler.external-library-path>
          <compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
          <compiler.headless-server>true</compiler.headless-server>
+         <define name="CONFIG::useFlexClasses" value="${build.useFlex}" />
       </compc>
    </target>
 
@@ -102,14 +104,11 @@
          </compiler.external-library-path>
          <compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
          <compiler.headless-server>true</compiler.headless-server>
+         <define name="CONFIG::useFlexClasses" value="${build.useFlex}" />
       </compc>
    </target>
-
-   <target name="package" depends="compile">
-      <copy file="${bin.loc}/${build.finalName}" todir="${dist.loc}" />
-   </target>
-
-   <target name="report" depends="identify-sdk,report-flex3,report-flex4" />
+   
+   <target name="report" depends="compile,identify-sdk,report-flex3,report-flex4" />
 
    <target name="report-flex3" unless="build.isFlex4">
       <java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
@@ -118,6 +117,7 @@
          <arg line="-source-path+='${src.loc}'" />
          <arg line="-output '${doc.loc}'" />
          <arg line="-library-path+='${lib.loc}'" />
+         <arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
       </java>
    </target>
 
@@ -129,6 +129,11 @@
          <arg line="-source-path+='${src.loc}'" />
          <arg line="-output '${doc.loc}'" />
          <arg line="-library-path+='${lib.loc}'" />
+         <arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
       </java>
+   </target>
+
+   <target name="package" depends="report">
+      <copy file="${bin.loc}/${build.finalName}" todir="${dist.loc}" />
    </target>
 </project>
