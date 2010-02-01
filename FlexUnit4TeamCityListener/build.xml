@@ -29,6 +29,7 @@
    </target>
 
    <target name="init">
+      <mkdir dir="${lib.loc}" />
       <mkdir dir="${dist.loc}" />
       <mkdir dir="${bin.loc}" />
       <mkdir dir="${doc.loc}" />
