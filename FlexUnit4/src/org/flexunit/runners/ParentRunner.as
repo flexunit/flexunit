@@ -341,10 +341,11 @@ package org.flexunit.runners {
 			if(!childrenFiltered) {
 				var filtered:Array = new Array();
 				var child:*;
-				var length:uint = children.length;
+				var theChildren:Array = children;
+				var length:uint = theChildren.length;
 	
 				for ( var i:uint=0; i<length; i++ ) {
-					child = children[ i ];
+					child = theChildren[ i ];
 					//Determine if the child matches the filter
 					if ( shouldRun( child ) ) {
 						try {
