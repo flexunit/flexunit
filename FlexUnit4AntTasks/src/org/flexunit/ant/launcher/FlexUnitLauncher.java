@@ -37,7 +37,7 @@ public class FlexUnitLauncher
 
    private boolean runHeadless()
    {
-      return headless && (os == OperatingSystem.UNIX);
+      return headless && (os == OperatingSystem.LINUX);
    }
 
    public void runTests(File swf) throws IOException, XvncException

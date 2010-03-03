@@ -217,7 +217,7 @@ public class FlexUnitTask extends Task
       
       if(headless)
       {
-         if(OperatingSystem.identify() != OperatingSystem.UNIX)
+         if(OperatingSystem.identify() != OperatingSystem.LINUX)
          {
             throw new BuildException("Headless mode can only be used on Linux with vncserver installed.");
          }
