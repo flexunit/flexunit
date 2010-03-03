@@ -5,7 +5,9 @@ import java.io.FileOutputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.util.DateUtils;
@@ -48,9 +50,14 @@ public class Report
 
    protected Suite suite;
    private Document document;
+   private List<String> recordedFailures;
+   private List<String> recordedErrors;
 
    public Report(Suite suite)
    {
+      this.recordedErrors = new ArrayList<String>();
+      this.recordedFailures = new ArrayList<String>();
+      
       this.suite = suite;
 
       // Create a new XML document
@@ -85,6 +92,9 @@ public class Report
 
       // Check for special status adjustments to make to suite
       checkForStatus(test);
+      
+      //remove status attribute since it's only used by the report
+      root.remove(root.attribute(STATUS_ATTRIBUTE));
    }
 
    /**
@@ -104,12 +114,22 @@ public class Report
       String format = null;
       if (status.equals(FAILURE))
       {
-         format = FAILED_TEST;
-         suite.addFailure();
+         //check for duplicates to avoid incrementing fail count
+         if(!recordedFailures.contains(name))
+         {
+            recordedFailures.add(name);
+            format = FAILED_TEST;
+            suite.addFailure();
+         }
       } else if (status.equals(ERROR))
       {
-         format = ERRORED_TEST;
-         suite.addError();
+         //check for duplicates to avoid incrementing error count
+         if(!recordedErrors.contains(name))
+         {
+            recordedErrors.add(name);
+            format = ERRORED_TEST;
+            suite.addError();
+         }
       } else if (status.equals(IGNORE))
       {
          format = IGNORED_TEST;
