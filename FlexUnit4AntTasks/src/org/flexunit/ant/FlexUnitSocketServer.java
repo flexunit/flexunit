@@ -3,7 +3,9 @@ package org.flexunit.ant;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -40,8 +42,8 @@ public class FlexUnitSocketServer
 
    private ServerSocket serverSocket = null;
    private Socket clientSocket = null;
-   private BufferedInputStream inboundStream = null;
-   private OutputStream outboundStream = null;
+   private InputStreamReader inboundReader = null;
+   private OutputStreamWriter outboundWriter = null;
 
    public FlexUnitSocketServer(int port, int timeout, int inboundBufferSize, boolean waitForPolicyFile)
    {
@@ -109,8 +111,8 @@ public class FlexUnitSocketServer
       LoggingUtil.log("Client connected.");
       LoggingUtil.log("Setting inbound buffer size to [" + inboundBufferSize + "] bytes.");
       
-      inboundStream = new BufferedInputStream(clientSocket.getInputStream(), inboundBufferSize);
-      outboundStream = new BufferedOutputStream(clientSocket.getOutputStream());
+      inboundReader = new InputStreamReader(new BufferedInputStream(clientSocket.getInputStream(), inboundBufferSize), "UTF-8");
+      outboundWriter = new OutputStreamWriter(new BufferedOutputStream(clientSocket.getOutputStream()), "UTF-8");
       
       LoggingUtil.log("Receiving data ...");
    }
@@ -165,7 +167,7 @@ public class FlexUnitSocketServer
       StringBuffer buffer = new StringBuffer();
       int piece = -1;
 
-      while ((piece = inboundStream.read()) != NULL_BYTE)
+      while ((piece = inboundReader.read()) != NULL_BYTE)
       {
          //Did we reach the end of the buffer?  Tell the user there is nothing more.
          if (piece == -1)
@@ -190,11 +192,11 @@ public class FlexUnitSocketServer
    
    private void sendOutboundMessage(String message) throws IOException
    {
-      if(outboundStream != null)
+      if(outboundWriter != null)
       {
-         outboundStream.write(message.getBytes());
-         outboundStream.write(NULL_BYTE);
-         outboundStream.flush();
+         outboundWriter.write(message);
+         outboundWriter.write(NULL_BYTE);
+         outboundWriter.flush();
       }
    }
 
@@ -228,15 +230,15 @@ public class FlexUnitSocketServer
       LoggingUtil.log("Closing client connection ...");
       
       // Close the output stream.
-      if (outboundStream != null)
+      if (outboundWriter != null)
       {
-         outboundStream.close();
+         outboundWriter.close();
       }
 
       // Close the input stream.
-      if (inboundStream != null)
+      if (inboundReader != null)
       {
-         inboundStream.close();
+         inboundReader.close();
       }
 
       // Close the client socket.
