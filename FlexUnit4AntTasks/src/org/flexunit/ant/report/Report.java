@@ -45,19 +45,17 @@ public class Report
    private static final String ERROR_SAVING_REPORT = "Error saving report.";
 
    // XML attribute labels
+   private static final String CLASSNAME_ATTRIBUTE = "classname";
    private static final String NAME_ATTRIBUTE = "name";
    private static final String STATUS_ATTRIBUTE = "status";
 
    protected Suite suite;
    private Document document;
-   private List<String> recordedFailures;
-   private List<String> recordedErrors;
+   private List<String> recordedRuns;
 
    public Report(Suite suite)
    {
-      this.recordedErrors = new ArrayList<String>();
-      this.recordedFailures = new ArrayList<String>();
-      
+      this.recordedRuns = new ArrayList<String>();
       this.suite = suite;
 
       // Create a new XML document
@@ -83,11 +81,23 @@ public class Report
     */
    public void addTest(Document test)
    {
-      // Add to the number of tests in this suite
-      suite.addTest();
-
-      // Add the test to the report document
       Element root = test.getRootElement();
+      
+      // Add to the number of tests in this suite if not seen and not null
+      String testMethod = root.attributeValue(NAME_ATTRIBUTE);
+      if(!recordedRuns.contains(testMethod) && !testMethod.equals("null"))
+      {
+         recordedRuns.add(testMethod);
+         suite.addTest();
+      }
+
+      //If the test method name is null, then make it the classname
+      if(root.attributeValue(NAME_ATTRIBUTE).equals("null"))
+      {
+         root.attribute(NAME_ATTRIBUTE).setText(root.attributeValue(CLASSNAME_ATTRIBUTE));
+      }
+      
+      // Add the test to the report document
       document.getRootElement().add(root);
 
       // Check for special status adjustments to make to suite
@@ -114,23 +124,15 @@ public class Report
       String format = null;
       if (status.equals(FAILURE))
       {
-         //check for duplicates to avoid incrementing fail count
-         if(!recordedFailures.contains(name))
-         {
-            recordedFailures.add(name);
-            format = FAILED_TEST;
-            suite.addFailure();
-         }
-      } else if (status.equals(ERROR))
+         format = FAILED_TEST;
+         suite.addFailure();
+      } 
+      else if (status.equals(ERROR))
       {
-         //check for duplicates to avoid incrementing error count
-         if(!recordedErrors.contains(name))
-         {
-            recordedErrors.add(name);
-            format = ERRORED_TEST;
-            suite.addError();
-         }
-      } else if (status.equals(IGNORE))
+         format = ERRORED_TEST;
+         suite.addError();
+      } 
+      else if (status.equals(IGNORE))
       {
          format = IGNORED_TEST;
          suite.addSkip();
