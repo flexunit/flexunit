@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<flexLibProperties version="1">
-<includeClasses>
-<classEntry path="org.flexunit.listeners.FlexCoverListener"/>
-<classEntry path="org.flexunit.listeners.closer.FlexCoverCloser"/>
-</includeClasses>
-<includeResources/>
-<namespaceManifests/>
-</flexLibProperties>
