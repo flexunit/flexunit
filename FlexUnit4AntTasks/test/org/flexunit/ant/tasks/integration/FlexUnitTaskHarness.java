@@ -14,7 +14,7 @@ public class FlexUnitTaskHarness extends TestCase
       fixture = new FlexUnitTask();
       fixture.setProject(new Project());
       fixture.setHaltonfailure(true);
-      fixture.setLocalTrusted(false);
+      fixture.setLocalTrusted(true);
       fixture.setPort(1024);
       fixture.setTimeout(10000);
       fixture.setBuffer(555555);
@@ -23,7 +23,7 @@ public class FlexUnitTaskHarness extends TestCase
       fixture.setVerbose(true);
       fixture.setFailureproperty("failedtests");
       fixture.setPlayer("flash");
-      fixture.setHeadless(true);
+      fixture.setHeadless(false);
       fixture.getProject().setProperty("FLEX_HOME", System.getenv("FLEX_HOME"));
    }
 

@@ -18,7 +18,7 @@ import org.flexunit.ant.report.Suite;
 public class FlexUnitSocketThread implements Callable<Object>
 {
    // Messages from CIListener
-   private static final String END_OF_SUCCESS = "status='success'/>";
+   private static final String END_OF_SUCCESS = "status=\"success\" />";
    private static final String END_OF_FAILURE = "</testcase>";
    private static final String END_OF_IGNORE = "<skipped /></testcase>";
 

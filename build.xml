@@ -28,8 +28,6 @@ to contribute to our CI process.
    <property name="uilistener.loc" location="${basedir}/FlexUnit4UIListener" />
    <property name="aircilistener.loc" location="${basedir}/FlexUnit4AirCIListener" />
    <property name="flexcoverlistener.loc" location="${basedir}/FlexUnit4FlexCoverListener" />
-   <property name="tracelistener.loc" location="${basedir}/FlexUnit4TraceListener" />
-   <property name="teamcitylistener.loc" location="${basedir}/FlexUnit4TeamCityListener" />
 
    <!-- Cleans up all projects -->
    <target name="clean">
@@ -41,8 +39,6 @@ to contribute to our CI process.
       <ant dir="${uilistener.loc}" target="clean" inheritall="false" />
       <ant dir="${aircilistener.loc}" target="clean" inheritall="false" />
       <ant dir="${flexcoverlistener.loc}" target="clean" inheritall="false" />
-      <ant dir="${tracelistener.loc}" target="clean" inheritall="false" />
-      <ant dir="${teamcitylistener.loc}" target="clean" inheritall="false" />
 
       <delete file="${basedir}/${finalName}" failonerror="false" />
    </target>
@@ -92,7 +88,7 @@ to contribute to our CI process.
       </ant>
    </target>
 
-   <target name="listeners" depends="uilistener,aircilistener,flexcoverlistener,tracelistener,teamcitylistener" />
+   <target name="listeners" depends="uilistener,aircilistener" />
 
    <!-- Prepares and builds the FlexUnit4UIRunner project -->
    <target name="uilistener" depends="core,cilistener">
@@ -112,24 +108,6 @@ to contribute to our CI process.
       </ant>
    </target>
 
-   <!-- Prepares and builds the FlexCover Listener project -->
-   <target name="tracelistener" depends="core,cilistener">
-      <ant dir="${tracelistener.loc}" target="package" inheritall="false">
-         <propertyset>
-            <propertyref prefix="build" />
-         </propertyset>
-      </ant>
-   </target>
-
-   <!-- Prepares and builds the FlexCover Listener project -->
-   <target name="teamcitylistener" depends="core,cilistener,tracelistener">
-      <ant dir="${teamcitylistener.loc}" target="package" inheritall="false">
-         <propertyset>
-            <propertyref prefix="build" />
-         </propertyset>
-      </ant>
-   </target>
-
    <!-- Prepares and assembles the final zip artifact with all of the FlexUnit4 components and docs -->
    <target name="package" depends="test,listeners">
       <zip destfile="${basedir}/${finalName}">
@@ -139,8 +117,6 @@ to contribute to our CI process.
          <zipfileset dir="${uilistener.loc}/target/docs" prefix="flexunit/docs/uilistener" />
          <zipfileset dir="${aircilistener.loc}/target/docs" prefix="flexunit/docs/aircilistener" />
          <zipfileset dir="${flexcoverlistener.loc}/target/docs" prefix="flexunit/docs/flexcoverlistener" />
-         <zipfileset dir="${tracelistener.loc}/target/docs" prefix="flexunit/docs/tracelistener" />
-         <zipfileset dir="${teamcitylistener.loc}/target/docs" prefix="flexunit/docs/teamcitylistener" />
 
          <zipfileset dir="${anttasks.loc}/target" prefix="flexunit">
             <include name="*.jar" />
@@ -158,12 +134,6 @@ to contribute to our CI process.
             <include name="*.swc" />
          </zipfileset>
          <zipfileset dir="${aircilistener.loc}/target" prefix="flexunit">
-            <include name="*.swc" />
-         </zipfileset>
-         <zipfileset dir="${tracelistener.loc}/target" prefix="flexunit">
-            <include name="*.swc" />
-         </zipfileset>
-         <zipfileset dir="${teamcitylistener.loc}/target" prefix="flexunit">
             <include name="*.swc" />
          </zipfileset>
       </zip>

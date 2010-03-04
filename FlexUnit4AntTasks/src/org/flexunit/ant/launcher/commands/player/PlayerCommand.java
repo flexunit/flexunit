@@ -5,6 +5,7 @@ import java.io.File;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Execute;
 import org.flexunit.ant.launcher.commands.Command;
+import org.flexunit.ant.launcher.platforms.PlatformDefaults;
 
 /**
  * Class used to abstract an extension of {@link Execute} that has its own handle to a {@link Project}
@@ -13,6 +14,7 @@ import org.flexunit.ant.launcher.commands.Command;
 public abstract class PlayerCommand extends Command
 {
    private File swf;
+   private PlatformDefaults defaults;
    
    public PlayerCommand()
    {
@@ -28,4 +30,16 @@ public abstract class PlayerCommand extends Command
    {
       return swf;
    }
+
+   public void setDefaults(PlatformDefaults defaults)
+   {
+      this.defaults = defaults;
+   }
+
+   public PlatformDefaults getDefaults()
+   {
+      return defaults;
+   }
+   
+   
 }
