@@ -106,7 +106,7 @@ package org.flexunit.listeners
 		}
 		
 		private function declareBroken( event:TimerEvent ):void {
-			errorHandler( new Event( 'broken') );
+			errorHandler( new Event( "broken") );
 		}
 		
 		[Bindable(event="listenerReady")]
@@ -147,7 +147,7 @@ package org.flexunit.listeners
 			// called after each test
 			if(!lastFailedTest || description.displayName != lastFailedTest.displayName){
 				var desc:Descriptor = getDescriptorFromDescription(description);
-				sendResults("<testcase classname='"+desc.suite+"' name='"+desc.method+"' time='0.000'  status='"+SUCCESS+"'/>");
+				sendResults("<testcase classname=\""+desc.suite+"\" name=\""+desc.method+"\" time=\"0.000\" status=\""+SUCCESS+"\" />");
 			}
 		}
 		
@@ -162,7 +162,7 @@ package org.flexunit.listeners
 			var descriptor:Descriptor = getDescriptorFromDescription(description);
 
 			var xml:String =
-				"<testcase classname='"+descriptor.suite+"' name='"+descriptor.method+"' time='0.000' status='"+IGNORE+"'>"
+				"<testcase classname=\""+descriptor.suite+"\" name=\""+descriptor.method+"\" time=\"0.000\" status=\""+IGNORE+"\">"
 				+ "<skipped />"
 				+ "</testcase>";
 
@@ -191,8 +191,8 @@ package org.flexunit.listeners
 			if(FailureFormatter.isError(failure.exception)) 
 			{
 				xml =
-					"<testcase classname='"+descriptor.suite+"' name='"+descriptor.method+"' time='0.000'  status='"+ERROR+"'>"
-					+ "<error message='" + message + "' type='"+ type +"' >"
+					"<testcase classname=\""+descriptor.suite+"\" name=\""+descriptor.method+"\" time=\"0.000\" status=\""+ERROR+"\">"
+					+ "<error message=\"" + message + "\" type=\""+ type +"\" >"
 					+ "<![CDATA[" + stackTrace + "]]>"
 					+ "</error>"
 					+ "</testcase>";
@@ -200,8 +200,8 @@ package org.flexunit.listeners
 			else 
 			{
 				xml =
-					"<testcase classname='"+descriptor.suite+"' name='"+descriptor.method+"' time='0.000'  status='"+FAILURE+"'>"
-					+ "<failure message='" + message + "' type='"+ type +"' >"
+					"<testcase classname=\""+descriptor.suite+"\" name=\""+descriptor.method+"\" time=\"0.000\" status=\""+FAILURE+"\">"
+					+ "<failure message=\"" + message + "\" type=\""+ type +"\" >"
 					+ "<![CDATA[" + stackTrace + "]]>"
 					+ "</failure>"
 					+ "</testcase>";
