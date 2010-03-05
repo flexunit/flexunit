@@ -73,6 +73,7 @@ package org.flexunit
 		/**
 		 * Asserts that two provided values are equal.
 		 * 
+		 * @param asserter The function to use for assertion. 
 		 * @param rest
 		 * 			Must be passed at least 2 arguments of type Object to compare for equality.
 		 * 			If three arguments are passed, the first argument must be a String
@@ -130,8 +131,7 @@ package org.flexunit
 		}
 	
 		/**
-		 * Asserts that a condition is true. If it isn't it throws an
-		 * <code> AssertionFailedError</code> with the given message.
+		 * Asserts that a condition is true.
 		 * 
 		 * @param rest
 		 * 			Accepts an argument of type Boolean.
@@ -151,7 +151,15 @@ package org.flexunit
 		}
 	
         /**
-         * @private
+         * Asserts that a condition is not true.
+		 * 
+		 * @param rest
+		 * 			Accepts an argument of type Boolean.
+		 * 			If two arguments are passed the first argument must be a String 
+		 * 			and will be used as the error message.
+		 * 			
+		 * 			<code>assertTrue( String, Boolean );</code>
+		 * 			<code>assertTrue( Boolean );</code>
          */
 		public static function failNotTrue( message:String, condition:Boolean ):void
 		{
@@ -160,8 +168,7 @@ package org.flexunit
 		}
 	
 		/**
-		 * Asserts that a condition is false. If it isn't it throws an
-		 * <code> AssertionFailedError</code> with the given message.
+         * Asserts that a condition is false.
 		 * 
 		 * @param rest
 		 * 			Accepts an argument of type Boolean.
@@ -181,7 +188,15 @@ package org.flexunit
 		}
 	
         /**
-         * @private
+         * Asserts that a condition is false. 
+		 * 
+		 * @param rest
+		 * 			Accepts an argument of type Boolean.
+		 * 			If two arguments are passed the first argument must be a String 
+		 * 			and will be used as the error message.
+		 * 			
+		 * 			<code>assertTrue( String, Boolean );</code>
+		 * 			<code>assertTrue( Boolean );</code>
          */
 		public static function failTrue( message:String, condition:Boolean ):void
 		{
@@ -191,8 +206,7 @@ package org.flexunit
 	
 		//TODO:  (<code>null</code> okay) needs removal?
 		/**
-		 * Asserts that an object is null. If it is not, an <code> AssertionFailedError</code>
-		 * is thrown with the given message.
+		 * Asserts that an object is null.
 		 * 
 		 * @param rest
 		 * 			Accepts an argument of type Object.
@@ -213,7 +227,15 @@ package org.flexunit
 		}
 	
         /**
-         * @private
+         * Asserts that an object is not null. 
+		 * 
+		 * @param rest
+		 * 			Accepts an argument of type Boolean.
+		 * 			If two arguments are passed the first argument must be a String 
+		 * 			and will be used as the error message.
+		 * 			
+		 * 			<code>assertTrue( String, Boolean );</code>
+		 * 			<code>assertTrue( Boolean );</code>
          */
 		public static function failNull( message:String, object:Object ):void
 		{
@@ -223,8 +245,7 @@ package org.flexunit
 	
 		//TODO:  (<code>null</code> okay) needs removal?
 		/**
-		 * Asserts that an object isn't null. If it is an <code> AssertionFailedError</code> is
-		 * thrown with the given message.
+		 * Asserts that an object is not null.
 		 * 
 		 * @param rest
 		 * 			Accepts an argument of type Object.
@@ -244,7 +265,15 @@ package org.flexunit
 		}
 	
         /**
-         * @private
+         * Asserts that an object is not null.
+		 * 
+		 * @param rest
+		 * 			Accepts an argument of type Boolean.
+		 * 			If two arguments are passed the first argument must be a String 
+		 * 			and will be used as the error message.
+		 * 			
+		 * 			<code>assertTrue( String, Boolean );</code>
+		 * 			<code>assertTrue( Boolean );</code>
          */
 		public static function failNotNull( message:String, object:Object ):void
 		{
@@ -253,7 +282,7 @@ package org.flexunit
 		}
 		//TODO:  (<code>null</code> okay) needs removal?
 		/**
-		 * Fails a test with the given message.
+		 * Fails a test with the argument message.
 		 * 
 		 * @param failMessage
 		 *            the identifying message for the <code> AssertionFailedError</code> (<code>null</code>
