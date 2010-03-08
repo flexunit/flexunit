@@ -45,7 +45,7 @@ package org.flexunit.runner {
 	import org.flexunit.utils.ClassNameUtil;
 
 	/**  
-	 * FlexUnit4 Version: 4.0.0b2<br/>
+	 * FlexUnit4 Version: 4.0.0<br/>
 	 * 
 	 * The <code>FlexUnitCore</code> is responsible for executing objects that implement an <code>IRequest</code>
 	 * interface.  There are several ways that the <code>IRequest</code> can be provided to the 
@@ -119,7 +119,7 @@ package org.flexunit.runner {
 		 * Returns the version number.
 		 */
 		public static function get version():String {
-			return "4.0.0rc1";
+			return "4.0.0";
 		}
 
 		private function dealWithArgArray( ar:Array, foundClasses:Array, missingClasses:Array ):void {
