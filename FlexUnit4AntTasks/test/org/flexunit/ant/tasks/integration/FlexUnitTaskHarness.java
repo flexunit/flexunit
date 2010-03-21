@@ -23,6 +23,7 @@ public class FlexUnitTaskHarness extends TestCase
       fixture.setVerbose(true);
       fixture.setFailureproperty("failedtests");
       fixture.setPlayer("flash");
+      fixture.setCommand("/Applications/Firefox.app/Contents/MacOS/firefox-bin");
       fixture.setHeadless(false);
       fixture.getProject().setProperty("FLEX_HOME", System.getenv("FLEX_HOME"));
    }

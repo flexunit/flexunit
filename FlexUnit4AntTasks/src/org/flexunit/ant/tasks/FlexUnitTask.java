@@ -37,6 +37,7 @@ public class FlexUnitTask extends Task
    private boolean isLocalTrusted = true;
    private String failureProperty = "flexunit.failed";
    private String player = "flash";
+   private File command = null;
    private boolean headless = false;
    private int display = 99;
    private File swf = null;
@@ -144,6 +145,11 @@ public class FlexUnitTask extends Task
    {
       this.player = player;
    }
+   
+   public void setCommand(String executableFilePath)
+   {
+      this.command = getProject().resolveFile(executableFilePath);
+   }
 
    public void setHeadless(boolean headless)
    {
@@ -169,10 +175,13 @@ public class FlexUnitTask extends Task
          Future<Object> future = setupSocketThread();
          
          //launch FlashPlayer and test SWF
-         launchTestSuite();
+         Process player = launchTestSuite();
          
          //block until thread is completely done with all tests
          future.get();
+         
+         //kill the player if it hasn't closed already
+         player.destroy();
          
          //print summaries and check for failure
          analyzeReports();
@@ -213,6 +222,11 @@ public class FlexUnitTask extends Task
       if(!VALID_PLAYERS.contains(player))
       {
          throw new BuildException("The provided 'player' property value [" + player + "] must be either of the following values: " + VALID_PLAYERS.toString() + ".");
+      }
+      
+      if(command != null && !command.exists())
+      {
+         throw new BuildException("The provided command path [" + command + "] does not exist.");
       }
       
       if(headless)
@@ -261,6 +275,10 @@ public class FlexUnitTask extends Task
       LoggingUtil.log("\tdisplay: [" + display + "]");
       LoggingUtil.log("\tlocalTrusted: [" + isLocalTrusted + "]");
       LoggingUtil.log("\tplayer: [" + player + "]");
+      if(command != null)
+      {
+         LoggingUtil.log("\tcommand: [" + command + "]");
+      }
       LoggingUtil.log("\tport: [" + port + "]");
       LoggingUtil.log("\tswf: [" + swf + "]");
       LoggingUtil.log("\ttimeout: [" + socketTimeout + "ms]");
@@ -271,18 +289,21 @@ public class FlexUnitTask extends Task
    /**
     * Create and launch the swf player in the appropriate domain
     */
-   private void launchTestSuite()
+   private Process launchTestSuite()
    {
-      final FlexUnitLauncher browser = new FlexUnitLauncher(getProject(), isLocalTrusted, headless, display, player);
+      Process process = null;
+      final FlexUnitLauncher browser = new FlexUnitLauncher(getProject(), isLocalTrusted, headless, display, player, command);
 
       try
       {
-         browser.runTests(swf);
+         process = browser.runTests(swf);
       }
       catch (Exception e)
       {
          throw new BuildException("Error launching the test runner.", e);
       }
+      
+      return process;
    }
 
    /**

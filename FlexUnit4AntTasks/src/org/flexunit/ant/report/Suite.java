@@ -7,7 +7,7 @@ public class Suite
    private int _failures = 0;
    private int _errors = 0;
    private int _skips = 0;
-   private double _time = 0.0000;
+   private long _time = 0;
 
    public Suite(String name)
    {
@@ -35,11 +35,6 @@ public class Suite
       _skips++;
    }
 
-   public void setTime(double time)
-   {
-      _time = time;
-   }
-
    public String getName()
    {
       return _name;
@@ -65,9 +60,14 @@ public class Suite
       return _skips;
    }
 
-   public double getTime()
+   public long getTime()
    {
       return _time;
+   }
+   
+   public void addTime(long time)
+   {
+      _time += time;
    }
 
    @Override

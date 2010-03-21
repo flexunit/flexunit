@@ -5,46 +5,71 @@ import java.io.IOException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.types.Commandline;
+import org.flexunit.ant.LoggingUtil;
 
-public abstract class Command extends Execute
+public abstract class Command
 {
-	private Project project;
-	private Commandline commandLine;
+   private Project project;
+   private Commandline commandLine;
+   private String[] environment;
 
-	public Command()
-	{
-		super();
-		this.commandLine = new Commandline();
-	}
+   public Command()
+   {
+      super();
+      this.commandLine = new Commandline();
+   }
 
-	public void setProject(Project project)
-	{
-		this.project = project;
-	}
+   public void setProject(Project project)
+   {
+      this.project = project;
+   }
 
-	public Project getProject()
-	{
-		return project;
-	}
+   public Project getProject()
+   {
+      return project;
+   }
 
-	public Commandline getCommandLine()
-	{
-		return commandLine;
-	}
+   public Commandline getCommandLine()
+   {
+      return commandLine;
+   }
+   
+   public int execute() throws IOException
+   {
+      int exitCode = -1;
+      Process process = launch();
+      
+      try
+      {
+         exitCode = process.waitFor();
+      }
+      catch(InterruptedException ie)
+      {
+         LoggingUtil.log("Command interrupted, exiting with failure code.");
+         process.destroy();
+      }
+      
+      return exitCode;
+   }
+   
+   public Process launch() throws IOException
+   {
+      return Execute.launch(project, getCommandLine().getCommandline(), new String[]{}, getProject().getBaseDir(), true);
+   }
 
-	@Override
-	public int execute() throws IOException
-	{
-		// prepare the task
-		super.setAntRun(project);
-		super.setWorkingDirectory(project.getBaseDir());
-		super.setCommandline(getCommandLine().getCommandline());
+   public void setEnvironment(String[] variables)
+   {
+      this.environment = variables;
+   }
 
-		return super.execute();
-	}
+   public String[] getEnvironment()
+   {
+      return environment;
+   }
+   
+   public String describe()
+   {
+      return getCommandLine().describeCommand();
+   }
 
-	public String describe()
-	{
-		return getCommandLine().describeCommand();
-	}
 }

@@ -19,18 +19,19 @@ public class FlexUnitLauncher
    private boolean headless;
    private int display;
    private String player;
+   private File customCommand;
 
    private Project project;
    private OperatingSystem os;
 
-   public FlexUnitLauncher(Project project, boolean localTrusted,
-         boolean headless, int display, String player)
+   public FlexUnitLauncher(Project project, boolean localTrusted, boolean headless, int display, String player, File customCommand)
    {
       this.project = project;
       this.localTrusted = localTrusted;
       this.headless = headless;
       this.display = display;
       this.player = player;
+      this.customCommand = customCommand;
 
       this.os = OperatingSystem.identify();
    }
@@ -40,12 +41,14 @@ public class FlexUnitLauncher
       return headless && (os == OperatingSystem.LINUX);
    }
 
-   public void runTests(File swf) throws IOException, XvncException
+   public Process runTests(File swf) throws IOException, InterruptedException, XvncException
    {
       // seutp locally scope handles to commands
       XvncStartCommand xvncStart = null;
       PlayerCommand command = null;
       XvncStopCommand xvncStop = null;
+      
+      Process process = null;
 
       //run xvnc start if headless build
       if (runHeadless())
@@ -71,7 +74,7 @@ public class FlexUnitLauncher
       }
 
       // setup command to run
-      command = CommandFactory.createPlayer(os, player, localTrusted);
+      command = CommandFactory.createPlayer(os, player, customCommand, localTrusted);
       command.setProject(project);
       command.setSwf(swf);
       if (runHeadless())
@@ -82,7 +85,7 @@ public class FlexUnitLauncher
       LoggingUtil.log("Launching player:\n" + command.describe());
       
       // run player command
-      command.execute();
+      process = command.launch();
 
       //run xvnc stop if headless build
       if (runHeadless())
@@ -91,5 +94,7 @@ public class FlexUnitLauncher
          xvncStop.setProject(project);
          xvncStop.execute();
       }
+      
+      return process;
    }
 }

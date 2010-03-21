@@ -1,6 +1,10 @@
 package org.flexunit.ant.launcher;
 
+import java.io.File;
+
 import org.flexunit.ant.launcher.commands.player.AdlCommand;
+import org.flexunit.ant.launcher.commands.player.CustomPlayerCommand;
+import org.flexunit.ant.launcher.commands.player.DefaultPlayerCommand;
 import org.flexunit.ant.launcher.commands.player.FlashPlayerCommand;
 import org.flexunit.ant.launcher.commands.player.PlayerCommand;
 import org.flexunit.ant.launcher.platforms.LinuxDefaults;
@@ -15,39 +19,55 @@ public class CommandFactory
     * 
     * @param os
     * @param player  "flash" or "air"
+    * @param customCommand
     * @param localTrusted
-    * @return Desired player command with platform defaults
+    * @return Desired player command with platform defaults possibly wrapped in a custom command
     */
-   public static PlayerCommand createPlayer(OperatingSystem os, String player, boolean localTrusted)
+   public static PlayerCommand createPlayer(OperatingSystem os, String player, File customCommand, boolean localTrusted)
    {
-      PlayerCommand command = null;
+      PlayerCommand newInstance = null;
 
+      DefaultPlayerCommand defaultInstance = null;
+      
       //choose player
       if (player.equals("flash"))
       {
          FlashPlayerCommand fpCommand = new FlashPlayerCommand();
          fpCommand.setLocalTrusted(localTrusted);
-         command = fpCommand;
+         defaultInstance = fpCommand;
       }
       else
       {
-         command = new AdlCommand();
+         defaultInstance = new AdlCommand();
       }
       
       //set defaults
       if (os.equals(OperatingSystem.WINDOWS))
       {
-         command.setDefaults(new WindowsDefaults());
+         defaultInstance.setDefaults(new WindowsDefaults());
       }
       else if(os.equals(OperatingSystem.MACOSX))
       {
-         command.setDefaults(new MacOSXDefaults());
+         defaultInstance.setDefaults(new MacOSXDefaults());
       }
       else
       {
-         command.setDefaults(new LinuxDefaults());
+         defaultInstance.setDefaults(new LinuxDefaults());
       }
       
-      return command;
+      //if a custom command has been provide, use it to wrap the default command
+      if(customCommand != null)
+      {
+         CustomPlayerCommand customInstance = new CustomPlayerCommand();
+         customInstance.setProxiedCommand(defaultInstance);
+         customInstance.setExecutable(customCommand);
+         newInstance = customInstance;
+      }
+      else
+      {
+         newInstance = defaultInstance;
+      }
+      
+      return newInstance;
    }
 }
