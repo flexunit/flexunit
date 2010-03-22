@@ -180,8 +180,11 @@ public class FlexUnitTask extends Task
          //block until thread is completely done with all tests
          future.get();
          
-         //kill the player if it hasn't closed already
-         player.destroy();
+         //kill the player if using a custom command
+         if(command != null)
+         {
+            player.destroy();
+         }
          
          //print summaries and check for failure
          analyzeReports();
