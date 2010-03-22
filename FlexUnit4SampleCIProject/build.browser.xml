@@ -66,7 +66,8 @@
 			toDir="${report.loc}" 
 			haltonfailure="false" 
 			verbose="true" 
-			localTrusted="true" />
+			localTrusted="true" 
+			command="/Applications/Safari.app/Contents/MacOS/Safari" />
 
 		<!-- Generate readable JUnit-style reports -->
 		<junitreport todir="${report.loc}">
