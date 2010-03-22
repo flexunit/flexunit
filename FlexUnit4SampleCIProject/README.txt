@@ -12,9 +12,10 @@ In terms of this sample project, the project folder layout is as such:
     - flex
   - test
     - flex
-- build.xml      <-- Ant build file using the Flash Player for testing
-- build.air.xml  <-- Ant build file using ADL for testing
-- pom.xml        <-- Maven build file using FlexMojos
+- build.xml         <-- Ant build file using the Flash Player for testing
+- build.air.xml     <-- Ant build file using ADL for testing
+- build.browser.xml <-- Ant build file using the browser for testing
+- pom.xml           <-- Maven build file using FlexMojos
 
 The Ant build file using the Flash Player (stand alone or browser), when run successfully, 
 will produce a folder layout as such:
@@ -34,6 +35,7 @@ will produce a folder layout as such:
   - reports            <-- FlexUnit4 xml reports
 - build.xml
 - build.air.xml
+- build.browser.xml
 - pom.xml
 
 The Ant build file using ADL, when run successfully, will produce a folder layout as such:
@@ -54,6 +56,7 @@ The Ant build file using ADL, when run successfully, will produce a folder layou
   - reports                   <-- FlexUnit4 xml reports
 - build.xml
 - build.air.xml
+- build.browser.xml
 - pom.xml
 
 The Maven build file using FlexMojos, when run successfully, will produce a folder layout 
@@ -74,6 +77,8 @@ as such:
   - surefire-reports    <-- FlexUnit4 xml reports
   - demo-1.0.0-swf            
 - build.xml
+- build.air.xml
+- build.browser.xml
 - pom.xml
 
 ------------------------------------------------------------------------
