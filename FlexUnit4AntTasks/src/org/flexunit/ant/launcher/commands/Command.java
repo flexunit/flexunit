@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.types.Commandline;
-import org.flexunit.ant.LoggingUtil;
 
 public abstract class Command
 {
@@ -36,25 +35,17 @@ public abstract class Command
    
    public int execute() throws IOException
    {
-      int exitCode = -1;
-      Process process = launch();
-      
-      try
-      {
-         exitCode = process.waitFor();
-      }
-      catch(InterruptedException ie)
-      {
-         LoggingUtil.log("Command interrupted, exiting with failure code.");
-         process.destroy();
-      }
-      
-      return exitCode;
+      Execute exec = new Execute();
+      exec.setAntRun(getProject());
+      exec.setWorkingDirectory(getProject().getBaseDir());
+      exec.setCommandline(getCommandLine().getCommandline());
+      exec.setEnvironment(getEnvironment());
+      return exec.execute();
    }
    
    public Process launch() throws IOException
    {
-      return Execute.launch(project, getCommandLine().getCommandline(), new String[]{}, getProject().getBaseDir(), true);
+      return Runtime.getRuntime().exec(getCommandLine().getCommandline(), getEnvironment(), getProject().getBaseDir());
    }
 
    public void setEnvironment(String[] variables)
