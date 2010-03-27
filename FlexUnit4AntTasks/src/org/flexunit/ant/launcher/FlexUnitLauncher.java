@@ -41,7 +41,7 @@ public class FlexUnitLauncher
       return headless && (os == OperatingSystem.LINUX);
    }
 
-   public Process runTests(File swf) throws IOException, InterruptedException, XvncException
+   public Process runTests(File swf) throws IOException, XvncException
    {
       // seutp locally scope handles to commands
       XvncStartCommand xvncStart = null;

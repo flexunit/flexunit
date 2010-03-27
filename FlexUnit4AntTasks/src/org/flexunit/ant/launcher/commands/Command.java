@@ -3,8 +3,8 @@ package org.flexunit.ant.launcher.commands;
 import java.io.IOException;
 
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.types.Commandline;
+import org.flexunit.ant.LoggingUtil;
 
 public abstract class Command
 {
@@ -35,12 +35,20 @@ public abstract class Command
    
    public int execute() throws IOException
    {
-      Execute exec = new Execute();
-      exec.setAntRun(getProject());
-      exec.setWorkingDirectory(getProject().getBaseDir());
-      exec.setCommandline(getCommandLine().getCommandline());
-      exec.setEnvironment(getEnvironment());
-      return exec.execute();
+      Process process = launch();
+      int result = -1;
+      
+      try
+      {
+         result = process.waitFor();
+      }
+      catch(InterruptedException ie)
+      {
+         LoggingUtil.log("Process interrupted; destroying process.");
+         process.destroy();
+      }
+      
+      return result;
    }
    
    public Process launch() throws IOException
