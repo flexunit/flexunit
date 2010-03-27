@@ -85,7 +85,7 @@ as such:
 Disclaimer and support
 ------------------------------------------------------------------------
 The builds in the sample project were tested using Ant 1.7.1, Maven 2.0.10, and FlexMojos 
-3.5.0.  The FlexUnit4 Ant task JAR was built for Java 5 using JDK 6.  Validation of the 
+3.6.  The FlexUnit4 Ant task JAR was built for Java 5 using JDK 6.  Validation of the 
 source for the sample project was built using Flex 3.5.0.12683 and Flash Player 10.0 r42.  
 Please consult the individual build files for more details on each's implementation of 
 the build process.
