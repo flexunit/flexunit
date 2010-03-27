@@ -127,7 +127,7 @@
       <taskdef name="metrics" classname="com.adobe.ac.pmd.metrics.ant.FlexMetricsAntTask" />
 
       <!-- Generate FlexPMD reports -->
-      <pmd sourceDirectory="${src.loc}" outputDirectory="${report.loc}" />
+      <pmd sourceDirectory="${src.loc}" outputDirectory="${report.loc}" ruleset="${basedir}/pmd-ruleset.xml" />
 
       <cpd minimumTokenCount="50" outputFile="${report.loc}/cpd.xml">
          <fileset dir="${src.loc}">
