@@ -30,12 +30,12 @@ public class WindowsDefaults implements PlatformDefaults
 
    public String getOpenCommand()
    {
-      return "rundll32 url.dll,FileProtocolHandler";
+      return "rundll32";
    }
 
    public String[] getOpenSystemArguments()
    {
-      return new String[]{};
+      return new String[]{"url.dll,FileProtocolHandler"};
    }
 
 }

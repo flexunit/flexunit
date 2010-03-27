@@ -38,6 +38,8 @@ public class CustomPlayerCommand implements PlayerCommand
    public Process launch() throws IOException
    {
       proxiedCommand.getCommandLine().setExecutable(executable.getAbsolutePath());
+      proxiedCommand.getCommandLine().clearArgs();
+      proxiedCommand.getCommandLine().addArguments(new String[]{proxiedCommand.getSwf().getAbsolutePath()});
       return proxiedCommand.launch();
    }
 
