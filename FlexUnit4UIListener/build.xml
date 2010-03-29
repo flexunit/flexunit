@@ -97,6 +97,7 @@
          <arg line="-external-library-path+='${lib.loc}'" />
          <arg line="-external-library-path+='${FLEX_HOME}/frameworks/libs'" />
          <arg line="-compatibility-version=3.0.0" />
+         <arg line="-theme '${FLEX_HOME}/frameworks/themes/Halo/halo.swc'" />
          <arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
       </java>
       <!-- <compc output="${bin.loc}/${build.finalName}" include-classes="${src.class-list}">
@@ -134,11 +135,12 @@
    <target name="report-flex4" if="build.isFlex4">
       <java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
          <arg line="+flexlib '${FLEX_HOME}/frameworks'" />
-         <arg line="-namespace http://www.adobe.com/2006/mxml '${FLEX_HOME}/frameworks/halo-manifest.xml'" />
          <arg line="-doc-sources '${src.loc}'" />
          <arg line="-source-path+='${src.loc}'" />
          <arg line="-output '${doc.loc}'" />
          <arg line="-library-path+='${lib.loc}'" />
+         <arg line="-compatibility-version=3.0.0" />
+         <arg line="-theme '${FLEX_HOME}/frameworks/themes/Halo/halo.swc'" />
          <arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
       </java>
    </target>
