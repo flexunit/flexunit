@@ -48,6 +48,7 @@ public class Report
    private static final String CLASSNAME_ATTRIBUTE = "classname";
    private static final String NAME_ATTRIBUTE = "name";
    private static final String STATUS_ATTRIBUTE = "status";
+   private static final String TIME_ATTRIBUTE = "time";
 
    protected Suite suite;
    private Document document;
@@ -90,6 +91,11 @@ public class Report
          recordedRuns.add(testMethod);
          suite.addTest();
       }
+      
+      //add test time to total time
+      long time = Long.parseLong(root.attributeValue(TIME_ATTRIBUTE));
+      suite.addTime(time);
+      root.attribute(TIME_ATTRIBUTE).setText(formatTime(time));
 
       //If the test method name is null, then make it the classname
       if(root.attributeValue(NAME_ATTRIBUTE).equals("null"))
@@ -105,6 +111,11 @@ public class Report
       
       //remove status attribute since it's only used by the report
       root.remove(root.attribute(STATUS_ATTRIBUTE));
+   }
+   
+   private String formatTime(long time)
+   {
+      return String.valueOf(time / 1000.0000);
    }
 
    /**
@@ -175,6 +186,7 @@ public class Report
          root.addAttribute(ERROR_ATTRIBUTE_LABEL, String.valueOf(suite.getErrors()));
          root.addAttribute(TESTS_ATTRIBUTE_LABEL, String.valueOf(suite.getTests()));
          root.addAttribute(IGNORE_ATTRIBUTE_LABEL, String.valueOf(suite.getSkips()));
+         root.addAttribute(TIME_ATTRIBUTE_LABEL, String.valueOf(formatTime(suite.getTime())));
          root.addAttribute(HOSTNAME_ATTRIBUTE_LABEL, getHostname());
          
          final String timestamp = DateUtils.format(new Date(), DateUtils.ISO8601_DATETIME_PATTERN);

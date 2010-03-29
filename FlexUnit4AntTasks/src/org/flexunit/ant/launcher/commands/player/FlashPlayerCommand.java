@@ -6,7 +6,7 @@ import java.io.IOException;
 /**
  * Abstracts the assembly of a command-line call to the Flash player for all platforms.  
  */
-public class FlashPlayerCommand extends PlayerCommand
+public class FlashPlayerCommand extends DefaultPlayerCommand
 {
    public static final String TRUST_FILENAME = "flexUnit.cfg";
    
@@ -39,7 +39,7 @@ public class FlashPlayerCommand extends PlayerCommand
    }
 
    @Override
-   public int execute() throws IOException
+   public Process launch() throws IOException
    {
       TrustFile trustFile = new TrustFile(getProject(), getDefaults().getFlashPlayerUserTrustDirectory(), getDefaults().getFlashPlayerGlobalTrustDirectory());
       
@@ -54,6 +54,6 @@ public class FlashPlayerCommand extends PlayerCommand
       }
       
       //Run command
-      return super.execute();
+      return super.launch();
    }
 }
