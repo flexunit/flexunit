@@ -89,10 +89,20 @@
       <property file="${bin.loc}/flexLib.properties" />
 
       <!-- Compile swc -->
-      <compc output="${bin.loc}/${build.finalName}" include-classes="${src.class-list}">
+      <java jar="${FLEX_HOME}/lib/compc.jar" fork="true" failonerror="true">
+         <arg line="+flexlib '${FLEX_HOME}/frameworks'" />
+         <arg line="-include-classes ${src.class-list}" />
+         <arg line="-source-path+='${src.loc}'" />
+         <arg line="-output '${bin.loc}/${build.finalName}'" />
+         <arg line="-external-library-path+='${lib.loc}'" />
+         <arg line="-external-library-path+='${FLEX_HOME}/frameworks/libs'" />
+         <arg line="-compatibility-version=3.0.0" />
+         <arg line="-theme '${FLEX_HOME}/frameworks/themes/Halo/halo.swc'" />
+         <arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
+      </java>
+      <!-- <compc output="${bin.loc}/${build.finalName}" include-classes="${src.class-list}">
          <source-path path-element="${src.loc}" />
          <namespace uri="${build.namespace}" manifest="${src.loc}/FlexUnit4UIRunner-manifest.xml" />
-         <namespace uri="http://www.adobe.com/2006/mxml" manifest="${FLEX_HOME}/frameworks/halo-manifest.xml" />
          <include-namespaces>http://www.adobe.com/2009/flexUnitUIRunner</include-namespaces>
          <compiler.external-library-path dir="${lib.loc}" append="true">
             <include name="*.swc" />
@@ -106,7 +116,7 @@
          <compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
          <compiler.headless-server>true</compiler.headless-server>
          <define name="CONFIG::useFlexClasses" value="${build.useFlex}" />
-      </compc>
+      </compc> -->
    </target>
    
    <target name="report" depends="compile,identify-sdk,report-flex3,report-flex4" />
@@ -125,11 +135,12 @@
    <target name="report-flex4" if="build.isFlex4">
       <java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
          <arg line="+flexlib '${FLEX_HOME}/frameworks'" />
-         <arg line="-namespace http://www.adobe.com/2006/mxml '${FLEX_HOME}/frameworks/halo-manifest.xml'" />
          <arg line="-doc-sources '${src.loc}'" />
          <arg line="-source-path+='${src.loc}'" />
          <arg line="-output '${doc.loc}'" />
          <arg line="-library-path+='${lib.loc}'" />
+         <arg line="-compatibility-version=3.0.0" />
+         <arg line="-theme '${FLEX_HOME}/frameworks/themes/Halo/halo.swc'" />
          <arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
       </java>
    </target>
