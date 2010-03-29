@@ -92,7 +92,6 @@
       <compc output="${bin.loc}/${build.finalName}" include-classes="${src.class-list}">
          <source-path path-element="${src.loc}" />
          <namespace uri="${build.namespace}" manifest="${src.loc}/FlexUnit4UIRunner-manifest.xml" />
-         <namespace uri="http://www.adobe.com/2006/mxml" manifest="${FLEX_HOME}/frameworks/halo-manifest.xml" />
          <include-namespaces>http://www.adobe.com/2009/flexUnitUIRunner</include-namespaces>
          <compiler.external-library-path dir="${lib.loc}" append="true">
             <include name="*.swc" />
