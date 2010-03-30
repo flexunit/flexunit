@@ -28,6 +28,7 @@
 package org.flexunit.async
 {
 	import flash.events.IEventDispatcher;
+	import flash.net.Responder;
 	
 	import mx.rpc.IResponder;
 	
@@ -192,6 +193,23 @@ package org.flexunit.async
 			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
 			
 			return asyncHandlingStatement.asyncResponder( responder, timeout, passThroughData, timeoutHandler );
+		}
+		
+		/**
+		 * This method works in a similar fashion to handleEvent, however, it is intended to work with AsyncTokens and Responders as opposed to events. 
+		 * 
+		 * @param testCase The current asynchronous test case.
+		 * @param resultHandler The function that will be executed if the <code>timeout</code> period has not been reached and we have a success.
+		 * @param timeout The length of time, in milliseconds, before the calling the <code>timeoutHandler</code>
+		 * if the <code>eventName</code> event is not dispatched.
+		 * @param passThroughData An Object that can be given information about the current test, this information will be 
+		 * available to both the <code>eventHandler</code> and <code>timeoutHandler</code>.
+		 * @param timeoutHandler The function that will be executed if the <code>timeout</code> period is reached.
+		 */
+		public static function asyncNativeResponder( testCase:Object, resultHandler : Function, faultHandler : Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ) : Responder {
+			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
+			
+			return asyncHandlingStatement.asyncNativeResponder( resultHandler, faultHandler, timeout, passThroughData, timeoutHandler );
 		}
 	}
 }

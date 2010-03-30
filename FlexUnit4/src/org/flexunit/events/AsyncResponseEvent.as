@@ -35,6 +35,7 @@ package org.flexunit.events {
 		public static var RESPONDER_FIRED:String = "responderFired";
 
 		public var originalResponder:*;
+		public var methodHandler : Function;
 		public var status:String;
 		public var data:Object;
 
