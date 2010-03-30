@@ -453,7 +453,9 @@ package org.flexunit.internals.runners.statements {
 		 * <code>timeoutHandler</code>, passing the <code>passThroughData</code>, depending on whether the
 		 * <code>timeout</code> period has been reached.
 		 * 
-		 * @param responder The responder that will be executed if the <code>IResponder</code> is called before 
+		 * @param resultHandler The result <code>Function</code> that will be executed if the <code>Responder</code> is called on its result before 
+		 * the <code>timeout</code> has expired.
+		 * @param faultHandler The fault <code>Function</code> that will be executed if the <code>Responder</code> is called on its fault before 
 		 * the <code>timeout</code> has expired.
 		 * @param timeout The length of time, in milliseconds, before the <code>timeoutHandler</code> will be executed.
 		 * @param passThroughData An Object that can be given information about the current test; this information will 

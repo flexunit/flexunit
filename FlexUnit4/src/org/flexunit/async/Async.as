@@ -200,6 +200,7 @@ package org.flexunit.async
 		 * 
 		 * @param testCase The current asynchronous test case.
 		 * @param resultHandler The function that will be executed if the <code>timeout</code> period has not been reached and we have a success.
+		 * @param faultHandler The function that will be executed if the <code>timeout</code> period has not been reached and we have an error.
 		 * @param timeout The length of time, in milliseconds, before the calling the <code>timeoutHandler</code>
 		 * if the <code>eventName</code> event is not dispatched.
 		 * @param passThroughData An Object that can be given information about the current test, this information will be 
