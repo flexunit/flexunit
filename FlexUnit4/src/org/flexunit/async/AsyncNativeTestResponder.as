@@ -43,7 +43,7 @@ package org.flexunit.async {
 	 * A respoder for asynchronous tests that contains result and fault handlers for the test succeeding or the test 
 	 * failing to succeed.
 	 */
-	public class AsyncNativeTestResponder extends Responder implements IAsyncTestResponder, IEventDispatcher {
+	public class AsyncNativeTestResponder extends Responder implements IEventDispatcher {
 		/**
 		 * @private
 		 */
