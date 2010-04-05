@@ -179,13 +179,13 @@ package org.flexunit.async
 		/**
 		 * This method works in a similar fashion to handleEvent, however, it is intended to work with AsyncTokens and Responders as opposed to events. 
 		 * 
-		 * @param testCase The current asynchronous test case.
-		 * @param responder The responder that will be executed if the <code>timemout</code> period has not been reached.
-		 * @param timeout The length of time, in milliseconds, before the calling the <code>timeoutHandler</code>
-		 * if the <code>eventName</code> event is not dispatched.
-		 * @param passThroughData An Object that can be given information about the current test, this information will be 
-		 * available to both the <code>eventHandler</code> and <code>timeoutHandler</code>.
-		 * @param timeoutHandler The function that will be executed if the <code>timeout</code> period is reached.
+		 * @param testCase: The current asynchronous test case.
+		 * @param responder: The responder that will be executed if the <code>timemout</code> period has not been reached.
+		 * @param timeout: The length of time, in milliseconds, before calling the <code>timeoutHandler</code>
+		 * if the rpc event hasn't been dispatched yet.
+		 * @param passThroughData: An Object that can be given information about the current test, this information will be 
+		 * available to both the responder and the <code>timeoutHandler</code>.
+		 * @param timeoutHandler: The function that will be executed if the <code>timeout</code> period is reached.
 		 */
 		CONFIG::useFlexClasses
 		public static function asyncResponder( testCase:Object, responder:*, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):IResponder {
