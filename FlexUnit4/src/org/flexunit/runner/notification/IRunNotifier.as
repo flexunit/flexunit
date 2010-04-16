@@ -130,5 +130,11 @@ package org.flexunit.runner.notification {
 		 * @param listener The <code>IRunListener</code> to remove.
 		 */
 		function removeListener( listener:IRunListener ):void;
+		
+		/**
+		 * Ask that the tests run stop before starting the next test. Phrased politely because
+		 * the test currently running will not be interrupted. 
+		 */
+		function pleaseStop():void;
 	}
 }

@@ -44,8 +44,12 @@ package org.flexunit.runner {
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.utils.ClassNameUtil;
 
+	[Event(type="testsComplete", type="flash.events.Event")]
+	[Event(type="runnerStart", type="flash.events.Event")]
+	[Event(type="testsStopped", type="flash.events.Event")]
+
 	/**  
-	 * FlexUnit4 Version: 4.0.0b2<br/>
+	 * FlexUnit4 Version: 4.1.00<br/>
 	 * 
 	 * The <code>FlexUnitCore</code> is responsible for executing objects that implement an <code>IRequest</code>
 	 * interface.  There are several ways that the <code>IRequest</code> can be provided to the 
@@ -106,6 +110,7 @@ package org.flexunit.runner {
 		 */
 		private static const RUN_LISTENER:String = "runListener";
 		public static const TESTS_COMPLETE : String = "testsComplete";
+		public static const TESTS_STOPPED : String = "testsStopped";
 		public static const RUNNER_START : String = "runnerStart";
 		public static const RUNNER_COMPLETE : String = "runnerComplete";
 
@@ -119,7 +124,18 @@ package org.flexunit.runner {
 		 * Returns the version number.
 		 */
 		public static function get version():String {
-			return "4.0.0rc1";
+			return "4.1.0.0";
+		}
+		
+		/**
+		 * Requests that the FlexUnitCore stop execution of the test environment.
+		 * As Flash Player is single threaded, we will only be able to stop execution after the currently running test completes
+		 * and before the next one begins, so this will always have a margin of error.
+		 */
+		public function pleaseStop():void {
+			notifier.pleaseStop();
+
+			//dispatchEvent( new Event( TESTS_STOPPED ) );			
 		}
 
 		private function dealWithArgArray( ar:Array, foundClasses:Array, missingClasses:Array ):void {
