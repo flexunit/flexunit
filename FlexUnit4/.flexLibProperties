@@ -5,6 +5,8 @@
     <classEntry path="flex.lang.reflect.Field"/>
     <classEntry path="flex.lang.reflect.Klass"/>
     <classEntry path="flex.lang.reflect.Method"/>
+    <classEntry path="flex.lang.reflect.metadata.MetaDataAnnotation"/>
+    <classEntry path="flex.lang.reflect.metadata.MetaDataArgument"/>
     <classEntry path="flex.lang.reflect.utils.MetadataTools"/>
     <classEntry path="org.flexunit.Assert"/>
     <classEntry path="org.flexunit.AssertionError"/>
@@ -116,6 +118,7 @@
     <classEntry path="org.flexunit.runner.notification.IAsyncStartupRunListener"/>
     <classEntry path="org.flexunit.runner.notification.IRunListener"/>
     <classEntry path="org.flexunit.runner.notification.IRunNotifier"/>
+    <classEntry path="org.flexunit.runner.notification.ITemporalRunListener"/>
     <classEntry path="org.flexunit.runner.notification.RunListener"/>
     <classEntry path="org.flexunit.runner.notification.RunNotifier"/>
     <classEntry path="org.flexunit.runner.notification.StoppedByUserException"/>
@@ -135,6 +138,7 @@
     <classEntry path="org.flexunit.token.AsyncListenersToken"/>
     <classEntry path="org.flexunit.token.AsyncTestToken"/>
     <classEntry path="org.flexunit.token.ChildResult"/>
+    <classEntry path="org.flexunit.token.IAsyncTestToken"/>
     <classEntry path="org.flexunit.utils.ClassNameUtil"/>
     <classEntry path="org.fluint.uiImpersonation.IVisualEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.IVisualTestEnvironment"/>
@@ -142,7 +146,6 @@
     <classEntry path="org.fluint.uiImpersonation.VisualTestEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptVisualTestEnvironment"/>
-    <classEntry path="org.flexunit.token.IAsyncTestToken"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

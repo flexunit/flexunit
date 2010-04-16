@@ -171,6 +171,7 @@ package org.flexunit.runners {
 		 * @inheritDoc
 		 */
 		override protected function describeChild( child:* ):IDescription {
+			//OPTIMIZATION POINT
 			var method:FrameworkMethod = FrameworkMethod( child );
 			return Description.createTestDescription( testClass.asClass, method.name, method.metadata );
 		}
@@ -192,6 +193,7 @@ package org.flexunit.runners {
 		 * class and superclasses that are not overridden.
 		 */
 		protected function computeTestMethods():Array {
+			//OPTIMIZATION POINT
 			return testClass.getMetaDataMethods( "Test" );
 		}
 		
