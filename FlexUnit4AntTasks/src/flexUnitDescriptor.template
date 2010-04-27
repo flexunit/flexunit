@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<application xmlns="http://ns.adobe.com/air/application/1.5">
+<application xmlns="http://ns.adobe.com/air/application/1.5.3">
 	<id>FlexUnit4AdlWrapper</id>
 	<filename>FlexUnit4AdlWrapper</filename>
 	<name>FlexUnit4 Adl Wrapper</name>
