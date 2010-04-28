@@ -40,7 +40,12 @@ public class CustomPlayerCommand implements PlayerCommand
       proxiedCommand.getCommandLine().setExecutable(executable.getAbsolutePath());
       proxiedCommand.getCommandLine().clearArgs();
       proxiedCommand.getCommandLine().addArguments(new String[]{proxiedCommand.getSwf().getAbsolutePath()});
-      return proxiedCommand.launch();
+      
+      //execute the command directly using Runtime
+      return Runtime.getRuntime().exec(
+            proxiedCommand.getCommandLine().getCommandline(), 
+            proxiedCommand.getEnvironment(), 
+            proxiedCommand.getProject().getBaseDir());
    }
 
    public String describe()
