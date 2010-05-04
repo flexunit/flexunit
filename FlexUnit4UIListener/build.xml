@@ -2,10 +2,9 @@
 <project name="FlexUnit4UIRunner" basedir="." default="package">
    <property environment="env" />
 
-   <!-- Version info -->
-   <property file="${basedir}/version.properties" />
-
    <!-- Configuration -->
+   <property name="build.artifactId" value="flexunit-uilistener" />
+   <property name="build.finalName" value="${build.artifactId}-${build.version}.${build.number}-sdk${build.sdk}.swc" />
    <property name="build.namespace" value="http://www.adobe.com/2009/flexUnitUIRunner" />
    <property name="build.useFlex" value="true" />
 

@@ -2,10 +2,11 @@
 <project name="FlexUnit4Core" basedir="." default="package">
    <property environment="env" />
 
-   <!-- Version info -->
-   <property file="${basedir}/version.properties" />
-
    <!-- Configuration -->
+   <property name="build.artifactId.flex" value="flexunit-core-flex" />
+   <property name="build.artifactId.as3" value="flexunit-core-as3" />
+   <property name="build.finalName.flex" value="${build.artifactId.flex}-${build.version}.${build.number}-sdk${build.sdk}.swc" />
+   <property name="build.finalName.as3" value="${build.artifactId.as3}-${build.version}.${build.number}-sdk${build.sdk}.swc" />
    <property name="build.useFlex" value="true" />
    <property name="instrument.finalName" value="flexunit-instrument.swc" />
    <property name="instrument.metadata" value="flexunit-instrument.cvm" />
@@ -121,7 +122,22 @@
       </fail>
    </target>
 
-   <target name="report">
+   <target name="report" depends="pmdReport">
+      <!-- Pull in class file list to use with asdoc -->
+      <property file="${bin.loc}/flexLib.properties" />
+
+      <!-- Generate asdocs -->
+      <java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
+         <arg line="+flexlib '${FLEX_HOME}/frameworks'" />
+         <arg line="-doc-classes ${src.class-list}" />
+         <arg line="-source-path+='${src.loc}'" />
+         <arg line="-output '${doc.loc}'" />
+         <arg line="-library-path+='${lib.loc}'" />
+         <arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
+      </java>
+   </target>
+   
+   <target name="pmdReport" unless="build.skipPmd">
       <taskdef name="pmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" />
       <taskdef name="cpd" classname="com.adobe.ac.cpd.ant.FlexCpdAntTask" />
       <taskdef name="metrics" classname="com.adobe.ac.pmd.metrics.ant.FlexMetricsAntTask" />
@@ -137,19 +153,6 @@
       </cpd>
 
       <metrics sourcedirectory="${src.loc}" outputfile="${report.loc}/javancss.xml" />
-
-      <!-- Pull in class file list to use with asdoc -->
-      <property file="${bin.loc}/flexLib.properties" />
-
-      <!-- Generate asdocs -->
-      <java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
-         <arg line="+flexlib '${FLEX_HOME}/frameworks'" />
-         <arg line="-doc-classes ${src.class-list}" />
-         <arg line="-source-path+='${src.loc}'" />
-         <arg line="-output '${doc.loc}'" />
-         <arg line="-library-path+='${lib.loc}'" />
-         <arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
-      </java>
    </target>
 
    <target name="package" depends="package-default,package-instrument,report" />

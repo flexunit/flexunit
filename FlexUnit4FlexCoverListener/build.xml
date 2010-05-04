@@ -2,10 +2,9 @@
 <project name="FlexUnit4FlexCoverListener" basedir="." default="package">
    <property environment="env" />
 
-   <!-- Version info -->
-   <property file="${basedir}/version.properties" />
-
    <!-- Configuration -->
+   <property name="build.artifactId" value="flexunit-flexcoverlistener" />
+   <property name="build.finalName" value="${build.artifactId}-${build.version}.${build.number}-sdk${build.sdk}.swc" />
    <property name="build.useFlex" value="true" />
 
    <!-- Existing -->
