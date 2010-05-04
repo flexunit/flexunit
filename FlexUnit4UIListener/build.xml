@@ -2,10 +2,9 @@
 <project name="FlexUnit4UIRunner" basedir="." default="package">
    <property environment="env" />
 
-   <!-- Version info -->
-   <property file="${basedir}/version.properties" />
-
    <!-- Configuration -->
+   <property name="build.artifactId" value="flexunit-uilistener" />
+   <property name="build.finalName" value="${build.artifactId}-${build.version}.${build.number}-sdk${build.sdk}.swc" />
    <property name="build.namespace" value="http://www.adobe.com/2009/flexUnitUIRunner" />
    <property name="build.useFlex" value="true" />
 
@@ -90,6 +89,7 @@
 
       <!-- Compile swc -->
       <java jar="${FLEX_HOME}/lib/compc.jar" fork="true" failonerror="true">
+         <jvmarg value="-Xmx256M" />
          <arg line="+flexlib '${FLEX_HOME}/frameworks'" />
          <arg line="-include-classes ${src.class-list}" />
          <arg line="-source-path+='${src.loc}'" />
@@ -123,6 +123,7 @@
 
    <target name="report-flex3" unless="build.isFlex4">
       <java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
+         <jvmarg value="-Xmx256M" />
          <arg line="+flexlib '${FLEX_HOME}/frameworks'" />
          <arg line="-doc-sources '${src.loc}'" />
          <arg line="-source-path+='${src.loc}'" />
@@ -134,6 +135,7 @@
 
    <target name="report-flex4" if="build.isFlex4">
       <java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
+         <jvmarg value="-Xmx256M" />
          <arg line="+flexlib '${FLEX_HOME}/frameworks'" />
          <arg line="-doc-sources '${src.loc}'" />
          <arg line="-source-path+='${src.loc}'" />
