@@ -89,6 +89,7 @@
 
       <!-- Compile swc -->
       <java jar="${FLEX_HOME}/lib/compc.jar" fork="true" failonerror="true">
+         <jvmarg value="-Xmx256M" />
          <arg line="+flexlib '${FLEX_HOME}/frameworks'" />
          <arg line="-include-classes ${src.class-list}" />
          <arg line="-source-path+='${src.loc}'" />
