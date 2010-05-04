@@ -123,6 +123,7 @@
 
    <target name="report-flex3" unless="build.isFlex4">
       <java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
+         <jvmarg value="-Xmx256M" />
          <arg line="+flexlib '${FLEX_HOME}/frameworks'" />
          <arg line="-doc-sources '${src.loc}'" />
          <arg line="-source-path+='${src.loc}'" />
@@ -134,6 +135,7 @@
 
    <target name="report-flex4" if="build.isFlex4">
       <java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
+         <jvmarg value="-Xmx256M" />
          <arg line="+flexlib '${FLEX_HOME}/frameworks'" />
          <arg line="-doc-sources '${src.loc}'" />
          <arg line="-source-path+='${src.loc}'" />

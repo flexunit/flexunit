@@ -128,6 +128,7 @@
 
       <!-- Generate asdocs -->
       <java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
+         <jvmarg value="-Xmx256M" />
          <arg line="+flexlib '${FLEX_HOME}/frameworks'" />
          <arg line="-doc-classes ${src.class-list}" />
          <arg line="-source-path+='${src.loc}'" />
