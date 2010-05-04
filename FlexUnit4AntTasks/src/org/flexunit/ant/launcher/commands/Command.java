@@ -3,8 +3,8 @@ package org.flexunit.ant.launcher.commands;
 import java.io.IOException;
 
 import org.apache.tools.ant.Project;
+import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.types.Commandline;
-import org.flexunit.ant.LoggingUtil;
 
 public abstract class Command
 {
@@ -35,25 +35,23 @@ public abstract class Command
    
    public int execute() throws IOException
    {
-      Process process = launch();
-      int result = -1;
-      
-      try
-      {
-         result = process.waitFor();
-      }
-      catch(InterruptedException ie)
-      {
-         LoggingUtil.log("Process interrupted; destroying process.");
-         process.destroy();
-      }
-      
-      return result;
+      Execute execute = new Execute();
+      execute.setCommandline(getCommandLine().getCommandline());
+      execute.setAntRun(getProject());
+      execute.setEnvironment(getEnvironment());
+      return execute.execute();
    }
    
    public Process launch() throws IOException
    {
-      return Runtime.getRuntime().exec(getCommandLine().getCommandline(), getEnvironment(), getProject().getBaseDir());
+      Execute execute = new Execute();
+      execute.setCommandline(getCommandLine().getCommandline());
+      execute.setAntRun(getProject());
+      execute.setEnvironment(getEnvironment());
+      execute.execute();
+      
+      //By default we use the Ant Execute task which does not give us a handle to a process
+      return null;
    }
 
    public void setEnvironment(String[] variables)

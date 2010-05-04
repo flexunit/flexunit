@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="FlexUnitAntTasks" basedir="." default="package">
-   <!-- Version info -->
-   <property file="${basedir}/version.properties" />
+
+   <!--Configuration-->
+   <property name="build.artifactId" value="flexUnitTasks" />
+   <property name="build.finalName" value="${build.artifactId}-${build.version}.${build.number}.jar" />
 
    <!-- Existing -->
    <property name="src.loc" location="${basedir}/src" />

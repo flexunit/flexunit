@@ -16,6 +16,9 @@ to contribute to our CI process.
 <project name="FlexUnit4" basedir="." default="package">
    <property environment="env" />
 
+   <!-- Version info -->
+   <property file="${basedir}/version.properties" />
+
    <!-- Configuration -->
    <property name="build.useFlex" value="true" />
    <property name="finalName" value="flexunit.zip" />
@@ -80,7 +83,7 @@ to contribute to our CI process.
    </target>
 
    <!-- Prepares and builds the FlexUnit4Test project -->
-   <target name="test" depends="anttasks,core,cilistener,flexcoverlistener">
+   <target name="test" depends="anttasks,core,cilistener,flexcoverlistener" unless="build.skipTests">
       <ant dir="${tests.loc}" target="test" inheritall="false">
          <propertyset>
             <propertyref prefix="build" />

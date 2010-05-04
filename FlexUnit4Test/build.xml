@@ -122,7 +122,7 @@
                <arg line="-output '${report.flexcover.loc}/${instrument.report.flexcover}'" />
                <arg line="'${lib.loc}/${instrument.metadata}'" />
             </exec>
-            <waitfor checkevery="3" checkeveryunit="second">
+            <waitfor checkevery="3" checkeveryunit="second" maxwait="360000">
                <available file="${report.flexcover.loc}/${instrument.report.flexcover}" />
             </waitfor>
             <tstamp>
