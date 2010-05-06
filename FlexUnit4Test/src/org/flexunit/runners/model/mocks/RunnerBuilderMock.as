@@ -9,6 +9,10 @@ package org.flexunit.runners.model.mocks
 	{
 		public var mock:Mock;
 		
+		public function canHandleClass( testClass:Class):Boolean {
+			return mock.canHandleClass( testClass );
+		}
+
 		public function safeRunnerForClass(testClass:Class):IRunner
 		{
 			return mock.safeRunnerForClass(testClass);

@@ -10,6 +10,7 @@ package org.flexunit.asserts.cases
 		[Test(description="Ensure that the assertNull function correctly works when a value of null is provided")]
 		public function testAssertNull():void {
 			assertNull( null );
+			assertNull( "asdf" );
 		}
 		
 		[Test(description="Ensure that the assertNull function correctly works when a value of null and a message are provided")]

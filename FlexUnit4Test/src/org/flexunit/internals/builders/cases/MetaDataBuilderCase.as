@@ -7,7 +7,7 @@ package org.flexunit.internals.builders.cases
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runners.ParentRunner;
 	import org.flexunit.runners.model.mocks.RunnerBuilderMock;
-
+	
 	public class MetaDataBuilderCase
 	{
 		//TODO: Ensure that these tests and this test case are being implemented correctly
@@ -34,9 +34,7 @@ package org.flexunit.internals.builders.cases
 		
 		[Test(description="Ensure that the runnerForClass function returns an IRunner if the klass has 'RunWith' metadata")]
 		public function runnerForClassIRunnerTest():void {
-			runnerBuilderMock.mock.method("runners").withArgs( FlexUnit4SuiteClass, Array ).returns( [ new ParentRunner( null ) ] );
 			Assert.assertTrue( metaDataBuilder.runnerForClass(FlexUnit4SuiteClass) is IRunner );
-			runnerBuilderMock.mock.verify();
 		}
 		
 		[Ignore(description="This will need to be moved elsewhere, since it should actually be testing for no class path as the first argument to the annotation.")]
