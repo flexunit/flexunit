@@ -2,10 +2,13 @@ package org.flexunit.internals.builders.cases
 {
 	import org.flexunit.Assert;
 	import org.flexunit.internals.builders.MetaDataBuilder;
+	import org.flexunit.internals.builders.cases.helper.ChildClassNoRunWith;
 	import org.flexunit.internals.builders.definitions.FlexUnit4SuiteClass;
 	import org.flexunit.internals.builders.definitions.FlexUnit4SuiteClassFail;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runners.ParentRunner;
+	import org.flexunit.runners.model.IRunnerBuilder;
+	import org.flexunit.runners.model.RunnerBuilderBase;
 	import org.flexunit.runners.model.mocks.RunnerBuilderMock;
 	
 	public class MetaDataBuilderCase
@@ -45,7 +48,13 @@ package org.flexunit.internals.builders.cases
 		public function runnerForClassIRunnerTestFail():void {
 			metaDataBuilder.runnerForClass(FlexUnit4SuiteClassFail);
 		}
-		
+
+		[Test(description="Ensure that runner can be found if it is only on a parent class")]
+		public function runnerForClassWhereTagDefinedOnParent():void {
+			var myBuilder:IRunnerBuilder = new MetaDataBuilder( new RunnerBuilderBase() );
+			Assert.assertTrue( myBuilder.runnerForClass(ChildClassNoRunWith) is IRunner );
+		}
+
 		//TODO: How would a successful series of tests be created for this function
 		[Ignore (description="This test is not completed.")]
 		[Test]
