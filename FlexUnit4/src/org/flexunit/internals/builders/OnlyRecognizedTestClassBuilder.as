@@ -30,14 +30,5 @@ package org.flexunit.internals.builders {
 		override protected function flexUnit4Builder():FlexUnit4Builder {
 			return new FlexUnit4QualifiedBuilder();
 		}
-
-		private function buildBuilders():Array {
-			return [ ignoredBuilder(),
-					 metaDataBuilder(),
-					 suiteMethodBuilder(),
-					 flexUnit1Builder(),
-					 fluint1Builder(),
-					 flexUnit4Builder() ];
-		}
 	}
 }
