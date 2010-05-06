@@ -35,7 +35,7 @@ package flex.lang.reflect.utils
 	public class MetadataTools
 	{
 		/**
-		 * Determine if the <code>description</code> XML has a base attribute containing "Class" as the value.
+		 * Determine if the <code>description</code> XML describes a class.
 		 * 
 		 * @param description The XML description to check.
 		 * 
@@ -49,7 +49,7 @@ package flex.lang.reflect.utils
 		}
 		
 		/**
-		 * Determine if the <code>description</code> XML does not have a base attribute containing "Class" as the value.
+		 * Determine if the <code>description</code> XML describes an instance of a class.
 		 * 
 		 * @param description The XML description to check.
 		 * 
@@ -63,13 +63,13 @@ package flex.lang.reflect.utils
 		}
 		
 		/**
-		 * Determine if the <code>description</code> XML extends from the specified <code>className</code>.
+		 * Determine if the <code>description</code> XML has a superclass of type <code>className</code>.
 		 * 
 		 * @param description The XML description to check.
 		 * @param className The class name to check.
 		 * 
-		 * @return a Boolean value indicating whether the <code>description</code> XML extends from the 
-		 * specified <code>className</code>.
+		 * @return a Boolean value indicating whether the <code>description</code> XML extends from
+		 *  <code>className</code>.
 		 */
 		public static function classExtends( description:XML, className:String ):Boolean {
 			if ( isClass( description ) ) {
@@ -80,12 +80,12 @@ package flex.lang.reflect.utils
 		}
 		
 		/**
-		 * Determine if the <code>description</code> XML extends from a specific <code>interfaceName</code>.
+		 * Determine if the <code>description</code> XML implements  <code>interfaceName</code>.
 		 * 
 		 * @param description The XML description to check.
 		 * @param interfaceName The interface name to check.
 		 * 
-		 * @return a Boolean value indicating whether the <code>description</code> XML extends from a specific 
+		 * @return a Boolean value indicating whether the <code>description</code> XML implements the 
 		 * <code>interfaceName</code>.
 		 */
 		public static function classImplements( description:XML, interfaceName:String ):Boolean {
@@ -97,9 +97,8 @@ package flex.lang.reflect.utils
 		}
 		
 		/**
-		 * Determine if an XML <code>description</code> contains a metadata node that has a <code>name</code> of 
-		 * <code>metadata</code> and if that node contains an argument node that has a <code>key</code> attribute that 
-		 * matches the provided <code>key</code>.  If those nodes exist, the value of the argument node is returned. 
+		 * Determine if an XML <code>description</code> contains <code>metadata</code> with the attribute specified by <code>key</code>.
+		 * If some nodes exist, the value of the argument node is returned. 
 		 * 
 		 * @param description The XML description to check.
 		 * @param metadata The name of the metadata node to check.
@@ -117,7 +116,7 @@ package flex.lang.reflect.utils
 		}
 		
 		/**
-		 * Returns an <code>XMLList</code> containing methods nodes of the <code>description</code> XML.
+		 * Returns an <code>XMLList</code> containing method nodes of the <code>description</code> XML.
 		 * 
 		 * @param description The XML description to check.
 		 * 
@@ -139,8 +138,7 @@ package flex.lang.reflect.utils
 		} 
 		
 		/**
-		 * Determines if the <code>description</code> XML node has a extendsClass node that has a type of the 
-		 * provided <code>className</code>.
+		 * Returns whether the <code>description</code> XML node extends from <code>className</code>.
 		 * 
 		 * @param method The XML node to check.
 		 * @param className The name of the class to check.
@@ -161,8 +159,7 @@ package flex.lang.reflect.utils
 		}
 		
 		/**
-		 * Determines if the <code>node</code> XML node has an implementsInterface node that has a type of the
-		 * provided <code>interfaceName</code>.
+		 * Determines if the <code>node</code> XML implements <code>interfaceName</code>.
 		 * 
 		 * @param node The XML node to check.
 		 * @param interfaceName The name of the interface to check.
@@ -183,14 +180,12 @@ package flex.lang.reflect.utils
 		}
 		
 		/**
-		 * Determines if the <code>node</code> XML node has a metadata node that has a name attribute that matches 
-		 * the provided <code>metadata</code> name.
+		 * Determines if the <code>node</code> XML has metadata <code>metadata</code>.
 		 * 
 		 * @param method The XML node to check.
 		 * @param metadata The name of the metadata name.
 		 * 
-		 * @return a Boolean value indicating whether the <code>node</code> XML node has a metadata node that has a name attribute that matches 
-		 * the provided <code>metadata</code> name.
+		 * @return a Boolean value indicating whether <code>node</code> has metadata <code>metadata</code>
 		 */
 		public static function nodeHasMetaData( node:XML, metadata:String ):Boolean {
 			if ( node && node.metadata && ( node.metadata.length() > 0 ) ) {
@@ -223,7 +218,7 @@ package flex.lang.reflect.utils
 		}
 		
 		/**
-		 * Retrieves a return type attribute for a given <code>method</code> XML node.
+		 * Returns the return type of paramater <code>method</code> XML node as a String.
 		 * 
 		 * @param method The XML node to check.
 		 * 
@@ -240,7 +235,7 @@ package flex.lang.reflect.utils
 		}
 		
 		/**
-		 * Retruns all metadata nodes for a given <code>node</code> XML node.
+		 * Retruns all metadata nodes for a given <code>node</code>.
 		 * 
 		 * @param node The XML node to check for metadata nodes.
 		 * 
@@ -273,7 +268,7 @@ package flex.lang.reflect.utils
 				for( var i:int=0; i<nodes.length(); i++ ) {
 					node = nodes[i] as XML;
 					
-					//Determine if the node contains an name with the referenced type
+					//Determine if the node contains a name with the referenced type
 					if( ( node.(@name == type) ).length() ) {
 						return  node;
 					}
@@ -284,7 +279,7 @@ package flex.lang.reflect.utils
 		}
 		
 		/**
-		 * Retrieves a metadata node with a specific name in the provided <code>node</code> XML.
+		 * Returns the metadata of <code>node</code> if it contains <code>metaDataName</code>
 		 * 
 		 * @param node The XML node to check.
 		 * @param metaDataName The name of the metadata node to check.
@@ -306,9 +301,8 @@ package flex.lang.reflect.utils
 
 		//upper/lower case issues
 		/**
-		 * Determine if a <code>node</code> XML contains a metadata node that has a name attribue that matches the provided 
-		 * <code>metaDataName</code> name and if that node contains an argument node that has an empty key attribute but 
-		 * has a value attribute that matches the provided <code>value</code>.
+		 * Returns whether a <code>node</code> contains metadata matching <code>metadata</code> with no key but a value of
+		 * <code>value</code>.
 		 * 
 		 * @param node The XML node to check.
 		 * @param metaDataName The name of the metadata node to check.
@@ -342,9 +336,7 @@ package flex.lang.reflect.utils
 		
 		//Consider upper/lower case issues
 		/**
-		 * Determine if a <code>node</code> XML contains a metadata node that has a name attribue that matches the provided 
-		 * <code>metaDataName</code> and if that node contains an argument node that has a key attribute that matches the 
-		 * provided <code>key</code>.
+		 * Returns the value of a <code>node</code> with metadata matching <code>metadata</code> with key of <code>key</code>.
 		 * 
 		 * @param node The XML node to check.
 		 * @param metaDataName The name of the metadata node to check.
@@ -375,8 +367,7 @@ package flex.lang.reflect.utils
 		
 		//Consider upper/lower case issues
 		/**
-		 * Determine if a <code>node</code> XML contains an argument node that has a key attribute that matches the 
-		 * provided <code>key</code>.
+		 * Determine if the <code>node</code> XML contains an argument with key matching <code>key</code>.
 		 * 
 		 * @param node The XML node to check.
 		 * @param key the String that potentially exists as an attribute of an argument in the <code>node</code> XML.

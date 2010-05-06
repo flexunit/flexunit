@@ -33,7 +33,10 @@ package org.flexunit.internals {
 	import org.flexunit.runner.notification.ITemporalRunListener;
 	import org.flexunit.runner.notification.RunListener;
 	
-	public class TraceListener extends RunListener implements ITemporalRunListener {
+	/**
+	 * A <code>TraceListener</code> will trace the events encountered during the course of a test run.
+	 */
+	public class TraceListener extends RunListener {
 	
 		/** 
 		 * Constructor.

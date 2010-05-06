@@ -36,6 +36,7 @@ package org.flexunit.runner {
 	import org.flexunit.runner.manipulation.filters.DynamicFilter;
 	import org.flexunit.runner.manipulation.filters.MethodNameFilter;
 	import org.flexunit.runners.Suite;
+	import org.flexunit.internals.requests.QualifyingRequest;
 	
 	use namespace classInternal;
 	
@@ -188,6 +189,10 @@ package org.flexunit.runner {
 			return new InstanceRequest( instance );
 		}
  */		
+ 
+		public static function qualifyClasses( ...argumentsArray ):Request {
+			return QualifyingRequest.classes.apply( null, argumentsArray );
+		}
  
  		/**
 		 * Create a <code>Request</code> that, when processed, will run all the tests

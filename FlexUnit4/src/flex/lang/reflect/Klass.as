@@ -219,7 +219,7 @@ package flex.lang.reflect {
 		private var _packageName:String;
 		
 		/**
-		 * Returns the package name that <code>Class</code> resides within.
+		 * Returns the package name that of the <code>Class</code>.
 		 */
 		public function get packageName():String {
 			if ( !_packageName ) {				
@@ -230,7 +230,7 @@ package flex.lang.reflect {
 		}
 
 		/**
-		 * Returns the super class that the <code>Class</code> extends
+		 * Returns the super class.
 		 */
 		public function get superClass():Class {
 			//TODO : since type is an attribute of extendsClass, we need to ference it with @
@@ -261,7 +261,7 @@ package flex.lang.reflect {
 		}
 		
 		/**
-		 * Tests wether the class extends from the paramater class
+		 * Tests whether the class extends from the paramater class
 		 * 
 		 * @param clazz the class to test against
 		 * 

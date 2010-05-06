@@ -127,11 +127,11 @@ package org.flexunit.runner.notification {
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
 			
 			notifier.notifyListener = function( item:IRunListener ):void {
-				item.testFailure(failure);
-				
 				if ( item is ITemporalRunListener ) {
 					( item as ITemporalRunListener ).testTimed( failure.description, endTime );
 				}
+
+				item.testFailure(failure);
 			}
 
 			notifier.run();
@@ -151,11 +151,11 @@ package org.flexunit.runner.notification {
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
 			
 			notifier.notifyListener = function( item:IRunListener ):void {
-				item.testAssumptionFailure(failure);
-
 				if ( item is ITemporalRunListener ) {
 					( item as ITemporalRunListener ).testTimed( failure.description, endTime );
 				}
+
+				item.testAssumptionFailure(failure);
 			}
 
 			notifier.run();
@@ -172,11 +172,11 @@ package org.flexunit.runner.notification {
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
 			
 			notifier.notifyListener = function( item:IRunListener ):void {
-				item.testIgnored(description);
-
 				if ( item is ITemporalRunListener ) {
 					( item as ITemporalRunListener ).testTimed( description, endTime );
 				}
+
+				item.testIgnored(description);
 			}
 
 			notifier.run();
@@ -195,11 +195,11 @@ package org.flexunit.runner.notification {
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
 			
 			notifier.notifyListener = function( item:IRunListener ):void {
-				item.testFinished(description);
-
 				if ( item is ITemporalRunListener ) {
 					( item as ITemporalRunListener ).testTimed( description, endTime );
 				}
+
+				item.testFinished(description);
 			}
 
 			notifier.run();
@@ -253,7 +253,6 @@ import org.flexunit.runner.Result;
 import org.flexunit.runner.notification.Failure;
 import org.flexunit.runner.notification.IRunListener;
 import org.flexunit.runner.notification.IRunNotifier;
-import org.flexunit.runner.notification.ITemporalRunListener;
 import org.flexunit.runner.notification.RunListener;
 import org.flexunit.runner.notification.RunNotifier;
 

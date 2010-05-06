@@ -102,11 +102,14 @@ package org.flexunit.internals.builders {
 			
 			//Get a runner for the specific type of class
 			for ( var i:int=0; i<builders.length; i++ ) {
-				var builder:IRunnerBuilder = builders[ i ]; 
-				var runner:IRunner = builder.safeRunnerForClass( testClass );
-				//A suitable runner has been found, we are done
-				if (runner != null)
-					return runner;
+				var builder:IRunnerBuilder = builders[ i ];
+				
+				if ( builder.canHandleClass( testClass ) ) {
+					var runner:IRunner = builder.safeRunnerForClass( testClass );
+					//A suitable runner has been found, we are done
+					if (runner != null)
+						return runner;
+				}
 			}
 			return null;
 		}

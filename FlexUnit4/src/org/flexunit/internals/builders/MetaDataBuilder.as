@@ -91,6 +91,18 @@ package org.flexunit.internals.builders {
 		 */
 		private var suiteBuilder:IRunnerBuilder;
 		
+		
+		override public function canHandleClass(testClass:Class):Boolean {
+			var klassInfo:Klass = new Klass( testClass );
+			
+			//Determine if the testClass references a runner in its metadata
+			if ( klassInfo.hasMetaData( RUN_WITH ) ) {			
+				return true;
+			}
+			
+			return false;
+		}
+		
 		/**
 		 * Returns an <code>IRunner</code> based on the metadata of the provided <code>testClass</code>.
 		 * 
@@ -103,19 +115,15 @@ package org.flexunit.internals.builders {
 			var klassInfo:Klass = new Klass( testClass );
 			
 			//Determine if the testClass references a runner in its metadata
-			if ( klassInfo.hasMetaData( RUN_WITH ) ) {
-				//Get the definition for the runner class
-				var runWithValue:String = ""; 
-				var runWithAnnotation:MetaDataAnnotation = klassInfo.getMetaData( RUN_WITH );
+			//Get the definition for the runner class
+			var runWithValue:String = ""; 
+			var runWithAnnotation:MetaDataAnnotation = klassInfo.getMetaData( RUN_WITH );
 				
-				if ( runWithAnnotation && runWithAnnotation.defaultArgument ) {
-					runWithValue = runWithAnnotation.defaultArgument.key;
-				}
-
-				return buildRunner( runWithValue, testClass);
+			if ( runWithAnnotation && runWithAnnotation.defaultArgument ) {
+				runWithValue = runWithAnnotation.defaultArgument.key;
 			}
-			
-			return null;
+
+			return buildRunner( runWithValue, testClass);
 		}
 		
 		/**
