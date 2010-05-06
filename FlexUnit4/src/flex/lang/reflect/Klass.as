@@ -229,6 +229,19 @@ package flex.lang.reflect {
 			return _packageName;
 		}
 
+		public function get classInheritance():Array {
+			var className:String;
+			var superArray:Array = new Array();
+
+			if ( classXML.factory && classXML.factory.extendsClass ) {
+				for ( var i:int=0; i<classXML.factory.extendsClass.length(); i++ ) {
+					className = classXML.factory.extendsClass[ i ].@type
+					superArray.push( getClassFromName( className ) );	
+				}
+			}			
+			
+			return superArray;
+		}
 		/**
 		 * Returns the super class.
 		 */

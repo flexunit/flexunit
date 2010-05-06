@@ -15,7 +15,7 @@ package org.flexunit.internals.builders {
 			
 			//loop through the builders testing against the testClass passed in
 			//If a builder is found return true(so it will then stay in the array
-			//in PreQualifiedRequest
+			//in QualifyingRequest
 			//otherwise return false so we can remove it.
 			for ( var i:int=0; i<builders.length; i++ ) {
 				var builder:IRunnerBuilder = builders[ i ];		
