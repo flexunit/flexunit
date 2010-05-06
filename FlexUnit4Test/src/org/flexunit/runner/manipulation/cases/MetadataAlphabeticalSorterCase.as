@@ -4,12 +4,12 @@ package org.flexunit.runner.manipulation.cases
 	
 	import org.flexunit.Assert;
 	import org.flexunit.runner.Description;
-	import org.flexunit.runner.manipulation.OrderArgumentPlusAlphaSorter;
+	import org.flexunit.runner.manipulation.OrderArgumentPlusAlphaSorter1;
 
 	public class MetadataAlphabeticalSorterCase
 	{		
 		//TODO: Are these test correctly testing the MetadataAlphabeticalSorterCase class
-		private var metaDataAlphaSorter : OrderArgumentPlusAlphaSorter;
+		private var metaDataAlphaSorter : OrderArgumentPlusAlphaSorter1;
 		
 		protected var lowerXML:XML = new XML(
 			<method>
@@ -54,7 +54,7 @@ package org.flexunit.runner.manipulation.cases
 		
 		[Before]
 		public function setupSorter():void {
-			metaDataAlphaSorter = new OrderArgumentPlusAlphaSorter();
+			metaDataAlphaSorter = new OrderArgumentPlusAlphaSorter1();
 		}
 		
 		protected var noOrderArray:Array = convertToMetaDataAnnotations( noOrderXML.metadata );

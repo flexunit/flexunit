@@ -4,23 +4,23 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	{
 		[Before(order=1)]
 		public function beginOneParent():void {
-			trace("beginOneParent");
+			TestBeforeAfterInheritance.setupOrderArray.push("first");
 		}
 		
 		[Before(order=2)]
 		public function beginTwoParent():void {
-			trace("beginTwoParent");
+			TestBeforeAfterInheritance.setupOrderArray.push("second");
 		}
 		
 		
 		[After(order=1)]
 		public function afterOneParent():void {
-			trace("afterOneParent");
+			TestBeforeAfterInheritance.setupOrderArray.push("nineth");
 		}
 		
 		[After(order=2)]
 		public function afterTwoParent():void {
-			trace("afterTwoParent");
+			TestBeforeAfterInheritance.setupOrderArray.push("tenth");
 		}
 	}
 }
