@@ -108,7 +108,7 @@
     <classEntry path="org.flexunit.runner.manipulation.IFilter"/>
     <classEntry path="org.flexunit.runner.manipulation.IFilterable"/>
     <classEntry path="org.flexunit.runner.manipulation.NoTestsRemainException"/>
-    <classEntry path="org.flexunit.runner.manipulation.OrderArgumentPlusAlphaSorter"/>
+    <classEntry path="org.flexunit.runner.manipulation.OrderArgumentPlusInheritanceSorter"/>
     <classEntry path="org.flexunit.runner.manipulation.Sorter"/>
     <classEntry path="org.flexunit.runner.manipulation.filters.AbstractFilter"/>
     <classEntry path="org.flexunit.runner.manipulation.filters.DynamicFilter"/>
