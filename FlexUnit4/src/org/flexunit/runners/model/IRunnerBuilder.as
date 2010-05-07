@@ -56,6 +56,14 @@ package org.flexunit.runners.model {
 	 * @see org.flexunit.runners.Suite
 	 */
 	public interface IRunnerBuilder {
+		
+		/**
+		 * Returns a boolean value indicating if this builder will be able to handle the testClass or not
+		 * 
+		 * @param testClass The class to test to determine an <code>IRunner</code>.
+		*/
+		function canHandleClass( testClass:Class):Boolean;
+		
 		/**
 		 * Returns an <code>IRunner</code> that can safely run the provided <code>testClass</code>.
 		 * 

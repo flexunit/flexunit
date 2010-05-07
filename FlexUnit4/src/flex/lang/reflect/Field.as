@@ -28,6 +28,11 @@
 package flex.lang.reflect {
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
+	/**
+	 * Helper class designed to break down individual XML variables to ease processing in
+	 * FlexUnit.  Fields consist of the fieldXML, the class defining the field, the variable type
+	 * of the field, any metadata associated with the field and the name of the field.
+	 */
 	public class Field {
 		/**
 		 * @private
@@ -62,7 +67,7 @@ package flex.lang.reflect {
 		 */
 		private var _isStatic:Boolean;
 		/**
-		 * Returns wether the <code>Field</code> is static or now
+		 * Returns whether the <code>Field</code> is static.
 		 */
 		public function get isStatic():Boolean {
 			return _isStatic;
@@ -73,7 +78,7 @@ package flex.lang.reflect {
 		 */
 		private var _isProperty:Boolean;
 		/**
-		 * Returns wether the <code>Field</code> is a propery field or not
+		 * Returns whether the <code>Field</code> is a property.
 		 */
 		public function get isProperty():Boolean {
 			return _isProperty;
@@ -138,7 +143,7 @@ package flex.lang.reflect {
 		}
 		
 		/**
-		 * Tests wether the <code>Field</code> has the metadata specified by name
+		 * Tests whether the <code>Field</code> has the metadata specified by <code>name</code>
 		 * 
 		 * @param name Name of the requested metadata
 		 * 
@@ -179,7 +184,7 @@ package flex.lang.reflect {
 		/**
 		 * Retrieves the <code>Class</code> associated with the <code>Field</code>
 		 * 
-		 * @return Associated <code>Class</code>, if any
+		 * @return Associated <code>Class</code>.
 		 */
 		public function get type():Class {
 			if (!_type) {

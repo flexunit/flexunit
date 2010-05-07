@@ -82,6 +82,11 @@ package flex.lang.reflect {
 		 * @private
 		 */
 		private var _metaData:Array;
+
+		/**
+		 * @private
+		 */
+		private var _inheritance:Array;
 		
 		/**
 		 * Returns an <code>XMLList</code> of metadata contained in the Class
@@ -219,7 +224,7 @@ package flex.lang.reflect {
 		private var _packageName:String;
 		
 		/**
-		 * Returns the package name that <code>Class</code> resides within.
+		 * Returns the package name that of the <code>Class</code>.
 		 */
 		public function get packageName():String {
 			if ( !_packageName ) {				
@@ -229,19 +234,49 @@ package flex.lang.reflect {
 			return _packageName;
 		}
 
-		/**
-		 * Returns the super class that the <code>Class</code> extends
-		 */
-		public function get superClass():Class {
+		private function buildInheritance():Array {
+			var className:String;
+			var superArray:Array = new Array();
+
 			//TODO : since type is an attribute of extendsClass, we need to ference it with @
 			//also, since all objects extend from object, we need to be sure we are only
 			//taking the type of the lowest level extend.
+
 			if ( classXML.factory && classXML.factory.extendsClass ) {
-				return getClassFromName( classXML.factory.extendsClass[0].@type );	
+				for ( var i:int=0; i<classXML.factory.extendsClass.length(); i++ ) {
+					className = classXML.factory.extendsClass[ i ].@type
+						
+					//Workaround for issue where getClassFromName cannot find Object
+					if ( className == "Object" ) {
+						superArray.push( Object );
+					} else {
+						superArray.push( getClassFromName( className ) );
+					}
+				}
+			}			
+			
+			return superArray;
+		}
+
+		public function get classInheritance():Array {
+
+			if ( !_inheritance ) {
+				_inheritance = buildInheritance();
+			}
+			
+			return _inheritance;
+		}
+		/**
+		 * Returns the super class.
+		 */
+		public function get superClass():Class {
+			var inheritance:Array = classInheritance;
+
+			if ( inheritance.length > 0 ) {
+				return inheritance[ 0 ];	
 			} else {
 				return null;
 			}
-			//return getClassFromName( classXML.factory.extendsClass.type );
 		}
 
 		/**
@@ -261,7 +296,7 @@ package flex.lang.reflect {
 		}
 		
 		/**
-		 * Tests wether the class extends from the paramater class
+		 * Tests whether the class extends from the paramater class
 		 * 
 		 * @param clazz the class to test against
 		 * 
@@ -467,7 +502,7 @@ package flex.lang.reflect {
 			}
 
 			this.clazz = clazz;
-			
+
 			_name = classXML.@name;
 		}
 	}

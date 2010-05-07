@@ -76,7 +76,7 @@ package flex.lang.reflect {
 		private var _elementType:Class;
 
 		/**
-		 * Retrieves the metadata attributed to the <code>Method</code>
+		 * Returns the <code>Method</code> metadata.
 		 */
 		public function get metadata():Array {
 			if ( !_metaData ) {
@@ -93,14 +93,14 @@ package flex.lang.reflect {
 		}
 
 		/**
-		 * Retrieves the XML of the <code>Method</code>
+		 * Returns the <code>Method</code> XML
 		 */
 		public function get methodXML():XML {
 			return _methodXML;
 		} 
 
 		/**
-		 * Retrieves the class from which the <code>Method</code> is derived.
+		 * Returns the <code>Method</code>'s class.
 		 */
 		public function get declaringClass():Class {
 			if ( !_declaringClass ) {
@@ -111,14 +111,14 @@ package flex.lang.reflect {
 		} 
 
 		/**
-		 * Retrieves the name of the <code>Method</code>
+		 * Returns the name of the <code>Method</code>
 		 */
 		public function get name():String {
 			return _name;
 		} 
 
 		/**
-		 * Retrieves the types of the paramaters associated with the <code>Method</code>
+		 * Returns the <code>Method</code> paramater types as an array.
 		 */
 		public function get parameterTypes():Array {
 			if ( !_parameterTypes ) {
@@ -129,7 +129,7 @@ package flex.lang.reflect {
 		} 
 
 		/**
-		 * Retrieves the return type of the <code>Method</code>
+		 * Returns the return type of the <code>Method</code>
 		 */
 		public function get returnType():Class {
 			if ( !_returnType ) { 
@@ -140,7 +140,7 @@ package flex.lang.reflect {
 		} 
 
 		/**
-		 * If the return type is an array, retrieves the type of each element
+		 * If the return type is an array, returns the type of each element
 		 */
 		public function get elementType():Class {
 			if ( _elementType ) {
@@ -189,12 +189,12 @@ package flex.lang.reflect {
 		}
 		
 		/**
-		 * Calls <code>apply</code> associated with the method
+		 * Calls <code>apply</code> on the method
 		 * 
 		 * @param obj the item to call
-		 * @argArray the paramaters to call with apply, if any
+		 * @param argArray the paramaters to call with apply, if any
 		 * 
-		 * @return result of the apply
+		 * @return normal return value of the method
 		 * 
 		 * @see #invoke()
 		 */
@@ -212,12 +212,12 @@ package flex.lang.reflect {
 		}
 
 		/**
-		 * Calls <code>apply</code> associated with the method
+		 * Calls <code>apply</code> on the method
 		 * 
 		 * @param obj the item to call
-		 * @args the paramaters to call with apply, if any
+		 * @param args the paramaters to call with apply, if any
 		 * 
-		 * @return result of the apply
+		 * @return normal return value of the method
 		 * @see #apply()
 		 */
 		public function invoke( obj:Object, ...args ):Object {
@@ -315,7 +315,7 @@ package flex.lang.reflect {
 		 * <code>Method</code> Constructor
 		 * 
 		 * @param methodXML XML of the method to create
-		 * @param isStatic specifies wether the method is static or not
+		 * @param isStatic specifies whether the method is static or not
 		 */
 		public function Method( methodXML:XML, isStatic:Boolean=false ) {
 			_methodXML = methodXML;

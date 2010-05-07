@@ -41,6 +41,8 @@ package org.flexunit.runners {
 	import org.flexunit.runner.Description;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.manipulation.IFilterable;
+	import org.flexunit.runner.manipulation.ISorter;
+	import org.flexunit.runner.manipulation.OrderArgumentPlusInheritanceSorter;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runners.model.FrameworkMethod;
 	import org.flexunit.token.AsyncTestToken;
@@ -171,6 +173,7 @@ package org.flexunit.runners {
 		 * @inheritDoc
 		 */
 		override protected function describeChild( child:* ):IDescription {
+			//OPTIMIZATION POINT
 			var method:FrameworkMethod = FrameworkMethod( child );
 			return Description.createTestDescription( testClass.asClass, method.name, method.metadata );
 		}
@@ -192,6 +195,7 @@ package org.flexunit.runners {
 		 * class and superclasses that are not overridden.
 		 */
 		protected function computeTestMethods():Array {
+			//OPTIMIZATION POINT
 			return testClass.getMetaDataMethods( "Test" );
 		}
 		
@@ -364,8 +368,12 @@ package org.flexunit.runners {
 		 */
 		protected function withBefores( method:FrameworkMethod, target:Object ):IAsyncStatement {
 			var befores:Array = testClass.getMetaDataMethods( "Before" );
+			var inheritanceSorter:ISorter = new OrderArgumentPlusInheritanceSorter( sorter, testClass, true );
 			//Sort the befores array
-			befores.sort(compare);
+			befores.sort( function compare(o1:Object, o2:Object):int {
+								return inheritanceSorter.compare(describeChild(o1), describeChild(o2));
+						  } );
+
 			return new RunBefores( befores, target );
 		}
 	
@@ -378,8 +386,12 @@ package org.flexunit.runners {
 		 */
 		protected function withAfters( method:FrameworkMethod, target:Object ):IAsyncStatement {
 			var afters:Array = testClass.getMetaDataMethods( "After" );
-			//Sort the afters array
-			afters.sort(compare);
+			var inheritanceSorter:ISorter = new OrderArgumentPlusInheritanceSorter( sorter, testClass, false );
+
+			afters.sort( function compare(o1:Object, o2:Object):int {
+				return inheritanceSorter.compare(describeChild(o1), describeChild(o2));
+			} );
+
 			return new RunAfters( afters, target);
 		}
 	}

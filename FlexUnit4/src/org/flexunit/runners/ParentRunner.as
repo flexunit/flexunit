@@ -93,7 +93,7 @@ package org.flexunit.runners {
 		/**
 		 * @private
 		 */
-		private var sorter:ISorter = OrderArgumentSorter.ORDER_ARG_SORTER;
+		protected var sorter:ISorter = OrderArgumentSorter.ORDER_ARG_SORTER;
 		/**
 		 * @private
 		 */
