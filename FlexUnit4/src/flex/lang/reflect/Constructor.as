@@ -147,6 +147,8 @@ package flex.lang.reflect {
 						//did declare this particular field of type "*", in which case, we have no idea if all is well, or if we need the data
 						//so, we have to go through the longer loop here
 						_parameterTypes = ar;
+						//reset the number of required arguments as we are about to recompute this
+						requiredArgNum = 0;
 						ar = instantiateAndRegetParamTypes( typesList.length() );
 					}
 				}
