@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+   creationComplete="runTests();">
+   
+   <mx:Script>
+      <![CDATA[
+         import org.flexunit.listeners.CIListener;
+         import org.flexunit.runner.FlexUnitCore;
+         import org.flexunit.runner.Request;
+         
+         public function runTests() : void {
+            var core : FlexUnitCore = new FlexUnitCore();
+            core.addListener(new CIListener());
+            
+			var request:Request = Request.qualifyClasses.apply(
+					null, 
+					[@CANONCIAL_CLASS_REFS@]
+				);
+            core.run(request);
+         }
+      ]]>
+   </mx:Script>
+</mx:Application>

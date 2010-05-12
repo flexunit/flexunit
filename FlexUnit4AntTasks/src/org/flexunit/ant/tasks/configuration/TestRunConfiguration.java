@@ -1,25 +1,24 @@
-package org.flexunit.ant.tasks;
+package org.flexunit.ant.tasks.configuration;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Project;
 import org.flexunit.ant.LoggingUtil;
 import org.flexunit.ant.launcher.OperatingSystem;
 
-public class TaskConfiguration
+public class TestRunConfiguration implements StepConfiguration
 {
-   private static final String DEFAULT_REPORT_PATH = ".";
-   private static final int FLOOR_FOR_PORT = 1;
-   private static final int SHORTEST_SOCKET_TIMEOUT = 5000; //ms
-   private static final List<String> VALID_PLAYERS = Arrays.asList(new String[]{"flash", "air"});
+   private final int FLOOR_FOR_PORT = 1;
+   private final int SHORTEST_SOCKET_TIMEOUT = 5000; //ms
+   private final List<String> VALID_PLAYERS = Arrays.asList(new String[]{"flash", "air"});
    
    private File command = null;
    private int display = 99;
    private boolean failOnTestFailure = false;
    private String failureProperty = "flexunit.failed";
+   private File flexHome = null;
    private boolean headless = false;
    private boolean isLocalTrusted = true;
    private String player = "flash";
@@ -28,23 +27,16 @@ public class TaskConfiguration
    private int serverBufferSize = 262144; //bytes
    private int socketTimeout = 60000; //milliseconds
    private File swf = null;
-   private boolean verbose = false;
+   private File workingDir = null;
    
-   private Project project;
-   
-   public TaskConfiguration(Project project)
-   {
-      this.project = project;
-   }
-
    public File getCommand()
    {
       return command;
    }
 
-   public void setCommand(String commandPath)
+   public void setCommand(File command)
    {
-      this.command = project.resolveFile(commandPath);
+      this.command = command;
    }
    
    public boolean isCustomCommand()
@@ -81,7 +73,17 @@ public class TaskConfiguration
    {
       this.failureProperty = failureProperty;
    }
-
+   
+   public File getFlexHome()
+   {
+      return flexHome;
+   }
+   
+   public void setFlexHome(File flexHome)
+   {
+      this.flexHome = flexHome;
+   }
+   
    public boolean isHeadless()
    {
       return headless;
@@ -132,9 +134,9 @@ public class TaskConfiguration
       return reportDir;
    }
 
-   public void setReportDir(String reportDirPath)
+   public void setReportDir(File reportDir)
    {
-      this.reportDir = project.resolveFile(reportDirPath);
+      this.reportDir = reportDir;
    }
 
    public int getServerBufferSize()
@@ -161,43 +163,24 @@ public class TaskConfiguration
    {
       return swf;
    }
-
-   public void setSwf(String swf)
+   
+   public void setSwf(File swf)
    {
-      this.swf = project.resolveFile(swf);
-   }
-
-   public boolean isVerbose()
-   {
-      return verbose;
-   }
-
-   public void setVerbose(boolean verbose)
-   {
-      this.verbose = verbose;
-      LoggingUtil.VERBOSE = verbose;
+      this.swf = swf;
    }
    
-   public void verify() throws BuildException
+   public File getWorkingDir()
    {
-      validateInputs();
-      generateDefaultValues();
-      logInputValues();
+      return workingDir;
+   }
+   
+   public void setWorkingDir(File workingDir)
+   {
+      this.workingDir = workingDir;
    }
 
-   /**
-    * Validates all attribute values of the task
-    */
-   protected void validateInputs()
+   public void validate() throws BuildException
    {
-      LoggingUtil.log("Validating task attributes ...");
-      
-      // Check a SWF was specified.
-      if (swf == null || !swf.exists())
-      {
-         throw new BuildException("The provided 'swf' property value [" + swf.getPath() + "] could not be found.");
-      }
-      
       if(port < FLOOR_FOR_PORT)
       {
          throw new BuildException("The provided 'port' property value [" + port + "] must be great than " + FLOOR_FOR_PORT + ".");
@@ -237,30 +220,10 @@ public class TaskConfiguration
       }
    }
    
-   /**
-    * Generates default values for configuration which are not directly provided by the user.
-    */
-   protected void generateDefaultValues()
+   public void log()
    {
-      LoggingUtil.log("Generating default values ...");
-      
-      //create report directory if needed
-      if (reportDir == null || !reportDir.exists())
-      {
-         reportDir = project.resolveFile(DEFAULT_REPORT_PATH);
-         LoggingUtil.log("Using default reporting dir [" + reportDir.getAbsolutePath() + "]");
-      }
-
-      //create directory just to be sure it exists, already existing dirs will not be overwritten
-      reportDir.mkdir();
-   }
-   
-   /**
-    * Logs the values of all attributes on the configuration
-    */
-   protected void logInputValues()
-   {
-      LoggingUtil.log("Using the following settings:");
+      LoggingUtil.log("Using the following settings for the test run:");
+      LoggingUtil.log("\tFLEX_HOME: [" + flexHome.getAbsolutePath() + "]");
       LoggingUtil.log("\thaltonfailure: [" + failOnTestFailure + "]");
       LoggingUtil.log("\theadless: [" + headless + "]");
       LoggingUtil.log("\tdisplay: [" + display + "]");
@@ -274,6 +237,5 @@ public class TaskConfiguration
       LoggingUtil.log("\tswf: [" + swf + "]");
       LoggingUtil.log("\ttimeout: [" + socketTimeout + "ms]");
       LoggingUtil.log("\ttoDir: [" + reportDir.getAbsolutePath() + "]");
-      LoggingUtil.log("\tverbose: [" + verbose + "]");
    }
 }
