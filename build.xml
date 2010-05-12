@@ -31,6 +31,7 @@ to contribute to our CI process.
    <property name="uilistener.loc" location="${basedir}/FlexUnit4UIListener" />
    <property name="aircilistener.loc" location="${basedir}/FlexUnit4AirCIListener" />
    <property name="flexcoverlistener.loc" location="${basedir}/FlexUnit4FlexCoverListener" />
+   <property name="turnkey.loc" location="${basedir}/FlexUnit4TurnKey" />
 
    <!-- Cleans up all projects -->
    <target name="clean">
@@ -137,6 +138,17 @@ to contribute to our CI process.
             <include name="*.swc" />
          </zipfileset>
          <zipfileset dir="${aircilistener.loc}/target" prefix="flexunit">
+            <include name="*.swc" />
+         </zipfileset>
+         
+         <zipfileset dir="${turnkey.loc}" prefix="flexunit/turnkey">
+            <exclude name="export" />
+         </zipfileset>
+         
+         <zipfileset dir="${core.loc}/target" prefix="flexunit/turnkey/libs">
+            <include name="*core*.swc" />
+         </zipfileset>
+         <zipfileset dir="${uilistener.loc}/target" prefix="flexunit/turnkey/libs">
             <include name="*.swc" />
          </zipfileset>
       </zip>
