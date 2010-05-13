@@ -100,7 +100,7 @@ package org.flexunit.runners {
 		}
 
 		override protected function describeChild( child:* ):IDescription {
-			if ( ( !constructorParameterized ) || ( child is ParameterizedMethod ) ) {
+			if ( !constructorParameterized ) {
 				return super.describeChild( child );
 			}
 			

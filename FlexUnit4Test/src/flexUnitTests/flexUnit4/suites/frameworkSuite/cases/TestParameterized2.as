@@ -21,17 +21,17 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 
 		public static function dataThree():Array {
 			//need to deal with this circumstance better -> throw new Error("Blah");
-			return [ [ 0, 0 ], [ 1, 3 ], [ 2, 6 ] ];
+			return [ [ 0, 1, 1 ], [ 1, 2, 3 ], [ 2, 4, 6 ] ];
 		}
 		
 		[Test(dataProvider="dataTwo")]
-		public function timesTwoTest( value:int, required:int ):void {
-			assertEquals( 2*value, required );
+		public function timesTwoTest( value:int, result:int ):void {
+			assertEquals( 2*value, result );
 		}
 
 		[Test(dataProvider="dataThree")]
-		public function timesThreeTest( value:int, required:int ):void {
-			assertEquals( 3*value, required );
+		public function addTwoValuesTest( value1:int, value2:int, result:int ):void {
+			assertEquals( value1 + value2, result );
 		}
 
 		[Test]
