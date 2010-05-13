@@ -148,7 +148,6 @@
     <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptVisualTestEnvironment"/>
     <classEntry path="org.flexunit.internals.requests.QualifyingRequest"/>
     <classEntry path="org.flexunit.internals.builders.OnlyRecognizedTestClassBuilder"/>
-    <classEntry path="org.flexunit.runners.ParameterizedMethodRunner"/>
     <classEntry path="org.flexunit.runners.model.ParameterizedMethod"/>
   </includeClasses>
   <includeResources/>

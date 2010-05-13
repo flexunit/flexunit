@@ -8,11 +8,10 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.async.Async;
 	import org.flexunit.runners.Parameterized;
-	import org.flexunit.runners.ParameterizedMethodRunner;
 	
 	[RunWith("org.flexunit.runners.Parameterized")]
 	public class TestParameterized2 {
-		private var foo:ParameterizedMethodRunner;
+		private var foo:Parameterized;
 		
 		public static function dataTwo():Array {
 			//need to deal with this circumstance better -> throw new Error("Blah");
