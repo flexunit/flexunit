@@ -10,6 +10,7 @@ import org.apache.tools.ant.types.FilterSetCollection;
 import org.apache.tools.ant.types.Commandline.Argument;
 import org.apache.tools.ant.types.resources.FileResource;
 import org.apache.tools.ant.types.resources.URLResource;
+import org.apache.tools.ant.util.FileUtils;
 import org.apache.tools.ant.util.ResourceUtils;
 import org.flexunit.ant.LoggingUtil;
 import org.flexunit.ant.tasks.configuration.CompilationConfiguration;
@@ -17,11 +18,11 @@ import org.flexunit.ant.tasks.configuration.CompilationConfiguration;
 public class Compilation
 {
    private final String TESTRUNNER_TEMPLATE = "TestRunner.template";
-   private final String TESTRUNNER_FILE = "TestRunner.mxml";
+   private final String TESTRUNNER_FILE_PREFIX = "TestRunner";
+   private final String TESTRUNNER_FILE_SUFFIX = ".mxml";
    private final String MXMLC_RELATIVE_PATH = "lib/mxmlc.jar";
    private final String FRAMEWORKS_RELATIVE_PATH = "frameworks";
    private final String SWF_FILENAME = "TestRunner.swf";
-   private final String TESTRUNNER_SRC_RELATIVE_PATH = "generated";
    
    private CompilationConfiguration configuration;
    private Project project;
@@ -36,25 +37,28 @@ public class Compilation
    {
       configuration.log();
 
-      //TODO: Generate in the report dir
-      File srcDirectory = new File(project.getBaseDir().getAbsolutePath() + File.separatorChar + TESTRUNNER_SRC_RELATIVE_PATH);
-      File runnerFile = generateTestRunnerFromTemplate(srcDirectory);
+      File runnerFile = generateTestRunnerFromTemplate();
       File finalFile = new File(project.getBaseDir().getAbsolutePath() + File.separatorChar + SWF_FILENAME);
       
       Java compilationTask = createJavaTask(runnerFile, finalFile);
       LoggingUtil.log("Compiling test classes: [" + configuration.getTestSources().getCanonicalClasses(", ") + "]", true);
       LoggingUtil.log(compilationTask.getCommandLine().describeCommand());
-      compilationTask.execute();
+      
+      if(compilationTask.executeJava() != 0)
+      {
+         throw new BuildException("Compilation failed:\n" + project.getProperty("MXMLC_ERROR"));
+      }
       
       return finalFile;
    }
    
-   private File generateTestRunnerFromTemplate(File srcDirectory) throws BuildException
+   private File generateTestRunnerFromTemplate() throws BuildException
    {
-      File runner = new File(srcDirectory.getAbsolutePath() + File.separatorChar + TESTRUNNER_FILE);
-      
       try
       {
+         //Write test runner out to a temp directory to avoid crapping the user's project
+         File runner = FileUtils.getFileUtils().createTempFile(TESTRUNNER_FILE_PREFIX, TESTRUNNER_FILE_SUFFIX, null, true, true);
+         
          //Template location in JAR
          URLResource template = new URLResource(getClass().getResource("/" + TESTRUNNER_TEMPLATE));
          
@@ -77,13 +81,13 @@ public class Compilation
          );
          
          LoggingUtil.log("Created test runner at [" + runner.getAbsolutePath() + "]");
+         
+         return runner;
       }
       catch (Exception e)
       {
          throw new BuildException("Could not create test runner from template.");
       }
-      
-      return runner;
    }
    
    private Java createJavaTask(File runnerFile, File finalFile)
@@ -97,18 +101,17 @@ public class Compilation
       task.setJar(new File(mxmlcPath));
       task.setProject(project);
       task.setDir(project.getBaseDir());
-      
-      Argument jvmHeapSize = task.createJvmarg();
-      jvmHeapSize.setValue("-Xmx256M");
+      task.setMaxmemory("256M"); //MXMLC needs to eat
+      task.setErrorProperty("MXMLC_ERROR");
       
       Argument flexLibArgument = task.createArg();
-      flexLibArgument.setLine("+flexlib " + frameworksPath);
+      flexLibArgument.setLine("+flexlib" + frameworksPath);
       
       Argument outputFile = task.createArg();
       outputFile.setLine("-output " + finalFile.getAbsolutePath());
       
       Argument sourcePath = task.createArg();
-      sourcePath.setLine("-source-path " + runnerFile.getParentFile().getAbsolutePath() + ' ' + configuration.getTestSources().getPathElements(" "));
+      sourcePath.setLine("-source-path " + configuration.getTestSources().getPathElements(" "));
       
       Argument libraryPath = task.createArg();
       libraryPath.setLine("-library-path+=" + configuration.getLibraries().getPathElements(" -library-path+="));

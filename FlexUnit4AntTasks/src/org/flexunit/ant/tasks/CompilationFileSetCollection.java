@@ -20,6 +20,11 @@ public class CompilationFileSetCollection
       filesets.add(fileset);
    }
    
+   public boolean provided()
+   {
+      return filesets.size() != 0;
+   }
+   
    public boolean isEmpty()
    {
       if(filesets.isEmpty())

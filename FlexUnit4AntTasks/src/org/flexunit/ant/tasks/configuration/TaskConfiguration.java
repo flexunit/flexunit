@@ -132,7 +132,7 @@ public class TaskConfiguration
    public boolean shouldCompile()
    {
       File swf = testRunConfiguration.getSwf();
-      boolean noTestSources = compilationConfiguration.getTestSources().isEmpty();
+      boolean noTestSources = !compilationConfiguration.getTestSources().provided();
       return !noTestSources && (swf == null || !swf.exists());
    }
    
@@ -155,7 +155,7 @@ public class TaskConfiguration
       LoggingUtil.log("Validating task attributes ...");
       
       File swf = testRunConfiguration.getSwf();
-      boolean noTestSources = compilationConfiguration.getTestSources().isEmpty();
+      boolean noTestSources = !compilationConfiguration.getTestSources().provided();
       
       if ((swf == null || !swf.exists()) && noTestSources)
       {

@@ -13,6 +13,7 @@ public class CompilationConfiguration implements StepConfiguration
    private TestSourcePaths testSources;
    private LibraryPaths libraries;
    private File flexHome = null;
+   private File toDir = null;
 
    public CompilationConfiguration()
    {
@@ -50,6 +51,16 @@ public class CompilationConfiguration implements StepConfiguration
       return testSources;
    }
    
+   public void setToDir(File toDir)
+   {
+      this.toDir = toDir;
+   }
+
+   public File getToDir()
+   {
+      return toDir;
+   }
+
    public void validate() throws BuildException
    {
       if(!testSources.exists())
@@ -59,7 +70,7 @@ public class CompilationConfiguration implements StepConfiguration
       
       if(testSources.exists() && testSources.isEmpty())
       {
-         throw new BuildException("No files could be found for the provided 'testSource' elements.");
+         throw new BuildException("No test files could be found for the provided 'testSource' elements.");
       }
       
       if(!libraries.exists())
@@ -69,7 +80,7 @@ public class CompilationConfiguration implements StepConfiguration
       
       if(libraries.exists() && libraries.isEmpty())
       {
-         throw new BuildException("No files could be found for the provided 'library' elements.");
+         throw new BuildException("No SWC files could be found for the provided 'library' elements.");
       }
    }
    
