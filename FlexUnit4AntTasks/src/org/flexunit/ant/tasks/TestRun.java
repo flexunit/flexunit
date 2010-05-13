@@ -14,7 +14,6 @@ import org.flexunit.ant.launcher.FlexUnitLauncher;
 import org.flexunit.ant.report.Reports;
 import org.flexunit.ant.tasks.configuration.TestRunConfiguration;
 
-//TODO: Use working directory
 public class TestRun
 {
    private final String TRUE = "true";

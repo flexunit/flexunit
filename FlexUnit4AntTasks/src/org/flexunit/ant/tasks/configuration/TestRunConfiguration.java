@@ -27,7 +27,6 @@ public class TestRunConfiguration implements StepConfiguration
    private int serverBufferSize = 262144; //bytes
    private int socketTimeout = 60000; //milliseconds
    private File swf = null;
-   private File workingDir = null;
    
    public File getCommand()
    {
@@ -167,16 +166,6 @@ public class TestRunConfiguration implements StepConfiguration
    public void setSwf(File swf)
    {
       this.swf = swf;
-   }
-   
-   public File getWorkingDir()
-   {
-      return workingDir;
-   }
-   
-   public void setWorkingDir(File workingDir)
-   {
-      this.workingDir = workingDir;
    }
 
    public void validate() throws BuildException

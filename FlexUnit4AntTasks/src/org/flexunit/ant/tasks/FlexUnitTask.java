@@ -15,12 +15,18 @@ public class FlexUnitTask extends Task
    }
    
    @Override
-   public void setProject(Project project) 
+   public void setProject(Project project)
    {
-      super.setProject(project);
-      this.configuration = new TaskConfiguration(project);
+      //create a subproject so we can use the notion of working directory w/o changing the project containing this task
+      Project subproject = project.createSubProject();
+      
+      //copy over FLEX_HOME property since subprojects don't get their parent project's properties
+      subproject.setProperty("FLEX_HOME", project.getProperty("FLEX_HOME"));
+      
+      super.setProject(subproject);
+      configuration = new TaskConfiguration(subproject);
    }
-
+   
    /**
     * Sets local trusted, default is false
     * 
@@ -142,6 +148,11 @@ public class FlexUnitTask extends Task
    public void addLibrary(FileSet fileset)
    {
       configuration.addLibrary(fileset);
+   }
+   
+   public void setWorkingDir(String workingDirPath)
+   {
+      getProject().setBaseDir(getProject().resolveFile(workingDirPath));
    }
 
    /**

@@ -9,11 +9,9 @@ import org.flexunit.ant.LoggingUtil;
 
 public class TaskConfiguration
 {
-   private final String DEFAULT_WORKING_PATH = "test-bin";
    private final String DEFAULT_REPORT_PATH = "report";
    
    private File reportDir = null;
-   private File workingDir = null;
    private boolean verbose = false;
    private File flexHome = null;
    
@@ -69,7 +67,6 @@ public class TaskConfiguration
       compilationConfiguration.addTestSource(fileset);
    }
    
-   
    public void addLibrary(FileSet fileset)
    {
       fileset.setProject(project);
@@ -121,11 +118,6 @@ public class TaskConfiguration
       testRunConfiguration.setSwf(swf);
    }
    
-   public void setWorkingDir(String workingDirPath)
-   {
-      this.workingDir = project.resolveFile(workingDirPath);
-   }
-   
    public boolean isVerbose()
    {
       return verbose;
@@ -147,7 +139,12 @@ public class TaskConfiguration
    public void verify() throws BuildException
    {
       validateSharedProperties();
-      compilationConfiguration.validate();
+      
+      if(shouldCompile())
+      {
+         compilationConfiguration.validate();
+      }
+      
       testRunConfiguration.validate();
       
       generateDefaults();
@@ -186,19 +183,6 @@ public class TaskConfiguration
       //set FLEX_HOME property to respective configs
       compilationConfiguration.setFlexHome(flexHome);
       testRunConfiguration.setFlexHome(flexHome);
-      
-      //create working directory if needed
-      if (workingDir == null || !workingDir.exists())
-      {
-         workingDir = project.resolveFile(DEFAULT_WORKING_PATH);
-         LoggingUtil.log("Using default working dir [" + workingDir.getAbsolutePath() + "]");
-      }
-
-      //create directory just to be sure it exists, already existing dirs will not be overwritten
-      workingDir.mkdir();
-      
-      compilationConfiguration.setWorkingDir(workingDir);
-      testRunConfiguration.setWorkingDir(workingDir);
       
       //create report directory if needed
       if (reportDir == null || !reportDir.exists())

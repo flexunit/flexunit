@@ -4,7 +4,6 @@ import java.io.File;
 
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.types.FileSet;
-import org.apache.tools.ant.types.selectors.FilenameSelector;
 
 public class TestSourcePaths extends CompilationFileSetCollection
 {
@@ -17,28 +16,42 @@ public class TestSourcePaths extends CompilationFileSetCollection
    public void add(FileSet fileset)
    {
       //restrict to as and mxml suffixed files
-      FilenameSelector asSelector = new FilenameSelector();
-      asSelector.setName("**/*.as");
-      fileset.add(asSelector);
-      
-      FilenameSelector mxmlSelector = new FilenameSelector();
-      mxmlSelector.setName("**/*.mxml");
-      fileset.add(mxmlSelector);
+      fileset.setIncludes("**/*.as,**/*.mxml");
       
       super.add(fileset);
    }
    
-   public String getPathElements()
+   public String getPathElements(String delimiter)
    {
       StringBuilder elements = new StringBuilder();
       
       for(FileSet fileset : filesets)
       {
-         elements.append(fileset.getDir().getAbsolutePath());
-         elements.append(',');
+         elements.append("\"" + fileset.getDir().getAbsolutePath() + "\"");
+         elements.append(delimiter);
       }
       
-      return elements.length() == 0 ? "" : elements.substring(0, elements.length() - 1);
+      return elements.length() == delimiter.length() ? "" : elements.substring(0, elements.length() - delimiter.length());
+   }
+   
+   public String getImports()
+   {
+      StringBuilder elements = new StringBuilder();
+      
+      for(FileSet fileset : filesets)
+      {
+         DirectoryScanner ds = fileset.getDirectoryScanner();
+         for(String file : ds.getIncludedFiles())
+         {
+            String pathWithOutSuffix = file.substring(0, file.lastIndexOf('.'));
+            String canonicalClassName = pathWithOutSuffix.replace(File.separatorChar, '.');
+            elements.append("import ");
+            elements.append(canonicalClassName);
+            elements.append(";\n");
+         }
+      }
+      
+      return elements.toString();
    }
    
    public String getClasses()
@@ -52,11 +65,31 @@ public class TestSourcePaths extends CompilationFileSetCollection
          {
             String pathWithOutSuffix = file.substring(0, file.lastIndexOf('.'));
             String canonicalClassName = pathWithOutSuffix.replace(File.separatorChar, '.');
-            elements.append(canonicalClassName);
+            String className = canonicalClassName.substring(canonicalClassName.lastIndexOf('.') + 1, canonicalClassName.length());
+            elements.append(className);
             elements.append(',');
          }
       }
       
       return elements.length() == 0 ? "" : elements.substring(0, elements.length() - 1);
+   }
+   
+   public String getCanonicalClasses(String delimiter)
+   {
+      StringBuilder elements = new StringBuilder();
+      
+      for(FileSet fileset : filesets)
+      {
+         DirectoryScanner ds = fileset.getDirectoryScanner();
+         for(String file : ds.getIncludedFiles())
+         {
+            String pathWithOutSuffix = file.substring(0, file.lastIndexOf('.'));
+            String canonicalClassName = pathWithOutSuffix.replace(File.separatorChar, '.');
+            elements.append(canonicalClassName);
+            elements.append(delimiter);
+         }
+      }
+      
+      return elements.length() == delimiter.length() ? "" : elements.substring(0, elements.length() - delimiter.length());
    }
 }

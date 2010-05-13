@@ -10,7 +10,6 @@ import org.flexunit.ant.tasks.TestSourcePaths;
 
 public class CompilationConfiguration implements StepConfiguration
 {
-   private File workingDir = null;
    private TestSourcePaths testSources;
    private LibraryPaths libraries;
    private File flexHome = null;
@@ -51,16 +50,6 @@ public class CompilationConfiguration implements StepConfiguration
       return testSources;
    }
    
-   public File getWorkingDir()
-   {
-      return workingDir;
-   }
-   
-   public void setWorkingDir(File workingDir)
-   {
-      this.workingDir = workingDir;
-   }
-   
    public void validate() throws BuildException
    {
       if(!testSources.exists())
@@ -88,8 +77,7 @@ public class CompilationConfiguration implements StepConfiguration
    {
       LoggingUtil.log("Using the following settings for compilation:");
       LoggingUtil.log("\tFLEX_HOME: [" + flexHome.getAbsolutePath() + "]");
-      LoggingUtil.log("\ttestSourceDirectories: [" + testSources.getPathElements() + "]");
-      LoggingUtil.log("\ttests: [" + testSources.getClasses() + "]");
-      LoggingUtil.log("\tlibraries: [" + libraries.getPathElements() + "]");
+      LoggingUtil.log("\ttestSourceDirectories: [" + testSources.getPathElements(",") + "]");
+      LoggingUtil.log("\tlibraries: [" + libraries.getPathElements(",") + "]");
    }
 }

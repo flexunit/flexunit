@@ -21,7 +21,7 @@ public class Compilation
    private final String MXMLC_RELATIVE_PATH = "lib/mxmlc.jar";
    private final String FRAMEWORKS_RELATIVE_PATH = "frameworks";
    private final String SWF_FILENAME = "TestRunner.swf";
-   private final String TESTRUNNER_SRC_RELATIVE_PATH = "test-src";
+   private final String TESTRUNNER_SRC_RELATIVE_PATH = "generated";
    
    private CompilationConfiguration configuration;
    private Project project;
@@ -36,12 +36,14 @@ public class Compilation
    {
       configuration.log();
 
-      File srcDirectory = new File(configuration.getWorkingDir().getAbsolutePath() + File.pathSeparatorChar + TESTRUNNER_SRC_RELATIVE_PATH);
+      //TODO: Generate in the report dir
+      File srcDirectory = new File(project.getBaseDir().getAbsolutePath() + File.separatorChar + TESTRUNNER_SRC_RELATIVE_PATH);
       File runnerFile = generateTestRunnerFromTemplate(srcDirectory);
-      File finalFile = new File(configuration.getWorkingDir().getAbsolutePath() + File.pathSeparatorChar + SWF_FILENAME);
+      File finalFile = new File(project.getBaseDir().getAbsolutePath() + File.separatorChar + SWF_FILENAME);
       
       Java compilationTask = createJavaTask(runnerFile, finalFile);
-      LoggingUtil.log(compilationTask.getDescription());
+      LoggingUtil.log("Compiling test classes: [" + configuration.getTestSources().getCanonicalClasses(", ") + "]", true);
+      LoggingUtil.log(compilationTask.getCommandLine().describeCommand());
       compilationTask.execute();
       
       return finalFile;
@@ -49,7 +51,7 @@ public class Compilation
    
    private File generateTestRunnerFromTemplate(File srcDirectory) throws BuildException
    {
-      File runner = new File(srcDirectory.getAbsolutePath() + File.pathSeparatorChar + TESTRUNNER_FILE);
+      File runner = new File(srcDirectory.getAbsolutePath() + File.separatorChar + TESTRUNNER_FILE);
       
       try
       {
@@ -58,7 +60,8 @@ public class Compilation
          
          //Create tokens to filter
          FilterSet filters = new FilterSet();
-         filters.addFilter("CANONCIAL_CLASS_REFS", configuration.getTestSources().getClasses());
+         filters.addFilter("CLASS_REFS", configuration.getTestSources().getClasses());
+         filters.addFilter("IMPORT_REFS", configuration.getTestSources().getImports());
          
          //Copy descriptor template to SWF folder performing token replacement
          ResourceUtils.copyResource(
@@ -85,14 +88,15 @@ public class Compilation
    
    private Java createJavaTask(File runnerFile, File finalFile)
    {
-      String frameworksPath = configuration.getFlexHome().getAbsolutePath() + File.pathSeparatorChar + FRAMEWORKS_RELATIVE_PATH;
-      String mxmlcPath = configuration.getFlexHome().getAbsolutePath() + File.pathSeparatorChar + MXMLC_RELATIVE_PATH;
+      String frameworksPath = configuration.getFlexHome().getAbsolutePath() + File.separatorChar + FRAMEWORKS_RELATIVE_PATH;
+      String mxmlcPath = configuration.getFlexHome().getAbsolutePath() + File.separatorChar + MXMLC_RELATIVE_PATH;
       
       Java task = new Java();
       task.setFork(true);
       task.setFailonerror(true);
       task.setJar(new File(mxmlcPath));
-      task.setDir(configuration.getWorkingDir());
+      task.setProject(project);
+      task.setDir(project.getBaseDir());
       
       Argument jvmHeapSize = task.createJvmarg();
       jvmHeapSize.setValue("-Xmx256M");
@@ -104,10 +108,10 @@ public class Compilation
       outputFile.setLine("-output " + finalFile.getAbsolutePath());
       
       Argument sourcePath = task.createArg();
-      sourcePath.setLine("-source-path+=" + configuration.getTestSources().getPathElements());
+      sourcePath.setLine("-source-path " + runnerFile.getParentFile().getAbsolutePath() + ' ' + configuration.getTestSources().getPathElements(" "));
       
       Argument libraryPath = task.createArg();
-      libraryPath.setLine("-library-path+=" + configuration.getLibraries().getPathElements());
+      libraryPath.setLine("-library-path+=" + configuration.getLibraries().getPathElements(" -library-path+="));
       
       Argument headlessServer = task.createArg();
       headlessServer.setLine("-headless-server=true");
