@@ -1,4 +1,4 @@
-package org.flexunit.ant.tasks;
+package org.flexunit.ant.tasks.types;
 
 import java.util.ArrayList;
 import java.util.List;

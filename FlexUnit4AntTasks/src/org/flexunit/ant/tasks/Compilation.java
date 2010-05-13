@@ -10,7 +10,6 @@ import org.apache.tools.ant.types.FilterSetCollection;
 import org.apache.tools.ant.types.Commandline.Argument;
 import org.apache.tools.ant.types.resources.FileResource;
 import org.apache.tools.ant.types.resources.URLResource;
-import org.apache.tools.ant.util.FileUtils;
 import org.apache.tools.ant.util.ResourceUtils;
 import org.flexunit.ant.LoggingUtil;
 import org.flexunit.ant.tasks.configuration.CompilationConfiguration;
@@ -18,8 +17,7 @@ import org.flexunit.ant.tasks.configuration.CompilationConfiguration;
 public class Compilation
 {
    private final String TESTRUNNER_TEMPLATE = "TestRunner.template";
-   private final String TESTRUNNER_FILE_PREFIX = "TestRunner";
-   private final String TESTRUNNER_FILE_SUFFIX = ".mxml";
+   private final String TESTRUNNER_FILE = "TestRunner.mxml";
    private final String MXMLC_RELATIVE_PATH = "lib/mxmlc.jar";
    private final String FRAMEWORKS_RELATIVE_PATH = "frameworks";
    private final String SWF_FILENAME = "TestRunner.swf";
@@ -37,8 +35,8 @@ public class Compilation
    {
       configuration.log();
 
-      File runnerFile = generateTestRunnerFromTemplate();
-      File finalFile = new File(project.getBaseDir().getAbsolutePath() + File.separatorChar + SWF_FILENAME);
+      File runnerFile = generateTestRunnerFromTemplate(configuration.getWorkingDir());
+      File finalFile = new File(configuration.getWorkingDir().getAbsolutePath() + File.separatorChar + SWF_FILENAME);
       
       Java compilationTask = createJavaTask(runnerFile, finalFile);
       LoggingUtil.log("Compiling test classes: [" + configuration.getTestSources().getCanonicalClasses(", ") + "]", true);
@@ -52,12 +50,11 @@ public class Compilation
       return finalFile;
    }
    
-   private File generateTestRunnerFromTemplate() throws BuildException
+   private File generateTestRunnerFromTemplate(File workingDir) throws BuildException
    {
       try
       {
-         //Write test runner out to a temp directory to avoid crapping the user's project
-         File runner = FileUtils.getFileUtils().createTempFile(TESTRUNNER_FILE_PREFIX, TESTRUNNER_FILE_SUFFIX, null, true, true);
+         File runner = new File(workingDir.getAbsolutePath() + File.separatorChar + TESTRUNNER_FILE);
          
          //Template location in JAR
          URLResource template = new URLResource(getClass().getResource("/" + TESTRUNNER_TEMPLATE));
@@ -105,7 +102,7 @@ public class Compilation
       task.setErrorProperty("MXMLC_ERROR");
       
       Argument flexLibArgument = task.createArg();
-      flexLibArgument.setLine("+flexlib" + frameworksPath);
+      flexLibArgument.setLine("+flexlib " + frameworksPath);
       
       Argument outputFile = task.createArg();
       outputFile.setLine("-output " + finalFile.getAbsolutePath());

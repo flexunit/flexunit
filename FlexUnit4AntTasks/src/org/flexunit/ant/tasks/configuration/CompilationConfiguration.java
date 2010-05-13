@@ -5,15 +5,15 @@ import java.io.File;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.FileSet;
 import org.flexunit.ant.LoggingUtil;
-import org.flexunit.ant.tasks.LibraryPaths;
-import org.flexunit.ant.tasks.TestSourcePaths;
+import org.flexunit.ant.tasks.types.LibraryPaths;
+import org.flexunit.ant.tasks.types.TestSourcePaths;
 
 public class CompilationConfiguration implements StepConfiguration
 {
    private TestSourcePaths testSources;
    private LibraryPaths libraries;
    private File flexHome = null;
-   private File toDir = null;
+   private File workingDir = null;
 
    public CompilationConfiguration()
    {
@@ -51,14 +51,14 @@ public class CompilationConfiguration implements StepConfiguration
       return testSources;
    }
    
-   public void setToDir(File toDir)
+   public void setWorkingDir(File workingDir)
    {
-      this.toDir = toDir;
+      this.workingDir = workingDir;
    }
 
-   public File getToDir()
+   public File getWorkingDir()
    {
-      return toDir;
+      return workingDir;
    }
 
    public void validate() throws BuildException

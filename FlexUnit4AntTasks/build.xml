@@ -41,6 +41,7 @@
    <target name="package" depends="report">
       <copy file="${src.loc}/flexUnitTasks.tasks" todir="${bin.loc}" />
       <copy file="${src.loc}/flexUnitDescriptor.template" todir="${bin.loc}" />
+   	  <copy file="${src.loc}/TestRunner.template" todir="${bin.loc}" />
 
       <unjar src="${lib.loc}/dom4j-1.6.1.jar" dest="${bin.loc}" />
       <unjar src="${lib.loc}/jaxen-1.1-beta-6.jar" dest="${bin.loc}" />

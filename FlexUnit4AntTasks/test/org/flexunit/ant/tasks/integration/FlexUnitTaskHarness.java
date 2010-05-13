@@ -26,7 +26,7 @@ public class FlexUnitTaskHarness extends TestCase
       fixture.setTimeout(10000);
       fixture.setBuffer(555555);
       //fixture.setSWF("test/TestRunner.swf");
-      fixture.setToDir("test");
+      fixture.setToDir("test/sandbox");
       fixture.setVerbose(true);
       fixture.setFailureproperty("failedtests");
       fixture.setPlayer("flash");
@@ -36,12 +36,12 @@ public class FlexUnitTaskHarness extends TestCase
       
       //Call elements next
       FileSet testSourceFileSet = new FileSet();
-      testSourceFileSet.setDir(new File("test/sandbox/src"));  //ideally this would be a translation by Ant from string to File using project basedir
+      testSourceFileSet.setDir(new File("test/sandbox/src"));
       testSourceFileSet.setIncludes("**/*class.as");
       fixture.addTestSource(testSourceFileSet);
       
       FileSet libraryFileSet = new FileSet();
-      libraryFileSet.setDir(new File("test/sandbox/libs"));  //ideally this would be a translation by Ant from string to File using project basedir
+      libraryFileSet.setDir(new File("test/sandbox/libs"));
       fixture.addLibrary(libraryFileSet);
    }
 

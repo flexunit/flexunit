@@ -17,14 +17,8 @@ public class FlexUnitTask extends Task
    @Override
    public void setProject(Project project)
    {
-      //create a subproject so we can use the notion of working directory w/o changing the project containing this task
-      Project subproject = project.createSubProject();
-      
-      //copy over FLEX_HOME property since subprojects don't get their parent project's properties
-      subproject.setProperty("FLEX_HOME", project.getProperty("FLEX_HOME"));
-      
-      super.setProject(subproject);
-      configuration = new TaskConfiguration(subproject);
+      super.setProject(project);
+      configuration = new TaskConfiguration(project);
    }
    
    /**
@@ -152,9 +146,9 @@ public class FlexUnitTask extends Task
    
    public void setWorkingDir(String workingDirPath)
    {
-      getProject().setBaseDir(getProject().resolveFile(workingDirPath));
+      configuration.setWorkingDir(workingDirPath);
    }
-
+   
    /**
     * Called by Ant to execute the task.
     */
