@@ -5,9 +5,9 @@ import java.io.File;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.types.FileSet;
 
-public class TestSourcePaths extends CompilationFileSetCollection
+public class SourcePaths extends CompilationFileSetCollection
 {
-   public TestSourcePaths()
+   public SourcePaths()
    {
       super();
    }
@@ -31,7 +31,7 @@ public class TestSourcePaths extends CompilationFileSetCollection
          elements.append(delimiter);
       }
       
-      return elements.length() == delimiter.length() ? "" : elements.substring(0, elements.length() - delimiter.length());
+      return elements.length() <= delimiter.length() ? "" : elements.substring(0, elements.length() - delimiter.length());
    }
    
    public String getImports()
@@ -90,6 +90,6 @@ public class TestSourcePaths extends CompilationFileSetCollection
          }
       }
       
-      return elements.length() == delimiter.length() ? "" : elements.substring(0, elements.length() - delimiter.length());
+      return elements.length() <= delimiter.length() ? "" : elements.substring(0, elements.length() - delimiter.length());
    }
 }

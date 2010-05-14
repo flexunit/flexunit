@@ -6,18 +6,20 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.FileSet;
 import org.flexunit.ant.LoggingUtil;
 import org.flexunit.ant.tasks.types.LibraryPaths;
-import org.flexunit.ant.tasks.types.TestSourcePaths;
+import org.flexunit.ant.tasks.types.SourcePaths;
 
 public class CompilationConfiguration implements StepConfiguration
 {
-   private TestSourcePaths testSources;
+   private SourcePaths sources;
+   private SourcePaths testSources;
    private LibraryPaths libraries;
    private File flexHome = null;
    private File workingDir = null;
 
    public CompilationConfiguration()
    {
-      testSources = new TestSourcePaths();
+      sources = new SourcePaths();
+      testSources = new SourcePaths();
       libraries = new LibraryPaths();
    }
    
@@ -41,12 +43,22 @@ public class CompilationConfiguration implements StepConfiguration
       return libraries;
    }
    
+   public void addSource(FileSet fileset)
+   {
+      this.sources.add(fileset);
+   }
+   
+   public SourcePaths getSources()
+   {
+      return sources;
+   }
+   
    public void addTestSource(FileSet fileset)
    {
       this.testSources.add(fileset);
    }
    
-   public TestSourcePaths getTestSources()
+   public SourcePaths getTestSources()
    {
       return testSources;
    }

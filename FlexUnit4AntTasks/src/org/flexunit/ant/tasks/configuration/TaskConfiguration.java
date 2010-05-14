@@ -63,6 +63,12 @@ public class TaskConfiguration
       testRunConfiguration.setFailureProperty(failureProperty);
    }
    
+   public void addSource(FileSet fileset)
+   {
+      fileset.setProject(project);
+      compilationConfiguration.addSource(fileset);
+   }
+   
    public void addTestSource(FileSet fileset)
    {
       fileset.setProject(project);

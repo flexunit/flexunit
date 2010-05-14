@@ -134,6 +134,11 @@ public class FlexUnitTask extends Task
       configuration.setDisplay(number);
    }
    
+   public void addSource(FileSet fileset)
+   {
+      configuration.addSource(fileset);
+   }
+   
    public void addTestSource(FileSet fileset)
    {
       configuration.addTestSource(fileset);

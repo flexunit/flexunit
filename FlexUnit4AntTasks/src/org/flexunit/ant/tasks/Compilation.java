@@ -108,7 +108,7 @@ public class Compilation
       outputFile.setLine("-output " + finalFile.getAbsolutePath());
       
       Argument sourcePath = task.createArg();
-      sourcePath.setLine("-source-path " + configuration.getTestSources().getPathElements(" "));
+      sourcePath.setLine("-source-path " + configuration.getSources().getPathElements(" ") + " " + configuration.getTestSources().getPathElements(" "));
       
       Argument libraryPath = task.createArg();
       libraryPath.setLine("-library-path+=" + configuration.getLibraries().getPathElements(" -library-path+="));

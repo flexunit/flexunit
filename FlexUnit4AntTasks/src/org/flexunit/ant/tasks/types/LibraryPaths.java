@@ -36,6 +36,6 @@ public class LibraryPaths extends CompilationFileSetCollection
          }
       }
       
-      return elements.length() == delimiter.length() ? "" : elements.substring(0, elements.length() - delimiter.length());
+      return elements.length() <= delimiter.length() ? "" : elements.substring(0, elements.length() - delimiter.length());
    }
 }
