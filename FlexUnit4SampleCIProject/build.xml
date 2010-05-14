@@ -58,7 +58,7 @@
 			haltonfailure="false" 
 			verbose="true" 
 			localTrusted="true">
-	      <testSource dir="${main.src.loc}" />
+	      <source dir="${main.src.loc}" />
 	      <testSource dir="${test.src.loc}">
 	         <include name="**/*Test.as" />
 	      </testSource>
