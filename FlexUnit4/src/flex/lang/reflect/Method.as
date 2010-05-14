@@ -205,7 +205,7 @@ package flex.lang.reflect {
 			if ( argArray && ( argArray.length > 0 ) ) {
 				returnVal = method.apply( obj, argArray );
 			} else {
-				returnVal = method.apply( obj );
+ 				returnVal = method.apply( obj );
 			}
 			
 			return returnVal;

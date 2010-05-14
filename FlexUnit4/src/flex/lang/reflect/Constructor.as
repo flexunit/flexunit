@@ -60,7 +60,7 @@ package flex.lang.reflect {
 		 */
 		private var _name:String;
 		/**
-		 * Retrieves the name associated with the constructor
+		 * Retrieves the name associated with the constructor.  Currently unused.
 		 */
 		public function get name():String {
 			return _name;
@@ -92,7 +92,7 @@ package flex.lang.reflect {
 		private var _parameterMetaData:Array = new Array();
 		
 		/**
-		 * Retrieves the parameterMetaData array
+		 * Retrieves the parameterMetaData array.  Currently unused.
 		 */
 		public function get parameterMetaData():Array {
 			return _parameterMetaData;
@@ -282,7 +282,7 @@ package flex.lang.reflect {
 		}
 
 		/**
-		 * Creates a new Constructor
+		 * Creates a new XML Constructor
 		 * 
 		 * @param constructorXML the constructor definition as XML
 		 * @param klass Klass which defines the contructor paramater

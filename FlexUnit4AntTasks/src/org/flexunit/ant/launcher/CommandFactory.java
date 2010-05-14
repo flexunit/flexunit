@@ -1,63 +1,73 @@
 package org.flexunit.ant.launcher;
 
+import java.io.File;
+
+import org.flexunit.ant.launcher.commands.player.AdlCommand;
+import org.flexunit.ant.launcher.commands.player.CustomPlayerCommand;
+import org.flexunit.ant.launcher.commands.player.DefaultPlayerCommand;
 import org.flexunit.ant.launcher.commands.player.FlashPlayerCommand;
-import org.flexunit.ant.launcher.commands.player.MacOsXFlashPlayerCommand;
-import org.flexunit.ant.launcher.commands.player.NonWindowsAdlCommand;
 import org.flexunit.ant.launcher.commands.player.PlayerCommand;
-import org.flexunit.ant.launcher.commands.player.UnixFlashPlayerCommand;
-import org.flexunit.ant.launcher.commands.player.WindowsAdlCommand;
-import org.flexunit.ant.launcher.commands.player.WindowsFlashPlayerCommand;
+import org.flexunit.ant.launcher.platforms.LinuxDefaults;
+import org.flexunit.ant.launcher.platforms.MacOSXDefaults;
+import org.flexunit.ant.launcher.platforms.WindowsDefaults;
 
 public class CommandFactory
 {
-   public static PlayerCommand createPlayer(OperatingSystem os, String player, boolean localTrusted)
+   /**
+    * Factory method to create the appropriate player and provide it with a set of defaults for
+    * the executing platform.
+    * 
+    * @param os
+    * @param player  "flash" or "air"
+    * @param customCommand
+    * @param localTrusted
+    * @return Desired player command with platform defaults possibly wrapped in a custom command
+    */
+   public static PlayerCommand createPlayer(OperatingSystem os, String player, File customCommand, boolean localTrusted)
    {
-      PlayerCommand command = null;
+      PlayerCommand newInstance = null;
 
+      DefaultPlayerCommand defaultInstance = null;
+      
+      //choose player
       if (player.equals("flash"))
       {
-         if (os.equals(OperatingSystem.WINDOWS))
-         {
-            command = new WindowsFlashPlayerCommand();
-         }
-         else if(os.equals(OperatingSystem.MACOSX))
-         {
-            command = new MacOsXFlashPlayerCommand();
-         }
-         else
-         {
-            command = new UnixFlashPlayerCommand();
-         }
-         
-         ((FlashPlayerCommand)command).setLocalTrusted(localTrusted);
+         FlashPlayerCommand fpCommand = new FlashPlayerCommand();
+         fpCommand.setLocalTrusted(localTrusted);
+         defaultInstance = fpCommand;
       }
       else
       {
-         if (os.equals(OperatingSystem.WINDOWS))
-         {
-            command = new WindowsAdlCommand();
-         }
-         else 
-         {
-            command = new NonWindowsAdlCommand();
-         }
+         defaultInstance = new AdlCommand();
       }
       
-      return command;
-   }
-   
-   public static void createHeadlessStart(String xcommand)
-   {
-      //TODO: Implement factory method
-   }
-   
-   public static void createHeadlessStop(String xcommand)
-   {
-      //TODO: Implement factory method
-   }
-   
-   public static void createSnapshot(boolean headless, String xcommand)
-   {
-      //TODO: Implement factory method
+      //set defaults
+      if (os.equals(OperatingSystem.WINDOWS))
+      {
+         defaultInstance.setDefaults(new WindowsDefaults());
+      }
+      else if(os.equals(OperatingSystem.MACOSX))
+      {
+         defaultInstance.setDefaults(new MacOSXDefaults());
+      }
+      else
+      {
+         defaultInstance.setDefaults(new LinuxDefaults());
+      }
+      
+      //if a custom command has been provide, use it to wrap the default command
+      if(customCommand != null)
+      {
+         CustomPlayerCommand customInstance = new CustomPlayerCommand();
+         customInstance.setProxiedCommand(defaultInstance);
+         customInstance.setExecutable(customCommand);
+         newInstance = customInstance;
+      }
+      else
+      {
+         newInstance = defaultInstance;
+      }
+      
+      return newInstance;
    }
 }

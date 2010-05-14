@@ -82,11 +82,6 @@ package flex.lang.reflect {
 		 * @private
 		 */
 		private var _metaData:Array;
-
-		/**
-		 * @private
-		 */
-		private var _inheritance:Array;
 		
 		/**
 		 * Returns an <code>XMLList</code> of metadata contained in the Class
@@ -257,6 +252,12 @@ package flex.lang.reflect {
 			
 			return superArray;
 		}
+		
+		/**
+		 * @private
+		 */
+		private var _inheritance:Array;
+
 
 		public function get classInheritance():Array {
 

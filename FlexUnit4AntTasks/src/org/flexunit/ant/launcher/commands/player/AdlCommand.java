@@ -11,7 +11,7 @@ import org.apache.tools.ant.types.resources.URLResource;
 import org.apache.tools.ant.util.ResourceUtils;
 import org.flexunit.ant.LoggingUtil;
 
-public abstract class AdlCommand extends PlayerCommand
+public class AdlCommand extends DefaultPlayerCommand
 {
    private final String DESCRIPTOR_TEMPLATE = "flexUnitDescriptor.template";
    private final String DESCRIPTOR_FILE = "flexUnitDescriptor.xml";
@@ -64,19 +64,17 @@ public abstract class AdlCommand extends PlayerCommand
    }
    
    @Override
-   public int execute() throws IOException
+   public Process launch() throws IOException
    {
       //Create Adl descriptor file
       createApplicationDescriptor(getSwf());
       
       //Run command
-      return super.execute();
+      return super.launch();
    }
    
    private String generateExecutable()
    {
-      return getProject().getProperty("FLEX_HOME") + "/bin/" + getAdlFilename();
+      return getProject().getProperty("FLEX_HOME") + "/bin/" + getDefaults().getAdlCommand();
    }
-   
-   protected abstract String getAdlFilename();
 }

@@ -9,7 +9,6 @@
       <![CDATA[
          import mx.controls.Alert;
          import mx.events.DynamicEvent;
-		  import org.flexunit.asserts.*;
          
          private function showUserText(event : DynamicEvent) : void {
             Alert.show(event.userText);

@@ -14,7 +14,7 @@ public class FlexUnitTaskHarness extends TestCase
       fixture = new FlexUnitTask();
       fixture.setProject(new Project());
       fixture.setHaltonfailure(true);
-      fixture.setLocalTrusted(false);
+      fixture.setLocalTrusted(true);
       fixture.setPort(1024);
       fixture.setTimeout(10000);
       fixture.setBuffer(555555);
@@ -22,11 +22,9 @@ public class FlexUnitTaskHarness extends TestCase
       fixture.setToDir("test");
       fixture.setVerbose(true);
       fixture.setFailureproperty("failedtests");
-      fixture.setPlayer("air");
+      fixture.setPlayer("flash");
+      fixture.setCommand("/Applications/Safari.app/Contents/MacOS/Safari");
       fixture.setHeadless(false);
-      fixture.setXcommand("xvfb");
-      fixture.setSnapshot(true);
-      fixture.setSnapshotFile("screen.jpg");
       fixture.getProject().setProperty("FLEX_HOME", System.getenv("FLEX_HOME"));
    }
 

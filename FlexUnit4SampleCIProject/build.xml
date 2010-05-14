@@ -5,7 +5,7 @@
 	init->compile->test->package
 	
 	The end goal is to produce a zip of a website you could deploy for your application.  This build is not intended to be an example
-	for how to use Ant or the Flex SDK Ant tasks.  This is just one possible way to utilize the FlexUnit4 Ant tasks. 
+	for how to use Ant or the Flex SDK Ant tasks.  This is just one possible way to utilize the FlexUnit4 Ant task. 
  -->
 <project name="FlexUnit4SampleProject" basedir="." default="package">
 	<!-- setup a prefix for all environment variables -->
@@ -18,20 +18,17 @@
 	<property name="output.loc" location="${basedir}/target" />
 	<property name="bin.loc" location="${output.loc}/bin" />
 	<property name="report.loc" location="${output.loc}/report" />
+	<property name="dist.loc" location="${output.loc}/dist" />
 
 	<!-- Setup Flex and FlexUnit ant tasks -->
 	<!-- You can set this directly so mxmlc will work correctly, or set FLEX_HOME as an environment variable and use as below -->
 	<property name="FLEX_HOME" location="${env.FLEX_HOME}" />
-	<taskdef resource="flexTasks.tasks" classpath="${lib.loc}/flexTasks.jar" />
-	<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks.jar" />
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+	<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks-4.1.0.jar" />
 
 	<target name="clean">
 		<!-- Remove all directories created during the build process -->
-		<delete includeemptydirs="true" failonerror="false">
-			<fileset dir="${output.loc}" defaultexcludes="false">
-				<include name="**/*" />
-			</fileset>
-		</delete>
+		<delete dir="${output.loc}" />
 	</target>
 
 	<target name="init">
@@ -39,6 +36,7 @@
 		<mkdir dir="${output.loc}" />
 		<mkdir dir="${bin.loc}" />
 		<mkdir dir="${report.loc}" />
+		<mkdir dir="${dist.loc}" />
 	</target>
 
 	<target name="compile" depends="init">
@@ -64,7 +62,11 @@
 		</mxmlc>
 
 		<!-- Execute TestRunner.swf as FlexUnit tests and publish reports -->
-		<flexunit swf="${bin.loc}/TestRunner.swf" toDir="${report.loc}" haltonfailure="false" verbose="true" localTrusted="false" />
+		<flexunit swf="${bin.loc}/TestRunner.swf" 
+			toDir="${report.loc}" 
+			haltonfailure="false" 
+			verbose="true" 
+			localTrusted="true" />
 
 		<!-- Generate readable JUnit-style reports -->
 		<junitreport todir="${report.loc}">
@@ -77,12 +79,12 @@
 	
 	<target name="package" depends="test">
 		<!-- Assemble final website -->
-		<copy file="${bin.loc}/Main.swf" todir="${output.loc}" />
-		<html-wrapper swf="Main" template="express-installation" output="${output.loc}" height="100%" width="100%" />
+		<copy file="${bin.loc}/Main.swf" todir="${dist.loc}" />
+		<html-wrapper swf="Main" template="express-installation" output="${dist.loc}" height="100%" width="100%" />
 
 		<!-- Zip up final website -->
 		<zip destfile="${output.loc}/${ant.project.name}.zip">
-			<fileset dir="${output.loc}" />
+			<fileset dir="${dist.loc}" />
 		</zip>
 	</target>
 </project>

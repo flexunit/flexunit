@@ -5,6 +5,9 @@ import java.io.IOException;
 
 import org.apache.tools.ant.Project;
 import org.flexunit.ant.LoggingUtil;
+import org.flexunit.ant.launcher.commands.headless.XvncStartCommand;
+import org.flexunit.ant.launcher.commands.headless.XvncException;
+import org.flexunit.ant.launcher.commands.headless.XvncStopCommand;
 import org.flexunit.ant.launcher.commands.player.PlayerCommand;
 
 /**
@@ -12,83 +15,86 @@ import org.flexunit.ant.launcher.commands.player.PlayerCommand;
  */
 public class FlexUnitLauncher
 {
-   private static final String WINDOWS_OS = "Windows";
-   private static final String MAC_OS_X = "Mac OS X";
-
    private boolean localTrusted;
    private boolean headless;
-   private boolean snapshot;
+   private int display;
    private String player;
-   private String xcommand;
-   private File snapshotFile;
-   
+   private File customCommand;
+
    private Project project;
    private OperatingSystem os;
 
-   public FlexUnitLauncher(Project project, boolean localTrusted, boolean headless, String player, String xcommand, boolean snapshot, File snapshotFile)
+   public FlexUnitLauncher(Project project, boolean localTrusted, boolean headless, int display, String player, File customCommand)
    {
       this.project = project;
       this.localTrusted = localTrusted;
       this.headless = headless;
-      this.snapshot = snapshot;
+      this.display = display;
       this.player = player;
-      this.xcommand = xcommand;
-      this.snapshotFile = snapshotFile;
-      
-      this.os = identifyOperatingSystem();
-   }
-   
-   private OperatingSystem identifyOperatingSystem()
-   {
-      OperatingSystem os = null;
-      String env = System.getProperty("os.name");
+      this.customCommand = customCommand;
 
-      if (env.startsWith(WINDOWS_OS))
-      {
-         LoggingUtil.log("OS: [Windows]");
-         os = OperatingSystem.WINDOWS;
-      }
-      else if (env.startsWith(MAC_OS_X))
-      {
-         LoggingUtil.log("OS: [Mac OSX]");
-         os = OperatingSystem.MACOSX;
-      }
-      else
-      {
-         LoggingUtil.log("OS: [Unix]");
-         os = OperatingSystem.UNIX;
-      }
-      
-      return os;
+      this.os = OperatingSystem.identify();
    }
-   
-   public void runTests(File swf) throws IOException
+
+   private boolean runHeadless()
    {
-      if(headless)
-      {
-         //creat headless process and run
-         CommandFactory.createHeadlessStart(xcommand);
-      }
+      return headless && (os == OperatingSystem.LINUX);
+   }
+
+   public Process runTests(File swf) throws IOException, XvncException
+   {
+      // seutp locally scope handles to commands
+      XvncStartCommand xvncStart = null;
+      PlayerCommand command = null;
+      XvncStopCommand xvncStop = null;
       
-      //setup command to run
-      PlayerCommand command = CommandFactory.createPlayer(os, player, localTrusted);
+      Process process = null;
+
+      //run xvnc start if headless build
+      if (runHeadless())
+      {
+         LoggingUtil.log("Starting xvnc", true);
+
+         // setup vncserver on the provided display
+         xvncStart = new XvncStartCommand(display);
+         xvncStart.setProject(project);
+
+         // execute the maximum number of cycle times before throwing an exception
+         try
+         {
+            while (xvncStart.execute() != 0)
+            {
+               LoggingUtil.log("Cannot start xnvc on :" + xvncStart.getCurrentDisplay() + ", cycling ...");
+               xvncStart.cycle();
+            }
+         } catch (IOException ioe)
+         {
+            throw new XvncException();
+         }
+      }
+
+      // setup command to run
+      command = CommandFactory.createPlayer(os, player, customCommand, localTrusted);
       command.setProject(project);
       command.setSwf(swf);
-      
-      //run player command
+      if (runHeadless())
+      {
+         command.setEnvironment(new String[]{ "DISPLAY=:" + xvncStart.getCurrentDisplay() });
+      }
+
       LoggingUtil.log("Launching player:\n" + command.describe());
-      command.execute();
       
-      if(snapshot)
+      // run player command
+      process = command.launch();
+
+      //run xvnc stop if headless build
+      if (runHeadless())
       {
-         //create snapshot command and run
-         CommandFactory.createSnapshot(headless, xcommand);
+         xvncStop = new XvncStopCommand(display);
+         xvncStop.setProject(project);
+         xvncStop.execute();
       }
       
-      if(headless)
-      {
-         //create stop headless process and run
-         CommandFactory.createHeadlessStop(xcommand);
-      }
+      return process;
    }
 }
