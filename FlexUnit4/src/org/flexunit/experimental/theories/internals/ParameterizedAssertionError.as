@@ -46,7 +46,10 @@ package org.flexunit.experimental.theories.internals {
 		 */
 		public function ParameterizedAssertionError( targetException:Error, methodName:String, ...params ) {
 			this.targetException = targetException;
-			super( methodName + " " + ( params as Array ).join( ", " ) );
+			//super( methodName + " " + ( params as Array ).join( ", " ) );
+			//This blows up on Mac FP10... I believe the params may be getting a this pointer causing a stack overflow.
+			//For the moment, we will only pass the methodname until this is resolved 
+			super( methodName );
 		}
 	
 //		public function equals( obj:Object ):Boolean {
