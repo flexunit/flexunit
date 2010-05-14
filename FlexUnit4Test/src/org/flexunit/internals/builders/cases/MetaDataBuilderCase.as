@@ -29,14 +29,18 @@ package org.flexunit.internals.builders.cases
 			metaDataBuilder = null;
 			runnerBuilderMock = null;
 		}
-		
-		[Ignore("Need to rework this test")]
-		[Test(description="Ensure that the runnerForClass function returns null if the klass does not have 'RunWith' metadata")]
-		public function runnerForClassNullTest():void {
-			Assert.assertNull( metaDataBuilder.runnerForClass(Object) );
+
+		[Test(description="Ensure the runner can handle a real runWith class")]
+		public function canHandleClassRight() : void {
+			Assert.assertTrue( metaDataBuilder.canHandleClass( FlexUnit4SuiteClass ) );
 		}
 		
-		[Ignore("Need to rework this test")]
+		[Test(description="Ensure the runner doesn't handle a non runWith class")]
+		public function canHandleClassWrong() : void {
+			Assert.assertFalse( metaDataBuilder.canHandleClass( Object ) );
+		}
+
+		[Ignore]
 		[Test(description="Ensure that the runnerForClass function returns an IRunner if the klass has 'RunWith' metadata")]
 		public function runnerForClassIRunnerTest():void {
 			Assert.assertTrue( metaDataBuilder.runnerForClass(FlexUnit4SuiteClass) is IRunner );
