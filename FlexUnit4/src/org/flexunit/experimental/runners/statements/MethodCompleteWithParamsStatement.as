@@ -97,6 +97,7 @@ package org.flexunit.experimental.runners.statements {
 				sendComplete( e );	
 			} catch ( e:Error ) {
 				//trace( e.getStackTrace() );
+				//TODO: Trace from this point forward to determine why stack overflow is happening in ParameterizedAssertionError
 				var newError:Error = anchor.reportParameterizedError(e, complete.getArgumentStrings(anchor.nullsOk()));
 				sendComplete( newError );			
 			}
