@@ -6,3 +6,4 @@ FlexUnit4AirCIListener/bin/*
 FlexUnit4FlexCoverListener/bin/*
 FlexUnit4CIListener/bin/*
 .metadata
+*/.settings

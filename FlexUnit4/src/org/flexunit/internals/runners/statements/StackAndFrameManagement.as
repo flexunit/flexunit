@@ -71,7 +71,7 @@ package org.flexunit.internals.runners.statements {
 		/**
 		 * @private
 		 */
-		private static var greenThreadStartTime:Number; //this can eventually be computed
+		private static var greenThreadStartTime:Number = 0; //this can eventually be computed
 		/**
 		 * @private
 		 */
@@ -87,10 +87,13 @@ package org.flexunit.internals.runners.statements {
 			
 			this.statement = statement;
 			
-			//Determine if the greenThreadStartTime has been obtained
+/*			//Determine if the greenThreadStartTime has been obtained
 			if ( !greenThreadStartTime ) {
-				greenThreadStartTime = getTimer();
-			}
+				//if this is the very first time we have gotten here, we should automatically bounce to a new frame
+				//as the framework has just spent a lot of time coutning tests and building runners.... it is way
+				//over time presently. We accomplish this
+				greenThreadStartTime = 0;
+			}*/
 			
 			//Create a new token that will track the progress of frame management
 			myToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );

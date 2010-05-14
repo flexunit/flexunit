@@ -1,13 +1,20 @@
 package flex.lang.reflect.cases
 {
+	import flex.lang.reflect.Field;
 	import flex.lang.reflect.Klass;
 	import flex.lang.reflect.Method;
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	import flex.lang.reflect.metadata.MetaDataArgument;
 	
 	import org.flexunit.Assert;
+	import org.flexunit.internals.builders.FlexUnit4Builder;
+	import org.flexunit.internals.builders.definitions.FlexUnit4Class;
+	import org.flexunit.internals.runners.FlexUnit1ClassRunner;
+	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.RunnerLocator;
+	import org.flexunit.runner.manipulation.IFilterable;
 	import org.flexunit.runners.mocks.RunnerLocatorMock;
+	import org.flexunit.runners.model.RunnerBuilderBase;
 	
 	public class KlassCase
 	{
@@ -161,6 +168,54 @@ package flex.lang.reflect.cases
 			Assert.assertFalse( hasBindableMetaData );
 		}
 		
+		[Test(description="ensure the proper field is retrieved when getField is called")]
+		public function check_getField() : void {
+			klass = new Klass( RunnerLocatorMock );
+			
+			var field:Field = klass.getField( "mock" );
+			
+			Assert.assertEquals("mock", field.name);
+		}
+		
+		[Test(description="ensure the proper field is retrieved when getField is called")]
+		public function check_getField_null() : void {
+			klass = new Klass( RunnerLocatorMock );
+			
+			var field:Field = klass.getField( "NotHere" );
+			
+			Assert.assertNull( field );
+		}
+		
+		[Test(description="ensure that if a class extends a class the superclass can be retrieved")]
+		public function check_superClass() : void {
+			var builder:FlexUnit4Builder;
+			klass = new Klass( FlexUnit4Builder );
+			
+			var testClass:Class = klass.superClass;
+			
+			Assert.assertTrue( new testClass() is RunnerBuilderBase )
+		}
+		
+		[Test(description="ensure that if a class does not extend we still see Object")]
+		public function check_no_superClass() : void {
+			klass = new Klass( LocalTestClass );
+			
+			Assert.assertStrictlyEquals( Object, klass.superClass );
+		}
+		
+		[Test(description="Ensure interface returns the correct values if the class implements an interface")]
+		public function check_interfaces() : void {
+			klass = new Klass( FlexUnit1ClassRunner );
+			
+			Assert.assertEquals( IFilterable, klass.interfaces[0] );
+			Assert.assertEquals( IRunner, klass.interfaces[1] );
+		}
+		
+		[Test(description="Ensure interface returns null if no interfaces are implemented by the klass")]
+		public function check_interfaces_null() : void {
+			klass = new Klass( FlexUnit4Class );
+			Assert.assertEquals( klass.interfaces.length, 0 );
+		}	
 	}
 }
 
