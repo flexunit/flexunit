@@ -42,6 +42,11 @@ package org.flexunit.internals.builders {
 	 */
 	public class SuiteMethodBuilder extends RunnerBuilderBase {
 		
+		
+		override public function canHandleClass(testClass:Class):Boolean {
+			return hasSuiteMethod( testClass );
+		}
+		
 		/**
 		 * Returns a <code>SuiteMethod</code> if the <code>testClass</code> has a suite method.
 		 * 
@@ -51,10 +56,7 @@ package org.flexunit.internals.builders {
 		 * value of null is returned.
 		 */
 		override public function runnerForClass( testClass:Class ):IRunner {
-			if ( hasSuiteMethod( testClass ) )
-				return new SuiteMethod( testClass );
-
-			return null;
+			return new SuiteMethod( testClass );
 		}
 		
 		/**

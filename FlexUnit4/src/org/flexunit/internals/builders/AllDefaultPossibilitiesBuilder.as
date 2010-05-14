@@ -70,6 +70,15 @@ package org.flexunit.internals.builders {
 			super();
 		}
 		
+		protected function buildBuilders():Array {
+			return [ ignoredBuilder(),
+				metaDataBuilder(),
+				suiteMethodBuilder(),
+				flexUnit1Builder(),
+				fluint1Builder(),
+				flexUnit4Builder() ];
+		}
+
 		/**
 		 * Returns an <code>IRunner</code> that can be used by the provided <code>testClass</code>.  The
 		 * <code>testClass</code> will be compared against builders until a suitable runner is determined.<br/>
@@ -92,21 +101,18 @@ package org.flexunit.internals.builders {
 		override public function runnerForClass( testClass:Class ):IRunner {
 			//Construct an array of potential builders, the array is ordered so that each potential testClass
 			//will check against the appropriate builder in the correct order.
-			var builders:Array = new Array(
-					ignoredBuilder(),
-					metaDataBuilder(),
-					suiteMethodBuilder(),
-					flexUnit1Builder(),
-					fluint1Builder(),
-					flexUnit4Builder());
+			var builders:Array = buildBuilders();
 			
 			//Get a runner for the specific type of class
 			for ( var i:int=0; i<builders.length; i++ ) {
-				var builder:IRunnerBuilder = builders[ i ]; 
-				var runner:IRunner = builder.safeRunnerForClass( testClass );
-				//A suitable runner has been found, we are done
-				if (runner != null)
-					return runner;
+				var builder:IRunnerBuilder = builders[ i ];
+				
+				if ( builder.canHandleClass( testClass ) ) {
+					var runner:IRunner = builder.safeRunnerForClass( testClass );
+					//A suitable runner has been found, we are done
+					if (runner != null)
+						return runner;
+				}
 			}
 			return null;
 		}

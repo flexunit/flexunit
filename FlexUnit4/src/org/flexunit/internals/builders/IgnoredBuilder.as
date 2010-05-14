@@ -41,6 +41,18 @@ package org.flexunit.internals.builders
 	public class IgnoredBuilder extends RunnerBuilderBase {
 		public static const IGNORE:String = "Ignore";
 		
+		
+		
+		override public function canHandleClass(testClass:Class):Boolean {
+			var klassInfo:Klass = new Klass( testClass );
+			
+			//If the klassInfo has ignore metadata, the test class should be ignored
+			if ( klassInfo.hasMetaData( IGNORE ) )
+				return true;
+			
+			return false;
+		}
+		
 		/**
 		 * Returns a <code>IgnoredClassRunner</code> if the <code>testClass</code> has an [Ignore] metadata tag.
 		 * 
@@ -50,14 +62,7 @@ package org.flexunit.internals.builders
 		 * otherwise, a value of <code>null</code> is returned.
 		 */
 		override public function runnerForClass( testClass:Class ):IRunner {
-			var klassInfo:Klass = new Klass( testClass );
-			
-			//If the klassInfo has ignore metadata, the test class should be ignored
-			if ( klassInfo.hasMetaData( IGNORE ) ) {
-				return new IgnoredClassRunner(testClass);
-			}
-			
-			return null;
+			return new IgnoredClassRunner(testClass);
 		}
 	}
 }

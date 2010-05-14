@@ -18,6 +18,7 @@ package org.flexunit.internals.builders.cases
 			Assert.assertTrue( runnerForClass( FlexUnit1Class ) is FlexUnit1ClassRunner );
 		}
 		
+		[Ignore("Need to rework this test")]
 		[Test(description="Ensure if a FlexUnit1 Class is not passed that the runner returns null")]
 		public function testRunnerForClassNull(): void {
 			Assert.assertNull( runnerForClass( Object ) ); 

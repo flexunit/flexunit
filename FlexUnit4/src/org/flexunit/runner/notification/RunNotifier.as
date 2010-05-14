@@ -26,6 +26,8 @@
  * @version    
  **/ 
 package org.flexunit.runner.notification {
+	import flash.utils.*;
+	
 	import org.flexunit.runner.Description;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.Result;
@@ -61,6 +63,7 @@ package org.flexunit.runner.notification {
 	public class RunNotifier implements IRunNotifier {
 		private var listeners:Array = new Array();
 		private var pleaseStopBool:Boolean = false;
+		private var startTime:Number;
 
 		/**
 		 * Do not invoke. 
@@ -107,6 +110,9 @@ package org.flexunit.runner.notification {
 			}
 
 			notifier.run();
+			
+			//Capture start time
+			startTime = getTimer();
 		}
 
 		/**
@@ -115,9 +121,16 @@ package org.flexunit.runner.notification {
 		 * @param failure The description of the test that failed and the exception thrown.
 		 */
 		public function fireTestFailure( failure:Failure ):void {
+			//capture end time
+			var endTime:Number = getTimer() - startTime;
+			
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
 			
 			notifier.notifyListener = function( item:IRunListener ):void {
+				if ( item is ITemporalRunListener ) {
+					( item as ITemporalRunListener ).testTimed( failure.description, endTime );
+				}
+
 				item.testFailure(failure);
 			}
 
@@ -132,9 +145,16 @@ package org.flexunit.runner.notification {
 		 * <code>AssumptionViolatedException</code> thrown.
 		 */
 		public function fireTestAssumptionFailed( failure:Failure ):void {
+			//capture end time
+			var endTime:Number = getTimer() - startTime;
+
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
 			
 			notifier.notifyListener = function( item:IRunListener ):void {
+				if ( item is ITemporalRunListener ) {
+					( item as ITemporalRunListener ).testTimed( failure.description, endTime );
+				}
+
 				item.testAssumptionFailure(failure);
 			}
 
@@ -147,9 +167,15 @@ package org.flexunit.runner.notification {
 		 * @param description The description of the ignored test.
 		 */
 		public function fireTestIgnored( description:IDescription ):void {
+			//capture end time
+			var endTime:Number = getTimer() - startTime;
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
 			
 			notifier.notifyListener = function( item:IRunListener ):void {
+				if ( item is ITemporalRunListener ) {
+					( item as ITemporalRunListener ).testTimed( description, endTime );
+				}
+
 				item.testIgnored(description);
 			}
 
@@ -165,9 +191,14 @@ package org.flexunit.runner.notification {
 		 * @see #fireTestStarted()
 		 */
 		public function fireTestFinished( description:IDescription ):void {
+			var endTime:Number = getTimer() - startTime;
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
 			
 			notifier.notifyListener = function( item:IRunListener ):void {
+				if ( item is ITemporalRunListener ) {
+					( item as ITemporalRunListener ).testTimed( description, endTime );
+				}
+
 				item.testFinished(description);
 			}
 
@@ -217,13 +248,13 @@ package org.flexunit.runner.notification {
 	}
 }
 
-import org.flexunit.runner.notification.RunListener;
-import org.flexunit.runner.notification.Failure;
 import org.flexunit.runner.Description;
-import org.flexunit.runner.notification.RunNotifier;
 import org.flexunit.runner.Result;
-import org.flexunit.runner.notification.IRunNotifier;
+import org.flexunit.runner.notification.Failure;
 import org.flexunit.runner.notification.IRunListener;
+import org.flexunit.runner.notification.IRunNotifier;
+import org.flexunit.runner.notification.RunListener;
+import org.flexunit.runner.notification.RunNotifier;
 
 class SafeNotifier {
 	protected var notifier:IRunNotifier;

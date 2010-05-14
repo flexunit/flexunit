@@ -20,6 +20,7 @@ package org.flexunit.internals.builders.cases
 			suiteMethodBuilder = null;
 		}
 		
+		[Ignore("Need to rework this test")]
 		[Test(description="Ensure that the runnerForClass function returns null if the Class does not have a suite method")]
 		public function runnerForClassNullTest():void {
 			Assert.assertNull( suiteMethodBuilder.runnerForClass(Object) );

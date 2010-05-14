@@ -51,6 +51,16 @@ package org.flexunit.runners.model {
 		private var parents:Dictionary = new Dictionary( true );
 
 		/**
+		 * Returns a boolean value indicating if this builder will be able to handle the testClass or not
+		 * 
+		 * @param testClass The class to test to determine an <code>IRunner</code>.
+		 * 
+		 * Returns false, forcing any new subclasses of RunnerBuilderBase to override this method.
+		 */
+		public function canHandleClass( testClass:Class):Boolean {
+			return false;
+		}
+		/**
 		 * Returns an <code>IRunner</code> that can safely run the provided <code>testClass</code>.
 		 * If no suitable <code>IRunner</code> can be found, a value of <code>null</code> is returned.
 		 * 

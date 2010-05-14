@@ -74,6 +74,7 @@ package org.flexunit.runner.notification {
 		 * @param result the summary of the test run, including all the tests that failed
 		 */
 		public function testRunFinished( result:Result ):void {
+			this.result = result;
 		}
 		
 		/**
