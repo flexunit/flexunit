@@ -25,9 +25,9 @@ package org.flexunit.internals.builders.cases
 			Assert.assertTrue( runnerForClass( Fluint1Suite ) is Fluint1ClassRunner );
 		}
 		
-		[Test(description="Ensure that if a fluint class is not passed we recieve a null")]
+		[Test(description="Ensure that if a fluint class is not passed we recieve a false")]
 		public function testRunnerForClassNull() : void {
-			Assert.assertNull( runnerForClass( Object ) );
+			Assert.assertFalse( canHandleClass( Object ) );
 		}
 		
 		[Test(description="Ensure that if a fluint class is passed, FU4 properly recoginizes it as such")]

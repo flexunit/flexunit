@@ -58,6 +58,7 @@
     <classEntry path="org.flexunit.internals.builders.IgnoredClassRunner"/>
     <classEntry path="org.flexunit.internals.builders.MetaDataBuilder"/>
     <classEntry path="org.flexunit.internals.builders.NullBuilder"/>
+    <classEntry path="org.flexunit.internals.builders.OnlyRecognizedTestClassBuilder"/>
     <classEntry path="org.flexunit.internals.builders.SuiteMethodBuilder"/>
     <classEntry path="org.flexunit.internals.events.ExecutionCompleteEvent"/>
     <classEntry path="org.flexunit.internals.flexunit_internal"/>
@@ -65,6 +66,7 @@
     <classEntry path="org.flexunit.internals.namespaces.classInternal"/>
     <classEntry path="org.flexunit.internals.requests.ClassRequest"/>
     <classEntry path="org.flexunit.internals.requests.FilterRequest"/>
+    <classEntry path="org.flexunit.internals.requests.QualifyingRequest"/>
     <classEntry path="org.flexunit.internals.requests.SortingRequest"/>
     <classEntry path="org.flexunit.internals.runners.ChildRunnerSequencer"/>
     <classEntry path="org.flexunit.internals.runners.ClassRoadie"/>
@@ -108,7 +110,9 @@
     <classEntry path="org.flexunit.runner.manipulation.IFilter"/>
     <classEntry path="org.flexunit.runner.manipulation.IFilterable"/>
     <classEntry path="org.flexunit.runner.manipulation.NoTestsRemainException"/>
+    <classEntry path="org.flexunit.runner.manipulation.OrderArgumentPlusAlphaSorter"/>
     <classEntry path="org.flexunit.runner.manipulation.OrderArgumentPlusInheritanceSorter"/>
+    <classEntry path="org.flexunit.runner.manipulation.OrderArgumentSorter"/>
     <classEntry path="org.flexunit.runner.manipulation.Sorter"/>
     <classEntry path="org.flexunit.runner.manipulation.filters.AbstractFilter"/>
     <classEntry path="org.flexunit.runner.manipulation.filters.DynamicFilter"/>
@@ -133,6 +137,7 @@
     <classEntry path="org.flexunit.runners.model.FrameworkMethod"/>
     <classEntry path="org.flexunit.runners.model.IRunnerBuilder"/>
     <classEntry path="org.flexunit.runners.model.IStatement"/>
+    <classEntry path="org.flexunit.runners.model.ParameterizedMethod"/>
     <classEntry path="org.flexunit.runners.model.RunnerBuilderBase"/>
     <classEntry path="org.flexunit.runners.model.TestClass"/>
     <classEntry path="org.flexunit.token.AsyncListenersToken"/>
@@ -146,9 +151,6 @@
     <classEntry path="org.fluint.uiImpersonation.VisualTestEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptVisualTestEnvironment"/>
-    <classEntry path="org.flexunit.internals.requests.QualifyingRequest"/>
-    <classEntry path="org.flexunit.internals.builders.OnlyRecognizedTestClassBuilder"/>
-    <classEntry path="org.flexunit.runners.model.ParameterizedMethod"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
