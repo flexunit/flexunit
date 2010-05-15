@@ -196,11 +196,11 @@ package flex.lang.reflect.cases
 			Assert.assertTrue( new testClass() is RunnerBuilderBase )
 		}
 		
-		[Test(description="ensure that if a class does not extend a class no superclass is retrieved")]
+		[Test(description="ensure that if a class does not extend we still see Object")]
 		public function check_no_superClass() : void {
 			klass = new Klass( LocalTestClass );
 			
-			Assert.assertNull( klass.superClass );
+			Assert.assertStrictlyEquals( Object, klass.superClass );
 		}
 		
 		[Test(description="Ensure interface returns the correct values if the class implements an interface")]

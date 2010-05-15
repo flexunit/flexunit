@@ -26,10 +26,14 @@ package org.flexunit.internals.builders.cases
 			Assert.assertTrue( ignoredBuilder.runnerForClass( IgnoredClass ) is IgnoredClassRunner );
 		}
 		
-		[Ignore("Need to rework this test")]
-		[Test]
-		public function testRunnerForClassNull() : void {
-			Assert.assertNull( ignoredBuilder.runnerForClass( Object ) );
+		[Test(description="Ensure the runner can handle a real Ignore class")]
+		public function canHandleClassRight() : void {
+			Assert.assertTrue( ignoredBuilder.canHandleClass( IgnoredClass ) );
+		}
+		
+		[Test(description="Ensure the runner doesn't handle a non Ignore class")]
+		public function canHandleClassWrong() : void {
+			Assert.assertFalse( ignoredBuilder.canHandleClass( Object ) );
 		}
 	}
 }

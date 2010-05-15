@@ -22,9 +22,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  * 
- * @author     Alan Stearns <astearns@adobe.com>
- * 			   Michael Labriola <labriola@digitalprimates.net>
- * 			   David Wolever <david@wolever.net>
+ * @author     Alan Stearns - astearns@adobe.com
+ * 			   Michael Labriola - labriola@digitalprimates.net
+ * 			   David Wolever - david@wolever.net
  * @version
  *   
  **/
