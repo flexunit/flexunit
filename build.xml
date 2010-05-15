@@ -31,6 +31,8 @@ to contribute to our CI process.
    <property name="uilistener.loc" location="${basedir}/FlexUnit4UIListener" />
    <property name="aircilistener.loc" location="${basedir}/FlexUnit4AirCIListener" />
    <property name="flexcoverlistener.loc" location="${basedir}/FlexUnit4FlexCoverListener" />
+   <property name="turnkey.loc" location="${basedir}/FlexUnit4TurnKey" />
+   <property name="sampleCI.loc" location="${basedir}/FlexUnit4SampleCIProject" />
 
    <!-- Cleans up all projects -->
    <target name="clean">
@@ -114,6 +116,7 @@ to contribute to our CI process.
    <!-- Prepares and assembles the final zip artifact with all of the FlexUnit4 components and docs -->
    <target name="package" depends="test,listeners">
       <zip destfile="${basedir}/${finalName}">
+         <!-- Docs -->
          <zipfileset dir="${anttasks.loc}/target/docs" prefix="flexunit/docs/anttasks" />
          <zipfileset dir="${core.loc}/target/docs" prefix="flexunit/docs/flexunit" />
          <zipfileset dir="${cilistener.loc}/target/docs" prefix="flexunit/docs/cilistener" />
@@ -121,6 +124,7 @@ to contribute to our CI process.
          <zipfileset dir="${aircilistener.loc}/target/docs" prefix="flexunit/docs/aircilistener" />
          <zipfileset dir="${flexcoverlistener.loc}/target/docs" prefix="flexunit/docs/flexcoverlistener" />
 
+         <!-- Artifacts -->
          <zipfileset dir="${anttasks.loc}/target" prefix="flexunit">
             <include name="*.jar" />
          </zipfileset>
@@ -137,6 +141,37 @@ to contribute to our CI process.
             <include name="*.swc" />
          </zipfileset>
          <zipfileset dir="${aircilistener.loc}/target" prefix="flexunit">
+            <include name="*.swc" />
+         </zipfileset>
+         
+         <!-- Turnkey -->
+         <zipfileset dir="${turnkey.loc}" prefix="flexunit/turnkey">
+         	<exclude name="**/export/**/*" />
+         </zipfileset>
+         <zipfileset dir="${core.loc}/target" prefix="flexunit/turnkey/libs">
+            <include name="*core*.swc" />
+         </zipfileset>
+         <zipfileset dir="${uilistener.loc}/target" prefix="flexunit/turnkey/libs">
+            <include name="*.swc" />
+         </zipfileset>
+         
+         <!-- Sample CI project -->
+         <zipfileset dir="${sampleCI.loc}" prefix="flexunit/sampleCIProject">
+            <exclude name="**/libs/**/*" />
+         </zipfileset>
+         <zipfileset dir="${anttasks.loc}/target" prefix="flexunit/sampleCIProject/libs">
+            <include name="*.jar" />
+         </zipfileset>
+         <zipfileset dir="${core.loc}/target" prefix="flexunit/sampleCIProject/libs">
+            <include name="*core*.swc" />
+         </zipfileset>
+         <zipfileset dir="${cilistener.loc}/target" prefix="flexunit/sampleCIProject/libs">
+            <include name="*.swc" />
+         </zipfileset>
+         <zipfileset dir="${uilistener.loc}/target" prefix="flexunit/sampleCIProject/libs">
+            <include name="*.swc" />
+         </zipfileset>
+         <zipfileset dir="${aircilistener.loc}/target" prefix="flexunit/sampleCIProject/libs">
             <include name="*.swc" />
          </zipfileset>
       </zip>

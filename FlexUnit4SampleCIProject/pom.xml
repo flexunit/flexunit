@@ -20,7 +20,7 @@
 
    <properties>
       <flex.sdk.version>3.5.0.12683</flex.sdk.version>
-      <flexmojos.version>3.6</flexmojos.version>
+      <flexmojos.version>3.6.1</flexmojos.version>
    </properties>
 
    <build>
