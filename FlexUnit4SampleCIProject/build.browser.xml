@@ -62,12 +62,19 @@
 		</mxmlc>
 
 		<!-- Execute TestRunner.swf as FlexUnit tests and publish reports -->
-		<flexunit swf="${bin.loc}/TestRunner.swf" 
-			toDir="${report.loc}" 
+		<flexunit 
+		    workingDir="${bin.loc}"
+		    toDir="${report.loc}" 
 			haltonfailure="false" 
 			verbose="true" 
-			localTrusted="true" 
-			command="/Applications/Safari.app/Contents/MacOS/Safari" />
+			localTrusted="true"
+			command="/Applications/Safari.app/Contents/MacOS/Safari">
+	      <source dir="${main.src.loc}" />
+	      <testSource dir="${test.src.loc}">
+	         <include name="**/*Test.as" />
+	      </testSource>
+	      <library dir="${lib.loc}" />
+	   </flexunit>
 
 		<!-- Generate readable JUnit-style reports -->
 		<junitreport todir="${report.loc}">

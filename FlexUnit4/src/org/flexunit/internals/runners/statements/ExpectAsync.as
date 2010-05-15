@@ -27,6 +27,7 @@
  **/ 
 package org.flexunit.internals.runners.statements {
 	import flash.events.Event;
+	import flash.net.Responder;
 	import flash.utils.Dictionary;
 	
 	import mx.events.PropertyChangeEvent;
@@ -36,6 +37,7 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.AssertionError;
 	import org.flexunit.async.AsyncHandler;
 	import org.flexunit.async.AsyncLocator;
+	import org.flexunit.async.AsyncNativeTestResponder;
 	import org.flexunit.async.AsyncTestResponder;
 	import org.flexunit.async.IAsyncTestResponder;
 	import org.flexunit.async.ITestResponder;
@@ -445,7 +447,54 @@ package org.flexunit.internals.runners.statements {
 			
 			startAsyncTimers();
 	    }
-
+		
+		/**
+		 * Creates an <code>IAsyncTestResponder</code> that pend and either call the <code>eventHandler</code> or the
+		 * <code>timeoutHandler</code>, passing the <code>passThroughData</code>, depending on whether the
+		 * <code>timeout</code> period has been reached.
+		 * 
+		 * @param resultHandler The result <code>Function</code> that will be executed if the <code>Responder</code> is called on its result before 
+		 * the <code>timeout</code> has expired.
+		 * @param faultHandler The fault <code>Function</code> that will be executed if the <code>Responder</code> is called on its fault before 
+		 * the <code>timeout</code> has expired.
+		 * @param timeout The length of time, in milliseconds, before the <code>timeoutHandler</code> will be executed.
+		 * @param passThroughData An Object that can be given information about the current test; this information will 
+		 * be available for both the <code>eventHandler</code> and the <code>timeoutHandler</code>.
+		 * @param timeoutHandler The Function that will be executed if the <code>timeout</code> time is reached prior to
+		 * the expected event being dispatched.
+		 * 
+		 * @return an <code>IResponder</code> that will determine whether the <code>timeout</code> has been reached.
+		 */
+		public function asyncNativeResponder( resultHandler : Function, faultHandler : Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):Responder { 
+			
+			var asyncResponder:AsyncNativeTestResponder;
+			
+			asyncResponder = new AsyncNativeTestResponder( resultHandler, faultHandler );
+			
+			var asyncHandler:AsyncHandler = new AsyncHandler( this, handleAsyncNativeTestResponderEvent, timeout, passThroughData, timeoutHandler )
+			asyncHandler.addEventListener( AsyncHandler.EVENT_FIRED, handleAsyncEventFired, false, 0, true );
+			asyncHandler.addEventListener( AsyncHandler.TIMER_EXPIRED, handleAsyncTimeOut, false, 0, true );
+			
+			pendingAsyncCalls.push( asyncHandler );
+			
+			asyncResponder.addEventListener( AsyncResponseEvent.RESPONDER_FIRED, asyncHandler.handleEvent, false, 0, true ); 
+			
+			return asyncResponder;
+		}
+		
+		/**
+		 * Handles the AsyncResponseEvent that is thrown by the asyncResponder.
+		 * It sends data to the original responder based on if it is a result or fault status.
+		 * 
+		 * @param event
+		 * @param passThroughData
+		 * 
+		 */
+		protected function handleAsyncNativeTestResponderEvent( event:AsyncResponseEvent, passThroughData:Object=null ):void {
+			var methodHandler:Function = event.methodHandler;
+			methodHandler.call(this, event.data);
+		}
+		
 		/**
 		 * 
 		 * @param event

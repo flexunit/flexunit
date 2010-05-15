@@ -5,6 +5,8 @@
     <classEntry path="flex.lang.reflect.Field"/>
     <classEntry path="flex.lang.reflect.Klass"/>
     <classEntry path="flex.lang.reflect.Method"/>
+    <classEntry path="flex.lang.reflect.metadata.MetaDataAnnotation"/>
+    <classEntry path="flex.lang.reflect.metadata.MetaDataArgument"/>
     <classEntry path="flex.lang.reflect.utils.MetadataTools"/>
     <classEntry path="org.flexunit.Assert"/>
     <classEntry path="org.flexunit.AssertionError"/>
@@ -56,6 +58,7 @@
     <classEntry path="org.flexunit.internals.builders.IgnoredClassRunner"/>
     <classEntry path="org.flexunit.internals.builders.MetaDataBuilder"/>
     <classEntry path="org.flexunit.internals.builders.NullBuilder"/>
+    <classEntry path="org.flexunit.internals.builders.OnlyRecognizedTestClassBuilder"/>
     <classEntry path="org.flexunit.internals.builders.SuiteMethodBuilder"/>
     <classEntry path="org.flexunit.internals.events.ExecutionCompleteEvent"/>
     <classEntry path="org.flexunit.internals.flexunit_internal"/>
@@ -63,6 +66,7 @@
     <classEntry path="org.flexunit.internals.namespaces.classInternal"/>
     <classEntry path="org.flexunit.internals.requests.ClassRequest"/>
     <classEntry path="org.flexunit.internals.requests.FilterRequest"/>
+    <classEntry path="org.flexunit.internals.requests.QualifyingRequest"/>
     <classEntry path="org.flexunit.internals.requests.SortingRequest"/>
     <classEntry path="org.flexunit.internals.runners.ChildRunnerSequencer"/>
     <classEntry path="org.flexunit.internals.runners.ClassRoadie"/>
@@ -107,6 +111,8 @@
     <classEntry path="org.flexunit.runner.manipulation.IFilterable"/>
     <classEntry path="org.flexunit.runner.manipulation.NoTestsRemainException"/>
     <classEntry path="org.flexunit.runner.manipulation.OrderArgumentPlusAlphaSorter"/>
+    <classEntry path="org.flexunit.runner.manipulation.OrderArgumentPlusInheritanceSorter"/>
+    <classEntry path="org.flexunit.runner.manipulation.OrderArgumentSorter"/>
     <classEntry path="org.flexunit.runner.manipulation.Sorter"/>
     <classEntry path="org.flexunit.runner.manipulation.filters.AbstractFilter"/>
     <classEntry path="org.flexunit.runner.manipulation.filters.DynamicFilter"/>
@@ -116,6 +122,7 @@
     <classEntry path="org.flexunit.runner.notification.IAsyncStartupRunListener"/>
     <classEntry path="org.flexunit.runner.notification.IRunListener"/>
     <classEntry path="org.flexunit.runner.notification.IRunNotifier"/>
+    <classEntry path="org.flexunit.runner.notification.ITemporalRunListener"/>
     <classEntry path="org.flexunit.runner.notification.RunListener"/>
     <classEntry path="org.flexunit.runner.notification.RunNotifier"/>
     <classEntry path="org.flexunit.runner.notification.StoppedByUserException"/>
@@ -130,11 +137,13 @@
     <classEntry path="org.flexunit.runners.model.FrameworkMethod"/>
     <classEntry path="org.flexunit.runners.model.IRunnerBuilder"/>
     <classEntry path="org.flexunit.runners.model.IStatement"/>
+    <classEntry path="org.flexunit.runners.model.ParameterizedMethod"/>
     <classEntry path="org.flexunit.runners.model.RunnerBuilderBase"/>
     <classEntry path="org.flexunit.runners.model.TestClass"/>
     <classEntry path="org.flexunit.token.AsyncListenersToken"/>
     <classEntry path="org.flexunit.token.AsyncTestToken"/>
     <classEntry path="org.flexunit.token.ChildResult"/>
+    <classEntry path="org.flexunit.token.IAsyncTestToken"/>
     <classEntry path="org.flexunit.utils.ClassNameUtil"/>
     <classEntry path="org.fluint.uiImpersonation.IVisualEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.IVisualTestEnvironment"/>
@@ -142,7 +151,6 @@
     <classEntry path="org.fluint.uiImpersonation.VisualTestEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptVisualTestEnvironment"/>
-    <classEntry path="org.flexunit.token.IAsyncTestToken"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

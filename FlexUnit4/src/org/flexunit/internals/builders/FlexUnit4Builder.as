@@ -50,6 +50,11 @@ package org.flexunit.internals.builders
 			super();
 		}
 		
+		
+		override public function canHandleClass(testClass:Class):Boolean {
+			return true;
+		}
+		
 		/**
 		 * Returns a <code>BlockFlexUnit4ClassRunner</code> for the provided <code>testClass</code>.
 		 * 

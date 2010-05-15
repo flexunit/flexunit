@@ -45,6 +45,14 @@ package org.flexunit.internals.builders {
 	 */
 	public class FlexUnit1Builder extends RunnerBuilderBase {
 		
+		
+		
+		override public function canHandleClass(testClass:Class):Boolean {
+			var klassInfo:Klass = new Klass( testClass );
+			
+			return isPre4Test(klassInfo);
+		}
+		
 		/**
 		 * Returns a <code>FlexUnit1ClassRunner</code> if the <code>testClass</code> is a test class prior to FlexUnit4.
 		 * 
@@ -54,11 +62,7 @@ package org.flexunit.internals.builders {
 		 * value of <code>null</code> is returned.
 		 */
 		override public function runnerForClass( testClass:Class ):IRunner {
-			var klassInfo:Klass = new Klass( testClass );
-
-			if (isPre4Test(klassInfo))
-				return new FlexUnit1ClassRunner(testClass);
-			return null;
+			return new FlexUnit1ClassRunner(testClass);
 		}
 		
 		/**

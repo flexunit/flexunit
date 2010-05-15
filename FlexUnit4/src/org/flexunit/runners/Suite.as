@@ -166,7 +166,7 @@ package org.flexunit.runners {
 			//Fix for FXU-51
 			//Tests to see if suite actually has viable children. If it does not, it is considered an
 			//initialization error
-			if ( !error && classArray.length > 0) { //a class is specified as a Suite, but has no children
+			if ( !error && classArray.length > 0) { //a class is specified as a Suite, and has children
 				_runners = builder.runners( testClass, classArray );
 			} else if ( !error && classArray.length == 0 ) {
 				 throw new InitializationError("Empty test Suite!");

@@ -229,19 +229,55 @@ package flex.lang.reflect {
 			return _packageName;
 		}
 
+		private function buildInheritance():Array {
+			var className:String;
+			var superArray:Array = new Array();
+
+			//TODO : since type is an attribute of extendsClass, we need to ference it with @
+			//also, since all objects extend from object, we need to be sure we are only
+			//taking the type of the lowest level extend.
+
+			if ( classXML.factory && classXML.factory.extendsClass ) {
+				for ( var i:int=0; i<classXML.factory.extendsClass.length(); i++ ) {
+					className = classXML.factory.extendsClass[ i ].@type
+						
+					//Workaround for issue where getClassFromName cannot find Object
+					if ( className == "Object" ) {
+						superArray.push( Object );
+					} else {
+						superArray.push( getClassFromName( className ) );
+					}
+				}
+			}			
+			
+			return superArray;
+		}
+		
+		/**
+		 * @private
+		 */
+		private var _inheritance:Array;
+
+
+		public function get classInheritance():Array {
+
+			if ( !_inheritance ) {
+				_inheritance = buildInheritance();
+			}
+			
+			return _inheritance;
+		}
 		/**
 		 * Returns the super class.
 		 */
 		public function get superClass():Class {
-			//TODO : since type is an attribute of extendsClass, we need to ference it with @
-			//also, since all objects extend from object, we need to be sure we are only
-			//taking the type of the lowest level extend.
-			if ( classXML.factory && classXML.factory.extendsClass ) {
-				return getClassFromName( classXML.factory.extendsClass[0].@type );	
+			var inheritance:Array = classInheritance;
+
+			if ( inheritance.length > 0 ) {
+				return inheritance[ 0 ];	
 			} else {
 				return null;
 			}
-			//return getClassFromName( classXML.factory.extendsClass.type );
 		}
 
 		/**
@@ -467,7 +503,7 @@ package flex.lang.reflect {
 			}
 
 			this.clazz = clazz;
-			
+
 			_name = classXML.@name;
 		}
 	}

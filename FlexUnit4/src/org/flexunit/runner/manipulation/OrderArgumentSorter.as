@@ -73,7 +73,7 @@ package org.flexunit.runner.manipulation {
 		 * 
 		 * @param o1 <code>IDescription</code> the object to have its order checked.
 		 * */
-		private static function getOrderValueFrom( object:IDescription ):Number {
+		protected function getOrderValueFrom( object:IDescription ):Number {
 			var order:Number = 0;		
 			
 			var metadataArray:Array = object.getAllMetadata();

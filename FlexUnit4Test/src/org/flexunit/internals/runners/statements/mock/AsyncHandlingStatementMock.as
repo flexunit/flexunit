@@ -3,6 +3,7 @@ package org.flexunit.internals.runners.statements.mock
 	import com.anywebcam.mock.Mock;
 	
 	import flash.events.Event;
+	import flash.net.Responder;
 	
 	import mx.rpc.IResponder;
 	
@@ -16,6 +17,10 @@ package org.flexunit.internals.runners.statements.mock
 		public function get bodyExecuting():Boolean
 		{
 			return mock.bodyExecuting;
+		}
+		
+		public function asyncNativeResponder( resultHandler : Function, faultHandler : Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):Responder {
+			return mock.asyncNativeResponder( resultHandler, faultHandler, timeout, passThroughData, timeoutHandler ) as Responder;
 		}
 		
 		public function asyncHandler(eventHandler:Function, timeout:int, passThroughData:Object=null, timeoutHandler:Function=null):Function

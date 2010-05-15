@@ -30,6 +30,7 @@ package org.flexunit.internals {
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.Result;
 	import org.flexunit.runner.notification.Failure;
+	import org.flexunit.runner.notification.ITemporalRunListener;
 	import org.flexunit.runner.notification.RunListener;
 	
 	/**
@@ -79,6 +80,10 @@ package org.flexunit.internals {
 			trace( description.displayName + " I" );
 		}
 	
+		public function testTimed( description:IDescription, runTime:Number ):void {
+			trace( description.displayName + " took " + runTime + " ms " );
+		}
+		
 		/*
 		 * Internal methods
 		 */
