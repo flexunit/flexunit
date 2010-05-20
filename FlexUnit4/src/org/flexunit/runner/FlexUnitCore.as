@@ -174,9 +174,9 @@ package org.flexunit.runner {
 		 * <code>Request</code>, and that <code>Request</code> will be used for the test run.
 		 * 
 		 * @param args The arguments are provided for the test run.
-		 * @return a <code>Result</code> describing the details of the test run and the failed tests.
+		 * @return void.
 		 */
-		public function run( ...args ):Result {
+		public function run( ...args ):void {
 			var foundClasses:Array = new Array();
 			//Unlike JUnit, missing classes is probably unlikely here, but lets preserve the metaphor
 			//just in case
@@ -184,13 +184,14 @@ package org.flexunit.runner {
 			
 			dealWithArgArray( args, foundClasses, missingClasses );
 
-			var result:Result = runClasses.apply( this, foundClasses );
+			runClasses.apply( this, foundClasses );
 			
+			//This is kind of fake
+			//Need to tie this to the remaining result set
+			var result:Result = new Result();
 			for ( var i:int=0; i<missingClasses.length; i++ ) {
 				result.failures.push( missingClasses[ i ] );
 			}
-			
-			return result;
 		}
 
 		/**
@@ -201,6 +202,9 @@ package org.flexunit.runner {
 		 * @param args The class arguments that are provided for the test run.
 		 */
 		public function runClasses( ...args ):void {
+			//This is just an optimization for the case where we are passed an IRequest
+			//Otherwise it goes through the trouble of re-wrapping it in a suite.
+			//When that happens we end up with potential sorting and filtering issues
 			if ( args && ( args.length == 1 ) && args[ 0 ] is IRequest ) {
 				runRequest( args[ 0 ] );
 			} else {
@@ -286,7 +290,8 @@ package org.flexunit.runner {
 		private function finishRun( runListener:RunListener ):void {
 			notifier.fireTestRunFinished( runListener.result );
 			removeListener( runListener );
-			
+
+			//Consider making this a custom event and attaching the result set
 			dispatchEvent( new Event( TESTS_COMPLETE ) );
 		}
 
@@ -321,10 +326,6 @@ package org.flexunit.runner {
 			}			
 		}
 		
-		protected function handleAllListenersReady( event:Event ):void {
-			
-		}
-		
 		/**
 		 * Create a new <code>FlexUnitCore</code> to run tests.
 		 */
@@ -332,7 +333,6 @@ package org.flexunit.runner {
 			notifier = new RunNotifier();
 			
 			asyncListenerWatcher = new AsyncListenerWatcher( notifier, null );
-			//asyncListenerWatcher.addEventListener( AsyncListenerWatcher.ALL_LISTENERS_READY, handleAllListenersReady, false, 0, true );
 		}
 	}
 }
