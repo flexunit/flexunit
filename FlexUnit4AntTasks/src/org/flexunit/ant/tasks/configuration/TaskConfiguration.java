@@ -93,6 +93,7 @@ public class TaskConfiguration
 
    public void setPlayer(String player)
    {
+      compilationConfiguration.setPlayer(player);
       testRunConfiguration.setPlayer(player);
    }
 

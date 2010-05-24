@@ -6,6 +6,7 @@ import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 import org.flexunit.ant.tasks.configuration.TaskConfiguration;
 
+//TODO: Add AIR and Flex 4 support to compilation
 public class FlexUnitTask extends Task
 {
    private TaskConfiguration configuration;

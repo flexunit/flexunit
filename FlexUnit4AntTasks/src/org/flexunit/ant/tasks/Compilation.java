@@ -16,6 +16,14 @@ import org.flexunit.ant.tasks.configuration.CompilationConfiguration;
 
 public class Compilation
 {
+   private final String FLEX_APPLICATION_CLASS = "Application";
+   private final String AIR_APPLICATION_CLASS = "WindowedApplication";
+   private final String MXML2006_PREFIX = "mx";
+   private final String MXML2006_NAMESPACE="xmlns:" + MXML2006_PREFIX + "=\"http://www.adobe.com/2006/mxml\"";
+   private final String MXML2009_PREFIX = "fx";
+   private final String MXML2009_NAMESPACE="xmlns:" + MXML2009_PREFIX + "=\"http://ns.adobe.com/mxml/2009\"";
+   private final String SPARK_PREFIX = "s";
+   private final String SPARK_NAMESPACE = "xmlns:" + SPARK_PREFIX + "=\"library://ns.adobe.com/flex/spark\"";
    private final String TESTRUNNER_TEMPLATE = "TestRunner.template";
    private final String TESTRUNNER_FILE = "TestRunner.mxml";
    private final String MXMLC_RELATIVE_PATH = "lib/mxmlc.jar";
@@ -24,11 +32,13 @@ public class Compilation
    
    private CompilationConfiguration configuration;
    private Project project;
+   private String mxmlcPath;
    
    public Compilation(Project project, CompilationConfiguration configuration)
    {
       this.project = project;
       this.configuration = configuration;
+      mxmlcPath = configuration.getFlexHome().getAbsolutePath() + File.separatorChar + MXMLC_RELATIVE_PATH;
    }
    
    public File compile() throws BuildException
@@ -54,6 +64,13 @@ public class Compilation
    {
       try
       {
+         int sdkVersion = getSDKVersion();
+         
+         String applicationPrefix = sdkVersion == 3 ? MXML2006_PREFIX : SPARK_PREFIX;
+         String applicationClass = configuration.getPlayer() == "flash" ? FLEX_APPLICATION_CLASS : AIR_APPLICATION_CLASS;
+         String mxmlPrefix = sdkVersion == 3 ? MXML2006_PREFIX : MXML2009_PREFIX;
+         String namespaces = sdkVersion == 3 ? MXML2006_NAMESPACE : MXML2009_NAMESPACE + "\n" + SPARK_NAMESPACE;
+         
          File runner = new File(workingDir.getAbsolutePath() + File.separatorChar + TESTRUNNER_FILE);
          
          //Template location in JAR
@@ -61,6 +78,10 @@ public class Compilation
          
          //Create tokens to filter
          FilterSet filters = new FilterSet();
+         filters.addFilter("APPLICATION_PREFIX", applicationPrefix);
+         filters.addFilter("APPLICATION_CLASS", applicationClass);
+         filters.addFilter("NAMESPACES", namespaces);
+         filters.addFilter("MXML_PREFIX", mxmlPrefix);
          filters.addFilter("CLASS_REFS", configuration.getTestSources().getClasses());
          filters.addFilter("IMPORT_REFS", configuration.getTestSources().getImports());
          
@@ -87,10 +108,33 @@ public class Compilation
       }
    }
    
+   private int getSDKVersion()
+   {
+      String outputProperty = "SDK_VERSION";
+      
+      //Execute mxmlc to find SDK version number
+      Java task = new Java();
+      task.setFork(true);
+      task.setFailonerror(true);
+      task.setJar(new File(mxmlcPath));
+      task.setProject(project);
+      task.setDir(project.getBaseDir());
+      task.setOutputproperty(outputProperty);
+      
+      Argument versionArgument = task.createArg();
+      versionArgument.setLine("--version");
+      
+      task.execute();
+      
+      //Parse version number and return as int
+      String output = project.getProperty(outputProperty);
+      int prefixIndex = output.indexOf("Version ");
+      return Integer.parseInt(output.substring(prefixIndex + 8, prefixIndex + 9));
+   }
+   
    private Java createJavaTask(File runnerFile, File finalFile)
    {
       String frameworksPath = configuration.getFlexHome().getAbsolutePath() + File.separatorChar + FRAMEWORKS_RELATIVE_PATH;
-      String mxmlcPath = configuration.getFlexHome().getAbsolutePath() + File.separatorChar + MXMLC_RELATIVE_PATH;
       
       Java task = new Java();
       task.setFork(true);
@@ -103,6 +147,12 @@ public class Compilation
       
       Argument flexLibArgument = task.createArg();
       flexLibArgument.setLine("+flexlib " + frameworksPath);
+      
+      if(configuration.getPlayer() == "air")
+      {
+         Argument airConfigArgument = task.createArg();
+         airConfigArgument.setValue("+configname=air");
+      }
       
       Argument outputFile = task.createArg();
       outputFile.setLine("-output " + finalFile.getAbsolutePath());

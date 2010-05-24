@@ -13,8 +13,9 @@ public class CompilationConfiguration implements StepConfiguration
    private SourcePaths sources;
    private SourcePaths testSources;
    private LibraryPaths libraries;
-   private File flexHome = null;
-   private File workingDir = null;
+   private File flexHome;
+   private String player;
+   private File workingDir;
 
    public CompilationConfiguration()
    {
@@ -41,6 +42,16 @@ public class CompilationConfiguration implements StepConfiguration
    public LibraryPaths getLibraries()
    {
       return libraries;
+   }
+   
+   public String getPlayer()
+   {
+      return player;
+   }
+   
+   public void setPlayer(String player)
+   {
+      this.player = player;
    }
    
    public void addSource(FileSet fileset)

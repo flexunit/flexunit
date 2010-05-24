@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
-   creationComplete="runTests();">
+<@APPLICATION_PREFIX@:@APPLICATION_CLASS@ 
+@NAMESPACES@ 
+creationComplete="runTests();">
    
-   <mx:Script>
+   <@MXML_PREFIX@:Script>
       <![CDATA[
          import org.flexunit.listeners.CIListener;
          import org.flexunit.runner.FlexUnitCore;
@@ -21,5 +22,5 @@
             core.run(request);
          }
       ]]>
-   </mx:Script>
-</mx:Application>
+   </@MXML_PREFIX@:Script>
+</@APPLICATION_PREFIX@:@APPLICATION_CLASS@>
