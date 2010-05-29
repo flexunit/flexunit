@@ -26,6 +26,8 @@
  * @version    
  **/ 
 package org.flexunit.runners {
+	import flex.lang.reflect.Field;
+	
 	import org.flexunit.internals.AssumptionViolatedException;
 	import org.flexunit.internals.runners.model.EachTestNotifier;
 	import org.flexunit.internals.runners.statements.ExpectAsync;
@@ -38,6 +40,7 @@ package org.flexunit.runners {
 	import org.flexunit.internals.runners.statements.RunBefores;
 	import org.flexunit.internals.runners.statements.StackAndFrameManagement;
 	import org.flexunit.internals.runners.statements.StatementSequencer;
+	import org.flexunit.rules.IMethodRule;
 	import org.flexunit.runner.Description;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.manipulation.IFilterable;
@@ -346,10 +349,37 @@ package org.flexunit.runners {
 		 */
 		protected function withDecoration( method:FrameworkMethod, test:Object ):IAsyncStatement {
 			var statement:IAsyncStatement = methodInvoker( method, test );
+			statement = withPotentialRules( method, test, statement );
 			statement = withPotentialAsync( method, test, statement );
 			statement = withPotentialTimeout( method, test, statement );
 			statement = possiblyExpectingExceptions( method, test, statement );
 			statement = withStackManagement( method, test, statement );
+			
+			return statement;
+		}
+		
+		
+		/**
+		 * Potentially returns a new <code>IAsyncStatement</code> defined by the user on the testcase via the Rule metadata.
+		 */
+		protected function withPotentialRules( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
+			var ruleFields:Array = testClass.getMetaDataFields( "Rule" );
+			var rule:IMethodRule;
+			var ruleField:Field;
+
+			//Sort the rules array
+			//methodRules.sort(compare);
+			
+			for ( var i:int=0; i<ruleFields.length; i++ ) {
+				ruleField = ruleFields[ i ] as Field;
+
+				if ( test[ ruleField.name ] is IMethodRule ) {
+					rule = test[ ruleField.name ] as IMethodRule;
+
+					//build statement wrappers
+					statement = rule.apply( statement, method, test );
+				}
+			}
 			
 			return statement;
 		}

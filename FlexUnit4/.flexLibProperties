@@ -89,6 +89,7 @@
     <classEntry path="org.flexunit.internals.runners.statements.IAsyncHandlingStatement"/>
     <classEntry path="org.flexunit.internals.runners.statements.IAsyncStatement"/>
     <classEntry path="org.flexunit.internals.runners.statements.InvokeMethod"/>
+    <classEntry path="org.flexunit.internals.runners.statements.MethodRuleBase"/>
     <classEntry path="org.flexunit.internals.runners.statements.RunAfters"/>
     <classEntry path="org.flexunit.internals.runners.statements.RunAftersClass"/>
     <classEntry path="org.flexunit.internals.runners.statements.RunBefores"/>
@@ -97,6 +98,7 @@
     <classEntry path="org.flexunit.internals.runners.statements.StackAndFrameManagement"/>
     <classEntry path="org.flexunit.internals.runners.statements.StatementSequencer"/>
     <classEntry path="org.flexunit.matchers.FlexUnitMatchers"/>
+    <classEntry path="org.flexunit.rules.IMethodRule"/>
     <classEntry path="org.flexunit.runner.Description"/>
     <classEntry path="org.flexunit.runner.Descriptor"/>
     <classEntry path="org.flexunit.runner.FlexUnitCore"/>

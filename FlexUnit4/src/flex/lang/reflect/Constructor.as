@@ -60,7 +60,7 @@ package flex.lang.reflect {
 		 */
 		private var _name:String;
 		/**
-		 * Retrieves the name associated with the constructor.  Currently unused.
+		 * Retrieves the name associated with the constructor. 
 		 */
 		public function get name():String {
 			return _name;
@@ -92,7 +92,7 @@ package flex.lang.reflect {
 		private var _parameterMetaData:Array = new Array();
 		
 		/**
-		 * Retrieves the parameterMetaData array.  Currently unused.
+		 * Retrieves the parameterMetaData array.  
 		 */
 		public function get parameterMetaData():Array {
 			return _parameterMetaData;

@@ -28,6 +28,7 @@
 package org.flexunit.runners.model {
 	import flash.utils.Dictionary;
 	
+	import flex.lang.reflect.Field;
 	import flex.lang.reflect.Klass;
 	import flex.lang.reflect.Method;
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
@@ -50,13 +51,12 @@ package org.flexunit.runners.model {
 		 */
 		private var metaDataDictionary:Dictionary = new Dictionary( false );
 
-	//TODO: I'm guessing JDK should be replaced with something else
 		/**
 		 * Constructor.
 		 * 
 		 * Creates a <code>TestClass</code> wrapping <code>klass</code>. Each time this
 		 * constructor executes, the class is scanned for annotations, which can be
-		 * an expensive process (we hope in future JDK's it will not be.) Therefore,
+		 * an expensive process (we hope in future players it will not be.) Therefore,
 		 * try to share instances of <code>TestClass</code> where possible.
 		 * 
 		 * @param klass The Class to wrap.
@@ -175,6 +175,22 @@ package org.flexunit.runners.model {
 			return methodArray;
 		} 
 		
+		public function getMetaDataFields( metaTag:String ):Array {
+			var fieldArray:Array = new Array();
+			var len:uint = klassInfo.fields.length;
+			var field:Field;
+
+			for ( var i:int=0; i<len; i++ ) {
+				field = klassInfo.fields[ i ] as Field;
+				
+				if ( ( field.isStatic == false ) && ( field.hasMetaData( metaTag ) ) ) {
+					fieldArray.push( field );
+				}
+			} 
+			
+			return fieldArray;
+		} 	
+
 		/**
 		 * Returns the name of the of the class.
 		 */
