@@ -84,6 +84,10 @@ package flex.lang.reflect {
 			return _isProperty;
 		}
 		
+		public function get definedBy():Class {
+			return _definedBy;
+		}
+		
 		/**
 		 * Retrieves the Class associated with the object specified by the field name.
 		 *   If a null paramater is passed will instead retrieve the field defined by the field name

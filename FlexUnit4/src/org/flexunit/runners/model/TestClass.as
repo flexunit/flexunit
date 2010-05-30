@@ -175,7 +175,7 @@ package org.flexunit.runners.model {
 			return methodArray;
 		} 
 		
-		public function getMetaDataFields( metaTag:String ):Array {
+		public function getMetaDataFields( metaTag:String, static:Boolean = false ):Array {
 			var fieldArray:Array = new Array();
 			var len:uint = klassInfo.fields.length;
 			var field:Field;
@@ -183,7 +183,7 @@ package org.flexunit.runners.model {
 			for ( var i:int=0; i<len; i++ ) {
 				field = klassInfo.fields[ i ] as Field;
 				
-				if ( ( field.isStatic == false ) && ( field.hasMetaData( metaTag ) ) ) {
+				if ( ( field.isStatic == static ) && ( field.hasMetaData( metaTag ) ) ) {
 					fieldArray.push( field );
 				}
 			} 

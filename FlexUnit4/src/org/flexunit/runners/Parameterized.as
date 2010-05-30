@@ -31,7 +31,10 @@
 
 package org.flexunit.runners
 {	
+	import flex.lang.reflect.Field;
+	
 	import org.flexunit.internals.builders.AllDefaultPossibilitiesBuilder;
+	import org.flexunit.internals.dependency.AsyncDependencyResolver;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.notification.IRunNotifier;
@@ -39,35 +42,55 @@ package org.flexunit.runners
 	import org.flexunit.runners.model.IRunnerBuilder;
 	import org.flexunit.token.AsyncTestToken;
 	
-	public class Parameterized extends ParentRunner
-	{
-		private var _runners:Array;
+	public class Parameterized extends ParentRunner {
+		private var runners:Array;
+		private var klass:Class;
 		
 		//Blank constructor means the old 0/1 error
 		public function Parameterized(klass:Class) {
-			super (klass);
-			_runners = new Array();
+			super(klass);
+			this.klass = klass;
+			
+			//Not sure I like this here, but it does save us another whole lookup for the RunWith
+			var dr:AsyncDependencyResolver = new AsyncDependencyResolver( klass );
+			var dependencies:Boolean = dr.lookForUnresolvedDependencies();
+			//dr.addEventListener( "complete", handleComplete, false, 0, true );
+		}
+		
+		private function buildRunners():Array {
+			var runners:Array = new Array();
 			var parametersList:Array = getParametersList(klass);
 			
 			if ( parametersList.length == 0 ) {
-				_runners.push(new TestClassRunnerForParameters(klass));
+				runners.push(new TestClassRunnerForParameters(klass));
 			} else {
 				for (var i:int= 0; i < parametersList.length; i++) {
-					_runners.push(new TestClassRunnerForParameters(klass,parametersList, i));
+					runners.push(new TestClassRunnerForParameters(klass,parametersList, i));
 				}
 			}
+			
+			return runners;
 		}
-				
+		
 		private function getParametersList(klass:Class):Array {
 			var allParams:Array = new Array();
 			var frameworkMethod:FrameworkMethod;
+			var field:Field;
 			var methods:Array = getParametersMethods(klass);
+			var fields:Array = getParametersFields(klass);
 			var data:Array;
 
 			for ( var i:int=0; i<methods.length; i++ ) {
 				frameworkMethod = methods[ i ];
 				
 				data = frameworkMethod.invokeExplosively(klass) as Array;
+				allParams = allParams.concat( data );
+			}
+
+			for ( var j:int=0; j<fields.length; j++ ) {
+				field = fields[ j ];
+				
+				data = field.getObj( null ) as Array;
 				allParams = allParams.concat( data );
 			}
 			
@@ -78,10 +101,19 @@ package org.flexunit.runners
 			var methods:Array = testClass.getMetaDataMethods("Parameters");
 			return methods;
 		}
-		
+
+		private function getParametersFields(klass:Class):Array {
+			var fields:Array = testClass.getMetaDataFields( "Parameters", true );
+			return fields;
+		}
+
 		// begin Items copied from Suite
 		override protected function get children():Array {
-			return _runners;
+			if ( !runners ) {
+				runners = buildRunners();
+			}
+
+			return runners;
 		}
 
 		override protected function describeChild( child:* ):IDescription {
@@ -141,11 +173,11 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 	}
 	
 	override protected function computeTestMethods():Array {
-		//OPTIMIZATION POINT
-		
+		//OPTIMIZATION POINT		
 		if ( !expandedTestList ) {
 			expandedTestList = buildExpandedTestList();
 		}
+
 		return expandedTestList; 
 	}
 	

@@ -32,6 +32,7 @@ package org.flexunit.runner {
 	
 	import org.flexunit.IncludeFlexClasses;
 	import org.flexunit.experimental.theories.Theories;
+	import org.flexunit.internals.dependency.AsyncDependencyResolver;
 	import org.flexunit.runner.notification.Failure;
 	import org.flexunit.runner.notification.IAsyncStartupRunListener;
 	import org.flexunit.runner.notification.IRunListener;

@@ -31,6 +31,7 @@ package org.flexunit.internals.builders {
 	import flex.lang.reflect.Klass;
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
+	import org.flexunit.internals.dependency.AsyncDependencyResolver;
 	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runners.model.IRunnerBuilder;
@@ -139,7 +140,7 @@ package org.flexunit.internals.builders {
 			if ( runWithAnnotation && runWithAnnotation.defaultArgument ) {
 				runWithValue = runWithAnnotation.defaultArgument.key;
 			}
-
+			
 			return buildRunner( runWithValue, testClass);
 		}
 		

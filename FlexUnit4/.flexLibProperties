@@ -153,6 +153,8 @@
     <classEntry path="org.fluint.uiImpersonation.VisualTestEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptVisualTestEnvironment"/>
+    <classEntry path="org.flexunit.internals.dependency.AsyncDependencyResolver"/>
+    <classEntry path="org.flexunit.internals.dependency.AsyncDependencyToken"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
