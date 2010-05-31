@@ -5,10 +5,11 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases.helper {
 	import mx.rpc.events.ResultEvent;
 	import mx.rpc.http.HTTPService;
 	
-	import org.flexunit.internals.dependency.AsyncDependencyToken;
+	import org.flexunit.runner.external.ExternalDependencyToken;
+	import org.flexunit.runner.external.IExternalDependencyLoader;
 
-	public class ParamDataHelper {
-		private var dToken:AsyncDependencyToken;
+	public class ParamDataHelper implements IExternalDependencyLoader {
+		private var dToken:ExternalDependencyToken;
 		private var httpService:HTTPService;
 
 		private function success( data:ResultEvent ):void {
@@ -21,7 +22,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases.helper {
 			//dToken.notifyFault();
 		}
 		
-		public function send():AsyncDependencyToken {
+		public function retrieveDependency( testClass:Class ):ExternalDependencyToken {
 			var token:AsyncToken = httpService.send();
 			token.addResponder( new Responder( success, failure ) );
 
@@ -32,7 +33,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases.helper {
 			httpService = new HTTPService();
 			httpService.url = url;
 
-			dToken = new AsyncDependencyToken();
+			dToken = new ExternalDependencyToken();
 		}
 	}
 }

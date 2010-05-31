@@ -33,28 +33,39 @@ package org.flexunit.runners
 {	
 	import flex.lang.reflect.Field;
 	
-	import org.flexunit.internals.builders.AllDefaultPossibilitiesBuilder;
-	import org.flexunit.internals.dependency.AsyncDependencyResolver;
+	import org.flexunit.internals.dependency.ExternalDependencyResolver;
+	import org.flexunit.internals.dependency.IExternalDependencyResolver;
+	import org.flexunit.internals.dependency.IExternalRunnerDependencyWatcher;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
+	import org.flexunit.runner.external.IExternalDependencyRunner;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runners.model.FrameworkMethod;
 	import org.flexunit.runners.model.IRunnerBuilder;
 	import org.flexunit.token.AsyncTestToken;
 	
-	public class Parameterized extends ParentRunner {
+	public class Parameterized extends ParentRunner implements IExternalDependencyRunner {
 		private var runners:Array;
 		private var klass:Class;
+		private var dr:IExternalDependencyResolver;
+		private var _dependencyWatcher:IExternalRunnerDependencyWatcher;
+		private var dependencyDataWatchers:Array;
+
+		public function set dependencyWatcher( value:IExternalRunnerDependencyWatcher ):void {
+			_dependencyWatcher = value;
+			
+			if ( value && dr ) {
+				value.watchDependencyResolver( dr );	
+			}
+		}
 		
 		//Blank constructor means the old 0/1 error
 		public function Parameterized(klass:Class) {
 			super(klass);
 			this.klass = klass;
 			
-			//Not sure I like this here, but it does save us another whole lookup for the RunWith
-			var dr:AsyncDependencyResolver = new AsyncDependencyResolver( klass );
-			var dependencies:Boolean = dr.lookForUnresolvedDependencies();
-			//dr.addEventListener( "complete", handleComplete, false, 0, true );
+			dr = new ExternalDependencyResolver( klass );
+			dr.resolveDependencies();
 		}
 		
 		private function buildRunners():Array {
@@ -131,6 +142,7 @@ import flex.lang.reflect.Klass;
 import flex.lang.reflect.Method;
 import flex.lang.reflect.metadata.MetaDataArgument;
 
+import org.flexunit.internals.runners.InitializationError;
 import org.flexunit.runner.Description;
 import org.flexunit.runner.IDescription;
 import org.flexunit.runners.BlockFlexUnit4ClassRunner;
@@ -207,7 +219,12 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 		}
 		
 		var params:Array = computeParams();
-		var paramName:String = params.join ( "_" );
+		
+/*		if ( !params ) {
+			throw new InitializationError( "Parameterized runner has not been provided data" );
+		}*/
+
+		var paramName:String = params?params.join ( "_" ):"Missing Params";
 		var method:FrameworkMethod = FrameworkMethod( child );
 		return Description.createTestDescription( testClass.asClass, method.name + '_' + paramName, method.metadata );
 	}

@@ -32,7 +32,7 @@ package org.flexunit.runner {
 	
 	import org.flexunit.IncludeFlexClasses;
 	import org.flexunit.experimental.theories.Theories;
-	import org.flexunit.internals.dependency.AsyncDependencyResolver;
+	import org.flexunit.internals.dependency.ExternalRunnerDependencyWatcher;
 	import org.flexunit.runner.notification.Failure;
 	import org.flexunit.runner.notification.IAsyncStartupRunListener;
 	import org.flexunit.runner.notification.IRunListener;
@@ -40,10 +40,11 @@ package org.flexunit.runner {
 	import org.flexunit.runner.notification.RunListener;
 	import org.flexunit.runner.notification.RunNotifier;
 	import org.flexunit.runner.notification.async.AsyncListenerWatcher;
-	import org.flexunit.token.AsyncListenersToken;
+	import org.flexunit.token.AsyncCoreStartupToken;
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.utils.ClassNameUtil;
+	import org.flexunit.runner.external.IExternalDependencyRunner;
 
 	[Event(type="testsComplete", type="flash.events.Event")]
 	[Event(type="runnerStart", type="flash.events.Event")]
@@ -101,6 +102,10 @@ package org.flexunit.runner {
 		 * @private
 		 */
 		private var notifier:IRunNotifier;
+		
+		
+		private var runnerExternalDependencyWatcher:ExternalRunnerDependencyWatcher;
+		
 		/**
 		 * @private
 		 */
@@ -237,16 +242,34 @@ package org.flexunit.runner {
 		 * @param runner The <code>IRunner</code> to use for this test run.
 		 */
 		public function runRunner( runner:IRunner ):void {
-			if ( asyncListenerWatcher.allListenersReady ) {
+			
+			if ( runner is IExternalDependencyRunner ) {
+				( runner as IExternalDependencyRunner ).dependencyWatcher = runnerExternalDependencyWatcher; 
+			}
+
+			if ( runnerExternalDependencyWatcher.allDependenciesResolved && asyncListenerWatcher.allListenersReady ) {
 				beginRunnerExecution( runner );
-			} else {
-				//we need to wait until all listeners are ready (or failed) before we can continue
-				var token:AsyncListenersToken = asyncListenerWatcher.startUpToken;
-				token.runner = runner;
-				token.addNotificationMethod( beginRunnerExecution );
+			} else {				
+				if ( !asyncListenerWatcher.allListenersReady ) {
+					//we need to wait until all listeners are ready (or failed) before we can continue
+					var tokenListeners:AsyncCoreStartupToken = asyncListenerWatcher.startUpToken;
+					tokenListeners.runner = runner;
+					tokenListeners.addNotificationMethod( verifyRunnerCanBegin );
+				}
+				
+				if ( !runnerExternalDependencyWatcher.allDependenciesResolved ) {
+					var tokenRunners:AsyncCoreStartupToken = runnerExternalDependencyWatcher.token;
+					tokenRunners.runner = runner;
+					tokenRunners.addNotificationMethod( verifyRunnerCanBegin );
+				} 
 			}
 		}
 		
+		protected function verifyRunnerCanBegin( runner:IRunner ):void {
+			if ( runnerExternalDependencyWatcher.allDependenciesResolved && asyncListenerWatcher.allListenersReady ) {
+				beginRunnerExecution( runner );
+			}
+		}
 		/**
 		 * Starts the execution of the <code>IRunner</code>.
 		 */
@@ -332,6 +355,8 @@ package org.flexunit.runner {
 		 */
 		public function FlexUnitCore() {
 			notifier = new RunNotifier();
+
+			runnerExternalDependencyWatcher = new ExternalRunnerDependencyWatcher();
 			
 			asyncListenerWatcher = new AsyncListenerWatcher( notifier, null );
 		}

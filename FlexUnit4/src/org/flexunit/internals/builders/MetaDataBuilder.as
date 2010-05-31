@@ -31,7 +31,6 @@ package org.flexunit.internals.builders {
 	import flex.lang.reflect.Klass;
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
-	import org.flexunit.internals.dependency.AsyncDependencyResolver;
 	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runners.model.IRunnerBuilder;

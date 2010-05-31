@@ -15,7 +15,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	
 	import org.flexunit.Assert;
 	import org.flexunit.async.Async;
-	import org.flexunit.internals.dependency.AsyncDependencyToken;
+	import org.flexunit.runner.external.ExternalDependencyToken;
 	import org.flexunit.runners.Parameterized;
 	
 	[RunWith("org.flexunit.runners.Parameterized")]
@@ -23,17 +23,14 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	{
 		private var foo:Parameterized;
 
-		public static function getMeSomedataPoints():AsyncDependencyToken {
-			var helper:ParamDataHelper = new ParamDataHelper( "http://www.digitalprimates.net/" ); 
-			return helper.send();
-		}
+		public static var dataRetriever1:ParamDataHelper = new ParamDataHelper( "http://www.digitalprimates.net/" );
+		public static var dataRetriever2:ParamDataHelper = new ParamDataHelper( "http://www.digitalprimates.net/" );
 
-		[Parameters(method="getMeSomedataPoints")]
+		[Parameters(loader="dataRetriever1")]
 		public static var someData:Array;
 
-		[Parameters(method="getMeSomedataPoints")]
+		[Parameters(loader="dataRetriever2")]
 		public static var someData2:Array;
-
 
 /*		[Parameters]
 		public static function data1():Array {
