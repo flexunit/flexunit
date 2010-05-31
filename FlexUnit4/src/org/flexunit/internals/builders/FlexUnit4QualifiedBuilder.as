@@ -4,14 +4,11 @@ package org.flexunit.internals.builders
 	import flex.lang.reflect.Method;
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
+	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runners.model.TestClass;
 
-	public class FlexUnit4QualifiedBuilder extends FlexUnit4Builder
-	{
-		
-		public static const TEST:String = "Test";
-		
+	public class FlexUnit4QualifiedBuilder extends FlexUnit4Builder {
 		override public function canHandleClass(testClass:Class):Boolean {
 			var klassInfo:Klass = new Klass( testClass );
 			
@@ -23,7 +20,7 @@ package org.flexunit.internals.builders
 			var arrayLen:int = methods.length;
 			
 			for(var i:int = 0; i < arrayLen; i++) {
-				if( (methods[i] as Method).hasMetaData(TEST) )
+				if( (methods[i] as Method).hasMetaData( AnnotationConstants.TEST ) )
 					return true;
 			}
 			return false;

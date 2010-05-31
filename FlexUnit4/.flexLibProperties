@@ -160,6 +160,8 @@
     <classEntry path="org.flexunit.runner.external.IExternalDependencyLoader"/>
     <classEntry path="org.flexunit.internals.dependency.IExternalRunnerDependencyWatcher"/>
     <classEntry path="org.flexunit.internals.dependency.IExternalDependencyResolver"/>
+    <classEntry path="org.flexunit.constants.AnnotationArgumentConstants"/>
+    <classEntry path="org.flexunit.constants.AnnotationConstants"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

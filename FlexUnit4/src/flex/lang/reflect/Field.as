@@ -28,6 +28,8 @@
 package flex.lang.reflect {
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
+	import org.flexunit.constants.AnnotationConstants;
+	
 	/**
 	 * Helper class designed to break down individual XML variables to ease processing in
 	 * FlexUnit.  Fields consist of the fieldXML, the class defining the field, the variable type
@@ -112,7 +114,7 @@ package flex.lang.reflect {
 				return _elementType;
 			}
 			
-			var metaDataAnnotation:MetaDataAnnotation = getMetaData( "ArrayElementType" );
+			var metaDataAnnotation:MetaDataAnnotation = getMetaData( AnnotationConstants.ARRAY_ELEMENT_TYPE );
 			if ( ( type == Array ) && metaDataAnnotation && metaDataAnnotation.defaultArgument ) {
 				//we are an array at least, so let's go further;
 				var meta:String = metaDataAnnotation.defaultArgument.key;

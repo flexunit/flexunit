@@ -33,6 +33,7 @@ package org.flexunit.runners
 {	
 	import flex.lang.reflect.Field;
 	
+	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.internals.dependency.ExternalDependencyResolver;
 	import org.flexunit.internals.dependency.IExternalDependencyResolver;
 	import org.flexunit.internals.dependency.IExternalRunnerDependencyWatcher;
@@ -109,12 +110,12 @@ package org.flexunit.runners
 		}
 		
 		private function getParametersMethods(klass:Class):Array {
-			var methods:Array = testClass.getMetaDataMethods("Parameters");
+			var methods:Array = testClass.getMetaDataMethods( AnnotationConstants.PARAMETERS );
 			return methods;
 		}
 
 		private function getParametersFields(klass:Class):Array {
-			var fields:Array = testClass.getMetaDataFields( "Parameters", true );
+			var fields:Array = testClass.getMetaDataFields( AnnotationConstants.PARAMETERS, true );
 			return fields;
 		}
 
@@ -143,6 +144,8 @@ import flex.lang.reflect.Klass;
 import flex.lang.reflect.Method;
 import flex.lang.reflect.metadata.MetaDataArgument;
 
+import org.flexunit.constants.AnnotationArgumentConstants;
+import org.flexunit.constants.AnnotationConstants;
 import org.flexunit.internals.runners.InitializationError;
 import org.flexunit.runner.Description;
 import org.flexunit.runner.IDescription;
@@ -159,12 +162,12 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 	private var constructorParameterized:Boolean = false;
 	
 	private function buildExpandedTestList():Array {
-		var testMethods:Array = testClass.getMetaDataMethods( "Test" );
+		var testMethods:Array = testClass.getMetaDataMethods( AnnotationConstants.TEST );
 		var finalArray:Array = new Array();
 		
 		for ( var i:int=0; i<testMethods.length; i++ ) {
 			var fwMethod:FrameworkMethod = testMethods[ i ];
-			var argument:MetaDataArgument = fwMethod.method.getMetaData( "Test" ).getArgument( "dataProvider" );
+			var argument:MetaDataArgument = fwMethod.method.getMetaData( AnnotationConstants.TEST ).getArgument( AnnotationArgumentConstants.DATAPROVIDER );
 			var classMethod:Method;
 			var field:Field;
 			var results:Array;
@@ -217,7 +220,7 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 			eachTestMethod = methods[ i ] as FrameworkMethod;
 			
 			//Does it have a dataProvider?
-			argument = eachTestMethod.method.getMetaData( "Test" ).getArgument( "dataProvider" );
+			argument = eachTestMethod.method.getMetaData( AnnotationConstants.TEST ).getArgument( AnnotationArgumentConstants.DATAPROVIDER );
 			
 			//If there is an argument, we need to punt on verification of arguments until later when we know how many there actually are
 			if ( !argument ) {

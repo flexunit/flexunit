@@ -36,6 +36,8 @@ package org.flexunit.internals.dependency {
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	import flex.lang.reflect.metadata.MetaDataArgument;
 	
+	import org.flexunit.constants.AnnotationArgumentConstants;
+	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.internals.builders.MetaDataBuilder;
 	import org.flexunit.runner.external.ExternalDependencyToken;
 	import org.flexunit.runner.external.IExternalDependencyLoader;
@@ -83,10 +85,10 @@ package org.flexunit.internals.dependency {
 				targetField = targetFields[ i ] as Field;
 				
 				if ( targetField.isStatic ) {
-					metaDataAnnotation = targetField.getMetaData( "Parameters" );
+					metaDataAnnotation = targetField.getMetaData( AnnotationConstants.PARAMETERS );
 					
 					if ( !metaDataAnnotation ) {
-						metaDataAnnotation = targetField.getMetaData( "DataPoints" );
+						metaDataAnnotation = targetField.getMetaData( AnnotationConstants.DATA_POINTS );
 					}
 					
 					if ( metaDataAnnotation ) {
@@ -95,7 +97,7 @@ package org.flexunit.internals.dependency {
 						for ( var j:int=0 ; j<arguments.length; j++ ) {
 							argument = arguments[ j ] as MetaDataArgument;
 							
-							if ( argument.key == "loader" ) {
+							if ( argument.key == AnnotationArgumentConstants.LOADER ) {
 								loaderFieldName = argument.value;
 								break;
 							}

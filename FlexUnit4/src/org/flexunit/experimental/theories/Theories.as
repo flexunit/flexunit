@@ -29,6 +29,7 @@ package org.flexunit.experimental.theories {
 	import flex.lang.reflect.Field;
 	import flex.lang.reflect.Klass;
 	
+	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.experimental.runners.statements.TheoryAnchor;
 	import org.flexunit.internals.dependency.ExternalDependencyResolver;
 	import org.flexunit.internals.dependency.IExternalDependencyResolver;
@@ -148,7 +149,7 @@ package org.flexunit.experimental.theories {
 		 */
 		override protected function computeTestMethods():Array {
 			var testMethods:Array = super.computeTestMethods();
-			var theoryMethods:Array = testClass.getMetaDataMethods( "Theory" );
+			var theoryMethods:Array = testClass.getMetaDataMethods( AnnotationConstants.THEORY );
 			
 			removeFromArray( testMethods, theoryMethods );
 			testMethods = testMethods.concat( theoryMethods );
