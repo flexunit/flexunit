@@ -47,6 +47,8 @@ package org.flexunit.runners {
 	import org.flexunit.runner.manipulation.IFilterable;
 	import org.flexunit.runner.manipulation.ISorter;
 	import org.flexunit.runner.manipulation.OrderArgumentPlusInheritanceSorter;
+	import org.flexunit.runner.manipulation.fields.FieldMetaDataSorter;
+	import org.flexunit.runner.manipulation.fields.IFieldSorter;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runners.model.FrameworkMethod;
 	import org.flexunit.token.AsyncTestToken;
@@ -362,14 +364,18 @@ package org.flexunit.runners {
 		
 		/**
 		 * Potentially returns a new <code>IAsyncStatement</code> defined by the user on the testcase via the Rule metadata.
+		 * This needs to be factored to a new class
 		 */
 		protected function withPotentialRules( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
 			var ruleFields:Array = testClass.getMetaDataFields( AnnotationConstants.RULE );
 			var rule:IMethodRule;
 			var ruleField:Field;
 
+			//Should be facotred to a common sorter implementation
+			var fieldSorter:IFieldSorter = new FieldMetaDataSorter( true );
+
 			//Sort the rules array
-			//methodRules.sort(compare);
+			ruleFields.sort( fieldSorter.compare );
 			
 			for ( var i:int=0; i<ruleFields.length; i++ ) {
 				ruleField = ruleFields[ i ] as Field;

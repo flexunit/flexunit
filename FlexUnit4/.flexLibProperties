@@ -162,6 +162,8 @@
     <classEntry path="org.flexunit.internals.dependency.IExternalDependencyResolver"/>
     <classEntry path="org.flexunit.constants.AnnotationArgumentConstants"/>
     <classEntry path="org.flexunit.constants.AnnotationConstants"/>
+    <classEntry path="org.flexunit.runner.manipulation.fields.FieldMetaDataSorter"/>
+    <classEntry path="org.flexunit.runner.manipulation.fields.IFieldSorter"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
