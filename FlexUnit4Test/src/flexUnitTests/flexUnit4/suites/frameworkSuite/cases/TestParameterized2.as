@@ -2,6 +2,8 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.helper.ParamDataHelper;
+	
 	import net.digitalprimates.fluint.async.AsyncHandler;
 	
 	import org.flexunit.Assert;
@@ -13,10 +15,10 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 	public class TestParameterized2 {
 		private var foo:Parameterized;
 		
-		public static function dataTwo():Array {
-			//need to deal with this circumstance better -> throw new Error("Blah");
-			return [ [ 0, 0 ], [ 1, 2 ], [ 2, 4 ] ];
-		}
+		public static var dataRetriever1:ParamDataHelper = new ParamDataHelper( "http://www.digitalprimates.net/" );
+		
+		[DataPoints(loader="dataRetriever1")]
+		public static var dataTwo:Array;
 
 		public static function dataThree():Array {
 			//need to deal with this circumstance better -> throw new Error("Blah");

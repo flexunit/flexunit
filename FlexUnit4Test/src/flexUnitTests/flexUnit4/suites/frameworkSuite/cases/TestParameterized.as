@@ -24,26 +24,16 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 		private var foo:Parameterized;
 
 		public static var dataRetriever1:ParamDataHelper = new ParamDataHelper( "http://www.digitalprimates.net/" );
-		public static var dataRetriever2:ParamDataHelper = new ParamDataHelper( "http://www.digitalprimates.net/" );
 
 		[Parameters(loader="dataRetriever1")]
 		public static var someData:Array;
-
-		[Parameters(loader="dataRetriever2")]
-		public static var someData2:Array;
-
-/*		[Parameters]
-		public static function data1():Array {
-			//need to deal with this circumstance better -> throw new Error("Blah");
-			return [ [ 0, 0 ], [ 1, 2 ], [ 2, 4 ] ];
-		}
 
 		[Parameters]
 		public static function data2():Array {
 			//need to deal with this circumstance better -> throw new Error("Blah");
 			return [ [ 3, 6 ], [ 4, 8 ], [ 5, 10 ], [ 6, 12 ] ];
 		}
-*/
+
 		private var _input:int;
 		
 		private var _expected:int;

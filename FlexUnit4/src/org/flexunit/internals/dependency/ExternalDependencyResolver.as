@@ -55,23 +55,29 @@ package org.flexunit.internals.dependency {
 			for ( var i:int=0; i<targetFields.length; i++ ) {
 				targetField = targetFields[ i ] as Field;
 				
-				if ( targetField.isStatic && targetField.hasMetaData( "Parameters" ) ) {
+				if ( targetField.isStatic ) {
 					metaDataAnnotation = targetField.getMetaData( "Parameters" );
 					
-					arguments = metaDataAnnotation.arguments;
-					
-					for ( var j:int=0 ; j<arguments.length; j++ ) {
-						argument = arguments[ j ] as MetaDataArgument;
-						
-						if ( argument.key == "loader" ) {
-							loaderFieldName = argument.value;
-							break;
-						}
+					if ( !metaDataAnnotation ) {
+						metaDataAnnotation = targetField.getMetaData( "DataPoints" );
 					}
 					
-					loaderField = klassInfo.getField( loaderFieldName );
-					executeDependencyLoader( loaderField, targetField );
-					counter++;
+					if ( metaDataAnnotation ) {
+						arguments = metaDataAnnotation.arguments;
+						
+						for ( var j:int=0 ; j<arguments.length; j++ ) {
+							argument = arguments[ j ] as MetaDataArgument;
+							
+							if ( argument.key == "loader" ) {
+								loaderFieldName = argument.value;
+								break;
+							}
+						}
+						
+						loaderField = klassInfo.getField( loaderFieldName );
+						executeDependencyLoader( loaderField, targetField );
+						counter++;
+					}
 				}
 			}
 			

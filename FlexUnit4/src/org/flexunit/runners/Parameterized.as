@@ -138,6 +138,7 @@ package org.flexunit.runners
 	}
 }
 
+import flex.lang.reflect.Field;
 import flex.lang.reflect.Klass;
 import flex.lang.reflect.Method;
 import flex.lang.reflect.metadata.MetaDataArgument;
@@ -165,12 +166,24 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 			var fwMethod:FrameworkMethod = testMethods[ i ];
 			var argument:MetaDataArgument = fwMethod.method.getMetaData( "Test" ).getArgument( "dataProvider" );
 			var classMethod:Method;
+			var field:Field;
 			var results:Array;
 			var paramMethod:ParameterizedMethod;
 			
 			if ( argument ) {
 				classMethod = klassInfo.getMethod( argument.value ); 
-				results = classMethod.invoke( testClass ) as Array;
+				
+				if ( classMethod ) {
+					results = classMethod.invoke( testClass ) as Array;
+				} else {
+					field = klassInfo.getField( argument.value );
+					
+					if ( field ) {
+						var ar:Array = field.getObj(null) as Array;
+						results = new Array();
+						results = results.concat( ar );
+					}
+				}
 				
 				for ( var j:int=0; j<results.length; j++ ) {
 					paramMethod = new ParameterizedMethod( fwMethod.method, results[ j ] );
