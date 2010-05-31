@@ -30,7 +30,11 @@ package org.flexunit.experimental.theories {
 	import flex.lang.reflect.Klass;
 	
 	import org.flexunit.experimental.runners.statements.TheoryAnchor;
+	import org.flexunit.internals.dependency.ExternalDependencyResolver;
+	import org.flexunit.internals.dependency.IExternalDependencyResolver;
+	import org.flexunit.internals.dependency.IExternalRunnerDependencyWatcher;
 	import org.flexunit.internals.runners.statements.IAsyncStatement;
+	import org.flexunit.runner.external.IExternalDependencyRunner;
 	import org.flexunit.runners.BlockFlexUnit4ClassRunner;
 	import org.flexunit.runners.model.FrameworkMethod;
 	
@@ -56,8 +60,11 @@ package org.flexunit.experimental.theories {
 	 * 
 	 * </pre>
 	 */
-	public class Theories extends BlockFlexUnit4ClassRunner {
-		
+	public class Theories extends BlockFlexUnit4ClassRunner implements IExternalDependencyRunner {
+
+		private var dr:IExternalDependencyResolver;
+		private var _dependencyWatcher:IExternalRunnerDependencyWatcher;
+
 		/**
 		 * Constructor.
 		 * 
@@ -65,8 +72,19 @@ package org.flexunit.experimental.theories {
 		 */
 		public function Theories( klass:Class ) {
 			super( klass );
+
+			dr = new ExternalDependencyResolver( klass );
+			dr.resolveDependencies();
 		}
 		
+		public function set dependencyWatcher( value:IExternalRunnerDependencyWatcher ):void {
+			_dependencyWatcher = value;
+			
+			if ( value && dr ) {
+				value.watchDependencyResolver( dr );	
+			}
+		}
+
 		/**
 		 * @inheritDoc
 		 */
