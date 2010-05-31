@@ -113,6 +113,11 @@ package org.flexunit.runners {
 			}
 		}
 		
+		public function set externalDependencyError( value:String ):void {
+			//do nothing... suites don't actually have externalDependencies.. 
+			//they just need to pass this along
+		}
+		
 		/**
 		 * Returns an array of non-static class feilds in the provided <code>suite</code> class.
 		 * 

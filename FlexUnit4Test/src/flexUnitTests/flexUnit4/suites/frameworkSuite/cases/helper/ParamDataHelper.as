@@ -17,9 +17,9 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases.helper {
 		}
 		
 		private function failure( info:FaultEvent ):void {
-			var fakeData:Array = [ [ 0, 0 ], [ 1, 2 ], [ 2, 4 ] ];
-			dToken.notifyResult( fakeData );
-			//dToken.notifyFault();
+			//var fakeData:Array = [ [ 0, 0 ], [ 1, 2 ], [ 2, 4 ] ];
+			//dToken.notifyResult( fakeData );
+			dToken.notifyFault( info.fault.message );
 		}
 		
 		public function retrieveDependency( testClass:Class ):ExternalDependencyToken {

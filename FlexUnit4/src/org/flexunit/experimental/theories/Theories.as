@@ -65,7 +65,9 @@ package org.flexunit.experimental.theories {
 
 		private var dr:IExternalDependencyResolver;
 		private var _dependencyWatcher:IExternalRunnerDependencyWatcher;
-
+		private var _externalDependencyError:String;
+		private var externalError:Boolean = false;
+		
 		/**
 		 * Constructor.
 		 * 
@@ -74,7 +76,7 @@ package org.flexunit.experimental.theories {
 		public function Theories( klass:Class ) {
 			super( klass );
 
-			dr = new ExternalDependencyResolver( klass );
+			dr = new ExternalDependencyResolver( klass, this );
 			dr.resolveDependencies();
 		}
 		
@@ -84,6 +86,11 @@ package org.flexunit.experimental.theories {
 			if ( value && dr ) {
 				value.watchDependencyResolver( dr );	
 			}
+		}
+
+		public function set externalDependencyError( value:String ):void {
+			externalError = true;
+			_externalDependencyError = value;
 		}
 
 		/**

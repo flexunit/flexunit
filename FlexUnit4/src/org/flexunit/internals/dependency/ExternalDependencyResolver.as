@@ -39,16 +39,20 @@ package org.flexunit.internals.dependency {
 	import org.flexunit.constants.AnnotationArgumentConstants;
 	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.internals.builders.MetaDataBuilder;
+	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.external.ExternalDependencyToken;
 	import org.flexunit.runner.external.IExternalDependencyLoader;
+	import org.flexunit.runner.external.IExternalDependencyRunner;
 
 	public class ExternalDependencyResolver extends EventDispatcher implements IExternalDependencyResolver {
 		public static const ALL_DEPENDENCIES_FOR_RUNNER_RESOLVED:String = "runnerDependenciesResolved";
+		public static const DEPENDENCY_FOR_RUNNER_FAILED:String = "runnerDependencyFailed";
 
 		//just used to check if they are a RunWith class
 		private static var metaDataBuilder:MetaDataBuilder;
 		private var clazz:Class;
 		private var dependencyMap:Dictionary;
+		private var runner:IExternalDependencyRunner;
 		
 		public function get ready():Boolean {
 			return ( keyCount == 0 );
@@ -134,30 +138,40 @@ package org.flexunit.internals.dependency {
 			}
 			
 			manageResponseCleanup( token );
+
+			if ( keyCount == 0 ) {
+				//all done
+				dispatchEvent( new Event( ALL_DEPENDENCIES_FOR_RUNNER_RESOLVED ) );
+			}
 		} 
 		
-		public function dependencyFailed( token:ExternalDependencyToken, error:Object ):void {
-			manageResponseCleanup( token );
+		public function dependencyFailed( token:ExternalDependencyToken, errorMessage:String ):void {
+			
+			//Okay, badness.. stop listening to all outstanding requests
+			for ( var key:* in dependencyMap ) {
+				var foundToken:ExternalDependencyToken = key as ExternalDependencyToken;
+				manageResponseCleanup( foundToken );
+			} 
+			
+			runner.externalDependencyError = errorMessage;
+
+			dispatchEvent( new Event( DEPENDENCY_FOR_RUNNER_FAILED ) );
 		}
 
 		private function manageResponseCleanup( token:ExternalDependencyToken ):void {
 			token.removeResolver( this );
 			
 			delete dependencyMap[ token ];
-			
-			if ( keyCount == 0 ) {
-				//all done
-				dispatchEvent( new Event( ALL_DEPENDENCIES_FOR_RUNNER_RESOLVED ) );
-			}
 		}
 
 		private function shouldResolveClass():Boolean {
 			 return metaDataBuilder.canHandleClass( clazz );
 		}
 		
-		public function ExternalDependencyResolver( clazz:Class ) {
+		public function ExternalDependencyResolver( clazz:Class, runner:IExternalDependencyRunner ) {
 			this.clazz = clazz;
 			this.dependencyMap = new Dictionary();
+			this.runner = runner;
 
 			if ( !metaDataBuilder ) {
 				metaDataBuilder = new MetaDataBuilder(null);

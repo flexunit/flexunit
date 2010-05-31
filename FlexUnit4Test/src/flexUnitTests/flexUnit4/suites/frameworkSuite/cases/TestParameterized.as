@@ -30,7 +30,6 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 
 		[Parameters]
 		public static function data2():Array {
-			//need to deal with this circumstance better -> throw new Error("Blah");
 			return [ [ 3, 6 ], [ 4, 8 ], [ 5, 10 ], [ 6, 12 ] ];
 		}
 

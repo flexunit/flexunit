@@ -56,12 +56,12 @@ package org.flexunit.internals.dependency {
 		
 		protected function monitorForDependency( dr:IExternalDependencyResolver ):void {
 			dr.addEventListener( ExternalDependencyResolver.ALL_DEPENDENCIES_FOR_RUNNER_RESOLVED, handleRunnerReady );
-			//runner.addEventListener( RUNNER_FAILED, handleRunnerFailed );
+			dr.addEventListener( ExternalDependencyResolver.DEPENDENCY_FOR_RUNNER_FAILED, handleRunnerFailed );
 		}
 		
 		protected function cleanupListeners( dr:IExternalDependencyResolver ):void {
 			dr.removeEventListener( ExternalDependencyResolver.ALL_DEPENDENCIES_FOR_RUNNER_RESOLVED, handleRunnerReady );
-			//runner.removeEventListener( RUNNER_FAILED, handleRunnerFailed );
+			dr.removeEventListener( ExternalDependencyResolver.DEPENDENCY_FOR_RUNNER_FAILED, handleRunnerFailed );
 		}
 		
 		protected function sendReadyNotification():void {

@@ -34,6 +34,6 @@ package org.flexunit.internals.dependency {
 		function get ready():Boolean;
 		function resolveDependencies():Boolean;
 		function dependencyResolved( token:ExternalDependencyToken, data:Object ):void;			
-		function dependencyFailed( token:ExternalDependencyToken, error:Object ):void;
+		function dependencyFailed( token:ExternalDependencyToken, errorMessage:String ):void;
 	}
 }

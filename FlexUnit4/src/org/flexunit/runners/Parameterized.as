@@ -37,6 +37,8 @@ package org.flexunit.runners
 	import org.flexunit.internals.dependency.ExternalDependencyResolver;
 	import org.flexunit.internals.dependency.IExternalDependencyResolver;
 	import org.flexunit.internals.dependency.IExternalRunnerDependencyWatcher;
+	import org.flexunit.internals.runners.ErrorReportingRunner;
+	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.external.IExternalDependencyRunner;
@@ -51,6 +53,8 @@ package org.flexunit.runners
 		private var dr:IExternalDependencyResolver;
 		private var _dependencyWatcher:IExternalRunnerDependencyWatcher;
 		private var dependencyDataWatchers:Array;
+		private var _externalDependencyError:String;
+		private var externalError:Boolean = false;
 
 		public function set dependencyWatcher( value:IExternalRunnerDependencyWatcher ):void {
 			_dependencyWatcher = value;
@@ -60,25 +64,40 @@ package org.flexunit.runners
 			}
 		}
 		
+		public function set externalDependencyError( value:String ):void {
+			externalError = true;
+			_externalDependencyError = value;
+		}
+		
 		//Blank constructor means the old 0/1 error
 		public function Parameterized(klass:Class) {
 			super(klass);
 			this.klass = klass;
 			
-			dr = new ExternalDependencyResolver( klass );
+			dr = new ExternalDependencyResolver( klass, this );
 			dr.resolveDependencies();
 		}
-		
+
+		private function buildErrorRunner( message:String ):Array {
+			return [new ErrorReportingRunner( klass, new Error("There was an error retrieving the parameters for the testcase: cause " + message ) ) ];			
+		}
+
 		private function buildRunners():Array {
 			var runners:Array = new Array();
-			var parametersList:Array = getParametersList(klass);
-			
-			if ( parametersList.length == 0 ) {
-				runners.push(new TestClassRunnerForParameters(klass));
-			} else {
-				for (var i:int= 0; i < parametersList.length; i++) {
-					runners.push(new TestClassRunnerForParameters(klass,parametersList, i));
+
+			try {
+				var parametersList:Array = getParametersList(klass);
+				if ( parametersList.length == 0 ) {
+					runners.push(new TestClassRunnerForParameters(klass));
+				} else {
+					for (var i:int= 0; i < parametersList.length; i++) {
+						runners.push(new TestClassRunnerForParameters(klass,parametersList, i));
+					}
 				}
+			}
+			
+			catch ( error:Error ) {
+				runners = buildErrorRunner( error.message );
 			}
 			
 			return runners;
@@ -122,7 +141,11 @@ package org.flexunit.runners
 		// begin Items copied from Suite
 		override protected function get children():Array {
 			if ( !runners ) {
-				runners = buildRunners();
+				if ( !externalError ) {
+					runners = buildRunners();	
+				} else {
+					runners = buildErrorRunner( _externalDependencyError );
+				}
 			}
 
 			return runners;

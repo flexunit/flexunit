@@ -49,8 +49,8 @@ package org.flexunit.runner.external {
 			resolver.dependencyResolved( this, data );			
 		}
 
-		public function notifyFault( error:Object ):void {
-			resolver.dependencyFailed( this, error );
+		public function notifyFault( errorMessage:String ):void {
+			resolver.dependencyFailed( this, errorMessage );
 		}
 
 		public function ExternalDependencyToken( ) {

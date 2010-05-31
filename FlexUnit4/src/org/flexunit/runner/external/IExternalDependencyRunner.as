@@ -33,5 +33,6 @@ package org.flexunit.runner.external {
 
 	public interface IExternalDependencyRunner extends IRunner {
 		function set dependencyWatcher( value:IExternalRunnerDependencyWatcher ):void;
+		function set externalDependencyError( value:String ):void;
 	}
 }
