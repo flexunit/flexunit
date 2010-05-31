@@ -23,7 +23,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	{
 		private var foo:Parameterized;
 
-		public static var dataRetriever1:ParamDataHelper = new ParamDataHelper( "http://www.digitalprimates.net/" );
+		public static var dataRetriever1:ParamDataHelper = new ParamDataHelper( "someFakeDataPath.stuff" );
 
 		[Parameters(loader="dataRetriever1")]
 		public static var someData:Array;

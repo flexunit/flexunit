@@ -15,7 +15,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 	public class TestParameterized2 {
 		private var foo:Parameterized;
 		
-		public static var dataRetriever1:ParamDataHelper = new ParamDataHelper( "http://www.digitalprimates.net/" );
+		public static var dataRetriever1:ParamDataHelper = new ParamDataHelper( "PurelyFakeExample.xml" );
 		
 		[DataPoints(loader="dataRetriever1")]
 		public static var dataTwo:Array;
