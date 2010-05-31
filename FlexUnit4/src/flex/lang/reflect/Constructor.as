@@ -253,7 +253,9 @@ package flex.lang.reflect {
 		 */
 		public function newInstanceApply( params:Array ):Object {
 			var localParams:Array = params.slice();
-			if ( !canInstantiateWithParams( localParams ) ) {
+			var mapIndex : uint = Math.min( parameterTypes.length, localParams.length );
+			
+			if ( !canInstantiateWithParams( localParams ) || ( requiredArgNum > mapIndex ) ) {
 				throw new Error("Invalid number or type of arguments to contructor");
 			}    
 
@@ -261,7 +263,7 @@ package flex.lang.reflect {
 				throw new Error("Sorry, we can't support constructors with more than " + argMap.length + " args out of the box... yes, its dumb, take a look at Constructor.as to modify on your own");
 			}
 			
-			var generator:Function = argMap[ parameterTypes.length ];
+			var generator:Function = argMap[ mapIndex ];
 			localParams.unshift( _klass.classDef );
 			
 			return generator.apply( null, localParams );
