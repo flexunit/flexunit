@@ -62,7 +62,12 @@ package org.flexunit.runner.notification.mocks
 		{
 			mock.removeListener(listener);
 		}
-		
+
+		public function pleaseStop():void
+		{
+			mock.pleaseStop();
+		}
+
 		public function RunNotifierMock()
 		{
 			mock = new Mock( this, true );

@@ -60,7 +60,7 @@ package flex.lang.reflect {
 		 */
 		private var _name:String;
 		/**
-		 * Retrieves the name associated with the constructor.  Currently unused.
+		 * Retrieves the name associated with the constructor. 
 		 */
 		public function get name():String {
 			return _name;
@@ -92,7 +92,7 @@ package flex.lang.reflect {
 		private var _parameterMetaData:Array = new Array();
 		
 		/**
-		 * Retrieves the parameterMetaData array.  Currently unused.
+		 * Retrieves the parameterMetaData array.  
 		 */
 		public function get parameterMetaData():Array {
 			return _parameterMetaData;
@@ -147,6 +147,8 @@ package flex.lang.reflect {
 						//did declare this particular field of type "*", in which case, we have no idea if all is well, or if we need the data
 						//so, we have to go through the longer loop here
 						_parameterTypes = ar;
+						//reset the number of required arguments as we are about to recompute this
+						requiredArgNum = 0;
 						ar = instantiateAndRegetParamTypes( typesList.length() );
 					}
 				}
@@ -250,18 +252,21 @@ package flex.lang.reflect {
 		 * @see #newInstance()
 		 */
 		public function newInstanceApply( params:Array ):Object {
-			if ( !canInstantiateWithParams( params ) ) {
+			var localParams:Array = params.slice();
+			var mapIndex : uint = Math.min( parameterTypes.length, localParams.length );
+			
+			if ( !canInstantiateWithParams( localParams ) || ( requiredArgNum > mapIndex ) ) {
 				throw new Error("Invalid number or type of arguments to contructor");
 			}    
 
-			if ( params.length > argMap.length ) {
+			if ( localParams.length > argMap.length ) {
 				throw new Error("Sorry, we can't support constructors with more than " + argMap.length + " args out of the box... yes, its dumb, take a look at Constructor.as to modify on your own");
 			}
 			
-			var generator:Function = argMap[ parameterTypes.length ];
-			params.unshift( _klass.classDef );
+			var generator:Function = argMap[ mapIndex ];
+			localParams.unshift( _klass.classDef );
 			
-			return generator.apply( null, params );
+			return generator.apply( null, localParams );
 			
 		}
 		

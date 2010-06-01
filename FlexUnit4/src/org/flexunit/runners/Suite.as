@@ -28,9 +28,11 @@
 package org.flexunit.runners {
 	import flex.lang.reflect.Klass;
 	
+	import org.flexunit.internals.dependency.IExternalRunnerDependencyWatcher;
 	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
+	import org.flexunit.runner.external.IExternalDependencyRunner;
 	import org.flexunit.runner.manipulation.IFilterable;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runners.model.IRunnerBuilder;
@@ -66,12 +68,14 @@ package org.flexunit.runners {
 	 * }
 	 * </code></pre>
 	 */
-	public class Suite extends ParentRunner implements IFilterable {
+	public class Suite extends ParentRunner implements IFilterable, IExternalDependencyRunner {
 		/**
 		 * @private
 		 */
 		private var _runners:Array;
-		
+
+		private var _dependencyWatcher:IExternalRunnerDependencyWatcher;
+
 		/**
 		 * @inheritDoc
 		 */
@@ -91,6 +95,27 @@ package org.flexunit.runners {
 		 */
 		override protected function runChild( child:*, notifier:IRunNotifier, childRunnerToken:AsyncTestToken ):void {
 			IRunner( child ).run( notifier, childRunnerToken );
+		}
+		
+		public function set dependencyWatcher( value:IExternalRunnerDependencyWatcher ):void {
+			var runner:IRunner;
+
+			_dependencyWatcher = value;
+			
+			if ( children ) {
+				for ( var i:int=0; i<children.length; i++ ) {
+					runner = children[ i ] as IRunner;
+					
+					if ( runner is IExternalDependencyRunner ) {
+						( runner as IExternalDependencyRunner ).dependencyWatcher = value;
+					}
+				}					
+			}
+		}
+		
+		public function set externalDependencyError( value:String ):void {
+			//do nothing... suites don't actually have externalDependencies.. 
+			//they just need to pass this along
 		}
 		
 		/**
@@ -166,7 +191,7 @@ package org.flexunit.runners {
 			//Fix for FXU-51
 			//Tests to see if suite actually has viable children. If it does not, it is considered an
 			//initialization error
-			if ( !error && classArray.length > 0) { //a class is specified as a Suite, but has no children
+			if ( !error && classArray.length > 0) { //a class is specified as a Suite, and has children
 				_runners = builder.runners( testClass, classArray );
 			} else if ( !error && classArray.length == 0 ) {
 				 throw new InitializationError("Empty test Suite!");

@@ -7,7 +7,7 @@ package org.flexunit.runner.notification.async.cases
 	import org.flexunit.runner.notification.mocks.AsyncCompletionRunListenerMock;
 	import org.flexunit.runner.notification.mocks.AsyncStartupRunListenerMock;
 	import org.flexunit.runner.notification.mocks.RunNotifierMock;
-	import org.flexunit.token.AsyncListenersToken;
+	import org.flexunit.token.AsyncCoreStartupToken;
 	import org.flexunit.runner.notification.async.AsyncListenerWatcher;
 
 	public class AsyncListenerWatcherCase
@@ -33,15 +33,15 @@ package org.flexunit.runner.notification.async.cases
 			loggerMock = null;
 		}
 		
-		[Test(description="Ensure that the startToken returns an instance of AsyncListenersToken")]
+		[Test(description="Ensure that the startToken returns an instance of AsyncCoreStartupToken")]
 		public function getStartUpTokenTest():void {
-			Assert.assertTrue( asyncListenerWatcher.startUpToken is AsyncListenersToken );
+			Assert.assertTrue( asyncListenerWatcher.startUpToken is AsyncCoreStartupToken );
 		}
 		
 		[Ignore]
-		[Test(description="Ensure that the completeToken returns an instance of AsyncListenersToken")]
+		[Test(description="Ensure that the completeToken returns an instance of AsyncCoreStartupToken")]
 		public function getCompleteToken():void {
-			Assert.assertTrue( asyncListenerWatcher.completeToken is AsyncListenersToken );
+			Assert.assertTrue( asyncListenerWatcher.completeToken is AsyncCoreStartupToken );
 		}
 		
 		[Test(description="Ensure that allListenersReady returns false when there are pending listeners")]

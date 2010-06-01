@@ -33,7 +33,7 @@
 	import org.flexunit.runner.notification.IAsyncCompletionRunListener;
 	import org.flexunit.runner.notification.IAsyncStartupRunListener;
 	import org.flexunit.runner.notification.IRunNotifier;
-	import org.flexunit.token.AsyncListenersToken;
+	import org.flexunit.token.AsyncCoreStartupToken;
 	
 	/**
 	 * The <code>AsyncListenerWatcher</code> is responsible for determing whether all
@@ -72,23 +72,23 @@
 		/**
 		 * @private
 		 */
-		private var _startToken:AsyncListenersToken;
+		private var _startToken:AsyncCoreStartupToken;
 		/**
 		 * @private
 		 */
-		private var _completeToken:AsyncListenersToken;
+		private var _completeToken:AsyncCoreStartupToken;
 		
 		/**
-		 * Returns the start up <code>AsyncListenersToken</code>
+		 * Returns the start up <code>AsyncCoreStartupToken</code>
 		 */
-		public function get startUpToken():AsyncListenersToken {
+		public function get startUpToken():AsyncCoreStartupToken {
 			return _startToken;
 		}
 		
 		/**
-		 * Returns the complete <code>AsyncListenersToken</code>
+		 * Returns the complete <code>AsyncCoreStartupToken</code>
 		 */
-		public function get completeToken():AsyncListenersToken {
+		public function get completeToken():AsyncCoreStartupToken {
 			return _completeToken;
 		}
 		
@@ -240,7 +240,7 @@
 		public function AsyncListenerWatcher( notifier:IRunNotifier, logger:* ) {
 			this.notifier = notifier;
 			//this.logger = logger;
-			this._startToken = new AsyncListenersToken();
+			this._startToken = new AsyncCoreStartupToken();
 		}
 	}
 }

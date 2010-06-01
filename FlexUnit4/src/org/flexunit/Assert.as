@@ -37,12 +37,12 @@ package org.flexunit
 		/**
 		 * @private
 		 */
-		public static var _assertCount:int = 0;
+		public static var _assertCount:uint = 0;
 		
 		/**
 		 * Returns the number of assertions that have been made
 		 */
-		public static function get assertionsMade() : Number {
+		public static function get assertionsMade() : uint {
 			return _assertCount;
 		}
 		

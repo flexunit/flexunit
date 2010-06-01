@@ -243,7 +243,8 @@ package org.flexunit.flexui.data
 		
       public function addTestRowToHierarchicalList(
                   description : IDescription, 
-                  failure : Failure, ignored:Boolean=false ) : TestFunctionRowData
+                  failure : Failure, ignored:Boolean=false, 
+				  runTime:Number=0, assertionsMade:uint=0 ) : TestFunctionRowData
       {
          var rowToAdd : TestFunctionRowData = new TestFunctionRowData();
          var parentRow : TestCaseData;
@@ -254,6 +255,8 @@ package org.flexunit.flexui.data
          rowToAdd.qualifiedClassName = descriptor.suite;
          rowToAdd.testMethodName = descriptor.method;
          rowToAdd.error = failure;
+		 rowToAdd.testTime = runTime;
+		 rowToAdd.assertionsMade = assertionsMade;
          
          if ( ignored ) {
          	rowToAdd.testIgnored = ignored;

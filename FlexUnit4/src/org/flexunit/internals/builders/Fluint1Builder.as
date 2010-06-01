@@ -48,6 +48,12 @@ package org.flexunit.internals.builders {
 	 */
 	public class Fluint1Builder extends RunnerBuilderBase {
 
+		
+		override public function canHandleClass(testClass:Class):Boolean {
+			var klassInfo:Klass = new Klass( testClass );
+			return isFluintSuiteOrCase(klassInfo);
+		}
+		
 		/**
 		 * Returns a <code>Fluint1ClassRunner</code> if the <code>testClass</code> is a Fluint suite or test case.
 		 * 
@@ -57,11 +63,7 @@ package org.flexunit.internals.builders {
 		 * otherwise, a value of <code>null</code> is returned.
 		 */
 		override public function runnerForClass( testClass:Class ):IRunner {
-			var klassInfo:Klass = new Klass( testClass );
-
-			if (isFluintSuiteOrCase(klassInfo))
-				return new Fluint1ClassRunner(testClass);
-			return null;
+			return new Fluint1ClassRunner(testClass);
 		}
 		
 		/**

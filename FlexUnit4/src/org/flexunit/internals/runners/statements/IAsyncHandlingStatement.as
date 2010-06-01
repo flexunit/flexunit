@@ -28,6 +28,8 @@
 package org.flexunit.internals.runners.statements
 {
 	import flash.events.Event;
+	import flash.events.FullScreenEvent;
+	import flash.net.Responder;
 	
 	import mx.rpc.IResponder;
 	
@@ -82,6 +84,26 @@ package org.flexunit.internals.runners.statements
 		 */
 		CONFIG::useFlexClasses
 		function asyncResponder( responder:*, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):IResponder;
+		
+		/**
+		 * Creates an <code>IAsyncNativeTestResponder</code> that pend and either call the <code>eventHandler</code> or the
+		 * <code>timeoutHandler</code>, passing the <code>passThroughData</code>, depending on whether the
+		 * <code>timeout</code> period has been reached.
+		 * 
+		 * @param resultHandler The result function that will be executed if the <code>Responder</code> is called before 
+		 * the <code>timeout</code> has expired.
+		 * @param faultHandler The fault function that will be executed if the <code>Responder</code> is called before 
+		 * the <code>timeout</code> has expired.
+		 * @param timeout The length of time, in milliseconds, before the <code>timeoutHandler</code> will be executed.
+		 * @param passThroughData An Object that can be given information about the current test; this information will 
+		 * be available for both the <code>eventHandler</code> and the <code>timeoutHandler</code>.
+		 * @param timeoutHandler The Function that will be executed if the <code>timeout</code> time is reached prior to
+		 * the expected event being dispatched.
+		 * 
+		 * @return a <code>Responder</code> that will determine whether the <code>timeout</code> has been reached.
+		 */
+		function asyncNativeResponder( resultHandler : Function, faultHandler : Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):Responder;
+		
 		// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
 		// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
 		// flex classes since it will cause errors.

@@ -50,7 +50,7 @@
             <arg line="-external-library-path+='@{sdk}/frameworks/libs/framework.swc'" />
             <arg line="-external-library-path+='@{sdk}/frameworks/libs/rpc.swc'" />
             <arg line="-external-library-path+='@{sdk}/frameworks/libs/utilities.swc'" />
-            <arg line="-keep-as3-metadata+=RunWith,BeforeClass,AfterClass,Before,After,Suite,Test,TestCase,Ignore,Filter,Sort,Theory,DataPoint,DataPoints,ArrayElementType" />
+            <arg line="-keep-as3-metadata+=RunWith,BeforeClass,AfterClass,Before,After,Suite,Test,TestCase,Ignore,Filter,Sort,Theory,DataPoint,DataPoints,ArrayElementType,Rule,Parameters" />
             <arg line="-define=CONFIG::useFlexClasses,@{useFlex}" />
             <arg line="-verbose-stacktraces=true" />
             <arg line="-headless-server=true" />
