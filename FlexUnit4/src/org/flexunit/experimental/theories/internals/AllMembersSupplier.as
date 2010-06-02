@@ -29,6 +29,7 @@ package org.flexunit.experimental.theories.internals
 {
 	import flex.lang.reflect.Field;
 	
+	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.experimental.theories.IParameterSupplier;
 	import org.flexunit.experimental.theories.ParameterSignature;
 	import org.flexunit.experimental.theories.PotentialAssignment;
@@ -89,9 +90,9 @@ package org.flexunit.experimental.theories.internals
 					//Determine if it is an individual variable or an array of variables and if they are datapoints, if they are
 					//add them to the list of values the parameter can use
 					if (sig.canAcceptArrayType(field)
-							&& field.hasMetaData( "DataPoints" ) ) {
+							&& field.hasMetaData( AnnotationConstants.DATA_POINTS ) ) {
 						addArrayValues(field.name, list, getStaticFieldValue(field));
-					} else if (sig.canAcceptType(field.type) && field.hasMetaData( "DataPoint" ) ) {
+					} else if (sig.canAcceptType(field.type) && field.hasMetaData( AnnotationConstants.DATA_POINT ) ) {
 						list.push(PotentialAssignment
 								.forValue(field.name, getStaticFieldValue(field)));
 					}
@@ -107,7 +108,7 @@ package org.flexunit.experimental.theories.internals
 		 */
 		private function addSinglePointMethods( sig:ParameterSignature, list:Array ):void {
 			var dataPointMethod:FrameworkMethod;
-			var methods:Array = testClass.getMetaDataMethods( "DataPoint" );
+			var methods:Array = testClass.getMetaDataMethods( AnnotationConstants.DATA_POINT );
 			var type:Class;
 			
 			for ( var i:int=0; i<methods.length; i++ ) {
@@ -128,7 +129,7 @@ package org.flexunit.experimental.theories.internals
 		 */
 		private function addMultiPointMethods( sig:ParameterSignature, list:Array ):void {
 			var dataPointsMethod:FrameworkMethod;
-			var methods:Array = testClass.getMetaDataMethods( "DataPoints" );
+			var methods:Array = testClass.getMetaDataMethods( AnnotationConstants.DATA_POINTS );
 			var type:Class;
 
 			for ( var i:int=0; i<methods.length; i++ ) {

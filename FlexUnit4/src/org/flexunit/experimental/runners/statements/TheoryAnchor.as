@@ -29,6 +29,7 @@ package org.flexunit.experimental.runners.statements
 {
 	import flexunit.framework.AssertionFailedError;
 	
+	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.experimental.theories.internals.Assignments;
 	import org.flexunit.experimental.theories.internals.ParameterizedAssertionError;
 	import org.flexunit.internals.AssumptionViolatedException;
@@ -187,7 +188,7 @@ package org.flexunit.experimental.runners.statements
 			
 			return true;
 			
-			var isTheory:Boolean = frameworkMethod.method.hasMetaData( "Theory" );
+			var isTheory:Boolean = frameworkMethod.method.hasMetaData( AnnotationConstants.THEORY );
 
 			//this needs to be much more complicated			
 			if ( isTheory ) {
@@ -196,7 +197,7 @@ package org.flexunit.experimental.runners.statements
 				return false;
 			}
 
-/* 			var annotation:Theory = testMethod.method.getSpecificMetaDataArg( "Theory" );
+/* 			var annotation:Theory = testMethod.method.getSpecificMetaDataArg( AnnotationConstants.THEORY );
 			if (annotation == null)
 				return false;
 			return annotation.nullsAccepted();*/

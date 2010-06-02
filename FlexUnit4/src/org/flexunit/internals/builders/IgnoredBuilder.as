@@ -29,6 +29,7 @@ package org.flexunit.internals.builders
 {
 	import flex.lang.reflect.Klass;
 	
+	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runners.model.RunnerBuilderBase;
 	
@@ -39,15 +40,11 @@ package org.flexunit.internals.builders
 	 * class; however, if it does not fulfill this criteria, no <code>IRunner</code> will be generated.
 	 */
 	public class IgnoredBuilder extends RunnerBuilderBase {
-		public static const IGNORE:String = "Ignore";
-		
-		
-		
 		override public function canHandleClass(testClass:Class):Boolean {
 			var klassInfo:Klass = new Klass( testClass );
 			
 			//If the klassInfo has ignore metadata, the test class should be ignored
-			if ( klassInfo.hasMetaData( IGNORE ) )
+			if ( klassInfo.hasMetaData( AnnotationConstants.IGNORE ) )
 				return true;
 			
 			return false;

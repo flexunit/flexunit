@@ -30,14 +30,14 @@ package org.flexunit.token {
 	import org.flexunit.runner.IRunner;
 	
 	/**
-	 * The <code>AsyncListenersToken</code> is responsible for indicating the statuses of <code>IAsyncRunListener</code>s
+	 * The <code>AsyncCoreStartupToken</code> is responsible for indicating the statuses of <code>IAsyncRunListener</code>s
 	 * and indicating when the <code>IAsyncRunListener</code>s are ready or have completed.  Additionally, the token
 	 * keeps track of an <code>IRunner</code> that can be stored while waiting for listeners to report that they
 	 * are ready.  The <code>IRunner</code> can then be extracted an the test run can proceed.
 	 * 
 	 * @see org.flexunit.runner.FlexUnitCore#runRunner()
 	 */
-	public class AsyncListenersToken {
+	public class AsyncCoreStartupToken {
 		/**
 		 * @private
 		 */
@@ -60,7 +60,7 @@ package org.flexunit.token {
 		private var _runner:IRunner;
 		
 		/**
-		 * Returns an instance of the <code>IRunner</code> associated with the <code>AsyncListenersToken</code>.
+		 * Returns an instance of the <code>IRunner</code> associated with the <code>AsyncCoreStartupToken</code>.
 		 */
 		public function get runner():IRunner {
 			return _runner;
@@ -71,14 +71,14 @@ package org.flexunit.token {
 		}
 		
 		/**
-		 * Adds a notification method to the <code>AsyncListenersToken</code> and returns the token.
+		 * Adds a notification method to the <code>AsyncCoreStartupToken</code> and returns the token.
 		 * 
-		 * @param method A <code>Function</code> that will be invoked when the <code>AsyncListenersToken</code>
+		 * @param method A <code>Function</code> that will be invoked when the <code>AsyncCoreStartupToken</code>
 		 * are ready or have completed.
 		 * 
-		 * @return this <code>AsyncListenersToken</code> with the added <code>method</code>.
+		 * @return this <code>AsyncCoreStartupToken</code> with the added <code>method</code>.
 		 */
-		public function addNotificationMethod( method:Function ):AsyncListenersToken {
+		public function addNotificationMethod( method:Function ):AsyncCoreStartupToken {
 			if (methodsEntries == null)
 				methodsEntries = [];
 	
@@ -112,7 +112,7 @@ package org.flexunit.token {
 		/**
 		 * Constructor.
 		 */
-		public function AsyncListenersToken() {
+		public function AsyncCoreStartupToken() {
 		}
 	}
 }

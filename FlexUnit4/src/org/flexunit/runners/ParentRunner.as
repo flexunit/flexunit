@@ -26,6 +26,7 @@
  * @version    
  **/ 
 package org.flexunit.runners {
+	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.internals.AssumptionViolatedException;
 	import org.flexunit.internals.namespaces.classInternal;
 	import org.flexunit.internals.runners.ChildRunnerSequencer;
@@ -233,7 +234,7 @@ package org.flexunit.runners {
 		 * @return an <code>IAsyncStatement</code> containing methdos to run before the class.
 		 */
 		protected function withBeforeClasses():IAsyncStatement {
-			var befores:Array = testClass.getMetaDataMethods( "BeforeClass" );
+			var befores:Array = testClass.getMetaDataMethods( AnnotationConstants.BEFORE_CLASS );
 			//Sort the befores array
 			befores.sort(compare);
 			//this is a deviation from the java approach as we don't have the same type of method information
@@ -251,7 +252,7 @@ package org.flexunit.runners {
 		 * @return an <code>IAsyncStatement</code> containing methods to run after the class.
 		 */
 		protected function withAfterClasses():IAsyncStatement {
-			var afters:Array = testClass.getMetaDataMethods( "AfterClass" );
+			var afters:Array = testClass.getMetaDataMethods( AnnotationConstants.AFTER_CLASS );
 			//Sort the afters array
 			afters.sort(compare);
 			var statement:IAsyncStatement = new RunAftersClass( afters, testClass );
@@ -282,8 +283,8 @@ package org.flexunit.runners {
 		 * @see #testClass()
 		 */
 		protected function collectInitializationErrors( errors:Array ):void {
-			validatePublicVoidNoArgMethods( "BeforeClass", true, errors );
-			validatePublicVoidNoArgMethods( "AfterClass", true, errors );
+			validatePublicVoidNoArgMethods( AnnotationConstants.BEFORE_CLASS, true, errors );
+			validatePublicVoidNoArgMethods( AnnotationConstants.AFTER_CLASS, true, errors );
 		}
 
 		/**
@@ -341,9 +342,11 @@ package org.flexunit.runners {
 			if(!childrenFiltered) {
 				var filtered:Array = new Array();
 				var child:*;
+				var theChildren:Array = children;
+				var length:uint = theChildren.length;
 	
-				for ( var i:int=0; i<children.length; i++ ) {
-					child = children[ i ];
+				for ( var i:uint=0; i<length; i++ ) {
+					child = theChildren[ i ];
 					//Determine if the child matches the filter
 					if ( shouldRun( child ) ) {
 						try {

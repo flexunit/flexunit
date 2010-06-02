@@ -207,8 +207,8 @@ package flex.lang.reflect.cases
 		public function check_interfaces() : void {
 			klass = new Klass( FlexUnit1ClassRunner );
 			
-			Assert.assertEquals( IFilterable, klass.interfaces[0] );
-			Assert.assertEquals( IRunner, klass.interfaces[1] );
+			Assert.assertTrue( klass.implementsInterface( IFilterable ) );
+			Assert.assertTrue( klass.implementsInterface( IRunner ) );
 		}
 		
 		[Test(description="Ensure interface returns null if no interfaces are implemented by the klass")]

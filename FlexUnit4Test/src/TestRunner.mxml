@@ -9,12 +9,17 @@
 			
 			import org.flexunit.listeners.CIListener;
 			import org.flexunit.runner.FlexUnitCore;
+			import org.flexunit.runner.notification.async.XMLListener;
 			
 			private var core:FlexUnitCore;
 			
 			public function runMe():void {
 				core = new FlexUnitCore();
 				core.addListener(new CIListener());
+				
+				//Leaving this one in allows you to see the results in Flash Builder as well if it is open
+				//Else, it will just fail and go on.
+				core.addListener(new XMLListener());
 				core.run( compilationSuite.SuitesToRun );
 			}
 		]]>
