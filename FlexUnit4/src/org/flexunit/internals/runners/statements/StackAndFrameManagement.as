@@ -75,7 +75,7 @@ package org.flexunit.internals.runners.statements {
 		/**
 		 * @private
 		 */
-  		private static var frameLength:Number = 40; //given standard frame rates for flex a frame passes every 42 or so milliseconds, so we are going to try to use about 38 of those
+  		private static var frameLength:Number = 34; //given standard frame rates for flex a frame passes every 42 or so milliseconds, so we are going to try to use about 38 of those
   		
 		/**
 		 * Constructor.

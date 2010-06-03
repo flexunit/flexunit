@@ -26,8 +26,6 @@
  * @version    
  **/ 
 package org.flexunit.runners.model {
-	import flash.events.EventDispatcher;
-	
 	import flex.lang.reflect.Method;
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	import flex.lang.reflect.metadata.MetaDataArgument;
@@ -40,7 +38,7 @@ package org.flexunit.runners.model {
 	 * <code>Test</code>, <code>Before</code>, <code>After</code>, <code>BeforeClass</code>, 
 	 * <code>AfterClass</code>, etc.).
 	 */
-	public class FrameworkMethod extends EventDispatcher {
+	public class FrameworkMethod {
 		
 		/**
 		 * @private
@@ -139,20 +137,6 @@ package org.flexunit.runners.model {
 					( type == method.returnType ) );
 		}
 			
-/* 		protected function getMethodFromTarget( target:Object ):Function {
-			//var method:Function;
-			
-			if ( target is TestClass ) {
-				//this is a static method
-				method = target.asClass[ name ];
-			} else {
-				//this is an instance method
-				method = target[ name ];
-			}
-			
-			return method;
-		} */
-		
 		/**
 		 * Calls the method with the provided set of <code>params</code> for the <code>target</code> class.
 		 * Once the method has finished execution, instruct the <code>parentToken</code> that the method
@@ -167,8 +151,7 @@ package org.flexunit.runners.model {
 
 			//var method:Function = getMethodFromTarget( target );
 			
-			var methodCall:ReflectiveCallable = new ReflectiveCallable( method, target, params );
-			var result:Object = methodCall.run();
+			var result:Object = method.apply( target, params );
 			
 			parentToken.sendResult();
 		}
@@ -195,9 +178,7 @@ package org.flexunit.runners.model {
 		 * @param params The parameters to be supplied to the method.
 		 */
 		public function invokeExplosively( target:Object, ...params ):Object {
-			//var method:Function = getMethodFromTarget( target );
-			var methodCall:ReflectiveCallable = new ReflectiveCallable( method, target, params );
-			var result:Object = methodCall.run();
+			var result:Object = method.apply( target, params );
 			
 			return result;
 		}
@@ -271,35 +252,8 @@ package org.flexunit.runners.model {
 		 * @private
 		 * @return
 		 */
-		override public function toString():String {
+		public function toString():String {
 			return "FrameworkMethod " + this.name;
 		}
-	}
-}
-
-
-import org.flexunit.internals.runners.model.IReflectiveCallable;
-import flex.lang.reflect.Method;
-
-class ReflectiveCallable implements IReflectiveCallable {
-	private var method:Method;
-	private var target:Object;
-	private var params:Array;
-
-	public function ReflectiveCallable( method:Method, target:Object, params:Array ) {
-		this.method = method;
-		this.target = target;
-		this.params = params;
-	}
-	
-	public function run():Object {
-		try {
-			return method.apply( target, params );
-		} catch ( error:Error ) {
-			//this is a wee bit different than the java equiv... need to ponder more
-			throw error;
-		}
-		
-		return null;
 	}
 }

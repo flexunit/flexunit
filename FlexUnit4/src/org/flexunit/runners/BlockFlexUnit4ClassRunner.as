@@ -291,6 +291,7 @@ package org.flexunit.runners {
 		 */
 		protected function methodBlock( method:FrameworkMethod ):IAsyncStatement {
 			var c:Class;
+			var sequencer:StatementSequencer;
 
 			var test:Object;
 			//might need to be reflective at some point
@@ -301,11 +302,26 @@ package org.flexunit.runners {
 				return new Fail(e);
 			}
 
-			var sequencer:StatementSequencer = new StatementSequencer();
 			
-			sequencer.addStep( withBefores( method, test) );
-			sequencer.addStep( withDecoration( method, test ) );
-			sequencer.addStep( withAfters( method, test ) );
+			var beforeStatement:IAsyncStatement = withBefores( method, test);
+			var afterStatement:IAsyncStatement = withAfters( method, test);
+			var decorationStatement:IAsyncStatement = withDecoration( method, test );
+			
+			if ( !( beforeStatement || afterStatement ) ) {
+				return decorationStatement;
+			} else {
+				sequencer = new StatementSequencer();
+
+				if ( beforeStatement ) {
+					sequencer.addStep( beforeStatement );	
+				}
+				
+				sequencer.addStep( decorationStatement );
+
+				if ( afterStatement ) {
+					sequencer.addStep( afterStatement );
+				}
+			}
 			
 			return sequencer;
 		}
@@ -361,7 +377,6 @@ package org.flexunit.runners {
 			return statement;
 		}
 		
-		
 		/**
 		 * Potentially returns a new <code>IAsyncStatement</code> defined by the user on the testcase via the Rule metadata.
 		 * This needs to be factored to a new class
@@ -404,14 +419,21 @@ package org.flexunit.runners {
 		 * any throws an Exception, stop execution and pass the exception on.
 		 */
 		protected function withBefores( method:FrameworkMethod, target:Object ):IAsyncStatement {
+			var statement:IAsyncStatement;
+			
 			var befores:Array = testClass.getMetaDataMethods( AnnotationConstants.BEFORE );
-			var inheritanceSorter:ISorter = new OrderArgumentPlusInheritanceSorter( sorter, testClass, true );
-			//Sort the befores array
-			befores.sort( function compare(o1:Object, o2:Object):int {
-								return inheritanceSorter.compare(describeChild(o1), describeChild(o2));
-						  } );
+			
+			if ( befores.length ) {
+				var inheritanceSorter:ISorter = new OrderArgumentPlusInheritanceSorter( sorter, testClass, true );
+				//Sort the befores array
+				befores.sort( function compare(o1:Object, o2:Object):int {
+									return inheritanceSorter.compare(describeChild(o1), describeChild(o2));
+							  } );
+				
+				statement = new RunBefores( befores, target );
+			}
 
-			return new RunBefores( befores, target );
+			return statement;
 		}
 	
 		/**
@@ -422,14 +444,20 @@ package org.flexunit.runners {
 		 * <code>MultipleFailureException</code>.
 		 */
 		protected function withAfters( method:FrameworkMethod, target:Object ):IAsyncStatement {
+			var statement:IAsyncStatement;
 			var afters:Array = testClass.getMetaDataMethods( AnnotationConstants.AFTER );
-			var inheritanceSorter:ISorter = new OrderArgumentPlusInheritanceSorter( sorter, testClass, false );
 
-			afters.sort( function compare(o1:Object, o2:Object):int {
-				return inheritanceSorter.compare(describeChild(o1), describeChild(o2));
-			} );
-
-			return new RunAfters( afters, target);
+			if ( afters.length ) {
+				var inheritanceSorter:ISorter = new OrderArgumentPlusInheritanceSorter( sorter, testClass, false );
+	
+				afters.sort( function compare(o1:Object, o2:Object):int {
+					return inheritanceSorter.compare(describeChild(o1), describeChild(o2));
+				} );
+	
+				statement = new RunAfters( afters, target);
+			}
+			
+			return statement;
 		}
 	}
 }
