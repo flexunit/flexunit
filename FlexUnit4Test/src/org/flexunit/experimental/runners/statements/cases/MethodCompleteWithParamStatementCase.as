@@ -7,7 +7,6 @@ package org.flexunit.experimental.runners.statements.cases
 	import mockolate.runner.MockolateRule;
 	import mockolate.strict;
 	import mockolate.verify;
-	import mockolate.runner.MockolateRunner; MockolateRunner;
 	
 	import org.flexunit.Assert;
 	import org.flexunit.experimental.runners.statements.MethodCompleteWithParamsStatement;
@@ -19,13 +18,16 @@ package org.flexunit.experimental.runners.statements.cases
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
 	
-	[RunWith("mockolate.runner.MockolateRunner")]
 	public class MethodCompleteWithParamStatementCase
 	{
 		
 		//------------------------------
 		// MOCKOLATE
 		//------------------------------
+		
+		[Rule]
+		public var mockolateRule:MockolateRule = new MockolateRule();
+		
 		[Mock(type="strict")]
 		public var parentToken:AsyncTestToken;
 		
@@ -38,12 +40,10 @@ package org.flexunit.experimental.runners.statements.cases
 		[Mock(type="strict", inject="false")]
 		public var theoryAnchorMock:TheoryAnchor;
 
-<<<<<<< HEAD
 		[Mock(type="strict", inject="false")]
 		public var methodMock:Method;
 		
-		//[Rule]
-		//public var mockolateRule:MockolateRule = new MockolateRule();
+		
 		
 		protected var freshInstance:Object;
 		protected var methodCompleteWithParamStatement:MethodCompleteWithParamsStatement;

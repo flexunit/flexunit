@@ -1,8 +1,8 @@
 package org.flexunit.experimental.runners.statements.cases
 {
-	import mockolate.runner.MockolateRunner; MockolateRunner; 
-	import mockolate.strict;
 	import mockolate.mock;
+	import mockolate.runner.MockolateRule;
+	import mockolate.strict;
 	import mockolate.verify;
 	
 	import org.flexunit.experimental.runners.statements.TheoryBlockRunnerStatement;
@@ -12,13 +12,15 @@ package org.flexunit.experimental.runners.statements.cases
 	import org.flexunit.internals.runners.statements.IAsyncStatement;
 	import org.flexunit.experimental.runners.statements.TheoryAnchor;
 	import org.flexunit.experimental.theories.internals.Assignments;
-
-
 	
-	[RunWith("mockolate.runner.MockolateRunner")]
 	public class TheoryBlockRunnerStatementCase
 	{
 		//TODO: Ensure that these tests and this test case are being implemented correctly
+		//------------------------------
+		// MOCKOLATE
+		//------------------------------
+		[Rule]
+		public var mockolateRule:MockolateRule = new MockolateRule();
 		
 		[Mock(type="strict")]
 		public var asyncStatementMock:IAsyncStatement;

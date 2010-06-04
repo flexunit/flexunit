@@ -7,9 +7,8 @@ package org.flexunit.experimental.theories.cases
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
 	import mockolate.mock;
-	import mockolate.runner.MockolateRunner; MockolateRunner;
+	import mockolate.runner.MockolateRule;
 	import mockolate.strict;
-	import mockolate.stub;
 	import mockolate.verify;
 	
 	import org.flexunit.Assert;
@@ -17,14 +16,16 @@ package org.flexunit.experimental.theories.cases
 	import org.flexunit.runners.model.FrameworkMethod;
 
 
-	[RunWith("mockolate.runner.MockolateRunner")]
 	public class ParameterSignatureCase
 	{
 		//TODO: Ensure that these tests and this test case are implemented correctly
 		
-		//-----------------------
-		// MOCKS
-		//-----------------------
+		//----------------------
+		// MOCKOLATE
+		//---------------------
+		[Rule]
+		public var mockolateRule:MockolateRule = new MockolateRule();
+		
 		[Mock(type="strict", inject="false")]
 		public var methodMock:Method;
 		
@@ -160,9 +161,7 @@ package org.flexunit.experimental.theories.cases
 		[Test(description="Ensure that canAcceptArrayTypeMethod returns false when the FrameworkMethod's producesType returns false and the FrameworkMethod's Method's element type does not match the class' element type")]
 		public function canAcceptArrayTypeMethodNotArrayNotTypeTest():void {
 			
-			stub(frameworkMethodMock).method("producesType").args(Array).returns(false).once();
-			stub(frameworkMethodMock).getter("method").returns(methodMock);
-			stub(methodMock).getter("elementType").returns(null);				
+			mock(frameworkMethodMock).method("producesType").args(Array).returns(false).once();
 			
 			Assert.assertFalse( parameterSignature.canAcceptArrayTypeMethod(frameworkMethodMock) )
 			
@@ -174,8 +173,6 @@ package org.flexunit.experimental.theories.cases
 		public function canAcceptArrayTypeMethodNotArrayTypeTest():void {
 			
 			mock(frameworkMethodMock).method("producesType").args(Array).returns(false).once();
-			stub(frameworkMethodMock).getter("method").returns(methodMock);
-			stub(methodMock).getter("elementType").returns(type);
 			
 			Assert.assertFalse( parameterSignature.canAcceptArrayTypeMethod(frameworkMethodMock) );
 			verify(methodMock);

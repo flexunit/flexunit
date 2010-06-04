@@ -3,7 +3,7 @@ package org.flexunit.experimental.runners.statements.cases
 	import mockolate.mock;
 	import mockolate.strict;
 	import mockolate.verify;
-	import mockolate.runner.MockolateRunner; MockolateRunner; 
+	import mockolate.runner.MockolateRule;
 	
 	import org.flexunit.Assert;
 	import org.flexunit.experimental.runners.statements.TheoryAnchor;
@@ -15,13 +15,16 @@ package org.flexunit.experimental.runners.statements.cases
 
 	use namespace classInternal;
 	
-	[RunWith("mockolate.runner.MockolateRunner")]
 	public class TheoryAnchorCase
 	{	
 		
-		//-----------------------
+		//------------------------------
 		// MOCKOLATE
-		//-----------------------
+		//------------------------------
+		
+		[Rule]
+		public var mockolateRule:MockolateRule = new MockolateRule();
+		
 		[Mock(type="strict")]
 		public var frameworkMethodMock:FrameworkMethod;
 		

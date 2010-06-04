@@ -2,10 +2,8 @@ package org.flexunit.experimental.theories.internals.cases
 {
 	import mockolate.mock;
 	import mockolate.runner.MockolateRule;
-	import mockolate.runner.MockolateRunner;
 	import mockolate.strict;
-	import mockolate.stub;
-	import mockolate.verify; MockolateRunner; 
+	import mockolate.verify;
 	
 	import org.flexunit.Assert;
 	import org.flexunit.experimental.theories.ParameterSignature;
@@ -17,10 +15,16 @@ package org.flexunit.experimental.theories.internals.cases
 	import flex.lang.reflect.Constructor;
 	import flash.utils.getDefinitionByName;
 	
-	[RunWith("mockolate.runner.MockolateRunner")]
+
 	public class AssignmentsCase
 	{
 		//TODO: Ensure that these tests and this test case have been correctly implemented
+		//----------------------
+		// MOCKOLATE
+		//---------------------
+		[Rule]
+		public var mockolateRule:MockolateRule = new MockolateRule();
+		
 		[Mock(type="strict")]
 		public var parameterSignatureMock1:ParameterSignature;
 		[Mock(type="strict")]

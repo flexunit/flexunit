@@ -3,9 +3,7 @@ package org.flexunit.experimental.runners.statements.cases
 	import mockolate.mock;
 	import mockolate.runner.MockolateRule;
 	import mockolate.strict;
-	import mockolate.stub;
 	import mockolate.verify;
-	import mockolate.runner.MockolateRunner; MockolateRunner; 
 	
 	import org.flexunit.experimental.runners.statements.AssignmentSequencer;
 	import org.flexunit.experimental.runners.statements.TheoryAnchor;
@@ -18,7 +16,6 @@ package org.flexunit.experimental.runners.statements.cases
 
 	use namespace classInternal;
 	
-	[RunWith("mockolate.runner.MockolateRunner")]
 	public class AssignmentSequencerCase
 	{
 		//TODO: This test case still needs additional classes written for it
@@ -30,6 +27,9 @@ package org.flexunit.experimental.runners.statements.cases
 		//----------------------
 		// MOCKOLATE
 		//---------------------
+		[Rule]
+		public var mockolateRule:MockolateRule = new MockolateRule();
+		
 		[Mock(type="strict")]
 		public var assignmentsMock:Assignments;
 		[Mock(type="strict")]
@@ -39,8 +39,7 @@ package org.flexunit.experimental.runners.statements.cases
 		[Mock(type="strict")]
 		public var theoryAnchorMock:TheoryAnchor;
 		
-		//[Rule]
-		//public var mockolateRule:MockolateRule = new MockolateRule();
+		
 		//-----------------------
 		// SETUP
 		//-----------------------
