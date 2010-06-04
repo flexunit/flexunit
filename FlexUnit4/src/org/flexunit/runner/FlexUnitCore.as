@@ -26,6 +26,10 @@
  * @version    
  **/ 
 package org.flexunit.runner {
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
+	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.*;
@@ -33,6 +37,8 @@ package org.flexunit.runner {
 	import org.flexunit.IncludeFlexClasses;
 	import org.flexunit.experimental.theories.Theories;
 	import org.flexunit.internals.dependency.ExternalRunnerDependencyWatcher;
+	import org.flexunit.internals.runners.watcher.FrameWatcher;
+	import org.flexunit.runner.external.IExternalDependencyRunner;
 	import org.flexunit.runner.notification.Failure;
 	import org.flexunit.runner.notification.IAsyncStartupRunListener;
 	import org.flexunit.runner.notification.IRunListener;
@@ -44,7 +50,7 @@ package org.flexunit.runner {
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.utils.ClassNameUtil;
-	import org.flexunit.runner.external.IExternalDependencyRunner;
+	import org.fluint.uiImpersonation.VisualTestEnvironmentBuilder;
 
 	[Event(type="testsComplete", type="flash.events.Event")]
 	[Event(type="runnerStart", type="flash.events.Event")]
@@ -111,6 +117,8 @@ package org.flexunit.runner {
 		 */
 		private var asyncListenerWatcher:AsyncListenerWatcher;
 		
+		private var _visualDisplayRoot:DisplayObjectContainer;
+
 		/**
 		 * @private
 		 */
@@ -133,6 +141,24 @@ package org.flexunit.runner {
 			return "4.1.0.0";
 		}
 		
+
+		public function get visualDisplayRoot():DisplayObjectContainer {
+			return _visualDisplayRoot; 
+		}
+		
+		public function set visualDisplayRoot( value:DisplayObjectContainer ):void {
+			_visualDisplayRoot = value;
+
+			if ( value ) {
+				//Feed the stage into the FrameWatcher if we have it
+				var frameWatcher:FrameWatcher = FrameWatcher.getInstance();
+				frameWatcher.stage = value.stage;
+			}
+
+			//pass the stage along to the VisualEnvironmentBuilder
+			VisualTestEnvironmentBuilder.getInstance( value );
+		}
+
 		/**
 		 * Requests that the FlexUnitCore stop execution of the test environment.
 		 * As Flash Player is single threaded, we will only be able to stop execution after the currently running test completes

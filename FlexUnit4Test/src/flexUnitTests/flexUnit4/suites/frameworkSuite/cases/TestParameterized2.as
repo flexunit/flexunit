@@ -4,8 +4,6 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 	
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.helper.ParamDataHelper;
 	
-	import net.digitalprimates.fluint.async.AsyncHandler;
-	
 	import org.flexunit.Assert;
 	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.async.Async;

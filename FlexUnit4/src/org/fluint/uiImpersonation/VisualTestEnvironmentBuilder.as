@@ -23,7 +23,10 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  **/ 
 package org.fluint.uiImpersonation {
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
+	import flash.display.Stage;
 	
 	import org.fluint.uiImpersonation.actionScript.ActionScriptEnvironmentBuilder;
 
@@ -40,7 +43,7 @@ package org.fluint.uiImpersonation {
          */
 		protected static var instance:VisualTestEnvironmentBuilder; 
 		protected var builder:IVisualEnvironmentBuilder;
-		protected var visualDisplayRoot:Sprite;
+		protected var visualDisplayRoot:DisplayObjectContainer;
 
 		/** 
 		 * Returns a reference to the single instance of this class 
@@ -48,7 +51,7 @@ package org.fluint.uiImpersonation {
 		 * 
 		 * @return A reference to the TestEnvironment class.
 		 */
-		public static function getInstance( visualDisplayRoot:Sprite=null ):VisualTestEnvironmentBuilder {
+		public static function getInstance( visualDisplayRoot:DisplayObjectContainer=null ):VisualTestEnvironmentBuilder {
 			if ( !instance ) {
 				instance = new VisualTestEnvironmentBuilder( visualDisplayRoot );
 			}
@@ -60,11 +63,12 @@ package org.fluint.uiImpersonation {
 			return builder.buildVisualTestEnvironment();
 		}
 
-		public function VisualTestEnvironmentBuilder( visualDisplayRoot:Sprite ) {
+		public function VisualTestEnvironmentBuilder( visualDisplayRoot:DisplayObjectContainer ) {
 			this.visualDisplayRoot = visualDisplayRoot;
 
 			CONFIG::useFlexClasses {
 				import org.fluint.uiImpersonation.flex.FlexEnvironmentBuilder;
+				
 				builder = new FlexEnvironmentBuilder( visualDisplayRoot );
 			}
 			
@@ -74,10 +78,3 @@ package org.fluint.uiImpersonation {
 		}
 	}
 }
-
-
-
-
-
-
-
