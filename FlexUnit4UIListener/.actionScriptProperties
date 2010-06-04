@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties mainApplicationPath="FlexUnit4UIRunner.as" version="3">
-  <compiler additionalCompilerArguments="" copyDependentFiles="false" enableModuleDebug="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersion="9.0.124" htmlPlayerVersionCheck="true" outputFolderPath="bin" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
+<actionScriptProperties analytics="false" mainApplicationPath="FlexUnit4UIRunner.as" projectUUID="303376bf-4d37-4045-8589-d2b491b2c952" version="6">
+  <compiler additionalCompilerArguments="" autoRSLOrdering="true" copyDependentFiles="false" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath>
       <compilerSourcePathEntry kind="1" linkType="1" path="test"/>
     </compilerSourcePath>
     <libraryPath defaultLinkType="1">
       <libraryPathEntry kind="4" path="">
         <modifiedEntries>
-          <libraryPathEntry kind="3" linkType="2" path="${PROJECT_FRAMEWORKS}/libs/automation.swc" useDefaultLinkType="false"/>
-          <libraryPathEntry kind="3" linkType="2" path="${PROJECT_FRAMEWORKS}/libs/automation_agent.swc" useDefaultLinkType="false"/>
-          <libraryPathEntry kind="3" linkType="2" path="${PROJECT_FRAMEWORKS}/libs/automation_dmv.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="2" path="${PROJECT_FRAMEWORKS}/libs/datavisualization.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="2" path="${PROJECT_FRAMEWORKS}/libs/flex.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="2" path="${PROJECT_FRAMEWORKS}/libs/framework.swc" useDefaultLinkType="false"/>
-          <libraryPathEntry kind="3" linkType="2" path="${PROJECT_FRAMEWORKS}/libs/qtp.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="2" path="${PROJECT_FRAMEWORKS}/libs/rpc.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="2" path="${PROJECT_FRAMEWORKS}/libs/utilities.swc" useDefaultLinkType="false"/>
         </modifiedEntries>
+        <excludedEntries>
+          <libraryPathEntry index="5" kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/sparkskins.swc" useDefaultLinkType="true">
+            <crossDomainRsls>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="sparkskins_4.1.0.15885.swf"/>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="http://fpdownload.adobe.com/pub/swz/crossdomain.xml" rslUrl="http://fpdownload.adobe.com/pub/swz/flex/4.1.0.15885/sparkskins_4.1.0.15885.swf"/>
+            </crossDomainRsls>
+          </libraryPathEntry>
+          <libraryPathEntry index="4" kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/spark.swc" useDefaultLinkType="true">
+            <crossDomainRsls>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="spark_4.1.0.15885.swf"/>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="http://fpdownload.adobe.com/pub/swz/crossdomain.xml" rslUrl="http://fpdownload.adobe.com/pub/swz/flex/4.1.0.15885/spark_4.1.0.15885.swf"/>
+            </crossDomainRsls>
+          </libraryPathEntry>
+        </excludedEntries>
       </libraryPathEntry>
       <libraryPathEntry kind="3" linkType="2" path="/FlexUnit4/bin/FlexUnit4.swc" useDefaultLinkType="false"/>
     </libraryPath>
