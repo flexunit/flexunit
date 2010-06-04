@@ -66,7 +66,6 @@ package org.flexunit.internals.runners.statements {
 		 * @param parentToken The token to be notified when the test method has finished running.
 		 */
 		public function evaluate( parentToken:AsyncTestToken ):void {
-			this.parentToken = parentToken;
 			
 			//Invoke the test method
 			try {
