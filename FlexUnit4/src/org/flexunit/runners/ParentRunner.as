@@ -254,9 +254,12 @@ package org.flexunit.runners {
 			var befores:Array = testClass.getMetaDataMethods( AnnotationConstants.BEFORE_CLASS );
 			
 			if ( befores.length ) {
-				//Sort the befores array
-				befores.sort(compare);
-				//this is a deviation from the java approach as we don't have the same type of method information
+				
+				if ( befores.length > 1 ) {
+					//Sort the befores array
+					befores.sort(compare);
+				}
+
 				statement = new RunBeforesClass( befores, testClass );
 			}
 
@@ -277,8 +280,11 @@ package org.flexunit.runners {
 			var afters:Array = testClass.getMetaDataMethods( AnnotationConstants.AFTER_CLASS );
 			
 			if ( afters.length ) {
-				//Sort the afters array
-				afters.sort(compare);
+				
+				if ( afters.length > 1 ) {
+					//Sort the afters array
+					afters.sort(compare);
+				}
 
 				statement = new RunAftersClass( afters, testClass );
 			}

@@ -52,7 +52,7 @@ package org.flexunit.internals.runners.statements {
 		 * @param befores An array containing all statements that need to be executed before a test is executed.
 		 * @param target The test class.
 		 */
-		public function RunBefores( befores:Array, target:Object ) {
+		public function RunBefores( befores:Array, target:Object, statement:IAsyncStatement=null ) {
 			super( befores, target );
 		}
 

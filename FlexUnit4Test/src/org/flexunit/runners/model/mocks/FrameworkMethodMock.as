@@ -36,13 +36,13 @@ package org.flexunit.runners.model.mocks
 			return mock.producesType(type);
 		}
 		
-		override public function applyExplosivelyAsync(parentToken:AsyncTestToken, target:Object, params:Array):void {
-			mock.applyExplosivelyAsync(parentToken, target, params);
+		override public function applyExplosively(target:Object, params:Array):void {
+			mock.applyExplosively(target, params);
 		}
 		
-		override public function invokeExplosivelyAsync(parentToken:AsyncTestToken, target:Object, ...parameters):void {
+/*		override public function invokeExplosivelyAsync(parentToken:AsyncTestToken, target:Object, ...parameters):void {
 			mock.invokeMethod( "invokeExplosivelyAsync", [parentToken, target].concat(parameters) );
-		}
+		}*/
 		
 		override public function invokeExplosively(target:Object, ...parameters):Object {
 			return mock.invokeMethod( "invokeExplosively", [target].concat(parameters) );

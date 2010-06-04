@@ -38,7 +38,9 @@ package org.flexunit.runners {
 	import org.flexunit.internals.runners.statements.IAsyncStatement;
 	import org.flexunit.internals.runners.statements.InvokeMethod;
 	import org.flexunit.internals.runners.statements.RunAfters;
+	import org.flexunit.internals.runners.statements.RunAftersInline;
 	import org.flexunit.internals.runners.statements.RunBefores;
+	import org.flexunit.internals.runners.statements.RunBeforesInline;
 	import org.flexunit.internals.runners.statements.StackAndFrameManagement;
 	import org.flexunit.internals.runners.statements.StatementSequencer;
 	import org.flexunit.rules.IMethodRule;
@@ -302,28 +304,7 @@ package org.flexunit.runners {
 				return new Fail(e);
 			}
 
-			
-			var beforeStatement:IAsyncStatement = withBefores( method, test);
-			var afterStatement:IAsyncStatement = withAfters( method, test);
-			var decorationStatement:IAsyncStatement = withDecoration( method, test );
-			
-			if ( !( beforeStatement || afterStatement ) ) {
-				return decorationStatement;
-			} else {
-				sequencer = new StatementSequencer();
-
-				if ( beforeStatement ) {
-					sequencer.addStep( beforeStatement );	
-				}
-				
-				sequencer.addStep( decorationStatement );
-
-				if ( afterStatement ) {
-					sequencer.addStep( afterStatement );
-				}
-			}
-			
-			return sequencer;
+			return withDecoration( method, test );;
 		}
 
 		/**
@@ -363,15 +344,21 @@ package org.flexunit.runners {
 			return async ? new ExpectAsync( test, statement ) : statement;
 		}
 		
+		protected function withAfterStatements( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
+			return statement;			
+		}
+		
 		/**
 		 * Returns an <code>IAsyncStatement</code> that invokes <code>method</code> on a decorated <code>test</code>.
 		 */
 		protected function withDecoration( method:FrameworkMethod, test:Object ):IAsyncStatement {
 			var statement:IAsyncStatement = methodInvoker( method, test );
-			statement = withPotentialRules( method, test, statement );
 			statement = withPotentialAsync( method, test, statement );
 			statement = withPotentialTimeout( method, test, statement );
 			statement = possiblyExpectingExceptions( method, test, statement );
+			statement = withBefores( method, test, statement );
+			statement = withAfters( method, test, statement );
+			statement = withPotentialRules( method, test, statement );
 			statement = withStackManagement( method, test, statement );
 			
 			return statement;
@@ -418,22 +405,20 @@ package org.flexunit.runners {
 		 * methods on this class and superclasses before running <code>statement</code>; if
 		 * any throws an Exception, stop execution and pass the exception on.
 		 */
-		protected function withBefores( method:FrameworkMethod, target:Object ):IAsyncStatement {
+		protected function withBefores( method:FrameworkMethod, target:Object, statement:IAsyncStatement ):IAsyncStatement {
 			var statement:IAsyncStatement;
 			
 			var befores:Array = testClass.getMetaDataMethods( AnnotationConstants.BEFORE );
 			
-			if ( befores.length ) {
+			if ( befores.length > 1 ) {
 				var inheritanceSorter:ISorter = new OrderArgumentPlusInheritanceSorter( sorter, testClass, true );
 				//Sort the befores array
 				befores.sort( function compare(o1:Object, o2:Object):int {
 									return inheritanceSorter.compare(describeChild(o1), describeChild(o2));
 							  } );
-				
-				statement = new RunBefores( befores, target );
 			}
 
-			return statement;
+			return (befores.length)?new RunBeforesInline( befores, target, statement ):statement;
 		}
 	
 		/**
@@ -443,21 +428,19 @@ package org.flexunit.runners {
 		 * are combined, if necessary, with exceptions from After methods into a
 		 * <code>MultipleFailureException</code>.
 		 */
-		protected function withAfters( method:FrameworkMethod, target:Object ):IAsyncStatement {
+		protected function withAfters( method:FrameworkMethod, target:Object, statement:IAsyncStatement ):IAsyncStatement {
 			var statement:IAsyncStatement;
 			var afters:Array = testClass.getMetaDataMethods( AnnotationConstants.AFTER );
 
-			if ( afters.length ) {
+			if ( afters.length > 1 ) {
 				var inheritanceSorter:ISorter = new OrderArgumentPlusInheritanceSorter( sorter, testClass, false );
 	
 				afters.sort( function compare(o1:Object, o2:Object):int {
 					return inheritanceSorter.compare(describeChild(o1), describeChild(o2));
 				} );
-	
-				statement = new RunAfters( afters, target);
 			}
-			
-			return statement;
+
+			return (afters.length)?new RunAftersInline( afters, target, statement ):statement;
 		}
 	}
 }
