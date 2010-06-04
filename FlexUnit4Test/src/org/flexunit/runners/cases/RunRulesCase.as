@@ -10,7 +10,7 @@ package org.flexunit.runners.cases {
 		public var rule3:SynchronousRule = new SynchronousRule();
 
 		[Rule(order=3)]
-		public var rule2:AsynchronousRule = new AsynchronousRule( 5000 );
+		public var rule2:AsynchronousRule = new AsynchronousRule( 50 );
 		
 		[Test]
 		public function test1():void {

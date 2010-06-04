@@ -15,8 +15,9 @@ package org.flexunit.runners.model {
 			return method.name + '_' + paramName;
 		}
 
-		override public function invokeExplosivelyAsync( parentToken:AsyncTestToken, target:Object, ...params ):void {
-			applyExplosivelyAsync( parentToken, target, arguments );
+		override public function invokeExplosively( target:Object, ...params ):Object {
+			applyExplosively( target, arguments );
+			return null;
 		}
 
 		public function ParameterizedMethod(method:Method, arguments:Array ) {

@@ -1,6 +1,6 @@
 package org.flexunit.experimental.runners.statements.cases
 {
-	
+
 	import flex.lang.reflect.Method;
 	
 	import mockolate.mock;
@@ -38,6 +38,7 @@ package org.flexunit.experimental.runners.statements.cases
 		[Mock(type="strict", inject="false")]
 		public var theoryAnchorMock:TheoryAnchor;
 
+<<<<<<< HEAD
 		[Mock(type="strict", inject="false")]
 		public var methodMock:Method;
 		
@@ -85,7 +86,7 @@ package org.flexunit.experimental.runners.statements.cases
 			//Set properties and expectations
 			mock(assignmentsMock).method("getMethodArguments").args(true).returns(argumentsArray).once();
 			mock(theoryAnchorMock).method("nullsOk").noArgs().returns(true).once();
-			mock(frameworkMethodMock).method("applyExplosivelyAsync").args(AsyncTestToken, freshInstance, argumentsArray).once();
+			mock(frameworkMethodMock).method("applyExplosively").args(freshInstance, argumentsArray).once();
 			
 			methodCompleteWithParamStatement.evaluate(parentToken);
 			
@@ -102,7 +103,7 @@ package org.flexunit.experimental.runners.statements.cases
 			
 			mock(assignmentsMock).method("getMethodArguments").args(true).returns(argumentsArray).once();
 			mock(theoryAnchorMock).method("nullsOk").noArgs().returns(true).once();
-			mock(frameworkMethodMock).method("applyExplosivelyAsync").args(AsyncTestToken, freshInstance, argumentsArray).throws(couldNotGenerateValueException).once();
+			mock(frameworkMethodMock).method("applyExplosively").args(freshInstance, argumentsArray).throws(couldNotGenerateValueException).once();
 			mock(parentToken).method("sendResult").args(null).once();
 			
 			methodCompleteWithParamStatement.evaluate(parentToken);
@@ -121,7 +122,7 @@ package org.flexunit.experimental.runners.statements.cases
 
 			mock(assignmentsMock).method("getMethodArguments").args(true).returns(argumentsArray).once();
 			mock(theoryAnchorMock).method("nullsOk").noArgs().returns(true).once();
-			mock(frameworkMethodMock).method("applyExplosivelyAsync").args(AsyncTestToken, freshInstance, argumentsArray).throws(assumptionViolatedException).once();
+			mock(frameworkMethodMock).method("applyExplosively").args(freshInstance, argumentsArray).throws(assumptionViolatedException).once();
 			mock(theoryAnchorMock).method("handleAssumptionViolation").args(assumptionViolatedException).once();
 			mock(parentToken).method("sendResult").args(assumptionViolatedException).once();
 			
@@ -144,7 +145,7 @@ package org.flexunit.experimental.runners.statements.cases
 			mock(assignmentsMock).method("getArgumentStrings").args(true).returns(argumentsArray).once();
 			mock(theoryAnchorMock).method("nullsOk").noArgs().returns(true).twice();
 			
-			mock(frameworkMethodMock).method("applyExplosivelyAsync").args(AsyncTestToken, freshInstance, argumentsArray).throws(error).once();
+			mock(frameworkMethodMock).method("applyExplosively").args(freshInstance, argumentsArray).throws(error).once();
 			mock(theoryAnchorMock).method("reportParameterizedError").args(error,argumentsArray).returns(newError).once();
 			mock(frameworkMethodMock).getter("name").returns("name");
 			mock(parentToken).method("sendResult").args(Error).once();
