@@ -119,6 +119,7 @@ package org.flexunit.runner {
 		
 		private var _visualDisplayRoot:DisplayObjectContainer;
 
+		private var topLevelRunner:IRunner;
 		/**
 		 * @private
 		 */
@@ -165,7 +166,10 @@ package org.flexunit.runner {
 		 * and before the next one begins, so this will always have a margin of error.
 		 */
 		public function pleaseStop():void {
-			notifier.pleaseStop();
+			
+			if ( topLevelRunner ) {
+				topLevelRunner.pleaseStop();
+			}
 
 			//dispatchEvent( new Event( TESTS_STOPPED ) );			
 		}
@@ -268,7 +272,11 @@ package org.flexunit.runner {
 		 * @param runner The <code>IRunner</code> to use for this test run.
 		 */
 		public function runRunner( runner:IRunner ):void {
-			
+
+			//Record the top level runner. This is the active runner in case we need to
+			//do something like stop the execution of the test run
+			topLevelRunner = runner;
+
 			if ( runner is IExternalDependencyRunner ) {
 				( runner as IExternalDependencyRunner ).dependencyWatcher = runnerExternalDependencyWatcher; 
 			}

@@ -47,6 +47,7 @@ package org.flexunit.internals.runners {
 	import org.flexunit.runner.manipulation.IFilter;
 	import org.flexunit.runner.manipulation.IFilterable;
 	import org.flexunit.runner.notification.IRunNotifier;
+	import org.flexunit.runner.notification.StoppedByUserException;
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.token.IAsyncTestToken;
@@ -91,6 +92,11 @@ package org.flexunit.internals.runners {
 		private var token:AsyncTestToken;
 
 		/**
+		 * @private
+		 */
+		protected var stopRequested:Boolean = false;
+		
+		/**
 		 * Constructor
 		 *  
 		 * @param clazz is an XML <code>Klass</code> that allows the associated <code>Class</code>
@@ -127,6 +133,11 @@ package org.flexunit.internals.runners {
 		 * @param previousToken The token that is to be notified when the runner has finished execution of the test class.
 		 */
 		public function run( notifier:IRunNotifier, previousToken:IAsyncTestToken ):void {
+			if ( stopRequested ) {
+				previousToken.sendResult( new StoppedByUserException() );
+				return;
+			}
+			
 			token = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			token.parentToken = previousToken;
 			token.addNotificationMethod( handleTestComplete );
@@ -139,7 +150,16 @@ package org.flexunit.internals.runners {
 			testRunner.addEventListener( TestRunner.TESTS_COMPLETE, handleAllTestsComplete );
 			testRunner.startTests( [test] );
 		}
-		
+
+		/**
+		 * Ask that the tests run stop before starting the next test. Phrased politely because
+		 * the test currently running will not be interrupted. 
+		 */
+		public function pleaseStop():void {
+			stopRequested = true;
+			
+		}
+
 		/**
 		 * Handles the results when all of the tests are complete for the class.
 		 * Removes all of the children from the <code>flexUnitTestEnvironment</code>.

@@ -52,6 +52,7 @@ package org.flexunit.runners {
 	import org.flexunit.runner.manipulation.fields.FieldMetaDataSorter;
 	import org.flexunit.runner.manipulation.fields.IFieldSorter;
 	import org.flexunit.runner.notification.IRunNotifier;
+	import org.flexunit.runner.notification.StoppedByUserException;
 	import org.flexunit.runners.model.FrameworkMethod;
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
@@ -117,6 +118,11 @@ package org.flexunit.runners {
 		 * @inheritDoc
 		 */
 		override protected function runChild( child:*, notifier:IRunNotifier, childRunnerToken:AsyncTestToken ):void {
+			if ( stopRequested ) {
+				childRunnerToken.sendResult( new StoppedByUserException() );
+				return;
+			}
+
 			var method:FrameworkMethod = FrameworkMethod( child ); 
 			var eachNotifier:EachTestNotifier = makeNotifier( method, notifier);
 			var error:Error;

@@ -34,7 +34,9 @@ package org.flexunit.runners {
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.external.IExternalDependencyRunner;
 	import org.flexunit.runner.manipulation.IFilterable;
+	import org.flexunit.runner.notification.IRunListener;
 	import org.flexunit.runner.notification.IRunNotifier;
+	import org.flexunit.runner.notification.StoppedByUserException;
 	import org.flexunit.runners.model.IRunnerBuilder;
 	import org.flexunit.token.AsyncTestToken;
 	
@@ -79,6 +81,19 @@ package org.flexunit.runners {
 		/**
 		 * @inheritDoc
 		 */
+		override public function pleaseStop():void {
+			super.pleaseStop();
+			
+			if ( _runners ) {
+				for ( var i:int=0; i<_runners.length; i++ ) {
+					( _runners[ i ] as IRunner ).pleaseStop(); 
+				}
+			}
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function get children():Array {
 			return _runners;
 		}
@@ -94,6 +109,11 @@ package org.flexunit.runners {
 		 * @inheritDoc
 		 */
 		override protected function runChild( child:*, notifier:IRunNotifier, childRunnerToken:AsyncTestToken ):void {
+			if ( stopRequested ) {
+				childRunnerToken.sendResult( new StoppedByUserException() );
+				return;
+			}
+			
 			IRunner( child ).run( notifier, childRunnerToken );
 		}
 		

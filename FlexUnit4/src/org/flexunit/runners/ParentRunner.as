@@ -109,6 +109,8 @@ package org.flexunit.runners {
 		 */
 		private var cachedDescription:IDescription;
 		
+		protected var stopRequested:Boolean = false;
+		
 		/**
 		 * Constructs a new <code>ParentRunner</code> that will run <code>TestClass</code>.
 		 * 
@@ -162,6 +164,14 @@ package org.flexunit.runners {
 		}
 
 		/**
+		 * Ask that the tests run stop before starting the next test. Phrased politely because
+		 * the test currently running will not be interrupted. 
+		 */
+		public function pleaseStop():void {
+			stopRequested = true;
+		}
+
+		/**
 		 * Returns a list of objects that define the children of this Runner.
 		 */
 		protected function get children():Array {
@@ -191,7 +201,10 @@ package org.flexunit.runners {
 		 * @param childRunnerToken The token used to keep track of the <code>child</code>'s execution.
 		 */
 		protected function runChild( child:*, notifier:IRunNotifier, childRunnerToken:AsyncTestToken ):void {
-		
+			//runChild needs to check if a stop is requested before proceeding
+			if ( !stopRequested ) {
+				
+			}		
 		}
 
 		/** 
@@ -438,6 +451,12 @@ package org.flexunit.runners {
 		 * @throws org.flexunit.runner.notification.StoppedByUserException The user has stopped the test run.
 		 */
 		public function run( notifier:IRunNotifier, previousToken:IAsyncTestToken ):void {
+
+			if ( stopRequested ) {
+				previousToken.sendResult( new StoppedByUserException() );
+				return;
+			}
+
 			var testNotifier:EachTestNotifier = new EachTestNotifier(notifier, description );
 			var resendError:Error;
 			
@@ -479,7 +498,8 @@ package org.flexunit.runners {
 			if ( error is AssumptionViolatedException ) {
 				eachNotifier.fireTestIgnored();
 			} else if ( error is StoppedByUserException ) {
-				throw error;
+				//We are done.. the user cancelled the run
+				eachNotifier.fireTestFinished();
 			} else if ( error ) {
 				eachNotifier.addFailure( error );
 			}
