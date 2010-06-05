@@ -41,6 +41,8 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.async.AsyncTestResponder;
 	import org.flexunit.async.IAsyncTestResponder;
 	import org.flexunit.async.ITestResponder;
+	import org.flexunit.constants.AnnotationArgumentConstants;
+	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.events.AsyncEvent;
 	import org.flexunit.events.AsyncResponseEvent;
 	import org.flexunit.internals.flexunit_internal;
@@ -651,8 +653,8 @@ package org.flexunit.internals.runners.statements {
 		 * 
 		 * @return a Boolean value indicating whether the provided <code>method</code> is asynchronous.
 		 */
-		public static function hasAsync( method:FrameworkMethod, type:String="Test" ):Boolean {
-			var async:String = method.getSpecificMetaDataArgValue( type, "async" );
+		public static function hasAsync( method:FrameworkMethod, type:String=AnnotationConstants.TEST ):Boolean {
+			var async:String = method.getSpecificMetaDataArgValue( type, AnnotationArgumentConstants.ASYNC );
 			var asyncBool:Boolean = ( async == "true" ); 
 			 
 			return asyncBool;			

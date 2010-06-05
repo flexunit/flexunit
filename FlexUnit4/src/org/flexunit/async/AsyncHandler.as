@@ -149,7 +149,7 @@ package org.flexunit.async {
 		 * 
 		 * @param event The event being listened for.
 		 */
-		public function handleEvent( event:Event ):void {			
+		public function handleEvent( event:Event=null ):void {
 			//The event we were waiting for occurred
 			//Let the TestCase know if the timer is still running
 			//This will be a custom event			

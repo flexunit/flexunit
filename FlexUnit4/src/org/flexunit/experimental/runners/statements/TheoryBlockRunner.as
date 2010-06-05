@@ -116,13 +116,7 @@ package org.flexunit.experimental.runners.statements {
 		/**
 		 * @inheritDoc
 		 */
-		override protected function withDecoration( method:FrameworkMethod, test:Object ):IAsyncStatement {
-			var statement:IAsyncStatement = methodInvoker( method, test );
-			statement = withPotentialAsync( method, test, statement );
-			//statement = withPotentialTimeout( method, test, statement );
-			statement = possiblyExpectingExceptions( method, test, statement );
-			statement = withStackManagement( method, test, statement );
-			
+		override protected function withPotentialAsync( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
 			return statement;
 		}
 	}

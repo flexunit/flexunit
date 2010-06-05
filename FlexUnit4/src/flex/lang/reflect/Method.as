@@ -29,6 +29,8 @@ package flex.lang.reflect {
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	import flex.lang.reflect.metadata.MetaDataArgument;
 	
+	import org.flexunit.constants.AnnotationConstants;
+	
 	/**
 	 * Used to create XML style methods for use with FlexUnit
 	 * These XML "methods" are then run through the associated
@@ -147,9 +149,9 @@ package flex.lang.reflect {
 				return _elementType;
 			}
 			
-			if ( ( returnType == Array ) && ( hasMetaData( "ArrayElementType" ) ) ) {
+			if ( ( returnType == Array ) && ( hasMetaData( AnnotationConstants.ARRAY_ELEMENT_TYPE ) ) ) {
 				//we are an array at least, so let's go further;
-				var meta:MetaDataAnnotation = getMetaData( "ArrayElementType" );
+				var meta:MetaDataAnnotation = getMetaData( AnnotationConstants.ARRAY_ELEMENT_TYPE );
 				var potentialClassName:String;
 				
 				try {

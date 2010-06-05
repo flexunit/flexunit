@@ -89,7 +89,8 @@ package org.flexunit.experimental.runners.statements {
 	
 	 		try {
 				var values:Object = complete.getMethodArguments( anchor.nullsOk() );
-				frameworkMethod.applyExplosivelyAsync( myToken, freshInstance, values as Array );
+				frameworkMethod.applyExplosively( freshInstance, values as Array );
+				myToken.sendResult();
 			} catch ( e:CouldNotGenerateValueException ) {
 				sendComplete( null );	
 			} catch ( e:AssumptionViolatedException ) {

@@ -26,6 +26,7 @@
  * @version    
  **/ 
 package org.flexunit.runners {
+	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.internals.AssumptionViolatedException;
 	import org.flexunit.internals.namespaces.classInternal;
 	import org.flexunit.internals.runners.ChildRunnerSequencer;
@@ -216,12 +217,28 @@ package org.flexunit.runners {
 		 * @see #runChild()
 		 */
 		protected function classBlock( notifier:IRunNotifier ):IAsyncStatement {
-			var sequencer:StatementSequencer = new StatementSequencer();
+			var sequencer:StatementSequencer;
 			
-			sequencer.addStep( withBeforeClasses() );
-			sequencer.addStep( childrenInvoker( notifier ) );
-			sequencer.addStep( withAfterClasses() );
+			var beforeClassStatement:IAsyncStatement = withBeforeClasses();
+			var afterClassStatement:IAsyncStatement = withAfterClasses();
+			var childrenInvokerStatement:IAsyncStatement = childrenInvoker( notifier );
 			
+			if ( !( beforeClassStatement || afterClassStatement ) ) {
+				return childrenInvokerStatement;
+			} else {
+				sequencer = new StatementSequencer();
+				
+				if ( beforeClassStatement ) {
+					sequencer.addStep( beforeClassStatement );	
+				}
+				
+				sequencer.addStep( childrenInvokerStatement );
+				
+				if ( afterClassStatement ) {
+					sequencer.addStep( afterClassStatement );
+				}
+			}
+
 			return sequencer;
 		}
 
@@ -233,11 +250,19 @@ package org.flexunit.runners {
 		 * @return an <code>IAsyncStatement</code> containing methdos to run before the class.
 		 */
 		protected function withBeforeClasses():IAsyncStatement {
-			var befores:Array = testClass.getMetaDataMethods( "BeforeClass" );
-			//Sort the befores array
-			befores.sort(compare);
-			//this is a deviation from the java approach as we don't have the same type of method information
-			var statement:IAsyncStatement = new RunBeforesClass( befores, testClass );
+			var statement:IAsyncStatement;			
+			var befores:Array = testClass.getMetaDataMethods( AnnotationConstants.BEFORE_CLASS );
+			
+			if ( befores.length ) {
+				
+				if ( befores.length > 1 ) {
+					//Sort the befores array
+					befores.sort(compare);
+				}
+
+				statement = new RunBeforesClass( befores, testClass );
+			}
+
 			return statement;
 		}
 
@@ -251,10 +276,19 @@ package org.flexunit.runners {
 		 * @return an <code>IAsyncStatement</code> containing methods to run after the class.
 		 */
 		protected function withAfterClasses():IAsyncStatement {
-			var afters:Array = testClass.getMetaDataMethods( "AfterClass" );
-			//Sort the afters array
-			afters.sort(compare);
-			var statement:IAsyncStatement = new RunAftersClass( afters, testClass );
+			var statement:IAsyncStatement;
+			var afters:Array = testClass.getMetaDataMethods( AnnotationConstants.AFTER_CLASS );
+			
+			if ( afters.length ) {
+				
+				if ( afters.length > 1 ) {
+					//Sort the afters array
+					afters.sort(compare);
+				}
+
+				statement = new RunAftersClass( afters, testClass );
+			}
+
 			return statement;
 		}		
 		
@@ -282,8 +316,8 @@ package org.flexunit.runners {
 		 * @see #testClass()
 		 */
 		protected function collectInitializationErrors( errors:Array ):void {
-			validatePublicVoidNoArgMethods( "BeforeClass", true, errors );
-			validatePublicVoidNoArgMethods( "AfterClass", true, errors );
+			validatePublicVoidNoArgMethods( AnnotationConstants.BEFORE_CLASS, true, errors );
+			validatePublicVoidNoArgMethods( AnnotationConstants.AFTER_CLASS, true, errors );
 		}
 
 		/**
@@ -341,9 +375,11 @@ package org.flexunit.runners {
 			if(!childrenFiltered) {
 				var filtered:Array = new Array();
 				var child:*;
+				var theChildren:Array = children;
+				var length:uint = theChildren.length;
 	
-				for ( var i:int=0; i<children.length; i++ ) {
-					child = children[ i ];
+				for ( var i:uint=0; i<length; i++ ) {
+					child = theChildren[ i ];
 					//Determine if the child matches the filter
 					if ( shouldRun( child ) ) {
 						try {

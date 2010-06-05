@@ -31,6 +31,7 @@ package org.flexunit.internals.builders {
 	import flex.lang.reflect.Klass;
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
+	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runners.model.IRunnerBuilder;
@@ -72,7 +73,6 @@ package org.flexunit.internals.builders {
 	 * Where testClass is the class to be run and suiteBuilder is an <code>IRunnerBuilder</code>.
 	 */
 	public class MetaDataBuilder extends RunnerBuilderBase {
-		public static const RUN_WITH:String = "RunWith";
 		/**
 		 * @private
 		 */
@@ -115,7 +115,7 @@ package org.flexunit.internals.builders {
 		}
 		
 		override public function canHandleClass( testClass:Class ):Boolean {
-			var annotation:MetaDataAnnotation = lookForMetaDataThroughInheritance( testClass, RUN_WITH );
+			var annotation:MetaDataAnnotation = lookForMetaDataThroughInheritance( testClass, AnnotationConstants.RUN_WITH );
 			
 			return ( annotation != null );
 		}
@@ -134,12 +134,12 @@ package org.flexunit.internals.builders {
 			//Determine if the testClass references a runner in its metadata
 			//Get the definition for the runner class
 			var runWithValue:String = ""; 
-			var runWithAnnotation:MetaDataAnnotation = lookForMetaDataThroughInheritance( testClass, RUN_WITH );
+			var runWithAnnotation:MetaDataAnnotation = lookForMetaDataThroughInheritance( testClass, AnnotationConstants.RUN_WITH );
 				
 			if ( runWithAnnotation && runWithAnnotation.defaultArgument ) {
 				runWithValue = runWithAnnotation.defaultArgument.key;
 			}
-
+			
 			return buildRunner( runWithValue, testClass);
 		}
 		

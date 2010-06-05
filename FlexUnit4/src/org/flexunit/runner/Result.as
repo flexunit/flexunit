@@ -119,12 +119,16 @@ package org.flexunit.runner {
 }
 
 import flash.utils.getTimer;
-import org.flexunit.runner.notification.RunListener;
+
+import flexunit.framework.Assert;
+
+import org.flexunit.Assert;
+import org.flexunit.internals.namespaces.classInternal;
 import org.flexunit.runner.Description;
+import org.flexunit.runner.IDescription;
 import org.flexunit.runner.Result;
 import org.flexunit.runner.notification.Failure;
-import org.flexunit.internals.namespaces.classInternal;
-import org.flexunit.runner.IDescription;
+import org.flexunit.runner.notification.RunListener;
 
 use namespace classInternal;
 
@@ -156,4 +160,9 @@ class Listener extends RunListener {
 		result._ignoreCount++;
 		ignoreDuringExecution = false;
 	}
+	
+	override public function testStarted( description:IDescription ):void {
+		org.flexunit.Assert.resetAssertionsFields();
+		flexunit.framework.Assert.resetAssertionsMade();
+	}	
 }

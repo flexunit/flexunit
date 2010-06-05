@@ -3,26 +3,33 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.helper.ParamDataHelper;
+	
+	import mx.rpc.AsyncToken;
+	import mx.rpc.Responder;
+	import mx.rpc.events.FaultEvent;
+	import mx.rpc.events.ResultEvent;
+	import mx.rpc.http.HTTPService;
+	
 	import net.digitalprimates.fluint.async.AsyncHandler;
 	
 	import org.flexunit.Assert;
 	import org.flexunit.async.Async;
+	import org.flexunit.runner.external.ExternalDependencyToken;
 	import org.flexunit.runners.Parameterized;
 	
 	[RunWith("org.flexunit.runners.Parameterized")]
 	public class TestParameterized
 	{
 		private var foo:Parameterized;
-		
-		[Parameters]
-		public static function data1():Array {
-			//need to deal with this circumstance better -> throw new Error("Blah");
-			return [ [ 0, 0 ], [ 1, 2 ], [ 2, 4 ] ];
-		}
+
+		public static var dataRetriever1:ParamDataHelper = new ParamDataHelper( "someFakeDataPath.stuff" );
+
+		[Parameters(loader="dataRetriever1")]
+		public static var someData:Array;
 
 		[Parameters]
 		public static function data2():Array {
-			//need to deal with this circumstance better -> throw new Error("Blah");
 			return [ [ 3, 6 ], [ 4, 8 ], [ 5, 10 ], [ 6, 12 ] ];
 		}
 

@@ -39,6 +39,7 @@ package org.flexunit.token {
 	 * runners, statements, and parts of a test when a certain activity has finished.
 	 */
 	dynamic public class AsyncTestToken implements IAsyncTestToken {
+		public var pend:Boolean = false;
 		/**
 		 * @private
 		 */
