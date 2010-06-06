@@ -11,8 +11,6 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	import mx.rpc.events.ResultEvent;
 	import mx.rpc.http.HTTPService;
 	
-	import net.digitalprimates.fluint.async.AsyncHandler;
-	
 	import org.flexunit.Assert;
 	import org.flexunit.async.Async;
 	import org.flexunit.runner.external.ExternalDependencyToken;

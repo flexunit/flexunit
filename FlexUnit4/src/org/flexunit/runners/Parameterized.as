@@ -43,6 +43,7 @@ package org.flexunit.runners
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.external.IExternalDependencyRunner;
 	import org.flexunit.runner.notification.IRunNotifier;
+	import org.flexunit.runner.notification.StoppedByUserException;
 	import org.flexunit.runners.model.FrameworkMethod;
 	import org.flexunit.runners.model.IRunnerBuilder;
 	import org.flexunit.token.AsyncTestToken;
@@ -155,7 +156,22 @@ package org.flexunit.runners
 			return IRunner( child ).description;
 		}
 
+		override public function pleaseStop():void {
+			super.pleaseStop();
+			
+			if ( runners ) {
+				for ( var i:int=0; i<runners.length; i++ ) {
+					( runners[ i ] as IRunner ).pleaseStop(); 
+				}
+			}
+		}
+		
 		override protected function runChild( child:*, notifier:IRunNotifier, childRunnerToken:AsyncTestToken ):void {
+			if ( stopRequested ) {
+				childRunnerToken.sendResult( new StoppedByUserException() );
+				return;
+			}
+			
 			IRunner( child ).run( notifier, childRunnerToken );
 		}
 		// end Items copied from Suite

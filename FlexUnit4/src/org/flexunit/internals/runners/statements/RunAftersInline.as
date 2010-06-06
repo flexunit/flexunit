@@ -1,4 +1,5 @@
 package org.flexunit.internals.runners.statements {
+	import org.flexunit.internals.runners.model.MultipleFailureException;
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.token.IAsyncTestToken;
@@ -10,6 +11,7 @@ package org.flexunit.internals.runners.statements {
 		private var nextStatement:IAsyncStatement;
 		private var runAfters:RunAfters;
 		private var myTokenForSequence:AsyncTestToken;
+		private var executionError:Error;
 		
 		public function RunAftersInline( afters:Array, target:Object, statement:IAsyncStatement ) {
 			super();
@@ -38,11 +40,24 @@ package org.flexunit.internals.runners.statements {
 		}
 		
 		public function handleNextStatementExecuteComplete( result:ChildResult ):void {
+			executionError = result.error;
 			runAfters.evaluate( myTokenForSequence );			
 		}
 
 		public function handleSequenceExecuteComplete( result:ChildResult ):void {
-			sendComplete( result.error );
+			var error:Error;
+			
+			if ( result.error || executionError ) {
+				if ( result.error && executionError ) {
+					error = new MultipleFailureException( [ executionError, result.error ] );
+				} else if ( executionError ) {
+					error = executionError;
+				} else if ( result.error ) {
+					error = result.error;
+				}
+			}
+			
+			sendComplete( error );
 		}
 	}
 }

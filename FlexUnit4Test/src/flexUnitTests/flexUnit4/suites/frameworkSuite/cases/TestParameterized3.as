@@ -2,8 +2,6 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
-	import net.digitalprimates.fluint.async.AsyncHandler;
-	
 	import org.flexunit.Assert;
 	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.async.Async;

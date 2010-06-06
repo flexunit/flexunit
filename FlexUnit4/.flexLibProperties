@@ -164,6 +164,7 @@
     <classEntry path="org.flexunit.constants.AnnotationConstants"/>
     <classEntry path="org.flexunit.runner.manipulation.fields.FieldMetaDataSorter"/>
     <classEntry path="org.flexunit.runner.manipulation.fields.IFieldSorter"/>
+    <classEntry path="org.flexunit.internals.runners.watcher.FrameWatcher"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

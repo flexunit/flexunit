@@ -208,16 +208,12 @@ package org.flexunit.runners.model.cases
 		
 		[Test(description="Ensure that the applyExplosively function is correctly called")]
 		public function applyExplosivelyAsyncTest():void {
-			var parentTokenMock:AsyncTestTokenMock = new AsyncTestTokenMock();
 			var target:Object = new Object();
 			var params:Array = new Array();
 			
-			parentTokenMock.mock.method("sendResult").withArgs(null).once;
 			methodMock.mock.method("apply").withArgs(target, params).once;
 			
 			frameworkMethod.applyExplosively(target, params);
-			
-			parentTokenMock.mock.verify();
 			methodMock.mock.verify();
 		}
 		

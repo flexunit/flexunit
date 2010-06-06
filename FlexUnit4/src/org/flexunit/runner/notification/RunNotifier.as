@@ -48,11 +48,6 @@ package org.flexunit.runner.notification {
 	 * the <code>RunNotifier</code> encounters one of the conditions stated above, all registered 
 	 * <code>IRunListeners</code> will be notified.<br/>
 	 * 
-	 * The <code>RunNotifier</code> also contains a <code>#pleaseStop()</code> method.  This method is responsible for
-	 * halting the execution of the test run.  It seems a little odd to put this functionality in this class, but the 
-	 * <code>RunNotifier</code> is the only object guaranteed to be shared amongst the many <code>IRunners</code>
-	 * in the test run.<br/>
-	 * 
 	 * If one writes an <code>IRunner</code>, they may need to notify FlexUnit4 of their progress while 
 	 * running tests.  This is accomplished by invoking the <code>IRunNotifier</code> passed to the
 	 * implementation of <code>org.flexunit.runner.IRunner#run(RunNotifier)</code>.
@@ -62,7 +57,6 @@ package org.flexunit.runner.notification {
 	 */
 	public class RunNotifier implements IRunNotifier {
 		private var listeners:Array = new Array();
-		private var pleaseStopBool:Boolean = false;
 		private var startTime:Number;
 
 		/**
@@ -100,9 +94,6 @@ package org.flexunit.runner.notification {
 		 * requested that the test run stop.
 		 */
 		public function fireTestStarted( description:IDescription ):void {
-			if (pleaseStopBool)
-				throw new StoppedByUserException();
-
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
 			
 			notifier.notifyListener = function( item:IRunListener ):void {
@@ -203,16 +194,6 @@ package org.flexunit.runner.notification {
 			}
 
 			notifier.run();
-		}
-
-		/**
-		 * Ask that the tests run stop before starting the next test. Phrased politely because
-		 * the test currently running will not be interrupted. It seems a little odd to put this
-		 * functionality here, but the <code>RunNotifier</code> is the only object guaranteed 
-		 * to be shared amongst the many runners involved.
-		 */
-		public function pleaseStop():void {
-			pleaseStopBool = true;
 		}
 
 		/** 

@@ -26,6 +26,10 @@
  * @version    
  **/ 
 package org.flexunit.runner {
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
+	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.*;
@@ -33,6 +37,8 @@ package org.flexunit.runner {
 	import org.flexunit.IncludeFlexClasses;
 	import org.flexunit.experimental.theories.Theories;
 	import org.flexunit.internals.dependency.ExternalRunnerDependencyWatcher;
+	import org.flexunit.internals.runners.watcher.FrameWatcher;
+	import org.flexunit.runner.external.IExternalDependencyRunner;
 	import org.flexunit.runner.notification.Failure;
 	import org.flexunit.runner.notification.IAsyncStartupRunListener;
 	import org.flexunit.runner.notification.IRunListener;
@@ -44,7 +50,7 @@ package org.flexunit.runner {
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.utils.ClassNameUtil;
-	import org.flexunit.runner.external.IExternalDependencyRunner;
+	import org.fluint.uiImpersonation.VisualTestEnvironmentBuilder;
 
 	[Event(type="testsComplete", type="flash.events.Event")]
 	[Event(type="runnerStart", type="flash.events.Event")]
@@ -111,6 +117,9 @@ package org.flexunit.runner {
 		 */
 		private var asyncListenerWatcher:AsyncListenerWatcher;
 		
+		private var _visualDisplayRoot:DisplayObjectContainer;
+
+		private var topLevelRunner:IRunner;
 		/**
 		 * @private
 		 */
@@ -130,16 +139,31 @@ package org.flexunit.runner {
 		 * Returns the version number.
 		 */
 		public static function get version():String {
-			return "4.1.0.0";
+			return "4.1.0.0b1";
 		}
 		
+
+		public function get visualDisplayRoot():DisplayObjectContainer {
+			return _visualDisplayRoot; 
+		}
+		
+		public function set visualDisplayRoot( value:DisplayObjectContainer ):void {
+			_visualDisplayRoot = value;
+
+			//pass the stage along to the VisualEnvironmentBuilder.. 
+			VisualTestEnvironmentBuilder.getInstance( value );
+		}
+
 		/**
 		 * Requests that the FlexUnitCore stop execution of the test environment.
 		 * As Flash Player is single threaded, we will only be able to stop execution after the currently running test completes
 		 * and before the next one begins, so this will always have a margin of error.
 		 */
 		public function pleaseStop():void {
-			notifier.pleaseStop();
+			
+			if ( topLevelRunner ) {
+				topLevelRunner.pleaseStop();
+			}
 
 			//dispatchEvent( new Event( TESTS_STOPPED ) );			
 		}
@@ -242,7 +266,11 @@ package org.flexunit.runner {
 		 * @param runner The <code>IRunner</code> to use for this test run.
 		 */
 		public function runRunner( runner:IRunner ):void {
-			
+
+			//Record the top level runner. This is the active runner in case we need to
+			//do something like stop the execution of the test run
+			topLevelRunner = runner;
+
 			if ( runner is IExternalDependencyRunner ) {
 				( runner as IExternalDependencyRunner ).dependencyWatcher = runnerExternalDependencyWatcher; 
 			}
