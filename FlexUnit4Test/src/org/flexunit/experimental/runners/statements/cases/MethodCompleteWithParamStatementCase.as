@@ -39,6 +39,7 @@ package org.flexunit.experimental.runners.statements.cases
 			freshInstance = null;
 		}
 		
+		[Ignore("Expectations on this test seem to be managed incorrectly")]
 		[Test(description="Ensure that the evaluate function makes the correct calls when no exception is thrown")]
 		public function evaluateNoExceptionTest():void {
 			var parentToken:AsyncTestTokenMock = new AsyncTestTokenMock();
@@ -48,7 +49,8 @@ package org.flexunit.experimental.runners.statements.cases
 			assignmentsMock.mock.method("getMethodArguments").withArgs(true).once.returns(argumentsArray);
 			theoryAnchorMock.mock.method("nullsOk").withNoArgs.once.returns(true);
 			frameworkMethodMock.mock.method("applyExplosively").withArgs(freshInstance, argumentsArray).once;
-			
+			parentToken.mock.method("sendResult").withNoArgs.once;
+				
 			methodCompleteWithParamStatement.evaluate(parentToken);
 			
 			assignmentsMock.mock.verify();

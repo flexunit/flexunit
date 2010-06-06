@@ -139,7 +139,7 @@ package org.flexunit.runner {
 		 * Returns the version number.
 		 */
 		public static function get version():String {
-			return "4.1.0.0";
+			return "4.1.0.0b1";
 		}
 		
 
@@ -150,7 +150,7 @@ package org.flexunit.runner {
 		public function set visualDisplayRoot( value:DisplayObjectContainer ):void {
 			_visualDisplayRoot = value;
 
-			//pass the stage along to the VisualEnvironmentBuilder
+			//pass the stage along to the VisualEnvironmentBuilder.. 
 			VisualTestEnvironmentBuilder.getInstance( value );
 		}
 
