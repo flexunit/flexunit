@@ -8,7 +8,6 @@ package org.flexunit.experimental.theories.internals.cases
 		//TODO: Ensure that these tests and this test case are being implemented correctly.
 		//It is currently impossible to test the stringValueOf function.
 		
-		[Ignore("Currently Ignoring Test as this functionality is under investigation due to Max stack overflow issue")]
 		[Test(description="Ensure that the ParameterizedAssertionError constructor is correctly assigning parameter values")]
 		public function constructorTest():void {
 			var targetException:Error = new Error();
