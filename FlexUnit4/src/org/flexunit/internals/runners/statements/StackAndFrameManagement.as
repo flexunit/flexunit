@@ -86,7 +86,7 @@ package org.flexunit.internals.runners.statements {
 			myToken.addNotificationMethod( handleNextExecuteComplete );
 			
 			if ( !frameWatcher ) {
-				frameWatcher = FrameWatcher.getInstance();
+				frameWatcher = new FrameWatcher();
 			}
 		}
 		

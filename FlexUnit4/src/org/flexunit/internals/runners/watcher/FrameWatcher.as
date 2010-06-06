@@ -94,29 +94,32 @@ package org.flexunit.internals.runners.watcher {
 		private function handleEnterFrame( event:Event ):void {
 			lastEnterFrameTime = getTimer();
 		}
-		
-		public static function getInstance():FrameWatcher {
-			if ( !instance ) {
-				instance = new FrameWatcher( new SingletonEnforcer() );
 
-				//try to get the stage through any means possible
-				//Best case, someone will give us the stage, else we will try to find it
-				//If we are running as Flex, that is possible, else, likely not
-				var testEnvironment:IVisualEnvironmentBuilder = VisualTestEnvironmentBuilder.getInstance();
-				var environment:IVisualTestEnvironment = testEnvironment.buildVisualTestEnvironment();		
-				
-				if ( environment is DisplayObject ) {
-					//instance.stage = ( environment as DisplayObject ).stage;
-				}
+		protected function getStage():Stage {
+			/* try to get the stage through any means possible
+			   Best case, someone will have given us the stage, 
+			   through the VisualEnvironmentBuilder
+			
+			   If it wasn't specied, and we are running as Flex, that is possible, else likely not
+			*/
+			var testEnvironment:IVisualEnvironmentBuilder = VisualTestEnvironmentBuilder.getInstance();
+			var environment:IVisualTestEnvironment = testEnvironment.buildVisualTestEnvironment();		
+			
+			if ( environment is DisplayObject ) {
+				return ( environment as DisplayObject ).stage;
 			}
 			
-			return instance;
+			return null;
 		}
-		
-		public function FrameWatcher( enforcer:SingletonEnforcer ) {
+			
+		public function FrameWatcher( stage:Stage=null ) {
+			if ( !stage ) {
+				//If we weren't passed a stage, then try to find one
+				this.stage = getStage();
+			} else {
+				this.stage = stage;
+			}
+			
 		}
 	}
-}
-
-class SingletonEnforcer {
 }

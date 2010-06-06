@@ -150,12 +150,6 @@ package org.flexunit.runner {
 		public function set visualDisplayRoot( value:DisplayObjectContainer ):void {
 			_visualDisplayRoot = value;
 
-			if ( value ) {
-				//Feed the stage into the FrameWatcher if we have it
-				var frameWatcher:FrameWatcher = FrameWatcher.getInstance();
-				frameWatcher.stage = value.stage;
-			}
-
 			//pass the stage along to the VisualEnvironmentBuilder
 			VisualTestEnvironmentBuilder.getInstance( value );
 		}
