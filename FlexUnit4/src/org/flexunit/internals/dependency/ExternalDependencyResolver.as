@@ -103,13 +103,14 @@ package org.flexunit.internals.dependency {
 							
 							if ( argument.key == AnnotationArgumentConstants.LOADER ) {
 								loaderFieldName = argument.value;
+
+								loaderField = klassInfo.getField( loaderFieldName );
+								executeDependencyLoader( loaderField, targetField );
+								counter++;
+								
 								break;
 							}
 						}
-						
-						loaderField = klassInfo.getField( loaderFieldName );
-						executeDependencyLoader( loaderField, targetField );
-						counter++;
 					}
 				}
 			}
