@@ -53,6 +53,7 @@
 	<target name="test" depends="compile">
 		<!-- Execute TestRunner.swf as FlexUnit tests and publish reports -->
 		<flexunit player="air" 
+           workingDir="${bin.loc}"
 		   toDir="${report.loc}" 
 		   haltonfailure="false" 
 		   verbose="true">

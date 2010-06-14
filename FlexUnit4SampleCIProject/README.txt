@@ -32,7 +32,7 @@ will produce a folder layout as such:
 - target               <-- Location of final Flex website zip
   - bin                <-- Binary working folder for build
     - Main.swf
-    - TestRunner.mxml  <-- In the default build ONLY
+    - TestRunner.mxml  <-- In all builds but build.custom.xml
     - TestRunner.swf
   - reports            <-- FlexUnit4 xml reports
 - build.xml
@@ -53,9 +53,10 @@ The Ant build file using ADL, when run successfully, will produce a folder layou
     - flex
 - target                      <-- Location of final Flex website zip
   - bin                       <-- Binary working folder for build
-    - AirTestRunner.swf
     - flexUnitDescriptor.xml
     - Main.swf
+    - TestRunner.mxml         
+    - TestRunner.swf
   - reports                   <-- FlexUnit4 xml reports
 - build.xml
 - build.air.xml
