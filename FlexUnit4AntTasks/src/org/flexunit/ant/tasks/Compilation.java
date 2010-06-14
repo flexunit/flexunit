@@ -154,7 +154,7 @@ public class Compilation
       task.setErrorProperty("MXMLC_ERROR");
       
       Argument flexLibArgument = task.createArg();
-      flexLibArgument.setLine("+flexlib " + frameworksPath);
+      flexLibArgument.setLine("+flexlib \"" + frameworksPath + "\"");
       
       if(configuration.getPlayer().equals("air"))
       {
@@ -163,7 +163,7 @@ public class Compilation
       }
       
       Argument outputFile = task.createArg();
-      outputFile.setLine("-output " + finalFile.getAbsolutePath());
+      outputFile.setLine("-output \"" + finalFile.getAbsolutePath() + "\"");
       
       Argument sourcePath = task.createArg();
       sourcePath.setLine("-source-path " + configuration.getSources().getPathElements(" ") + " " + configuration.getTestSources().getPathElements(" "));
