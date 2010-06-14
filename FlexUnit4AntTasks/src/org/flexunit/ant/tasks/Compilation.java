@@ -24,6 +24,8 @@ public class Compilation
    private final String MXML2009_NAMESPACE="xmlns:" + MXML2009_PREFIX + "=\"http://ns.adobe.com/mxml/2009\"";
    private final String SPARK_PREFIX = "s";
    private final String SPARK_NAMESPACE = "xmlns:" + SPARK_PREFIX + "=\"library://ns.adobe.com/flex/spark\"";
+   private final String CI_LISTENER = "CIListener";
+   private final String AIR_CI_LISTENER = "AirCIListener";
    private final String TESTRUNNER_TEMPLATE = "TestRunner.template";
    private final String TESTRUNNER_FILE = "TestRunner.mxml";
    private final String MXMLC_RELATIVE_PATH = "lib/mxmlc.jar";
@@ -70,6 +72,7 @@ public class Compilation
          String applicationClass = configuration.getPlayer().equals("flash") ? FLEX_APPLICATION_CLASS : AIR_APPLICATION_CLASS;
          String mxmlPrefix = sdkVersion == 3 ? MXML2006_PREFIX : MXML2009_PREFIX;
          String namespaces = sdkVersion == 3 ? MXML2006_NAMESPACE : MXML2009_NAMESPACE + "\n" + SPARK_NAMESPACE;
+         String ciListener = configuration.getPlayer().equals("flash") ? CI_LISTENER : AIR_CI_LISTENER;
          
          File runner = new File(workingDir.getAbsolutePath() + File.separatorChar + TESTRUNNER_FILE);
          
@@ -82,6 +85,7 @@ public class Compilation
          filters.addFilter("APPLICATION_CLASS", applicationClass);
          filters.addFilter("NAMESPACES", namespaces);
          filters.addFilter("MXML_PREFIX", mxmlPrefix);
+         filters.addFilter("CI_LISTENER_CLASS", ciListener);
          filters.addFilter("CLASS_REFS", configuration.getTestSources().getClasses());
          filters.addFilter("IMPORT_REFS", configuration.getTestSources().getImports());
          

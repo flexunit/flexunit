@@ -5,7 +5,7 @@ creationComplete="runTests();">
    
    <@MXML_PREFIX@:Script>
       <![CDATA[
-         import org.flexunit.listeners.CIListener;
+         import org.flexunit.listeners.@CI_LISTENER_CLASS@;
          import org.flexunit.runner.FlexUnitCore;
          import org.flexunit.runner.Request;
          
@@ -13,7 +13,7 @@ creationComplete="runTests();">
          
          public function runTests() : void {
             var core : FlexUnitCore = new FlexUnitCore();
-            core.addListener(new CIListener());
+            core.addListener(new @CI_LISTENER_CLASS@());
             
 			var request:Request = Request.qualifyClasses.apply(
 					null, 
