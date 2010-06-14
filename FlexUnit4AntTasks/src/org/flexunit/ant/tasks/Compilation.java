@@ -67,7 +67,7 @@ public class Compilation
          int sdkVersion = getSDKVersion();
          
          String applicationPrefix = sdkVersion == 3 ? MXML2006_PREFIX : SPARK_PREFIX;
-         String applicationClass = configuration.getPlayer() == "flash" ? FLEX_APPLICATION_CLASS : AIR_APPLICATION_CLASS;
+         String applicationClass = configuration.getPlayer().equals("flash") ? FLEX_APPLICATION_CLASS : AIR_APPLICATION_CLASS;
          String mxmlPrefix = sdkVersion == 3 ? MXML2006_PREFIX : MXML2009_PREFIX;
          String namespaces = sdkVersion == 3 ? MXML2006_NAMESPACE : MXML2009_NAMESPACE + "\n" + SPARK_NAMESPACE;
          
@@ -104,7 +104,7 @@ public class Compilation
       }
       catch (Exception e)
       {
-         throw new BuildException("Could not create test runner from template.");
+         throw new BuildException("Could not create test runner from template.", e);
       }
    }
    
@@ -122,14 +122,18 @@ public class Compilation
       task.setOutputproperty(outputProperty);
       
       Argument versionArgument = task.createArg();
-      versionArgument.setLine("--version");
+      versionArgument.setValue("--version");
       
       task.execute();
       
       //Parse version number and return as int
       String output = project.getProperty(outputProperty);
       int prefixIndex = output.indexOf("Version ");
-      return Integer.parseInt(output.substring(prefixIndex + 8, prefixIndex + 9));
+      int version = Integer.parseInt(output.substring(prefixIndex + 8, prefixIndex + 9));
+      
+      LoggingUtil.log("Found SDK version: " + version);
+      
+      return version;
    }
    
    private Java createJavaTask(File runnerFile, File finalFile)
@@ -148,7 +152,7 @@ public class Compilation
       Argument flexLibArgument = task.createArg();
       flexLibArgument.setLine("+flexlib " + frameworksPath);
       
-      if(configuration.getPlayer() == "air")
+      if(configuration.getPlayer().equals("air"))
       {
          Argument airConfigArgument = task.createArg();
          airConfigArgument.setValue("+configname=air");

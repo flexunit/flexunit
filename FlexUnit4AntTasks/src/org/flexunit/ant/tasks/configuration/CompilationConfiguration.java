@@ -111,6 +111,8 @@ public class CompilationConfiguration implements StepConfiguration
    {
       LoggingUtil.log("Using the following settings for compilation:");
       LoggingUtil.log("\tFLEX_HOME: [" + flexHome.getAbsolutePath() + "]");
+      LoggingUtil.log("\tplayer: [" + player + "]");
+      LoggingUtil.log("\tsourceDirectories: [" + sources.getPathElements(",") + "]");
       LoggingUtil.log("\ttestSourceDirectories: [" + testSources.getPathElements(",") + "]");
       LoggingUtil.log("\tlibraries: [" + libraries.getPathElements(",") + "]");
    }

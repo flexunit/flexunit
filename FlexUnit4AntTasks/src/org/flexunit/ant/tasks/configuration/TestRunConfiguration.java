@@ -1,8 +1,6 @@
 package org.flexunit.ant.tasks.configuration;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.flexunit.ant.LoggingUtil;
@@ -12,8 +10,8 @@ public class TestRunConfiguration implements StepConfiguration
 {
    private final int FLOOR_FOR_PORT = 1;
    private final int SHORTEST_SOCKET_TIMEOUT = 5000; //ms
-   private final List<String> VALID_PLAYERS = Arrays.asList(new String[]{"flash", "air"});
-   
+
+   private String player;
    private File command = null;
    private int display = 99;
    private boolean failOnTestFailure = false;
@@ -21,7 +19,6 @@ public class TestRunConfiguration implements StepConfiguration
    private File flexHome = null;
    private boolean headless = false;
    private boolean isLocalTrusted = true;
-   private String player = "flash";
    private int port = 1024;
    private File reportDir = null;
    private int serverBufferSize = 262144; //bytes
@@ -183,11 +180,6 @@ public class TestRunConfiguration implements StepConfiguration
       if(reportDir != null && !reportDir.exists())
       {
          LoggingUtil.log("Provided report directory path [" + reportDir.getPath() + "] does not exist.");
-      }
-      
-      if(!VALID_PLAYERS.contains(player))
-      {
-         throw new BuildException("The provided 'player' property value [" + player + "] must be either of the following values: " + VALID_PLAYERS.toString() + ".");
       }
       
       if(command != null && !command.exists())
