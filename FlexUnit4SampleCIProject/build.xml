@@ -77,7 +77,7 @@
 	<target name="package" depends="test">
 		<!-- Assemble final website -->
 		<copy file="${bin.loc}/Main.swf" todir="${dist.loc}" />
-		<html-wrapper swf="Main" template="express-installation" output="${dist.loc}" height="100%" width="100%" />
+		<html-wrapper swf="Main" output="${dist.loc}" height="100%" width="100%" />
 
 		<!-- Zip up final website -->
 		<zip destfile="${output.loc}/${ant.project.name}.zip">

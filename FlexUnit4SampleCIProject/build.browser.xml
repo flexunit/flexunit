@@ -51,16 +51,6 @@
 	</target>
 
 	<target name="test" depends="compile">
-		<!-- Compile TestRunner.mxml as a SWF -->
-		<mxmlc file="${test.src.loc}/TestRunner.mxml" output="${bin.loc}/TestRunner.swf">
-			<source-path path-element="${main.src.loc}" />
-			<library-path dir="${lib.loc}" append="true">
-				<include name="*.swc" />
-			</library-path>
-			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
-			<compiler.headless-server>true</compiler.headless-server>
-		</mxmlc>
-
 		<!-- Execute TestRunner.swf as FlexUnit tests and publish reports -->
 		<flexunit 
 		    workingDir="${bin.loc}"
@@ -88,7 +78,7 @@
 	<target name="package" depends="test">
 		<!-- Assemble final website -->
 		<copy file="${bin.loc}/Main.swf" todir="${dist.loc}" />
-		<html-wrapper swf="Main" template="express-installation" output="${dist.loc}" height="100%" width="100%" />
+		<html-wrapper swf="Main" output="${dist.loc}" height="100%" width="100%" />
 
 		<!-- Zip up final website -->
 		<zip destfile="${output.loc}/${ant.project.name}.zip">

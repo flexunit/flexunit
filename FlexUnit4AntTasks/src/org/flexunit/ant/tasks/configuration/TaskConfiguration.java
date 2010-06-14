@@ -1,6 +1,8 @@
 package org.flexunit.ant.tasks.configuration;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
@@ -11,7 +13,9 @@ public class TaskConfiguration
 {
    private final String DEFAULT_WORKING_PATH = ".";
    private final String DEFAULT_REPORT_PATH = ".";
+   private final List<String> VALID_PLAYERS = Arrays.asList(new String[]{"flash", "air"});
    
+   private String player = "flash";
    private File reportDir = null;
    private File workingDir = null;
    private boolean verbose = false;
@@ -93,7 +97,7 @@ public class TaskConfiguration
 
    public void setPlayer(String player)
    {
-      testRunConfiguration.setPlayer(player);
+      this.player = player;
    }
 
    public void setPort(int port)
@@ -167,6 +171,11 @@ public class TaskConfiguration
    {
       LoggingUtil.log("Validating task attributes ...");
       
+      if(!VALID_PLAYERS.contains(player))
+      {
+         throw new BuildException("The provided 'player' property value [" + player + "] must be either of the following values: " + VALID_PLAYERS.toString() + ".");
+      }
+      
       File swf = testRunConfiguration.getSwf();
       boolean noTestSources = !compilationConfiguration.getTestSources().provided();
       
@@ -192,6 +201,10 @@ public class TaskConfiguration
    protected void generateDefaults()
    {
       LoggingUtil.log("Generating default values ...");
+      
+      //setup player
+      compilationConfiguration.setPlayer(player);
+      testRunConfiguration.setPlayer(player);
       
       //set FLEX_HOME property to respective configs
       compilationConfiguration.setFlexHome(flexHome);

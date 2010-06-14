@@ -51,24 +51,18 @@
 	</target>
 
 	<target name="test" depends="compile">
-		<!-- Compile TestRunner.mxml as a SWF runnable by ADL -->
-		<java jar="${FLEX_HOME}/lib/mxmlc.jar" fork="true" failonerror="true">
-			<arg line="+flexlib '${FLEX_HOME}/frameworks'" />
-			<arg line="+configname=air" />
-			<arg line="-file-specs='${test.src.loc}/AirTestRunner.mxml'"/>
-			<arg line="-output '${bin.loc}/AirTestRunner.swf'" />
-			<arg line="-source-path+='${main.src.loc}'" />
-			<arg line="-library-path+='${lib.loc}'" />
-			<arg line="-compiler.verbose-stacktraces=true" />
-			<arg line="-compiler.headless-server=true" />
-		</java>
-
 		<!-- Execute TestRunner.swf as FlexUnit tests and publish reports -->
 		<flexunit player="air" 
-			swf="${bin.loc}/AirTestRunner.swf" 
-			toDir="${report.loc}" 
-			haltonfailure="false" 
-			verbose="true" />
+           workingDir="${bin.loc}"
+		   toDir="${report.loc}" 
+		   haltonfailure="false" 
+		   verbose="true">
+		   <source dir="${main.src.loc}" />
+	       <testSource dir="${test.src.loc}">
+	          <include name="**/*Test.as" />
+	       </testSource>
+	       <library dir="${lib.loc}" />
+	    </flexunit>
 
 		<!-- Generate readable JUnit-style reports -->
 		<junitreport todir="${report.loc}">
@@ -82,7 +76,7 @@
 	<target name="package" depends="test">
 		<!-- Assemble final website -->
 		<copy file="${bin.loc}/Main.swf" todir="${dist.loc}" />
-		<html-wrapper swf="Main" template="express-installation" output="${dist.loc}" height="100%" width="100%" />
+		<html-wrapper swf="Main" output="${dist.loc}" height="100%" width="100%" />
 
 		<!-- Zip up final website -->
 		<zip destfile="${output.loc}/${ant.project.name}.zip">
