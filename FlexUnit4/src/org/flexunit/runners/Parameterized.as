@@ -181,6 +181,7 @@ package org.flexunit.runners
 import flex.lang.reflect.Field;
 import flex.lang.reflect.Klass;
 import flex.lang.reflect.Method;
+import flex.lang.reflect.metadata.MetaDataAnnotation;
 import flex.lang.reflect.metadata.MetaDataArgument;
 
 import org.flexunit.constants.AnnotationArgumentConstants;
@@ -252,14 +253,19 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 		
 		//Only validate the ones that do not have a dataProvider attribute for these rules
 		var methods:Array = testClass.getMetaDataMethods( metaDataTag  );
+		var annotation:MetaDataAnnotation;
 		var argument:MetaDataArgument;
 		
 		var eachTestMethod:FrameworkMethod;
 		for ( var i:int=0; i<methods.length; i++ ) {
 			eachTestMethod = methods[ i ] as FrameworkMethod;
 			
-			//Does it have a dataProvider?
-			argument = eachTestMethod.method.getMetaData( AnnotationConstants.TEST ).getArgument( AnnotationArgumentConstants.DATAPROVIDER );
+			annotation = eachTestMethod.method.getMetaData( AnnotationConstants.TEST );
+			
+			if ( annotation ) {
+				//Does it have a dataProvider?
+				argument = annotation.getArgument( AnnotationArgumentConstants.DATAPROVIDER );
+			}
 			
 			//If there is an argument, we need to punt on verification of arguments until later when we know how many there actually are
 			if ( !argument ) {
