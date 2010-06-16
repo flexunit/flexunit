@@ -175,11 +175,6 @@ package org.flexunit.runners
 			
 			IRunner( child ).run( notifier, childRunnerToken );
 		}
-		
-		//we don't want the BeforeClass and AfterClass on this run to execute, this will be handled by the TestClassRunnerForParameters
-		override protected function classBlock( notifier:IRunNotifier ):IAsyncStatement {
-			return childrenInvoker( notifier );
-		}		
 		// end Items copied from Suite
 	}
 }
@@ -193,8 +188,10 @@ import flex.lang.reflect.metadata.MetaDataArgument;
 import org.flexunit.constants.AnnotationArgumentConstants;
 import org.flexunit.constants.AnnotationConstants;
 import org.flexunit.internals.runners.InitializationError;
+import org.flexunit.internals.runners.statements.IAsyncStatement;
 import org.flexunit.runner.Description;
 import org.flexunit.runner.IDescription;
+import org.flexunit.runner.notification.IRunNotifier;
 import org.flexunit.runners.BlockFlexUnit4ClassRunner;
 import org.flexunit.runners.model.FrameworkMethod;
 import org.flexunit.runners.model.ParameterizedMethod;
@@ -309,7 +306,12 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 			return testClass.klassInfo.constructor.newInstance();
 		}
 	}
-	
+
+	//we don't want the BeforeClass and AfterClass on this run to execute, this will be handled by Parameterized
+	override protected function classBlock( notifier:IRunNotifier ):IAsyncStatement {
+		return childrenInvoker( notifier );
+	}
+
 	public function TestClassRunnerForParameters(klass:Class, parameterList:Array=null, i:int=0) {
 		klassInfo = new Klass( klass );
 		super(klass);
