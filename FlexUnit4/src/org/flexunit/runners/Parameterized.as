@@ -39,6 +39,7 @@ package org.flexunit.runners
 	import org.flexunit.internals.dependency.IExternalRunnerDependencyWatcher;
 	import org.flexunit.internals.runners.ErrorReportingRunner;
 	import org.flexunit.internals.runners.InitializationError;
+	import org.flexunit.internals.runners.statements.IAsyncStatement;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.external.IExternalDependencyRunner;
@@ -181,13 +182,16 @@ package org.flexunit.runners
 import flex.lang.reflect.Field;
 import flex.lang.reflect.Klass;
 import flex.lang.reflect.Method;
+import flex.lang.reflect.metadata.MetaDataAnnotation;
 import flex.lang.reflect.metadata.MetaDataArgument;
 
 import org.flexunit.constants.AnnotationArgumentConstants;
 import org.flexunit.constants.AnnotationConstants;
 import org.flexunit.internals.runners.InitializationError;
+import org.flexunit.internals.runners.statements.IAsyncStatement;
 import org.flexunit.runner.Description;
 import org.flexunit.runner.IDescription;
+import org.flexunit.runner.notification.IRunNotifier;
 import org.flexunit.runners.BlockFlexUnit4ClassRunner;
 import org.flexunit.runners.model.FrameworkMethod;
 import org.flexunit.runners.model.ParameterizedMethod;
@@ -228,7 +232,8 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 				}
 				
 				for ( var j:int=0; j<results.length; j++ ) {
-					paramMethod = new ParameterizedMethod( fwMethod.method, results[ j ] );
+					var method:Method = applyOrderToParameterizedTestMethod( fwMethod.method, j, results.length );
+					paramMethod = new ParameterizedMethod( method, results[ j ] );
 					finalArray.push( paramMethod ); 	
 				}
 			} else {
@@ -237,6 +242,29 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 		}
 		
 		return finalArray;
+	}
+	
+	protected function applyOrderToParameterizedTestMethod( method : Method, dataSetIndex : int, totalMethods : int ) : Method
+	{
+		var xmlCopy:XML = method.methodXML.copy();
+		
+		var a:MetaDataAnnotation = method.getMetaData( AnnotationConstants.TEST );
+		var arg:MetaDataArgument;
+		
+		if ( a )
+			arg = a.getArgument( AnnotationArgumentConstants.ORDER );
+		else	// CJP: If the method doesn't contain a "TEST" metadata tag, we probably shouldn't be in  here anyway... throw Error?
+			return method;
+		
+		if ( !arg )
+			xmlCopy.metadata.(@name=="Test").appendChild( <arg key="order" value="0"/> );
+		
+		var orderValueDec : Number = (dataSetIndex + 1) / ( Math.pow( 10, totalMethods ) );
+		var newOrderValue : Number = xmlCopy.metadata.(@name=="Test").arg.( @key == "order" ).attribute( "value" ) + orderValueDec;
+		
+		xmlCopy.metadata.(@name=="Test").arg.( @key == "order" ).( @value = newOrderValue );
+		var newMethod:Method = new Method( xmlCopy );
+		return newMethod;
 	}
 	
 	override protected function computeTestMethods():Array {
@@ -252,14 +280,19 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 		
 		//Only validate the ones that do not have a dataProvider attribute for these rules
 		var methods:Array = testClass.getMetaDataMethods( metaDataTag  );
+		var annotation:MetaDataAnnotation;
 		var argument:MetaDataArgument;
 		
 		var eachTestMethod:FrameworkMethod;
 		for ( var i:int=0; i<methods.length; i++ ) {
 			eachTestMethod = methods[ i ] as FrameworkMethod;
 			
-			//Does it have a dataProvider?
-			argument = eachTestMethod.method.getMetaData( AnnotationConstants.TEST ).getArgument( AnnotationArgumentConstants.DATAPROVIDER );
+			annotation = eachTestMethod.method.getMetaData( AnnotationConstants.TEST );
+			
+			if ( annotation ) {
+				//Does it have a dataProvider?
+				argument = annotation.getArgument( AnnotationArgumentConstants.DATAPROVIDER );
+			}
 			
 			//If there is an argument, we need to punt on verification of arguments until later when we know how many there actually are
 			if ( !argument ) {
@@ -297,7 +330,12 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 			return testClass.klassInfo.constructor.newInstance();
 		}
 	}
-	
+
+	//we don't want the BeforeClass and AfterClass on this run to execute, this will be handled by Parameterized
+	override protected function classBlock( notifier:IRunNotifier ):IAsyncStatement {
+		return childrenInvoker( notifier );
+	}
+
 	public function TestClassRunnerForParameters(klass:Class, parameterList:Array=null, i:int=0) {
 		klassInfo = new Klass( klass );
 		super(klass);

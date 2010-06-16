@@ -60,10 +60,10 @@ package org.flexunit.internals.dependency {
 
 		private function executeDependencyLoader( loaderField:Field, targetField:Field ):void {
 			if ( loaderField && loaderField.isStatic ) {
-				var loaderFieldInfo:Klass = new Klass( loaderField.type );
+				var loaderObj:Object = loaderField.getObj( null );
 
-				if ( loaderFieldInfo.implementsInterface( IExternalDependencyLoader ) ) {
-					var token:ExternalDependencyToken = ( loaderField.getObj( null ) as IExternalDependencyLoader ).retrieveDependency( clazz );
+				if ( loaderObj is IExternalDependencyLoader ) {
+					var token:ExternalDependencyToken = ( loaderObj as IExternalDependencyLoader ).retrieveDependency( clazz );
 					token.targetField = targetField;
 					token.addResolver( this );
 					

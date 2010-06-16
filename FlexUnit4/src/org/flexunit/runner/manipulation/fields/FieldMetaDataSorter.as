@@ -32,6 +32,8 @@ package org.flexunit.runner.manipulation.fields {
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	import flex.lang.reflect.metadata.MetaDataArgument;
 
+	import org.flexunit.constants.AnnotationArgumentConstants;
+
 	public class FieldMetaDataSorter implements IFieldSorter {
 		
 		/**Controls a A to Z verssus Z to A sort **/
@@ -52,7 +54,7 @@ package org.flexunit.runner.manipulation.fields {
 				metaDataAnnotation = metadataArray[ i ] as MetaDataAnnotation;
 				
 				//Determine if the node contains an 'order' key, if it does, get the order number
-				var metaArg:MetaDataArgument = metaDataAnnotation.getArgument( "order", true );
+				var metaArg:MetaDataArgument = metaDataAnnotation.getArgument( AnnotationArgumentConstants.ORDER, true );
 				if ( metaArg ) {
 					order = Number( metaArg.value );
 					break;
