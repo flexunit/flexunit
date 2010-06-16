@@ -39,6 +39,7 @@ package org.flexunit.runners
 	import org.flexunit.internals.dependency.IExternalRunnerDependencyWatcher;
 	import org.flexunit.internals.runners.ErrorReportingRunner;
 	import org.flexunit.internals.runners.InitializationError;
+	import org.flexunit.internals.runners.statements.IAsyncStatement;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.external.IExternalDependencyRunner;
@@ -174,6 +175,11 @@ package org.flexunit.runners
 			
 			IRunner( child ).run( notifier, childRunnerToken );
 		}
+		
+		//we don't want the BeforeClass and AfterClass on this run to execute, this will be handled by the TestClassRunnerForParameters
+		override protected function classBlock( notifier:IRunNotifier ):IAsyncStatement {
+			return childrenInvoker( notifier );
+		}		
 		// end Items copied from Suite
 	}
 }
