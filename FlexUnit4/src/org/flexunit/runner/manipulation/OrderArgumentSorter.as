@@ -29,6 +29,7 @@ package org.flexunit.runner.manipulation {
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	import flex.lang.reflect.metadata.MetaDataArgument;
 	
+	import org.flexunit.constants.AnnotationArgumentConstants;
 	import org.flexunit.runner.IDescription;
 	
 	/**
@@ -87,7 +88,7 @@ package org.flexunit.runner.manipulation {
 				metaDataAnnotation = metadataArray[ i ] as MetaDataAnnotation;
 				
 				//Determine if the node contains an 'order' key, if it does, get the order number
-				var metaArg:MetaDataArgument = metaDataAnnotation.getArgument( "order", true );
+				var metaArg:MetaDataArgument = metaDataAnnotation.getArgument( AnnotationArgumentConstants.ORDER, true );
 				if ( metaArg ) {
 					order = Number( metaArg.value );
 					break;

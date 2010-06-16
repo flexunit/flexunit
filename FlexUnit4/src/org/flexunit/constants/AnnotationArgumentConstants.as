@@ -8,5 +8,7 @@ package org.flexunit.constants {
 		
 		public static const TIMEOUT:String = "timeout";
 		public static const LOADER:String = "loader";
+		
+		public static const ORDER:String = "order";
 	}
 }
