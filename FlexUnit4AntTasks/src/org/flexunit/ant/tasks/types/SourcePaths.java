@@ -15,9 +15,6 @@ public class SourcePaths extends CompilationFileSetCollection
    @Override
    public void add(FileSet fileset)
    {
-      //restrict to as and mxml suffixed files
-      fileset.setIncludes("**/*.as,**/*.mxml");
-      
       super.add(fileset);
    }
    
@@ -43,11 +40,14 @@ public class SourcePaths extends CompilationFileSetCollection
          DirectoryScanner ds = fileset.getDirectoryScanner();
          for(String file : ds.getIncludedFiles())
          {
-            String pathWithOutSuffix = file.substring(0, file.lastIndexOf('.'));
-            String canonicalClassName = pathWithOutSuffix.replace(File.separatorChar, '.');
-            elements.append("import ");
-            elements.append(canonicalClassName);
-            elements.append(";\n");
+            if(file.endsWith(".as") || file.endsWith(".mxml"))
+            {
+               String pathWithOutSuffix = file.substring(0, file.lastIndexOf('.'));
+               String canonicalClassName = pathWithOutSuffix.replace(File.separatorChar, '.');
+               elements.append("import ");
+               elements.append(canonicalClassName);
+               elements.append(";\n");
+            }
          }
       }
       
