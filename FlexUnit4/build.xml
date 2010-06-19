@@ -122,7 +122,7 @@
       </fail>
    </target>
 
-   <target name="report" depends="pmdReport">
+   <target name="report" depends="pmdReport" if="build.report">
       <!-- Pull in class file list to use with asdoc -->
       <property file="${bin.loc}/flexLib.properties" />
 
@@ -138,7 +138,7 @@
       </java>
    </target>
    
-   <target name="pmdReport" unless="build.skipPmd">
+   <target name="pmdReport" if="build.pmd">
       <taskdef name="pmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" />
       <taskdef name="cpd" classname="com.adobe.ac.cpd.ant.FlexCpdAntTask" />
       <taskdef name="metrics" classname="com.adobe.ac.pmd.metrics.ant.FlexMetricsAntTask" />

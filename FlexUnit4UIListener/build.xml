@@ -119,7 +119,7 @@
       </compc> -->
    </target>
    
-   <target name="report" depends="compile,identify-sdk,report-flex3,report-flex4" />
+   <target name="report" depends="compile,identify-sdk,report-flex3,report-flex4" if="build.report" />
 
    <target name="report-flex3" unless="build.isFlex4">
       <java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">

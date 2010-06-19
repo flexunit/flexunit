@@ -34,7 +34,7 @@
       </javac>
    </target>
 
-   <target name="report" depends="compile">
+   <target name="report" depends="compile" if="build.report">
       <javadoc destdir="${doc.loc}" packagenames="org.flexunit.ant.*" sourcepath="${src.loc}" access="private" Author="true" version="true" Use="true" noindex="true" Windowtitle="FlexUnit Ant Tasks " Doctitle="FlexUnit Ant Tasks" failonerror="true" />
    </target>
 

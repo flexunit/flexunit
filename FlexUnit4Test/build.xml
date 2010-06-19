@@ -147,7 +147,7 @@
       </parallel>
    </target>
 
-   <target name="report">
+   <target name="report" if="build.report">
       <!-- generate html reports based on test data -->
       <junitreport todir="${report.xunit.loc}">
          <fileset dir="${report.xunit.loc}">

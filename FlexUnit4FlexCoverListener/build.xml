@@ -64,7 +64,7 @@
       </compc>
    </target>
 
-   <target name="report" depends="compile">
+   <target name="report" depends="compile" if="build.report">
       <java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
          <jvmarg value="-Xmx256M" />
          <arg line="+flexlib '${FLEX_HOME}/frameworks'" />
