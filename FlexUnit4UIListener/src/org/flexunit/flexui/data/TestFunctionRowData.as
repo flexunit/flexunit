@@ -66,6 +66,8 @@ package org.flexunit.flexui.data
       private var _error : Failure;
       private var _location : String;
       private var _line : Number;
+	  private var _testTime:Number = -1;
+	  private var _assertionsMade:Number = -1;
 
       [Embed(source="/assets/pass_mini.png")]
       private static var passImgMini : Class;
@@ -88,9 +90,14 @@ package org.flexunit.flexui.data
          However, since Assert is never insantiated, the static variable is never stored anywhere */
       override public function get assertionsMade() : Number
       {
-         return 0;
+         return _assertionsMade;
       }
-      
+
+	  public function set assertionsMade( value : Number ):void
+	  {
+		  _assertionsMade = value;
+	  }
+
 	  /* Calls the method assertionsMade and formats it into a string for printing Currently only
 	  	 formats "0".*/
       override public function get formattedAssertionsMade() : String
@@ -145,6 +152,16 @@ package org.flexunit.flexui.data
 			}
          }
       }
+
+	  public function get testTime() : Number
+	  {
+		  return _testTime;
+	  }
+
+	  public function set testTime( value : Number ):void
+	  {
+		  _testTime = value;
+	  }
 
       public function get error() : Failure
       {

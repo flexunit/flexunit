@@ -57,5 +57,11 @@ package org.flexunit.runner
 		 */
 		function run( notifier:IRunNotifier, previousToken:IAsyncTestToken ):void;
 		function get description():IDescription;
+
+		/**
+		 * Ask that the tests run stop before starting the next test. Phrased politely because
+		 * the test currently running will not be interrupted. 
+		 */
+		function pleaseStop():void;
 	}
 }

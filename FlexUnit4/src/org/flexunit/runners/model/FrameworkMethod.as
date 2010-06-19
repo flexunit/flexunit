@@ -26,12 +26,11 @@
  * @version    
  **/ 
 package org.flexunit.runners.model {
-	import flash.events.EventDispatcher;
-	
 	import flex.lang.reflect.Method;
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	import flex.lang.reflect.metadata.MetaDataArgument;
 	
+	import org.flexunit.constants.AnnotationArgumentConstants;
 	import org.flexunit.token.AsyncTestToken;
 	
 	/**
@@ -40,17 +39,14 @@ package org.flexunit.runners.model {
 	 * <code>Test</code>, <code>Before</code>, <code>After</code>, <code>BeforeClass</code>, 
 	 * <code>AfterClass</code>, etc.).
 	 */
-	public class FrameworkMethod extends EventDispatcher {
-		
-		/**
-		 * @private
-		 */
-		private var parentToken:AsyncTestToken;
-		
+	public class FrameworkMethod {
 		/**
 		 * @private
 		 */
 		private var _method:Method;
+
+		private var asyncFound:Boolean = false;
+		private var _async:Boolean = false;
 
 		/**
 		 * Construcotr.
@@ -113,7 +109,35 @@ package org.flexunit.runners.model {
 			
 			return returnValue;
 		}
+
+		//Store me so I only do this once
+		public function get isAsync():Boolean {
+			if (!asyncFound) {
+				asyncFound = true;
+				_async = determineAsync();
+			}
+			
+			return _async;
+		}
 		
+		private function determineAsync():Boolean {
+			var async:Boolean = false;
+			var annotations:Array = method.metadata;
+			var annotation:MetaDataAnnotation;
+			
+			if ( annotations ) {
+				for ( var i:int=0; i<annotations.length; i++ ) {
+					annotation = annotations[ i ] as MetaDataAnnotation;
+					if ( annotation.hasArgument( AnnotationArgumentConstants.ASYNC ) ) {
+						async = true;
+						break;
+					}
+				}
+			}
+			
+			return async;
+		}
+
 		/**
 		 * Determine if the method has metadata for a specific <code>metaDataTag</code>.
 		 * 
@@ -139,38 +163,16 @@ package org.flexunit.runners.model {
 					( type == method.returnType ) );
 		}
 			
-/* 		protected function getMethodFromTarget( target:Object ):Function {
-			//var method:Function;
-			
-			if ( target is TestClass ) {
-				//this is a static method
-				method = target.asClass[ name ];
-			} else {
-				//this is an instance method
-				method = target[ name ];
-			}
-			
-			return method;
-		} */
-		
 		/**
 		 * Calls the method with the provided set of <code>params</code> for the <code>target</code> class.
-		 * Once the method has finished execution, instruct the <code>parentToken</code> that the method
-		 * has finished running.
 		 * 
-		 * @param parentToken The <code>AsyncTestToken</code> to be notified when the method has been run.
 		 * @param target The class that contains the method.
 		 * @param params The parameters to be supplied to the method.
 		 */
-		public function applyExplosivelyAsync( parentToken:AsyncTestToken, target:Object, params:Array ):void {
-			this.parentToken = parentToken;
-
+		public function applyExplosively( target:Object, params:Array ):void {
 			//var method:Function = getMethodFromTarget( target );
 			
-			var methodCall:ReflectiveCallable = new ReflectiveCallable( method, target, params );
-			var result:Object = methodCall.run();
-			
-			parentToken.sendResult();
+			var result:Object = method.apply( target, params );
 		}
 		
 		/**
@@ -182,8 +184,9 @@ package org.flexunit.runners.model {
 		 * @param target The class that contains the method.
 		 * @param params The parameters to be supplied to the method.
 		 */
-		public function invokeExplosivelyAsync( parentToken:AsyncTestToken, target:Object, ...params ):void {
-			applyExplosivelyAsync( parentToken, target, params );
+		public function invokeExplosivelyAsync1( parentToken:AsyncTestToken, target:Object, ...params ):void {
+			applyExplosively( target, params );
+			parentToken.sendResult();
 		}
 		
 		/**
@@ -195,20 +198,9 @@ package org.flexunit.runners.model {
 		 * @param params The parameters to be supplied to the method.
 		 */
 		public function invokeExplosively( target:Object, ...params ):Object {
-			//var method:Function = getMethodFromTarget( target );
-			var methodCall:ReflectiveCallable = new ReflectiveCallable( method, target, params );
-			var result:Object = methodCall.run();
+			var result:Object = method.apply( target, params );
 			
 			return result;
-		}
-		
-		/**
-		 * Alerts the parentToken that the operation has been completed.
-		 * 
-		 * @param error A potential error encoutnered during the process.
-		 */
-		protected function asyncComplete( error:Error ):void {
-			parentToken.sendResult( error );
 		}
 
 		/**
@@ -271,35 +263,8 @@ package org.flexunit.runners.model {
 		 * @private
 		 * @return
 		 */
-		override public function toString():String {
+		public function toString():String {
 			return "FrameworkMethod " + this.name;
 		}
-	}
-}
-
-
-import org.flexunit.internals.runners.model.IReflectiveCallable;
-import flex.lang.reflect.Method;
-
-class ReflectiveCallable implements IReflectiveCallable {
-	private var method:Method;
-	private var target:Object;
-	private var params:Array;
-
-	public function ReflectiveCallable( method:Method, target:Object, params:Array ) {
-		this.method = method;
-		this.target = target;
-		this.params = params;
-	}
-	
-	public function run():Object {
-		try {
-			return method.apply( target, params );
-		} catch ( error:Error ) {
-			//this is a wee bit different than the java equiv... need to ponder more
-			throw error;
-		}
-		
-		return null;
 	}
 }

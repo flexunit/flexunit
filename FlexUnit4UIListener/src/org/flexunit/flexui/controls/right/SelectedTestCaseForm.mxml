@@ -54,8 +54,8 @@
          
          public function updateRowSummaryToDisplay() : void
          {
-            //assertionsPerTestFormItem.visible = ! _model.testsRunning;
-            //assertionsPerTestFormItem.includeInLayout = ! _model.testsRunning;   
+            assertionsPerTestFormItem.visible = ! _model.testsRunning;
+            assertionsPerTestFormItem.includeInLayout = ! _model.testsRunning;   
             
             if( ! _model.testsRunning ||
                 ( _model.rowSelected != null ) )
@@ -63,7 +63,7 @@
                if( _model.rowSelected )
                {
                   cas.text = _model.rowSelected.className;
-                  //assertionsPerTest.text = _model.rowSelected.assertionsMadeLegend;
+                  assertionsPerTest.text = _model.rowSelected.assertionsMadeLegend;
                }
                
                if( _model.testFunctionSelected )
@@ -74,6 +74,7 @@
                   errorMessage.text = _model.testFunctionSelected.errorMessage;                  
                   errorMessage.toolTip = _model.testFunctionSelected.errorMessage;
                   location.text = _model.testFunctionSelected.location;
+				  testTime.text = String( _model.testFunctionSelected.testTime ) + " ms";
                }
                else
                {
@@ -93,6 +94,7 @@
          private function setFormVisibilty( isTestCase : Boolean ) : void
          {
             setFormItemVisibilty( functionFormItem, isTestCase );
+			setFormItemVisibilty( testTimeFormItem, isTestCase );
             setFormItemVisibilty( expectedFormItem, isTestCase );
             setFormItemVisibilty( actualFormItem,   isTestCase );
             setFormItemVisibilty( messageFormItem,  isTestCase );
@@ -141,13 +143,27 @@
 
    </mx:FormItem>
 
-   <!--mx:FormItem
+	<mx:FormItem
+		id="testTimeFormItem"
+		styleName="flexUnitFormItemLabel"
+		label="{ FlexUnitLabels.TEST_TIME }"
+		width="100%">
+		
+		<mx:Label
+			id="testTime"
+			width="310"
+			maxHeight="70"
+			styleName="flexUnitFormItemValue"
+			/>
+		
+	</mx:FormItem>
+
+   <mx:FormItem
       id="assertionsPerTestFormItem"
       styleName="flexUnitFormItemLabel"
       label="{ FlexUnitLabels.ASSERTS }"
       toolTip="{ FlexUnitLabels.ASSERTIONS_PER_TEST }"
       width="100%">
-			This has been removed until we can figure out if we can make this work across the board
       <mx:Label
          id="assertionsPerTest"
          styleName="flexUnitFormItemValue"
@@ -156,7 +172,7 @@
          width="310"
          />
 
-   </mx:FormItem--> 
+   </mx:FormItem> 
      
    <mx:FormItem
       id="expectedFormItem"

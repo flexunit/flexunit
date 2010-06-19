@@ -28,11 +28,15 @@
 package org.flexunit.runners {
 	import flex.lang.reflect.Klass;
 	
+	import org.flexunit.internals.dependency.IExternalRunnerDependencyWatcher;
 	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
+	import org.flexunit.runner.external.IExternalDependencyRunner;
 	import org.flexunit.runner.manipulation.IFilterable;
+	import org.flexunit.runner.notification.IRunListener;
 	import org.flexunit.runner.notification.IRunNotifier;
+	import org.flexunit.runner.notification.StoppedByUserException;
 	import org.flexunit.runners.model.IRunnerBuilder;
 	import org.flexunit.token.AsyncTestToken;
 	
@@ -66,11 +70,26 @@ package org.flexunit.runners {
 	 * }
 	 * </code></pre>
 	 */
-	public class Suite extends ParentRunner implements IFilterable {
+	public class Suite extends ParentRunner implements IFilterable, IExternalDependencyRunner {
 		/**
 		 * @private
 		 */
 		private var _runners:Array;
+
+		private var _dependencyWatcher:IExternalRunnerDependencyWatcher;
+
+		/**
+		 * @inheritDoc
+		 */
+		override public function pleaseStop():void {
+			super.pleaseStop();
+			
+			if ( _runners ) {
+				for ( var i:int=0; i<_runners.length; i++ ) {
+					( _runners[ i ] as IRunner ).pleaseStop(); 
+				}
+			}
+		}
 		
 		/**
 		 * @inheritDoc
@@ -90,7 +109,33 @@ package org.flexunit.runners {
 		 * @inheritDoc
 		 */
 		override protected function runChild( child:*, notifier:IRunNotifier, childRunnerToken:AsyncTestToken ):void {
+			if ( stopRequested ) {
+				childRunnerToken.sendResult( new StoppedByUserException() );
+				return;
+			}
+			
 			IRunner( child ).run( notifier, childRunnerToken );
+		}
+		
+		public function set dependencyWatcher( value:IExternalRunnerDependencyWatcher ):void {
+			var runner:IRunner;
+
+			_dependencyWatcher = value;
+			
+			if ( children ) {
+				for ( var i:int=0; i<children.length; i++ ) {
+					runner = children[ i ] as IRunner;
+					
+					if ( runner is IExternalDependencyRunner ) {
+						( runner as IExternalDependencyRunner ).dependencyWatcher = value;
+					}
+				}					
+			}
+		}
+		
+		public function set externalDependencyError( value:String ):void {
+			//do nothing... suites don't actually have externalDependencies.. 
+			//they just need to pass this along
 		}
 		
 		/**

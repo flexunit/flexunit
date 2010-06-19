@@ -2,7 +2,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
-	import net.digitalprimates.fluint.async.AsyncHandler;
+	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.helper.ParamDataHelper;
 	
 	import org.flexunit.Assert;
 	import org.flexunit.asserts.assertEquals;
@@ -13,10 +13,10 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 	public class TestParameterized2 {
 		private var foo:Parameterized;
 		
-		public static function dataTwo():Array {
-			//need to deal with this circumstance better -> throw new Error("Blah");
-			return [ [ 0, 0 ], [ 1, 2 ], [ 2, 4 ] ];
-		}
+		public static var dataRetriever1:ParamDataHelper = new ParamDataHelper( "PurelyFakeExample.xml" );
+		
+		[DataPoints(loader="dataRetriever1")]
+		public static var dataTwo:Array;
 
 		public static function dataThree():Array {
 			//need to deal with this circumstance better -> throw new Error("Blah");

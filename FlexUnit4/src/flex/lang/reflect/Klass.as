@@ -433,6 +433,20 @@ package flex.lang.reflect {
 			
 			return implement;
 		}
+		
+		public function implementsInterface( interfaceRef:Class ):Boolean {
+			var interfaces:Array = interfaces;
+			var found:Boolean = false;
+			
+			for ( var i:int=0; i<interfaces.length; i++ ) {
+				if ( interfaces[ i ] == interfaceRef ) {
+					found = true;
+					break;
+				}
+			}
+			
+			return found;
+		} 
 
 		/**
 		 * Tests if the class defined by the name paramater has any metadata

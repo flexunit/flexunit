@@ -1,5 +1,6 @@
 package org.fluint.uiImpersonation.actionScript {
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	
@@ -7,7 +8,7 @@ package org.fluint.uiImpersonation.actionScript {
 	import org.fluint.uiImpersonation.IVisualTestEnvironment;
 
 	public class ActionScriptEnvironmentBuilder implements IVisualEnvironmentBuilder {
-		protected var stage:Sprite;
+		protected var visualDisplayRoot:DisplayObjectContainer;
 		protected var environment:IVisualTestEnvironment;
 		
 		public function buildVisualTestEnvironment():IVisualTestEnvironment {
@@ -15,15 +16,15 @@ package org.fluint.uiImpersonation.actionScript {
 				environment = new ActionScriptVisualTestEnvironment();
 			}
 			
-			if ( stage && ( environment is DisplayObject ) ) {
-				stage.addChild( environment as DisplayObject );
+			if ( visualDisplayRoot && ( environment is DisplayObject ) ) {
+				visualDisplayRoot.addChild( environment as DisplayObject );
 			}
 
 			return environment;			
 		}
 		
-		public function ActionScriptEnvironmentBuilder( stage:Sprite ):void {
-			this.stage = stage;
+		public function ActionScriptEnvironmentBuilder( visualDisplayRoot:DisplayObjectContainer ):void {
+			this.visualDisplayRoot = visualDisplayRoot;
 		}
 	}
 }

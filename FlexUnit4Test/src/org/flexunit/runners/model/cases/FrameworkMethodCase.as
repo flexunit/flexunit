@@ -206,21 +206,18 @@ package org.flexunit.runners.model.cases
 			Assert.assertTrue( frameworkMethod.producesType(KlassMock) );
 		}
 		
-		[Test(description="Ensure that the applyExplosivelyAsync function is correctly called")]
+		[Test(description="Ensure that the applyExplosively function is correctly called")]
 		public function applyExplosivelyAsyncTest():void {
-			var parentTokenMock:AsyncTestTokenMock = new AsyncTestTokenMock();
 			var target:Object = new Object();
 			var params:Array = new Array();
 			
-			parentTokenMock.mock.method("sendResult").withArgs(null).once;
 			methodMock.mock.method("apply").withArgs(target, params).once;
 			
-			frameworkMethod.applyExplosivelyAsync(parentTokenMock, target, params);
-			
-			parentTokenMock.mock.verify();
+			frameworkMethod.applyExplosively(target, params);
 			methodMock.mock.verify();
 		}
 		
+		[Ignore("invokeExplosivelyAsync no longer exists")]
 		[Test(description="Ensure that the invokeExplosivelyAsync function is correctly called")]
 		public function invokeExplosivelyAsyncTest():void {
 			var parentTokenMock:AsyncTestTokenMock = new AsyncTestTokenMock();
@@ -231,7 +228,7 @@ package org.flexunit.runners.model.cases
 			parentTokenMock.mock.method("sendResult").withArgs(null).once;
 			methodMock.mock.method("apply").withArgs(target, Array).once;
 			
-			frameworkMethod.invokeExplosivelyAsync(parentTokenMock, target, firstParam, secondParam);
+			//frameworkMethod.invokeExplosivelyAsync(parentTokenMock, target, firstParam, secondParam);
 			
 			parentTokenMock.mock.verify();
 			methodMock.mock.verify();

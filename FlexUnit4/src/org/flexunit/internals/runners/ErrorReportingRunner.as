@@ -46,7 +46,12 @@ package org.flexunit.internals.runners {
 		 * @private
 		 */
 		private var _testClass:Class;
-		
+
+		/**
+		 * @private
+		 */
+		protected var stopRequested:Boolean = false;
+
 		/**
 		 * Constructor.
 		 * 
@@ -58,6 +63,14 @@ package org.flexunit.internals.runners {
 			_causes = getCauses(cause);
 		}
 
+		/**
+		 * Ask that the tests run stop before starting the next test. Phrased politely because
+		 * the test currently running will not be interrupted. 
+		 */
+		public function pleaseStop():void {
+			stopRequested = true;
+		}		
+		
 		/**
 		 * Describe the test class and add a child to it for each cause that was associated with the Error
 		 * 

@@ -28,8 +28,10 @@
 package org.flexunit.experimental.runners.statements {
 	import flex.lang.reflect.Klass;
 	
+	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.experimental.theories.internals.Assignments;
 	import org.flexunit.internals.namespaces.classInternal;
+	import org.flexunit.internals.runners.statements.ExpectAsync;
 	import org.flexunit.internals.runners.statements.IAsyncStatement;
 	import org.flexunit.runners.BlockFlexUnit4ClassRunner;
 	import org.flexunit.runners.model.FrameworkMethod;
@@ -116,14 +118,9 @@ package org.flexunit.experimental.runners.statements {
 		/**
 		 * @inheritDoc
 		 */
-		override protected function withDecoration( method:FrameworkMethod, test:Object ):IAsyncStatement {
-			var statement:IAsyncStatement = methodInvoker( method, test );
-			statement = withPotentialAsync( method, test, statement );
-			//statement = withPotentialTimeout( method, test, statement );
-			statement = possiblyExpectingExceptions( method, test, statement );
-			statement = withStackManagement( method, test, statement );
-			
-			return statement;
+		override protected function withPotentialAsync( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
+			var async:Boolean = ExpectAsync.hasAsync( method, AnnotationConstants.THEORY );
+			return async ? new ExpectAsync( test, statement ) : statement;
 		}
 	}
 }

@@ -58,10 +58,6 @@ package org.flexunit.internals.runners.statements {
 		public function InvokeMethod( testMethod:FrameworkMethod, target:Object ) {
 			this.testMethod = testMethod;
 			this.target = target;
-			
-			//Create a new token that will alert this class when the provided statement has completed
-			myToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
-			myToken.addNotificationMethod( handleMethodExecuteComplete );
 		}
 		
 		/**
@@ -70,23 +66,14 @@ package org.flexunit.internals.runners.statements {
 		 * @param parentToken The token to be notified when the test method has finished running.
 		 */
 		public function evaluate( parentToken:AsyncTestToken ):void {
-			this.parentToken = parentToken;
 			
 			//Invoke the test method
 			try {
-				testMethod.invokeExplosivelyAsync( myToken, target );
+				testMethod.invokeExplosively( target );
+				parentToken.sendResult( null );
 			} catch ( error:Error ) {
 				parentToken.sendResult( error );
 			}
-		}
-		
-		/**
-		 * Tells the parent token that the method has finished execution.
-		 * 
-		 * @param result The result of the method executing.
-		 */
- 		protected function handleMethodExecuteComplete( result:ChildResult ):void {
-			parentToken.sendResult( null );
 		}
 		
 		/**

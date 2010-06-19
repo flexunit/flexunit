@@ -47,6 +47,7 @@ package org.flexunit.internals.runners {
 	import org.flexunit.runner.manipulation.IFilter;
 	import org.flexunit.runner.manipulation.IFilterable;
 	import org.flexunit.runner.notification.IRunNotifier;
+	import org.flexunit.runner.notification.StoppedByUserException;
 	import org.flexunit.runners.model.FrameworkMethod;
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
@@ -82,7 +83,12 @@ package org.flexunit.internals.runners {
 		 * @private
 		 */
 		private var testCompletedToken : AsyncTestToken;
-		
+
+		/**
+		 * @private
+		 */
+		protected var stopRequested:Boolean = false;
+
 		/**
 		 * Constructor.
 		 * 
@@ -212,6 +218,11 @@ package org.flexunit.internals.runners {
 		 * @param previousToken The token that is to be notified when the runner has finished execution of the test class.
 		 */
 		public function run( notifier:IRunNotifier, previousToken:IAsyncTestToken ):void {
+			if ( stopRequested ) {
+				previousToken.sendResult( new StoppedByUserException() );
+				return;
+			}
+
 			var token:AsyncTestToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			token.parentToken = previousToken;
 			token.addNotificationMethod( handleTestComplete );
@@ -286,6 +297,14 @@ package org.flexunit.internals.runners {
 		}
 		
 		/**
+		 * Ask that the tests run stop before starting the next test. Phrased politely because
+		 * the test currently running will not be interrupted. 
+		 */
+		public function pleaseStop():void {
+			stopRequested = true;
+		}
+
+		/**
 		 * Generates an <code>IDescription</code> for the provided <code>Test</code>.
 		 * 
 		 * @param test The <code>Test</code> ufor which to generate the <code>IDescription</code>.
@@ -352,18 +371,20 @@ package org.flexunit.internals.runners {
 		}		
  */	}
 }
-import flexunit.framework.TestListener;
-import org.flexunit.runner.notification.RunNotifier;
-import flexunit.framework.Test;
-import org.flexunit.runner.Description;
-import org.flexunit.runner.notification.Failure;
-import flexunit.framework.TestCase;
-import org.flexunit.runner.IDescribable;
 import flexunit.framework.AssertionFailedError;
+import flexunit.framework.Test;
+import flexunit.framework.TestCase;
+import flexunit.framework.TestListener;
+
 import org.flexunit.internals.runners.FlexUnit1ClassRunner;
-import org.flexunit.token.AsyncTestToken;
+import org.flexunit.runner.Description;
+import org.flexunit.runner.IDescribable;
+import org.flexunit.runner.IDescription;
+import org.flexunit.runner.notification.Failure;
 import org.flexunit.runner.notification.IRunNotifier;
-import org.flexunit.runner.IDescription;	
+import org.flexunit.runner.notification.RunNotifier;
+import org.flexunit.runner.notification.StoppedByUserException;
+import org.flexunit.token.AsyncTestToken;
 
 class OldTestClassAdaptingListener implements TestListener {
 	private var notifier:IRunNotifier;
@@ -380,7 +401,13 @@ class OldTestClassAdaptingListener implements TestListener {
 	}
 
 	public function startTest( test:Test ):void {
-		notifier.fireTestStarted(asDescription(test));
+		try {
+			notifier.fireTestStarted(asDescription(test));
+		}
+		
+		catch (e:StoppedByUserException) {
+			token.sendResult( e );
+		}
 	}
 
 	// Implement junit.framework.TestListener

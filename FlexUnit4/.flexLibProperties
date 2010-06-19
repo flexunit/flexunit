@@ -89,6 +89,7 @@
     <classEntry path="org.flexunit.internals.runners.statements.IAsyncHandlingStatement"/>
     <classEntry path="org.flexunit.internals.runners.statements.IAsyncStatement"/>
     <classEntry path="org.flexunit.internals.runners.statements.InvokeMethod"/>
+    <classEntry path="org.flexunit.internals.runners.statements.MethodRuleBase"/>
     <classEntry path="org.flexunit.internals.runners.statements.RunAfters"/>
     <classEntry path="org.flexunit.internals.runners.statements.RunAftersClass"/>
     <classEntry path="org.flexunit.internals.runners.statements.RunBefores"/>
@@ -97,6 +98,7 @@
     <classEntry path="org.flexunit.internals.runners.statements.StackAndFrameManagement"/>
     <classEntry path="org.flexunit.internals.runners.statements.StatementSequencer"/>
     <classEntry path="org.flexunit.matchers.FlexUnitMatchers"/>
+    <classEntry path="org.flexunit.rules.IMethodRule"/>
     <classEntry path="org.flexunit.runner.Description"/>
     <classEntry path="org.flexunit.runner.Descriptor"/>
     <classEntry path="org.flexunit.runner.FlexUnitCore"/>
@@ -140,7 +142,7 @@
     <classEntry path="org.flexunit.runners.model.ParameterizedMethod"/>
     <classEntry path="org.flexunit.runners.model.RunnerBuilderBase"/>
     <classEntry path="org.flexunit.runners.model.TestClass"/>
-    <classEntry path="org.flexunit.token.AsyncListenersToken"/>
+    <classEntry path="org.flexunit.token.AsyncCoreStartupToken"/>
     <classEntry path="org.flexunit.token.AsyncTestToken"/>
     <classEntry path="org.flexunit.token.ChildResult"/>
     <classEntry path="org.flexunit.token.IAsyncTestToken"/>
@@ -151,6 +153,18 @@
     <classEntry path="org.fluint.uiImpersonation.VisualTestEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptVisualTestEnvironment"/>
+    <classEntry path="org.flexunit.internals.dependency.ExternalDependencyResolver"/>
+    <classEntry path="org.flexunit.runner.external.ExternalDependencyToken"/>
+    <classEntry path="org.flexunit.runner.external.IExternalDependencyRunner"/>
+    <classEntry path="org.flexunit.internals.dependency.ExternalRunnerDependencyWatcher"/>
+    <classEntry path="org.flexunit.runner.external.IExternalDependencyLoader"/>
+    <classEntry path="org.flexunit.internals.dependency.IExternalRunnerDependencyWatcher"/>
+    <classEntry path="org.flexunit.internals.dependency.IExternalDependencyResolver"/>
+    <classEntry path="org.flexunit.constants.AnnotationArgumentConstants"/>
+    <classEntry path="org.flexunit.constants.AnnotationConstants"/>
+    <classEntry path="org.flexunit.runner.manipulation.fields.FieldMetaDataSorter"/>
+    <classEntry path="org.flexunit.runner.manipulation.fields.IFieldSorter"/>
+    <classEntry path="org.flexunit.internals.runners.watcher.FrameWatcher"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

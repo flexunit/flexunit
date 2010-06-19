@@ -29,6 +29,7 @@ package org.flexunit.internals.runners.statements {
 	import flash.utils.*;
 	
 	import org.flexunit.internals.runners.model.MultipleFailureException;
+	import org.flexunit.runner.notification.StoppedByUserException;
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.utils.ClassNameUtil;
@@ -125,6 +126,12 @@ package org.flexunit.internals.runners.statements {
 			
 			if ( result && result.error ) {
 				errors.push( result.error );
+				
+				if ( result.error is StoppedByUserException ) {
+					sendComplete();
+					return;
+				}
+				
 			}
 			
 			if ( queue.length > 0 ) {

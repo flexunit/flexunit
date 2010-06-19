@@ -89,7 +89,8 @@ package org.flexunit.experimental.runners.statements {
 	
 	 		try {
 				var values:Object = complete.getMethodArguments( anchor.nullsOk() );
-				frameworkMethod.applyExplosivelyAsync( myToken, freshInstance, values as Array );
+				frameworkMethod.applyExplosively( freshInstance, values as Array );
+				myToken.sendResult();
 			} catch ( e:CouldNotGenerateValueException ) {
 				sendComplete( null );	
 			} catch ( e:AssumptionViolatedException ) {
@@ -97,6 +98,7 @@ package org.flexunit.experimental.runners.statements {
 				sendComplete( e );	
 			} catch ( e:Error ) {
 				//trace( e.getStackTrace() );
+				//TODO: Trace from this point forward to determine why stack overflow is happening in ParameterizedAssertionError
 				var newError:Error = anchor.reportParameterizedError(e, complete.getArgumentStrings(anchor.nullsOk()));
 				sendComplete( newError );			
 			}

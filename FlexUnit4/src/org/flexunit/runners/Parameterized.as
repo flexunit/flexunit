@@ -31,37 +31,86 @@
 
 package org.flexunit.runners
 {	
-	import org.flexunit.internals.builders.AllDefaultPossibilitiesBuilder;
+	import flex.lang.reflect.Field;
+	
+	import org.flexunit.constants.AnnotationConstants;
+	import org.flexunit.internals.dependency.ExternalDependencyResolver;
+	import org.flexunit.internals.dependency.IExternalDependencyResolver;
+	import org.flexunit.internals.dependency.IExternalRunnerDependencyWatcher;
+	import org.flexunit.internals.runners.ErrorReportingRunner;
+	import org.flexunit.internals.runners.InitializationError;
+	import org.flexunit.internals.runners.statements.IAsyncStatement;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
+	import org.flexunit.runner.external.IExternalDependencyRunner;
 	import org.flexunit.runner.notification.IRunNotifier;
+	import org.flexunit.runner.notification.StoppedByUserException;
 	import org.flexunit.runners.model.FrameworkMethod;
 	import org.flexunit.runners.model.IRunnerBuilder;
 	import org.flexunit.token.AsyncTestToken;
 	
-	public class Parameterized extends ParentRunner
-	{
-		private var _runners:Array;
+	public class Parameterized extends ParentRunner implements IExternalDependencyRunner {
+		private var runners:Array;
+		private var klass:Class;
+		private var dr:IExternalDependencyResolver;
+		private var _dependencyWatcher:IExternalRunnerDependencyWatcher;
+		private var dependencyDataWatchers:Array;
+		private var _externalDependencyError:String;
+		private var externalError:Boolean = false;
+
+		public function set dependencyWatcher( value:IExternalRunnerDependencyWatcher ):void {
+			_dependencyWatcher = value;
+			
+			if ( value && dr ) {
+				value.watchDependencyResolver( dr );	
+			}
+		}
+		
+		public function set externalDependencyError( value:String ):void {
+			externalError = true;
+			_externalDependencyError = value;
+		}
 		
 		//Blank constructor means the old 0/1 error
 		public function Parameterized(klass:Class) {
-			super (klass);
-			_runners = new Array();
-			var parametersList:Array = getParametersList(klass);
+			super(klass);
+			this.klass = klass;
 			
-			if ( parametersList.length == 0 ) {
-				_runners.push(new TestClassRunnerForParameters(klass));
-			} else {
-				for (var i:int= 0; i < parametersList.length; i++) {
-					_runners.push(new TestClassRunnerForParameters(klass,parametersList, i));
+			dr = new ExternalDependencyResolver( klass, this );
+			dr.resolveDependencies();
+		}
+
+		private function buildErrorRunner( message:String ):Array {
+			return [new ErrorReportingRunner( klass, new Error("There was an error retrieving the parameters for the testcase: cause " + message ) ) ];			
+		}
+
+		private function buildRunners():Array {
+			var runners:Array = new Array();
+
+			try {
+				var parametersList:Array = getParametersList(klass);
+				if ( parametersList.length == 0 ) {
+					runners.push(new TestClassRunnerForParameters(klass));
+				} else {
+					for (var i:int= 0; i < parametersList.length; i++) {
+						runners.push(new TestClassRunnerForParameters(klass,parametersList, i));
+					}
 				}
 			}
+			
+			catch ( error:Error ) {
+				runners = buildErrorRunner( error.message );
+			}
+			
+			return runners;
 		}
-				
+		
 		private function getParametersList(klass:Class):Array {
 			var allParams:Array = new Array();
 			var frameworkMethod:FrameworkMethod;
+			var field:Field;
 			var methods:Array = getParametersMethods(klass);
+			var fields:Array = getParametersFields(klass);
 			var data:Array;
 
 			for ( var i:int=0; i<methods.length; i++ ) {
@@ -70,37 +119,79 @@ package org.flexunit.runners
 				data = frameworkMethod.invokeExplosively(klass) as Array;
 				allParams = allParams.concat( data );
 			}
+
+			for ( var j:int=0; j<fields.length; j++ ) {
+				field = fields[ j ];
+				
+				data = field.getObj( null ) as Array;
+				allParams = allParams.concat( data );
+			}
 			
 			return allParams;
 		}
 		
 		private function getParametersMethods(klass:Class):Array {
-			var methods:Array = testClass.getMetaDataMethods("Parameters");
+			var methods:Array = testClass.getMetaDataMethods( AnnotationConstants.PARAMETERS );
 			return methods;
 		}
-		
+
+		private function getParametersFields(klass:Class):Array {
+			var fields:Array = testClass.getMetaDataFields( AnnotationConstants.PARAMETERS, true );
+			return fields;
+		}
+
 		// begin Items copied from Suite
 		override protected function get children():Array {
-			return _runners;
+			if ( !runners ) {
+				if ( !externalError ) {
+					runners = buildRunners();	
+				} else {
+					runners = buildErrorRunner( _externalDependencyError );
+				}
+			}
+
+			return runners;
 		}
 
 		override protected function describeChild( child:* ):IDescription {
 			return IRunner( child ).description;
 		}
 
+		override public function pleaseStop():void {
+			super.pleaseStop();
+			
+			if ( runners ) {
+				for ( var i:int=0; i<runners.length; i++ ) {
+					( runners[ i ] as IRunner ).pleaseStop(); 
+				}
+			}
+		}
+		
 		override protected function runChild( child:*, notifier:IRunNotifier, childRunnerToken:AsyncTestToken ):void {
+			if ( stopRequested ) {
+				childRunnerToken.sendResult( new StoppedByUserException() );
+				return;
+			}
+			
 			IRunner( child ).run( notifier, childRunnerToken );
 		}
 		// end Items copied from Suite
 	}
 }
 
+import flex.lang.reflect.Field;
 import flex.lang.reflect.Klass;
 import flex.lang.reflect.Method;
+import flex.lang.reflect.metadata.MetaDataAnnotation;
 import flex.lang.reflect.metadata.MetaDataArgument;
 
+import org.flexunit.constants.AnnotationArgumentConstants;
+import org.flexunit.constants.AnnotationConstants;
+import org.flexunit.internals.runners.InitializationError;
+import org.flexunit.internals.runners.statements.IAsyncStatement;
 import org.flexunit.runner.Description;
 import org.flexunit.runner.IDescription;
+import org.flexunit.runner.notification.IRunNotifier;
 import org.flexunit.runners.BlockFlexUnit4ClassRunner;
 import org.flexunit.runners.model.FrameworkMethod;
 import org.flexunit.runners.model.ParameterizedMethod;
@@ -114,22 +205,35 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 	private var constructorParameterized:Boolean = false;
 	
 	private function buildExpandedTestList():Array {
-		var testMethods:Array = testClass.getMetaDataMethods( "Test" );
+		var testMethods:Array = testClass.getMetaDataMethods( AnnotationConstants.TEST );
 		var finalArray:Array = new Array();
 		
 		for ( var i:int=0; i<testMethods.length; i++ ) {
 			var fwMethod:FrameworkMethod = testMethods[ i ];
-			var argument:MetaDataArgument = fwMethod.method.getMetaData( "Test" ).getArgument( "dataProvider" );
+			var argument:MetaDataArgument = fwMethod.method.getMetaData( AnnotationConstants.TEST ).getArgument( AnnotationArgumentConstants.DATAPROVIDER );
 			var classMethod:Method;
+			var field:Field;
 			var results:Array;
 			var paramMethod:ParameterizedMethod;
 			
 			if ( argument ) {
 				classMethod = klassInfo.getMethod( argument.value ); 
-				results = classMethod.invoke( testClass ) as Array;
+				
+				if ( classMethod ) {
+					results = classMethod.invoke( testClass ) as Array;
+				} else {
+					field = klassInfo.getField( argument.value );
+					
+					if ( field ) {
+						var ar:Array = field.getObj(null) as Array;
+						results = new Array();
+						results = results.concat( ar );
+					}
+				}
 				
 				for ( var j:int=0; j<results.length; j++ ) {
-					paramMethod = new ParameterizedMethod( fwMethod.method, results[ j ] );
+					var method:Method = applyOrderToParameterizedTestMethod( fwMethod.method, j, results.length );
+					paramMethod = new ParameterizedMethod( method, results[ j ] );
 					finalArray.push( paramMethod ); 	
 				}
 			} else {
@@ -140,12 +244,35 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 		return finalArray;
 	}
 	
-	override protected function computeTestMethods():Array {
-		//OPTIMIZATION POINT
+	protected function applyOrderToParameterizedTestMethod( method : Method, dataSetIndex : int, totalMethods : int ) : Method
+	{
+		var xmlCopy:XML = method.methodXML.copy();
 		
+		var a:MetaDataAnnotation = method.getMetaData( AnnotationConstants.TEST );
+		var arg:MetaDataArgument;
+		
+		if ( a )
+			arg = a.getArgument( AnnotationArgumentConstants.ORDER );
+		else	// CJP: If the method doesn't contain a "TEST" metadata tag, we probably shouldn't be in  here anyway... throw Error?
+			return method;
+		
+		if ( !arg )
+			xmlCopy.metadata.(@name=="Test").appendChild( <arg key="order" value="0"/> );
+		
+		var orderValueDec : Number = (dataSetIndex + 1) / ( Math.pow( 10, totalMethods ) );
+		var newOrderValue : Number = xmlCopy.metadata.(@name=="Test").arg.( @key == "order" ).attribute( "value" ) + orderValueDec;
+		
+		xmlCopy.metadata.(@name=="Test").arg.( @key == "order" ).( @value = newOrderValue );
+		var newMethod:Method = new Method( xmlCopy );
+		return newMethod;
+	}
+	
+	override protected function computeTestMethods():Array {
+		//OPTIMIZATION POINT		
 		if ( !expandedTestList ) {
 			expandedTestList = buildExpandedTestList();
 		}
+
 		return expandedTestList; 
 	}
 	
@@ -153,14 +280,19 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 		
 		//Only validate the ones that do not have a dataProvider attribute for these rules
 		var methods:Array = testClass.getMetaDataMethods( metaDataTag  );
+		var annotation:MetaDataAnnotation;
 		var argument:MetaDataArgument;
 		
 		var eachTestMethod:FrameworkMethod;
 		for ( var i:int=0; i<methods.length; i++ ) {
 			eachTestMethod = methods[ i ] as FrameworkMethod;
 			
-			//Does it have a dataProvider?
-			argument = eachTestMethod.method.getMetaData( "Test" ).getArgument( "dataProvider" );
+			annotation = eachTestMethod.method.getMetaData( AnnotationConstants.TEST );
+			
+			if ( annotation ) {
+				//Does it have a dataProvider?
+				argument = annotation.getArgument( AnnotationArgumentConstants.DATAPROVIDER );
+			}
 			
 			//If there is an argument, we need to punt on verification of arguments until later when we know how many there actually are
 			if ( !argument ) {
@@ -175,7 +307,12 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 		}
 		
 		var params:Array = computeParams();
-		var paramName:String = params.join ( "_" );
+		
+/*		if ( !params ) {
+			throw new InitializationError( "Parameterized runner has not been provided data" );
+		}*/
+
+		var paramName:String = params?params.join ( "_" ):"Missing Params";
 		var method:FrameworkMethod = FrameworkMethod( child );
 		return Description.createTestDescription( testClass.asClass, method.name + '_' + paramName, method.metadata );
 	}
@@ -193,7 +330,12 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 			return testClass.klassInfo.constructor.newInstance();
 		}
 	}
-	
+
+	//we don't want the BeforeClass and AfterClass on this run to execute, this will be handled by Parameterized
+	override protected function classBlock( notifier:IRunNotifier ):IAsyncStatement {
+		return childrenInvoker( notifier );
+	}
+
 	public function TestClassRunnerForParameters(klass:Class, parameterList:Array=null, i:int=0) {
 		klassInfo = new Klass( klass );
 		super(klass);

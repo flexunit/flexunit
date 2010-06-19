@@ -4,12 +4,14 @@ package org.flexunit.listeners
 	import org.flexunit.runner.Result;
 	import org.flexunit.runner.notification.Failure;
 	import org.flexunit.runner.notification.IRunListener;
+	import org.flexunit.runner.notification.ITemporalRunListener;
 
-	public class UIListener implements IRunListener
+	[Deprecated(replacement="TestRunnerBase can be used directly now.", since="4.1")]
+	public class UIListener implements ITemporalRunListener
 	{
-		private var uiListener : IRunListener;
+		private var uiListener : ITemporalRunListener;
 		
-		public function UIListener( uiListener : IRunListener)
+		public function UIListener( uiListener : ITemporalRunListener )
 		{
 			super();
 			this.uiListener = uiListener;
@@ -41,6 +43,10 @@ package org.flexunit.listeners
 	
 		public function testIgnored( description:IDescription ):void {
 			this.uiListener.testIgnored( description );
+		}
+		
+		public function testTimed( description:IDescription, runTime:Number ):void {
+			this.uiListener.testTimed( description, runTime );
 		}
 	}
 }
