@@ -231,8 +231,10 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 					}
 				}
 				
+				var methodXML : XML = insertOrderMetadataIfNecessary( fwMethod.method );
+				
 				for ( var j:int=0; j<results.length; j++ ) {
-					var method:Method = applyOrderToParameterizedTestMethod( fwMethod.method, j, results.length );
+					var method:Method = applyOrderToParameterizedTestMethod( methodXML, j, results.length );
 					paramMethod = new ParameterizedMethod( method, results[ j ] );
 					finalArray.push( paramMethod ); 	
 				}
@@ -244,7 +246,7 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 		return finalArray;
 	}
 	
-	protected function applyOrderToParameterizedTestMethod( method : Method, dataSetIndex : int, totalMethods : int ) : Method
+	protected function insertOrderMetadataIfNecessary( method : Method ) : XML
 	{
 		var xmlCopy:XML = method.methodXML.copy();
 		
@@ -254,10 +256,17 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 		if ( a )
 			arg = a.getArgument( AnnotationArgumentConstants.ORDER );
 		else	// CJP: If the method doesn't contain a "TEST" metadata tag, we probably shouldn't be in  here anyway... throw Error?
-			return method;
+			return xmlCopy;
 		
 		if ( !arg )
 			xmlCopy.metadata.(@name=="Test").appendChild( <arg key="order" value="0"/> );
+		
+		return xmlCopy;
+	}
+	
+	protected function applyOrderToParameterizedTestMethod( methodXML : XML, dataSetIndex : int, totalMethods : int ) : Method
+	{
+		var xmlCopy:XML = methodXML.copy();
 		
 		var orderValueDec : Number = (dataSetIndex + 1) / ( Math.pow( 10, totalMethods ) );
 		var newOrderValue : Number = xmlCopy.metadata.(@name=="Test").arg.( @key == "order" ).attribute( "value" ) + orderValueDec;
