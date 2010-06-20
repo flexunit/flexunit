@@ -37,8 +37,14 @@ package org.flexunit.internals.runners.statements {
 		}
 
 		public function handleSequenceExecuteComplete( result:ChildResult ):void {
-			//Eventually this is where we can abort the test if the begin sequence failed
-			nextStatement.evaluate( myToken );
+			
+			if ( result && result.error ) {
+				//we have an error during the execution of the Before,
+				//we need to abort
+				sendComplete( new Error( "Failure in Before: " + result.error.message ) )
+			} else {			
+				nextStatement.evaluate( myToken );
+			}
 		}
 		
 		public function handleNextStatementExecuteComplete( result:ChildResult ):void {
