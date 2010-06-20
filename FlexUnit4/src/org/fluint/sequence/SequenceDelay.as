@@ -39,9 +39,11 @@ package org.fluint.sequence {
   	 * @author Jurgen Failenschmid
      * @see http://code.google.com/p/fluint/wiki/Sequences Test sequences 
 	 */
-	
 	public class SequenceDelay extends SequenceWaiter {
 		
+		/**
+		 * @private 
+		 */
 		private var _waitTimer:Timer;
 		
 		/**

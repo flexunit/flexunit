@@ -106,10 +106,10 @@ package org.flexunit.internals.runners.statements {
 		 * will be returned.
 		 */
 		public static function hasTimeout( method:FrameworkMethod ):String {
-			var timeout:String = String( method.getSpecificMetaDataArgValue( AnnotationConstants.TEST, AnnotationArgumentConstants.TIMEOUT ) );
-			var hasTimeout:Boolean = timeout && ( timeout != "null" ) && ( timeout.length>0 );
+			var timeoutStr:String = String( method.getSpecificMetaDataArgValue( AnnotationConstants.TEST, AnnotationArgumentConstants.TIMEOUT ) );
+			var hasTimeout:Boolean = timeoutStr && ( timeoutStr != "null" ) && ( timeoutStr.length>0 );
 
-			return hasTimeout?timeout:null;			
+			return hasTimeout?timeoutStr:null;			
 		}
 		
 		/**

@@ -58,7 +58,7 @@ package org.flexunit.internals {
 		 * 
 		 * @return an <code>ILoggingTarget</code>
 		 */
-		protected static function buildILoggingTarget( level:int ):ILoggingTarget {
+		private static function buildILoggingTarget( level:int ):ILoggingTarget {
 			var traceTarget:TraceTarget = new TraceTarget();
 			traceTarget.level = level; //LogEventLevel.DEBUG;
 			

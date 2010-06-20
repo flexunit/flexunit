@@ -66,10 +66,6 @@ package org.flexunit.runner {
 		/**
 		 * @private
 		 */
-		private var _filter:Function;
-		/**
-		 * @private
-		 */
 		private var _sort:ISort;
 		/**
 		 * The <code>IRunner</code> for this Request.

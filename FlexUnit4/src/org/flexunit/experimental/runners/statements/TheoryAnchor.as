@@ -79,10 +79,6 @@ package org.flexunit.experimental.runners.statements
 		 * @private
 		 */
 		private var incompleteLoopCount:int = 0;
-		/**
-		 * @private
-		 */
-		private var completeLoopCount:int = 0;
 		
 		/**
 		 * Constructor.

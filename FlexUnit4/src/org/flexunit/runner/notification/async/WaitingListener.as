@@ -91,29 +91,64 @@ package org.flexunit.runner.notification.async
 			return _ready;
 		}
 		
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		public function testRunStarted( description:IDescription ):void{
 			
 		}
 
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		public function testRunFinished( result:Result ):void {
 
 		}
 
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		public function testStarted( description:IDescription ):void {
 			
 		}
 		
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		public function testFinished( description:IDescription ):void {
 		}
 
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		public function testAssumptionFailure( failure:Failure ):void {
 			
 		}
 
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		public function testIgnored( description:IDescription ):void {
 		}
 	
 	
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		public function testFailure( failure:Failure ):void {
 		}
 	}

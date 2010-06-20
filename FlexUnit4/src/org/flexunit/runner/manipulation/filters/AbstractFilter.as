@@ -3,6 +3,11 @@ package org.flexunit.runner.manipulation.filters {
 	import org.flexunit.runner.manipulation.IFilter;
 	import org.flexunit.runner.manipulation.IFilterable;
 	
+	/**
+	 * Potential base class implementing IFilter 
+	 * @author mlabriola
+	 * 
+	 */
 	public class AbstractFilter implements IFilter {
 		/**
 		 * @param description the description of the test to be run
@@ -34,6 +39,10 @@ package org.flexunit.runner.manipulation.filters {
 			filterable.filter(this);
 		}
 		
+		/**
+		 * Constructor 
+		 * 
+		 */
 		public function AbstractFilter() {
 		}
 		

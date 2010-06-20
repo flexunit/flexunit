@@ -48,7 +48,7 @@ package org.flexunit.async {
 	 * 'eventFired' event before continuing to the next test method or 
 	 * asynhronouse event.
 	 */
-	[Event(name="timerExpired")]
+	[Event(name="timerExpired",type="flash.events.Event")]
 
 	/** 
 	 * AsyncHandlers are created when the developer calls the TestCase.asyncHandler() 

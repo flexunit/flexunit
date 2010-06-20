@@ -56,6 +56,9 @@ package org.fluint.sequence {
          */
 		protected var _timeout:int;
 		
+		/**
+		 * @private
+		 */
 		protected var _cw:ChangeWatcher;
 
         /**

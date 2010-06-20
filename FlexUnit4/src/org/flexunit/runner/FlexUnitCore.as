@@ -46,6 +46,7 @@ package org.flexunit.runner {
 	import org.flexunit.runner.notification.RunListener;
 	import org.flexunit.runner.notification.RunNotifier;
 	import org.flexunit.runner.notification.async.AsyncListenerWatcher;
+	import org.flexunit.runners.Parameterized;
 	import org.flexunit.token.AsyncCoreStartupToken;
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
@@ -134,6 +135,10 @@ package org.flexunit.runner {
 		 * @private
 		 */
 		private var theory:Theories;
+		/**
+		 * @private
+		 */
+		private var params:Parameterized;
 		
 		/**
 		 * Returns the version number.

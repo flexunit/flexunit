@@ -27,6 +27,14 @@
  **/ 
 package org.flexunit.runner.external {
 	public interface IExternalDependencyLoader {
+		/**
+		 * Instructs the IExternalDependencyLoader to find and 
+		 * begin resolving dependencies on this class
+		 * 
+		 * @param testClass
+		 * @return an ExternalDependencyToken to monitor success of fault
+		 * 
+		 */
 		function retrieveDependency( testClass:Class ):ExternalDependencyToken;
 	}
 }

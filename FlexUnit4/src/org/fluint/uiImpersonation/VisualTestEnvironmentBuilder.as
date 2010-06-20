@@ -42,7 +42,13 @@ package org.fluint.uiImpersonation {
          * @private
          */
 		protected static var instance:VisualTestEnvironmentBuilder; 
+		/**
+		 * @private
+		 */
 		protected var builder:IVisualEnvironmentBuilder;
+		/**
+		 * @private
+		 */
 		protected var visualDisplayRoot:DisplayObjectContainer;
 
 		/** 
@@ -59,10 +65,21 @@ package org.fluint.uiImpersonation {
 			return instance;
 		}
 
+		/**
+		 * Builds and returns an IVisualTestEnvironment based on the selected builder
+		 * 
+		 * @return IVisualTestEnvironment
+		 * 
+		 */
 		public function buildVisualTestEnvironment():IVisualTestEnvironment {
 			return builder.buildVisualTestEnvironment();
 		}
 
+		/**
+		 * Constructor 
+		 * @param visualDisplayRoot the system manager in flex or the app in ActionScript projects
+		 * 
+		 */
 		public function VisualTestEnvironmentBuilder( visualDisplayRoot:DisplayObjectContainer ) {
 			this.visualDisplayRoot = visualDisplayRoot;
 

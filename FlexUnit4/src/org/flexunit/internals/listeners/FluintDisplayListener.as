@@ -42,7 +42,9 @@ package org.flexunit.internals.listeners
 	 */
 	public class FluintDisplayListener extends RunListener
 	{
-		
+		/**
+		 * @private
+		 */
 		private var lastFailedTest:IDescription;
 		
 		[Bindable]

@@ -56,6 +56,14 @@ package org.flexunit.experimental.theories.internals {
 //			return this.toString() == (obj.toString());
 //		}
 		
+		/**
+		 * Performs an Array join on params. Candidate for remocal in future refactor
+		 * 
+		 * @param delimiter
+		 * @param params
+		 * @return a concatenated string 
+		 * 
+		 */
 		public static function join( delimiter:String, ...params):String {
 			return ( params as Array ).join( delimiter );
 		}

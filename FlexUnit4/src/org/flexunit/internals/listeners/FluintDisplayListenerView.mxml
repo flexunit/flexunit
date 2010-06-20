@@ -6,9 +6,16 @@
 			import org.flexunit.runner.Description;
 			import mx.events.TreeEvent;
 			import mx.events.ListEvent;
+
 			[Bindable]
+			/**
+			 * @private
+			 */
 			public var listener:FluintDisplayListener;
 			
+			/**
+			 * @private
+			 */
 			private function showChange(event:ListEvent):void{
 				var item:Object = event.target.selectedItem ;
 				if(item is Failure){

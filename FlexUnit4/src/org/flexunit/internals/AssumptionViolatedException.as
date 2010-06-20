@@ -66,11 +66,22 @@ package org.flexunit.internals
 			//unfortunate, but best approach for now as we cannot override the message var
 			this.message = getMessage();
 		}
-	
+		
+		/**
+		 * 
+		 * @return a message (String) which is a parsed string description of this class
+		 * 
+		 */	
 		public function getMessage():String {			
 			return StringDescription.toString(this);
 		}
-	
+
+		/**
+		 * Appends description based on the master
+		 * 
+		 * @param description
+		 * 
+		 */		
 		public function describeTo( description:Description ):void {
 			if (matcher != null) {
 				description.appendText("got: ");

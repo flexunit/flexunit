@@ -63,9 +63,24 @@ package org.flexunit.experimental.theories {
 	 */
 	public class Theories extends BlockFlexUnit4ClassRunner implements IExternalDependencyRunner {
 
+		/**
+		 * @private
+		 */
 		private var dr:IExternalDependencyResolver;
+
+		/**
+		 * @private
+		 */
 		private var _dependencyWatcher:IExternalRunnerDependencyWatcher;
+
+		/**
+		 * @private
+		 */
 		private var _externalDependencyError:String;
+
+		/**
+		 * @private
+		 */
 		private var externalError:Boolean = false;
 		
 		/**
@@ -79,7 +94,14 @@ package org.flexunit.experimental.theories {
 			dr = new ExternalDependencyResolver( klass, this );
 			dr.resolveDependencies();
 		}
-		
+
+		/**
+		 * Setter for a dependency watcher. This is a class that implements IExternalRunnerDependencyWatcher
+		 * and watches for any external dependencies (such as loading data) are finalized before execution of
+		 * tests is allowed to commence.  
+		 * 		 
+		 * @param value An implementation of IExternalRunnerDependencyWatcher
+		 */
 		public function set dependencyWatcher( value:IExternalRunnerDependencyWatcher ):void {
 			_dependencyWatcher = value;
 			
@@ -88,6 +110,15 @@ package org.flexunit.experimental.theories {
 			}
 		}
 
+		/**
+		 * 
+		 * Setter to indicate an error occured while attempting to load exteranl dependencies
+		 * for this test. It accepts a string to allow the creator of the external dependency
+		 * loader to pass a viable error string back to the user.
+		 * 
+		 * @param value The error message
+		 * 
+		 */
 		public function set externalDependencyError( value:String ):void {
 			externalError = true;
 			_externalDependencyError = value;

@@ -8,23 +8,36 @@ package org.flexunit.internals.builders
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runners.model.TestClass;
 
+	/**
+	 *
+	 * This class is used as an alternate builder for FlexUnit 4. Normally FlexUnit4 is the default
+	 * builder, so it accepts all classes. In this class we determine if it is actually a FlexUnit 4
+	 * test
+	 *  
+	 * @author mlabriola
+	 * 
+	 */
 	public class FlexUnit4QualifiedBuilder extends FlexUnit4Builder {
+		/**
+		 * @inheritDoc
+		 */
 		override public function canHandleClass(testClass:Class):Boolean {
 			var klassInfo:Klass = new Klass( testClass );
+			var found:Boolean = false;
 			
-			
-			//var methods:Array = new Array(klassInfo.methods);
 			var methods:Array = new Array();
 			methods = klassInfo.methods;
 
 			var arrayLen:int = methods.length;
 			
 			for(var i:int = 0; i < arrayLen; i++) {
-				if( (methods[i] as Method).hasMetaData( AnnotationConstants.TEST ) )
-					return true;
+				if ( (methods[i] as Method).hasMetaData( AnnotationConstants.TEST ) ) {
+					found = true;
+					break;
+				}
 			}
-			return false;
-			
+
+			return found;
 		}
 	}
 }

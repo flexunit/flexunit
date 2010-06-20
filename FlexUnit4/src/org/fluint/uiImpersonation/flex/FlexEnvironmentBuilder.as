@@ -12,10 +12,27 @@ package org.fluint.uiImpersonation.flex {
 	import org.fluint.uiImpersonation.IVisualEnvironmentBuilder;
 	import org.fluint.uiImpersonation.IVisualTestEnvironment;
 
+	/**
+	 * Builds a visual test environment for Flex projects 
+	 * @author mlabriola
+	 * 
+	 */
 	public class FlexEnvironmentBuilder implements IVisualEnvironmentBuilder {
+		/**
+		 * @private 
+		 */
 		protected var environment:IVisualTestEnvironment;
+		/**
+		 * @private 
+		 */
 		protected var visualDisplayRoot:DisplayObjectContainer;
 
+		/** 
+		 * Returns a reference to the single instance of a Canvas
+		 * where all visual components will be created during testing.
+		 * 
+		 * @return A reference to the Canvas that serves as the display environment class.
+		 */
 		public function buildVisualTestEnvironment():IVisualTestEnvironment {
 			
 			if ( !environment ) {
@@ -51,6 +68,11 @@ package org.fluint.uiImpersonation.flex {
 			return environment;
 		}
 		
+		/**
+		 * Constructor 
+		 * @param visualDisplayRoot
+		 * 
+		 */
 		public function FlexEnvironmentBuilder( visualDisplayRoot:DisplayObjectContainer ) {
 			this.visualDisplayRoot = visualDisplayRoot;			
 		}

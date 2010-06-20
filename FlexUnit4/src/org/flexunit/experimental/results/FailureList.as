@@ -33,6 +33,9 @@ package org.flexunit.experimental.results
 	 */
 	public class FailureList
 	{
+		/**
+		 * Not yet implemented
+		 */
 		public function FailureList()
 		{
 		}

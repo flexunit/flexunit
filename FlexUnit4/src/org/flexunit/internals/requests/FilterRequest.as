@@ -61,7 +61,9 @@ package org.flexunit.internals.requests {
 			this.filter = filter;
 		}
 		
-		//TODO: Unsure of meaning and applicability of @inheritDoc
+		/**
+		 * @inheritDoc
+		 */
 		override public function get iRunner():IRunner {
 			try {
 				var runner:IRunner = request.iRunner;

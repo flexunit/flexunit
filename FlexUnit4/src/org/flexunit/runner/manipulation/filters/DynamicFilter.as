@@ -45,7 +45,13 @@ package org.flexunit.runner.manipulation.filters {
 	 * @see org.flexunit.runner.FlexUnitCore#run()
 	 */
 	public class DynamicFilter extends AbstractFilter {
+		/**
+		 * @private 
+		 */
 		private var _shouldRunFunction:Function;
+		/**
+		 * @private 
+		 */
 		private var _describeFunction:Function;
 
 		/**
@@ -64,6 +70,12 @@ package org.flexunit.runner.manipulation.filters {
 			return _describeFunction( description );			
 		}
 
+		/**
+		 * Constructor 
+		 * @param shouldRunFunction function that determines if a method should run
+		 * @param describeFunction function that describes a method
+		 * 
+		 */
 		public function DynamicFilter( shouldRunFunction:Function, describeFunction:Function ) {
 			if ( ( shouldRunFunction == null ) || ( describeFunction == null ) ) {
 				throw new TypeError("Must provide functions for comparison and description to Filter");

@@ -104,7 +104,7 @@ package org.flexunit.runners.model {
 					entry = metaDataDictionary[ metaTag.name ];
 					
 					if ( !entry ) {
-						metaDataDictionary[ metaTag.name ] = new Array();
+						metaDataDictionary[ metaTag.name ] = [];
 						entry = metaDataDictionary[ metaTag.name ]
 					}
 					

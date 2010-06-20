@@ -33,6 +33,9 @@ package org.flexunit.matchers
 	 */
 	public class FlexUnitMatchers
 	{
+		/**
+		 * Not yet implemented. Candidate for removal
+		 */
 		public function FlexUnitMatchers()
 		{
 		}

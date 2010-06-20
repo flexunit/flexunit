@@ -37,15 +37,31 @@ package org.flexunit.runner.manipulation {
 	import org.flexunit.runners.model.TestClass;
 	
 	/**
-	 * A <code>MetadataSorter</code> compares two values to determine which value is greater.
+	 * A <code>MetadataSorter</code> compares two values to determine which value is greater. This particular
+	 * sorter also looks at class inheritance depth to group ordering by parent and subclass
 	 * 
 	 */
 	public class OrderArgumentPlusInheritanceSorter implements ISorter  {
 
+		/**
+		 * @private 
+		 */		
 		private var existingSorter:ISorter; 
+		/**
+		 * @private 
+		 */		
 		private var superFirst:Boolean = true;
+		/**
+		 * @private 
+		 */		
 		private var testClass:TestClass;
+		/**
+		 * @private 
+		 */		
 		private var superIndexMap:Dictionary;
+		/**
+		 * @private 
+		 */		
 		private var klassInfo:Klass;
 
 		/**
@@ -60,11 +76,17 @@ package org.flexunit.runner.manipulation {
 			}
 		}
 		
+		/**
+		 * @private 
+		 */		
 		private function returnOnlyName( description:IDescription ):String {
 			var index:int = description.displayName.lastIndexOf( "." );
 			return description.displayName.substr( index + 1 );
 		}
 
+		/**
+		 * @private 
+		 */		
 		private function getInheritedOrder( description:IDescription ):int {
 			var method:Method = klassInfo.getMethod( returnOnlyName( description ) );
 			var index:int = superIndexMap[ method.declaringClass ];
@@ -98,6 +120,9 @@ package org.flexunit.runner.manipulation {
 			return orderSortDecision;
 		}
 		
+		/**
+		 * @private 
+		 */		
 		private function buildMap( testClass:TestClass, superFirst:Boolean ):Dictionary {
 			var dict:Dictionary = new Dictionary( true );
 			
@@ -124,6 +149,14 @@ package org.flexunit.runner.manipulation {
 			return dict;
 		}
 
+		/**
+		 * Constructor
+		 *  
+		 * @param existingSorter existing order sorting class
+		 * @param testClass the test class
+		 * @param superFirst a direction fla indicating the polarity of hierarchy
+		 * 
+		 */
 		public function OrderArgumentPlusInheritanceSorter( existingSorter:ISorter, testClass:TestClass, superFirst:Boolean = true ) {
 			this.existingSorter = existingSorter;
 			this.superFirst = superFirst;
