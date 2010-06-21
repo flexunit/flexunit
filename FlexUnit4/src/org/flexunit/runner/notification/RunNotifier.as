@@ -56,7 +56,13 @@ package org.flexunit.runner.notification {
 	 * @see org.flexunit.runner.notification.IRunListener
 	 */
 	public class RunNotifier implements IRunNotifier {
+		/**
+		 * @private 
+		 */
 		private var listeners:Array = new Array();
+		/**
+		 * @private 
+		 */
 		private var startTime:Number;
 
 		/**

@@ -33,6 +33,9 @@ package org.flexunit.experimental.runners
 	 */
 	public class Enclosed
 	{
+		/**
+		 * Not yet implemented
+		 */
 		public function Enclosed()
 		{
 		}

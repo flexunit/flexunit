@@ -33,6 +33,9 @@ package org.flexunit.internals
 	 */
 	public class ArrayComparisonFailure
 	{
+		/**
+		 * Not yet implemented
+		 */
 		public function ArrayComparisonFailure()
 		{
 		}

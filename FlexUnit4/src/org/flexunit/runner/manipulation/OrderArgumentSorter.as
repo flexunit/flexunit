@@ -53,10 +53,10 @@ package org.flexunit.runner.manipulation {
 		 * @param o1 <code>IDescription</code> the first object to be compared.
 		 * @param o2 <code>IDescription</code> the second object to be compared.
 		 * */
-		private static function none( o1:IDescription, o2:IDescription ):int {
+/*		private static function none( o1:IDescription, o2:IDescription ):int {
 			return 0;
 		}
-
+*/
 		/**
 		 * Sorts the test in <code>runner</code> using <code>compare function</code>.
 		 * 

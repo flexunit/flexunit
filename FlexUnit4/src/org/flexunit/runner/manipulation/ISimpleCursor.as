@@ -27,6 +27,13 @@
  **/ 
 package org.flexunit.runner.manipulation
 {
+	/**
+	 * An actionscript only cursor class which allows simple iteration through
+	 * objects in a collection
+	 * 
+	 * @author mlabriola
+	 * 
+	 */
 	public interface ISimpleCursor
 	{
 	    /**

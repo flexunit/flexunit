@@ -46,7 +46,9 @@ package org.flexunit.internals.builders {
 	public class FlexUnit1Builder extends RunnerBuilderBase {
 		
 		
-		
+		/**
+		 * @inheritDoc
+		 */
 		override public function canHandleClass(testClass:Class):Boolean {
 			var klassInfo:Klass = new Klass( testClass );
 			
@@ -54,12 +56,12 @@ package org.flexunit.internals.builders {
 		}
 		
 		/**
-		 * Returns a <code>FlexUnit1ClassRunner</code> if the <code>testClass</code> is a test class prior to FlexUnit4.
+		 * Returns a <code>FlexUnit1ClassRunner</code> if the <code>testClass</code> is a FlexUnit 1 test class.
 		 * 
-		 * @param testClass The class to check.
+		 * @param testClass The class to run.
 		 * 
-		 * @return a <code>FlexUnit1ClassRunner</code> if the class is a test class prior to FlexUnit4; otherwise, a
-		 * value of <code>null</code> is returned.
+		 * @return a <code>FlexUnit1ClassRunner</code> if the class is a test class is a FlexUnit 1 test; should
+		 * only be called once you know the class is a FlexUnit1 test.
 		 */
 		override public function runnerForClass( testClass:Class ):IRunner {
 			return new FlexUnit1ClassRunner(testClass);

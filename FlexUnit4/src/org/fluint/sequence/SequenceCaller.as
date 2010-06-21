@@ -26,6 +26,12 @@ package org.fluint.sequence
 {
 	import flash.events.IEventDispatcher;
 
+	/**
+	 * A sequence step that calls a method
+	 *  
+	 * @author mlabriola
+	 * 
+	 */
 	public class SequenceCaller implements ISequenceAction
 	{
         /**

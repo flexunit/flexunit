@@ -37,6 +37,9 @@ package org.flexunit.runner.manipulation {
 	 */
 	public class OrderArgumentPlusAlphaSorter implements ISorter  {
 
+		/**
+		 * An instance of a sorter which does sorting on the order argument 
+		 */
 		protected var orderArgumentSorter:ISorter; 
 
 		/**
@@ -91,6 +94,10 @@ package org.flexunit.runner.manipulation {
 			return 0;
 		}
 		
+		/**
+		 * 
+		 * Constructor 
+		 */		
 		public function OrderArgumentPlusAlphaSorter() {
 			orderArgumentSorter = new OrderArgumentSorter();
 		}

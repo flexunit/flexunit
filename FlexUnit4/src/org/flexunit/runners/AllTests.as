@@ -33,6 +33,9 @@ package org.flexunit.runners
 	 */
 	public class AllTests
 	{
+		/**
+		 * Not yet implemented. Candidate for removal
+		 */
 		public function AllTests()
 		{
 		}

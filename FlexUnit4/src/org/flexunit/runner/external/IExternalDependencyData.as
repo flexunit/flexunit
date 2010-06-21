@@ -25,29 +25,24 @@
  * @author     Michael Labriola 
  * @version    
  **/ 
-package org.flexunit.internals.dependency {
-	import org.flexunit.token.AsyncCoreStartupToken;
-
-	public interface IExternalRunnerDependencyWatcher {
+package org.flexunit.runner.external {
+	/**
+	 * Extension to the IExternalDependencyLoader concept which allows a given class
+	 * to act both as a loader and as the final data source without requiring a separate
+	 * static variable. This reduces the complexity of reading the test but still allows
+	 * the use of the IExternalDependencyLoader for special case situations where a static
+	 * setter or related concept may have additional work to do.
+	 * 
+	 * @author mlabriola
+	 * 
+	 */
+	public interface IExternalDependencyData extends IExternalDependencyLoader {
 		/**
-		 * Returns the start up <code>AsyncCoreStartupToken</code> that the FlexUnit core 
-		 * uses to wait for the resolution of all dependencies
+		 * Getter for the externally loaded data 
+		 * 
+		 * @return An Array of externally loaded data 
 		 * 
 		 */
-		function get token():AsyncCoreStartupToken;		
-		/**
-		 * Indicates if there are still unresolved dependencies in any runner
-		 *  
-		 * @return true is all dependencies have been resolved
-		 * 
-		 */
-		function get allDependenciesResolved():Boolean;
-		/**
-		 * Tells an implementing watcher to monitor an additional IExternalDependencyResolver
-		 * 
-		 * @param dr IExternalDependencyResolver
-		 * 
-		 */
-		function watchDependencyResolver( dr:IExternalDependencyResolver ):void;
+		function get data():Array;
 	}
 }

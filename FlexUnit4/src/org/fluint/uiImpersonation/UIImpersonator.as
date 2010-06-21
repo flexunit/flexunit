@@ -33,6 +33,12 @@
 	import org.flexunit.Assert;
 	import org.fluint.uiImpersonation.VisualTestEnvironmentBuilder;
 
+	/**
+	 *
+	 * Provides access to the visual test environment through static methods 
+	 * @author mlabriola
+	 * 
+	 */
 	public class UIImpersonator extends Assert
 	{
 		/** Returns a test environment of either a Flex Container or a Sprite if in AS Only mode **/

@@ -40,6 +40,10 @@ package org.flexunit.internals.builders
 	 * class; however, if it does not fulfill this criteria, no <code>IRunner</code> will be generated.
 	 */
 	public class IgnoredBuilder extends RunnerBuilderBase {
+
+		/**
+		 * @inheritDoc
+		 */
 		override public function canHandleClass(testClass:Class):Boolean {
 			var klassInfo:Klass = new Klass( testClass );
 			

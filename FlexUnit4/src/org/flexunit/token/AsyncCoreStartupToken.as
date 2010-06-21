@@ -49,10 +49,6 @@ package org.flexunit.token {
 		/**
 		 * @private
 		 */
-		private var debugClassName:String;
-		/**
-		 * @private
-		 */
 		private var _token:AsyncTestToken;
 		/**
 		 * @private

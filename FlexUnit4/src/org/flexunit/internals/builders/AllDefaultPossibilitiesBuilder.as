@@ -70,6 +70,12 @@ package org.flexunit.internals.builders {
 			super();
 		}
 		
+		/**
+		 * Builds the default set of builders. This determins the order and priority of possible
+		 * test runners in the system 
+		 * @return An array of IRunnerBuilder objects
+		 * 
+		 */
 		protected function buildBuilders():Array {
 			return [ ignoredBuilder(),
 				metaDataBuilder(),

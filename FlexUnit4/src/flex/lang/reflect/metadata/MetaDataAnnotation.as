@@ -27,8 +27,17 @@
  **/ 
 package flex.lang.reflect.metadata {
 	public class MetaDataAnnotation {
+		/**
+		 * @private
+		 */
 		private var metaData:XML;
+		/**
+		 * @private
+		 */
 		private var _name:String;
+		/**
+		 * @private
+		 */
 		private var _arguments:Array;
 
 		/**

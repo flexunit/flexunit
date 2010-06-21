@@ -34,6 +34,11 @@ package org.flexunit.runner.manipulation.fields {
 
 	import org.flexunit.constants.AnnotationArgumentConstants;
 
+	/**
+	 * A field sorter capable of sorting fields based on the order argument 
+	 * @author mlabriola
+	 * 
+	 */
 	public class FieldMetaDataSorter implements IFieldSorter {
 		
 		/**Controls a A to Z verssus Z to A sort **/
@@ -64,6 +69,13 @@ package org.flexunit.runner.manipulation.fields {
 			return order;
 		}
 
+		/**
+		 * Compares field1 and field2 indicating which is first or second in order 
+		 * @param field1
+		 * @param field2
+		 * @return 
+		 * 
+		 */
 		public function compare( field1:Field, field2:Field ):int {
 			var a:Number;
 			var b:Number; 
@@ -91,6 +103,11 @@ package org.flexunit.runner.manipulation.fields {
 			return 0;
 		}
 		
+		/**
+		 * Constructor 
+		 * @param invert indicates a top down or bottom up sort
+		 * 
+		 */
 		public function FieldMetaDataSorter( invert:Boolean = false ) {
 			this.invert = invert;
 		}

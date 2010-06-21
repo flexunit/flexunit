@@ -394,6 +394,13 @@ package org.flexunit.runners {
 					//build statement wrappers
 					statement = rule.apply( statement, method, test );
 				}
+				else {
+					// CJP: This error will be thrown if an object marked with the [Rule] metadata tag either
+					//		a) does not implement the IMethodRule interface -or-
+					//		b) is null (even if defined as an IMethodRule)
+					//		Additionally, it will get thrown once for EACH test in the TestCase class.
+					throw new Error( "Something marked as [Rule] that does not implement IMethodRule!" );
+				}
 			}
 			
 			return statement;

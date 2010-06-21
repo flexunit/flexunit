@@ -76,6 +76,9 @@ package org.flexunit.runners {
 		 */
 		private var _runners:Array;
 
+		/**
+		 * @private 
+		 */
 		private var _dependencyWatcher:IExternalRunnerDependencyWatcher;
 
 		/**
@@ -117,6 +120,13 @@ package org.flexunit.runners {
 			IRunner( child ).run( notifier, childRunnerToken );
 		}
 		
+		/**
+		 * Setter for a dependency watcher. This is a class that implements IExternalRunnerDependencyWatcher
+		 * and watches for any external dependencies (such as loading data) are finalized before execution of
+		 * tests is allowed to commence.  
+		 * 		 
+		 * @param value An implementation of IExternalRunnerDependencyWatcher
+		 */
 		public function set dependencyWatcher( value:IExternalRunnerDependencyWatcher ):void {
 			var runner:IRunner;
 
@@ -133,6 +143,15 @@ package org.flexunit.runners {
 			}
 		}
 		
+		/**
+		 * 
+		 * Setter to indicate an error occured while attempting to load exteranl dependencies
+		 * for this test. It accepts a string to allow the creator of the external dependency
+		 * loader to pass a viable error string back to the user.
+		 * 
+		 * @param value The error message
+		 * 
+		 */
 		public function set externalDependencyError( value:String ):void {
 			//do nothing... suites don't actually have externalDependencies.. 
 			//they just need to pass this along

@@ -43,6 +43,10 @@ package org.flexunit.internals.builders {
 	public class SuiteMethodBuilder extends RunnerBuilderBase {
 		
 		
+		/**
+		 * @inheritDoc
+		 *  
+		 */
 		override public function canHandleClass(testClass:Class):Boolean {
 			return hasSuiteMethod( testClass );
 		}

@@ -45,7 +45,13 @@ package org.flexunit.runner {
 	 * @see org.flexunit.runner.IRunner
 	 */
 	public class Description implements IDescription {
+		/**
+		 * Global instance of an empty test description which can be returned 
+		 */
 		public static var EMPTY:Description = new Description("Empty", null );
+		/**
+		 * Global instance of a failed test description for test mechanmism reasons
+		 */
 		public static var TEST_MECHANISM:Description = new Description("Test mechanism", null );
 		
 		/**

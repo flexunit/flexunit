@@ -48,7 +48,9 @@ package org.flexunit.internals.builders {
 	 */
 	public class Fluint1Builder extends RunnerBuilderBase {
 
-		
+		/**
+		 * @inheritDoc
+		 */
 		override public function canHandleClass(testClass:Class):Boolean {
 			var klassInfo:Klass = new Klass( testClass );
 			return isFluintSuiteOrCase(klassInfo);

@@ -27,8 +27,17 @@
  **/ 
 package flex.lang.reflect.metadata {
 	public class MetaDataArgument {
+		/**
+		 * @private
+		 */
 		private var argument:XML;
+		/**
+		 * @private
+		 */
 		private var _key:String;
+		/**
+		 * @private
+		 */
 		private var _value:String;
 
 		/**

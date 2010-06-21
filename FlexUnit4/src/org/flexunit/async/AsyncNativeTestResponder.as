@@ -84,27 +84,46 @@ package org.flexunit.async {
 			this.eventDispatcher = new EventDispatcher(this);
 			super(result, fault);
 		}
+
+		//---------------------------------
+		//   EventDispatcher methods
+		//---------------------------------
 		
+		/**
+		 * @private
+		 */
 		public function addEventListener(type : String, listener : Function, useCapture : Boolean = false, priority : int = 0, useWeakReference : Boolean = false) : void
 		{
 			eventDispatcher.addEventListener(type, listener, useCapture, priority, useWeakReference);
 		}
 		
+		/**
+		 * @private
+		 */
 		public function hasEventListener(type : String) : Boolean
 		{
 			return eventDispatcher.hasEventListener(type);
 		}
 		
+		/**
+		 * @private
+		 */
 		public function dispatchEvent(event : Event) : Boolean
 		{
 			return eventDispatcher.dispatchEvent(event);
 		}
 		
+		/**
+		 * @private
+		 */
 		public function removeEventListener(type : String, listener : Function, useCapture : Boolean = false) : void
 		{
 			eventDispatcher.removeEventListener(type, listener, useCapture);
 		}
 		
+		/**
+		 * @private
+		 */
 		public function willTrigger(type : String) : Boolean
 		{
 			return eventDispatcher.willTrigger(type);

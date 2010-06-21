@@ -43,21 +43,56 @@ package org.flexunit.internals.dependency {
 	import org.flexunit.runner.external.ExternalDependencyToken;
 	import org.flexunit.runner.external.IExternalDependencyLoader;
 	import org.flexunit.runner.external.IExternalDependencyRunner;
+	import org.flexunit.runner.external.IExternalDependencyData;
 
 	public class ExternalDependencyResolver extends EventDispatcher implements IExternalDependencyResolver {
+		/**
+		 * Event constant indicating that all outstanding dependencies are now resolved 
+		 */
 		public static const ALL_DEPENDENCIES_FOR_RUNNER_RESOLVED:String = "runnerDependenciesResolved";
+		
+		/**
+		 * Event constant indicating that a given dependency failed to resolve itself 
+		 */		
 		public static const DEPENDENCY_FOR_RUNNER_FAILED:String = "runnerDependencyFailed";
 
-		//just used to check if they are a RunWith class
+		/**
+		 * @private
+		 * just used to check if they are a RunWith class
+		 */
 		private static var metaDataBuilder:MetaDataBuilder;
+		/**
+		 * @private
+		 */
 		private var clazz:Class;
+		/**
+		 * @private
+		 */
 		private var dependencyMap:Dictionary;
+		/**
+		 * @private
+		 */
 		private var runner:IExternalDependencyRunner;
 		
+		/**
+		 * Indicates if the ExternalDependencies managed by this Resolver are
+		 * all resolved.
+		 *  
+		 * @return true if the runner can now begin execution 
+		 * 
+		 */		
 		public function get ready():Boolean {
 			return ( keyCount == 0 );
 		}
 
+		/**
+		 *
+		 * Begins the execution of any external dependency loaders
+		 *  
+		 * @param loaderField
+		 * @param targetField
+		 * 
+		 */		
 		private function executeDependencyLoader( loaderField:Field, targetField:Field ):void {
 			if ( loaderField && loaderField.isStatic ) {
 				var loaderObj:Object = loaderField.getObj( null );
@@ -71,17 +106,63 @@ package org.flexunit.internals.dependency {
 				}
 			}
 		}
+		
+		/**
+		 * Determines if the targetField is a IExternalDependencyValue
+		 *  
+		 * @param targetField
+		 * @return 
+		 * 
+		 */
+		private function isDependencyValue( targetField:Field ):Boolean {
+			var field:* = targetField.getObj( null );
+			
+			return ( field is IExternalDependencyData );
+		}
 
+		/**
+		 * Looks for a loaderField specified within the metaDataAnnotation
+		 * 
+		 * @param klassInfo
+		 * @param metaDataAnnotation
+		 * @return 
+		 * 
+		 */		
+		private function getLoaderField( klassInfo:Klass, metaDataAnnotation:MetaDataAnnotation ):Field {
+			var arguments:Array;
+			var argument:MetaDataArgument;
+			var loaderField:Field;
+			var loaderFieldName:String;
+
+			arguments = metaDataAnnotation.arguments;
+			
+			for ( var j:int=0 ; j<arguments.length; j++ ) {
+				argument = arguments[ j ] as MetaDataArgument;
+				
+				if ( argument.key == AnnotationArgumentConstants.LOADER ) {
+					loaderFieldName = argument.value;
+					
+					loaderField = klassInfo.getField( loaderFieldName );
+					break;
+				}
+			}
+
+			return loaderField;
+		}
+
+		/**
+		 *
+		 * Looks for external dependencies in the test class and begins the process of resolving them
+		 *  
+		 * @return true if there are external dependencies 
+		 * 
+		 */		
 		public function resolveDependencies():Boolean {
 			var klassInfo:Klass = new Klass( clazz );
 			var targetFields:Array = klassInfo.fields;
 			var targetField:Field;
 			var metaDataAnnotation:MetaDataAnnotation;
-			var token:ExternalDependencyToken;
-			var arguments:Array;
-			var argument:MetaDataArgument;
 			var loaderField:Field;
-			var loaderFieldName:String;
 			var counter:uint = 0;
 
 			//perhaps mark the class?
@@ -89,26 +170,24 @@ package org.flexunit.internals.dependency {
 				targetField = targetFields[ i ] as Field;
 				
 				if ( targetField.isStatic ) {
-					metaDataAnnotation = targetField.getMetaData( AnnotationConstants.PARAMETERS );
-					
-					if ( !metaDataAnnotation ) {
-						metaDataAnnotation = targetField.getMetaData( AnnotationConstants.DATA_POINTS );
-					}
-					
-					if ( metaDataAnnotation ) {
-						arguments = metaDataAnnotation.arguments;
+					if ( isDependencyValue( targetField ) ) {
+						//this field is a loader
+						executeDependencyLoader( targetField, targetField );
+						counter++;
+					} else {
+						//first check for parameters
+						metaDataAnnotation = targetField.getMetaData( AnnotationConstants.PARAMETERS );
 						
-						for ( var j:int=0 ; j<arguments.length; j++ ) {
-							argument = arguments[ j ] as MetaDataArgument;
-							
-							if ( argument.key == AnnotationArgumentConstants.LOADER ) {
-								loaderFieldName = argument.value;
-
-								loaderField = klassInfo.getField( loaderFieldName );
+						if ( !metaDataAnnotation ) {
+							//then check for datapoints
+							metaDataAnnotation = targetField.getMetaData( AnnotationConstants.DATA_POINTS );
+						}
+						
+						if ( metaDataAnnotation ) {
+							loaderField = getLoaderField( klassInfo, metaDataAnnotation );
+							if ( loaderField ) {
 								executeDependencyLoader( loaderField, targetField );
 								counter++;
-								
-								break;
 							}
 						}
 					}
@@ -118,6 +197,9 @@ package org.flexunit.internals.dependency {
 			return ( counter > 0 );
 		}
 
+		/**
+		 * @private
+		 */
 		private function get keyCount():int {
 			var counter:int = 0;
 
@@ -128,14 +210,26 @@ package org.flexunit.internals.dependency {
 			return counter;
 		}
 
+		/**
+		 * Called by an ExternalDependencyToken when an IExternalDependencyLoader has completed resolving the dependency 
+		 * and is ready  with data 
+		 *  
+		 * @param token the token keeping track of this dependency load
+		 * @param data the returned data
+		 * 
+		 */
 		public function dependencyResolved( token:ExternalDependencyToken, data:Object ):void {			
 			var targetField:Field = token.targetField;
+			var property:* = targetField.getObj( null ); 
 			var clazz:Class = targetField.definedBy;
 
-			if ( data is targetField.type ) {
-				clazz[ targetField.name ] = data;	
-			} else {
-				trace("Yeh, that's an issue");
+			if ( !( property is IExternalDependencyData ) ) {
+				//If it is an IExternalDependencyValue then we have nothing to do
+				if ( data is targetField.type ) {
+					clazz[ targetField.name ] = data;	
+				} else {
+					throw new Error("Data Type mistmatch between returned data and field" );
+				}
 			}
 			
 			manageResponseCleanup( token );
@@ -145,7 +239,14 @@ package org.flexunit.internals.dependency {
 				dispatchEvent( new Event( ALL_DEPENDENCIES_FOR_RUNNER_RESOLVED ) );
 			}
 		} 
-		
+		/**
+		 * Called by an ExternalDependencyToken when an IExternalDependencyLoader has failed to 
+		 * resolve a dependency 
+		 *  
+		 * @param token the token keeping track of this dependency load
+		 * @param data the returned data
+		 * 
+		 */
 		public function dependencyFailed( token:ExternalDependencyToken, errorMessage:String ):void {
 			
 			//Okay, badness.. stop listening to all outstanding requests
@@ -159,16 +260,28 @@ package org.flexunit.internals.dependency {
 			dispatchEvent( new Event( DEPENDENCY_FOR_RUNNER_FAILED ) );
 		}
 
+		/**
+		 * @private
+		 */
 		private function manageResponseCleanup( token:ExternalDependencyToken ):void {
 			token.removeResolver( this );
 			
 			delete dependencyMap[ token ];
 		}
 
+		/**
+		 * @private
+		 */
 		private function shouldResolveClass():Boolean {
 			 return metaDataBuilder.canHandleClass( clazz );
 		}
-		
+
+		/**
+		 * Constructor 
+		 * @param clazz with possible dependencies
+		 * @param runner the runner pending until all dependencies are resolved
+		 * 
+		 */		
 		public function ExternalDependencyResolver( clazz:Class, runner:IExternalDependencyRunner ) {
 			this.clazz = clazz;
 			this.dependencyMap = new Dictionary();

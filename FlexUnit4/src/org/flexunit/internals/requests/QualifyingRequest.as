@@ -2,11 +2,28 @@ package org.flexunit.internals.requests {
 	import org.flexunit.internals.builders.OnlyRecognizedTestClassBuilder;
 	import org.flexunit.runner.Request;
 	
+	/**
+	 * A QualifyingRequest is a request that verifies each class passed to it is in fact a viable
+	 * test before attempting to include it.
+	 *  
+	 * @author mlabriola
+	 * 
+	 */
 	public class QualifyingRequest extends Request {
+		/**
+		 * Constructor 
+		 * 
+		 */
 		public function QualifyingRequest() {
 			super();
 		}
 
+		/**
+		 *  
+		 * @param argumentsArray possible test classes to be included in a Request
+		 * @return a Request composed of all the arguments which could be identified as runnable tests
+		 * 
+		 */
 		public static function classes( ...argumentsArray ):Request {
 			var allQualifiedBuilders:OnlyRecognizedTestClassBuilder = new OnlyRecognizedTestClassBuilder(true);
 			var arrayLen:int = argumentsArray.length;

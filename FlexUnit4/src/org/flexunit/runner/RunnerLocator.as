@@ -61,6 +61,9 @@ package org.flexunit.runner
 			return d[ test ] as IRunner;
 		} 	
 
+		/**
+		 * singleton instance storage 
+		 */
 		private static var instance:RunnerLocator;
 
 		/**
@@ -72,6 +75,14 @@ package org.flexunit.runner
 			}
 
 			return instance;
+		}
+		
+		/**
+		 * Constructor 
+		 * 
+		 */
+		public function RunnerLocator() {
+			
 		}
 	}
 }

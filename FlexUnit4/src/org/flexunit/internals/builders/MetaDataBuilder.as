@@ -91,6 +91,16 @@ package org.flexunit.internals.builders {
 		 */
 		private var suiteBuilder:IRunnerBuilder;
 		
+		/**
+		 *
+		 * Looks through the inheritance hierarchy for a given piece of metadata to determine
+		 * if it was declared on a super class
+		 *  
+		 * @param testClass
+		 * @param metadata
+		 * @return true if found on this or a super class 
+		 * 
+		 */
 		private function lookForMetaDataThroughInheritance( testClass:Class, metadata:String ):MetaDataAnnotation {
 			var klassInfo:Klass = new Klass( testClass );
 			var ancestorInfo:Klass;
@@ -114,6 +124,9 @@ package org.flexunit.internals.builders {
 			return annotation;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function canHandleClass( testClass:Class ):Boolean {
 			var annotation:MetaDataAnnotation = lookForMetaDataThroughInheritance( testClass, AnnotationConstants.RUN_WITH );
 			

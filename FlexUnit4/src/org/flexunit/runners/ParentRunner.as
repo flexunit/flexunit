@@ -54,6 +54,9 @@ package org.flexunit.runners {
 	import org.flexunit.token.IAsyncTestToken;
 	import org.flexunit.utils.ClassNameUtil;
 	
+	/**
+	 * use the classInternal namespace 
+	 */
 	use namespace classInternal;
 
 	/**
@@ -109,6 +112,9 @@ package org.flexunit.runners {
 		 */
 		private var cachedDescription:IDescription;
 		
+		/**
+		 * private 
+		 */
 		protected var stopRequested:Boolean = false;
 		
 		/**

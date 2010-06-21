@@ -50,7 +50,9 @@ package org.flexunit.internals.builders
 			super();
 		}
 		
-		
+		/**
+		 * @inheritDoc
+		 */
 		override public function canHandleClass(testClass:Class):Boolean {
 			return true;
 		}

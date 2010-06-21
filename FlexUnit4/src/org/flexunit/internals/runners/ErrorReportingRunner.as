@@ -128,6 +128,10 @@ package org.flexunit.internals.runners {
 			return [ cause ];
 		}
 
+		/**
+		 * @private 
+		 * 
+		 */
 		private function describeCause( child:Error ):IDescription {
 			return Description.createTestDescription( _testClass, "initializationError");
 		}

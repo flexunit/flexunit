@@ -3,6 +3,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.helper.ParamDataExt;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.helper.ParamDataHelper;
 	
 	import mx.rpc.AsyncToken;
@@ -20,6 +21,9 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 	public class TestParameterized
 	{
 		private var foo:Parameterized;
+
+		[Parameters]
+		public static var dataRetriever:ParamDataExt = new ParamDataExt( "someFakeDataPath.stuff" );
 
 		public static var dataRetriever1:ParamDataHelper = new ParamDataHelper( "someFakeDataPath.stuff" );
 

@@ -33,6 +33,9 @@ package org.flexunit.experimental.results
 	 */
 	public class PrintableResult
 	{
+		/**
+		 * Not yet implemented
+		 */
 		public function PrintableResult()
 		{
 		}

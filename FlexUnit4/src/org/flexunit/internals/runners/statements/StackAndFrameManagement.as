@@ -69,6 +69,9 @@ package org.flexunit.internals.runners.statements {
 		 */
 		protected var statement:IAsyncStatement;
 		
+		/**
+		 * @private
+		 */
 		private static var frameWatcher:FrameWatcher;
   		
 		/**
