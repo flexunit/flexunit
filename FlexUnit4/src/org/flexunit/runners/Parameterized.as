@@ -403,7 +403,7 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 
 		var paramName:String = params?params.join ( "," ):"Missing Params";
 		var method:FrameworkMethod = FrameworkMethod( child );
-		return Description.createTestDescription( testClass.asClass, method.name + '(' + paramName + ')', method.metadata );
+		return Description.createTestDescription( testClass.asClass, method.name + ' (' + paramName + ')', method.metadata );
 	}
 
 
