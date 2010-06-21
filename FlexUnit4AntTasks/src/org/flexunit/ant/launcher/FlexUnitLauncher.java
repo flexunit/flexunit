@@ -83,7 +83,7 @@ public class FlexUnitLauncher
          LoggingUtil.log("Setting DISPLAY=:" + xvncStart.getCurrentDisplay());
       }
 
-      LoggingUtil.log("Launching player:\n" + command.describe());
+      LoggingUtil.log("Launching player:\n");
       
       // run player command
       process = command.launch();
