@@ -43,6 +43,7 @@ package org.flexunit.internals.dependency {
 	import org.flexunit.runner.external.ExternalDependencyToken;
 	import org.flexunit.runner.external.IExternalDependencyLoader;
 	import org.flexunit.runner.external.IExternalDependencyRunner;
+	import org.flexunit.runner.external.IExternalDependencyData;
 
 	public class ExternalDependencyResolver extends EventDispatcher implements IExternalDependencyResolver {
 		/**
@@ -105,6 +106,49 @@ package org.flexunit.internals.dependency {
 				}
 			}
 		}
+		
+		/**
+		 * Determines if the targetField is a IExternalDependencyValue
+		 *  
+		 * @param targetField
+		 * @return 
+		 * 
+		 */
+		private function isDependencyValue( targetField:Field ):Boolean {
+			var field:* = targetField.getObj( null );
+			
+			return ( field is IExternalDependencyData );
+		}
+
+		/**
+		 * Looks for a loaderField specified within the metaDataAnnotation
+		 * 
+		 * @param klassInfo
+		 * @param metaDataAnnotation
+		 * @return 
+		 * 
+		 */		
+		private function getLoaderField( klassInfo:Klass, metaDataAnnotation:MetaDataAnnotation ):Field {
+			var arguments:Array;
+			var argument:MetaDataArgument;
+			var loaderField:Field;
+			var loaderFieldName:String;
+
+			arguments = metaDataAnnotation.arguments;
+			
+			for ( var j:int=0 ; j<arguments.length; j++ ) {
+				argument = arguments[ j ] as MetaDataArgument;
+				
+				if ( argument.key == AnnotationArgumentConstants.LOADER ) {
+					loaderFieldName = argument.value;
+					
+					loaderField = klassInfo.getField( loaderFieldName );
+					break;
+				}
+			}
+
+			return loaderField;
+		}
 
 		/**
 		 *
@@ -118,11 +162,7 @@ package org.flexunit.internals.dependency {
 			var targetFields:Array = klassInfo.fields;
 			var targetField:Field;
 			var metaDataAnnotation:MetaDataAnnotation;
-			var token:ExternalDependencyToken;
-			var arguments:Array;
-			var argument:MetaDataArgument;
 			var loaderField:Field;
-			var loaderFieldName:String;
 			var counter:uint = 0;
 
 			//perhaps mark the class?
@@ -130,26 +170,24 @@ package org.flexunit.internals.dependency {
 				targetField = targetFields[ i ] as Field;
 				
 				if ( targetField.isStatic ) {
-					metaDataAnnotation = targetField.getMetaData( AnnotationConstants.PARAMETERS );
-					
-					if ( !metaDataAnnotation ) {
-						metaDataAnnotation = targetField.getMetaData( AnnotationConstants.DATA_POINTS );
-					}
-					
-					if ( metaDataAnnotation ) {
-						arguments = metaDataAnnotation.arguments;
+					if ( isDependencyValue( targetField ) ) {
+						//this field is a loader
+						executeDependencyLoader( targetField, targetField );
+						counter++;
+					} else {
+						//first check for parameters
+						metaDataAnnotation = targetField.getMetaData( AnnotationConstants.PARAMETERS );
 						
-						for ( var j:int=0 ; j<arguments.length; j++ ) {
-							argument = arguments[ j ] as MetaDataArgument;
-							
-							if ( argument.key == AnnotationArgumentConstants.LOADER ) {
-								loaderFieldName = argument.value;
-
-								loaderField = klassInfo.getField( loaderFieldName );
+						if ( !metaDataAnnotation ) {
+							//then check for datapoints
+							metaDataAnnotation = targetField.getMetaData( AnnotationConstants.DATA_POINTS );
+						}
+						
+						if ( metaDataAnnotation ) {
+							loaderField = getLoaderField( klassInfo, metaDataAnnotation );
+							if ( loaderField ) {
 								executeDependencyLoader( loaderField, targetField );
 								counter++;
-								
-								break;
 							}
 						}
 					}
@@ -182,12 +220,16 @@ package org.flexunit.internals.dependency {
 		 */
 		public function dependencyResolved( token:ExternalDependencyToken, data:Object ):void {			
 			var targetField:Field = token.targetField;
+			var property:* = targetField.getObj( null ); 
 			var clazz:Class = targetField.definedBy;
 
-			if ( data is targetField.type ) {
-				clazz[ targetField.name ] = data;	
-			} else {
-				trace("Yeh, that's an issue");
+			if ( !( property is IExternalDependencyData ) ) {
+				//If it is an IExternalDependencyValue then we have nothing to do
+				if ( data is targetField.type ) {
+					clazz[ targetField.name ] = data;	
+				} else {
+					throw new Error("Data Type mistmatch between returned data and field" );
+				}
 			}
 			
 			manageResponseCleanup( token );

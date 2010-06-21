@@ -27,22 +27,22 @@
  **/ 
 package org.flexunit.runner.external {
 	/**
-	 * Allows the user to specify a static variable of type IExternalDependencyLoader. This class
-	 * is responsible for asynchronously loading and parsing any data needed for the test and 
-	 * notifying the test framework on success or failure.
-	 *  
+	 * Extension to the IExternalDependencyLoader concept which allows a given class
+	 * to act both as a loader and as the final data source without requiring a separate
+	 * static variable. This reduces the complexity of reading the test but still allows
+	 * the use of the IExternalDependencyLoader for special case situations where a static
+	 * setter or related concept may have additional work to do.
+	 * 
 	 * @author mlabriola
 	 * 
 	 */
-	public interface IExternalDependencyLoader {
+	public interface IExternalDependencyData extends IExternalDependencyLoader {
 		/**
-		 * Instructs the IExternalDependencyLoader to find and 
-		 * begin resolving dependencies on this class
+		 * Getter for the externally loaded data 
 		 * 
-		 * @param testClass
-		 * @return an ExternalDependencyToken to monitor success of fault
+		 * @return An Array of externally loaded data 
 		 * 
 		 */
-		function retrieveDependency( testClass:Class ):ExternalDependencyToken;
+		function get data():Array;
 	}
 }

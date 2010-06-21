@@ -4,13 +4,42 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.token.IAsyncTestToken;
 	import org.flexunit.utils.ClassNameUtil;
 
+	/**
+	 * Runs the [Before] methods of a test in the BlockFlexUnit4ClassRunner inline before
+	 * procceding to the actual test.
+	 *  
+	 * @author mlabriola
+	 * 
+	 */
 	public class RunBeforesInline extends AsyncStatementBase implements IAsyncStatement {
+		/**
+		 * @private 
+		 */
 		private var befores:Array;
+		/**
+		 * @private 
+		 */
 		private var target:Object;
+		/**
+		 * @private 
+		 */
 		private var nextStatement:IAsyncStatement;
+		/**
+		 * @private 
+		 */
 		private var runBefores:RunBefores;
+		/**
+		 * @private 
+		 */
 		private var myTokenForSequence:AsyncTestToken;
 		
+		/**
+		 * Constructor  
+		 * @param befores Array of FrameworkMethod instances with Before metadata
+		 * @param target The test class 
+		 * @param statement the statement being wrapped by this class
+		 * 
+		 */
 		public function RunBeforesInline( befores:Array, target:Object, statement:IAsyncStatement ) {
 			super();
 			
@@ -31,22 +60,40 @@ package org.flexunit.internals.runners.statements {
 			runBefores = new RunBefores( befores, target );
 		}
 
+		/**
+		 * Begins execution of the Before methods
+		 * @param parentToken
+		 * 
+		 */
 		public function evaluate( parentToken:AsyncTestToken ):void {
 			this.parentToken = parentToken;
 			runBefores.evaluate( myTokenForSequence );
 		}
 
+		/**
+		 * Called when all Before methods have been run 
+		 * @param result
+		 * 
+		 */		
 		public function handleSequenceExecuteComplete( result:ChildResult ):void {
 			
 			if ( result && result.error ) {
 				//we have an error during the execution of the Before,
 				//we need to abort
-				sendComplete( new Error( "Failure in Before: " + result.error.message ) )
+				sendComplete( result.error )
 			} else {			
 				nextStatement.evaluate( myToken );
 			}
 		}
 		
+		/**
+		 * Called to provide this class an opportunity to inspect or change the result
+		 * of the test run before allowing control to continue passing up the wrapped 
+		 * statements.
+		 * 
+		 * @param result
+		 * 
+		 */		
 		public function handleNextStatementExecuteComplete( result:ChildResult ):void {
 			sendComplete( result.error );
 		}

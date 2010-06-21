@@ -1,6 +1,10 @@
 package org.flexunit.runners.model {
 	import flex.lang.reflect.Method;
+	import flex.lang.reflect.metadata.MetaDataAnnotation;
+	import flex.lang.reflect.metadata.MetaDataArgument;
 	
+	import org.flexunit.constants.AnnotationArgumentConstants;
+	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.token.AsyncTestToken;
 
 	/**
@@ -45,14 +49,62 @@ package org.flexunit.runners.model {
 			applyExplosively( target, arguments );
 			return null;
 		}
+		
+		/**
+		 * Produces a new method with modified order metadata to ensure a consistent order of
+		 * execution as compared to the data set order
+		 * 
+		 * @param method the existing method which needs expansion
+		 * @param methodIndex Current Index into the data set of this ParameterizedMethod
+		 * @param totalMethods total number of methods needed by the data set
+		 * @return a new Method
+		 * 
+		 */
+		protected function methodWithGuaranteedOrderMetaData( method : Method, methodIndex : int, totalMethods : int ) : Method {
+			var newMethod:Method = method.clone();
 
+			// CJP: If the method doesn't contain a "TEST" metadata tag, we probably shouldn't be in  here anyway... throw Error?
+			var annotation:MetaDataAnnotation = newMethod.getMetaData( AnnotationConstants.TEST );
+			var arg:MetaDataArgument;
+			var arguments:Array;
+
+			var orderValueDec : Number = ( methodIndex + 1) / ( Math.pow( 10, totalMethods ) );
+
+			if ( annotation ) {
+				arg = annotation.getArgument( AnnotationArgumentConstants.ORDER );
+
+				var orderArg:XML = <arg key="order" value="0"/>;
+				
+				if ( arg ) {
+					orderArg.@value = orderValueDec + Number( arg.value );
+
+					arguments = annotation.arguments;
+					for ( var i:int=0; i<arguments.length; i++ ) {
+						if ( arguments[ i ] === arg ) {
+							//replace the argument with a new one with better ordering
+							arguments.splice( i, 1, new MetaDataArgument( orderArg ) );
+							break;
+						}
+					}
+				} else {
+					annotation.arguments.push( new MetaDataArgument( orderArg ) ); 
+				}
+
+			}
+			
+			return newMethod;
+		}
+		
 		/**
 		 * 
 		 * Constructor
 		 * 
 		 */
-		public function ParameterizedMethod(method:Method, arguments:Array ) {
-			super(method);
+		public function ParameterizedMethod(method:Method, arguments:Array, methodIndex:uint, totalMethods:uint ) {
+			var newMethod : Method = methodWithGuaranteedOrderMetaData( method, methodIndex, totalMethods );
+
+			super( newMethod );
+
 			_arguments = arguments;
 		}
 		

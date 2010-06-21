@@ -43,6 +43,7 @@ package org.flexunit.runners
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.external.IExternalDependencyRunner;
+	import org.flexunit.runner.external.IExternalDependencyData;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runner.notification.StoppedByUserException;
 	import org.flexunit.runners.model.FrameworkMethod;
@@ -162,6 +163,7 @@ package org.flexunit.runners
 			var field:Field;
 			var methods:Array = getParametersMethods(klass);
 			var fields:Array = getParametersFields(klass);
+			var property:*;
 			var data:Array;
 
 			for ( var i:int=0; i<methods.length; i++ ) {
@@ -174,7 +176,14 @@ package org.flexunit.runners
 			for ( var j:int=0; j<fields.length; j++ ) {
 				field = fields[ j ];
 				
-				data = field.getObj( null ) as Array;
+				property = field.getObj( null );
+				
+				if ( property is Array ) { 
+					data = property as Array;
+				} else if ( property is IExternalDependencyData ) {
+					data = ( property as IExternalDependencyData ).data;
+				}
+
 				allParams = allParams.concat( data );
 			}
 			
@@ -259,6 +268,7 @@ import org.flexunit.internals.runners.InitializationError;
 import org.flexunit.internals.runners.statements.IAsyncStatement;
 import org.flexunit.runner.Description;
 import org.flexunit.runner.IDescription;
+import org.flexunit.runner.external.IExternalDependencyData;
 import org.flexunit.runner.notification.IRunNotifier;
 import org.flexunit.runners.BlockFlexUnit4ClassRunner;
 import org.flexunit.runners.model.FrameworkMethod;
@@ -301,6 +311,7 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 			var field:Field;
 			var results:Array;
 			var paramMethod:ParameterizedMethod;
+			var property:*;
 			
 			if ( argument ) {
 				classMethod = klassInfo.getMethod( argument.value ); 
@@ -311,17 +322,21 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 					field = klassInfo.getField( argument.value );
 					
 					if ( field ) {
-						var ar:Array = field.getObj(null) as Array;
-						results = new Array();
-						results = results.concat( ar );
+						property = field.getObj( null );
+						
+						if ( property is Array ) {
+							results = [];
+							results = results.concat( property as Array );
+						} else if ( property is IExternalDependencyData ) {
+							results = [];
+							results = results.concat( ( property as IExternalDependencyData ).data );
+						}
 					}
 				}
 				
-				var methodXML : XML = insertOrderMetadataIfNecessary( fwMethod.method );
-				
-				for ( var j:int=0; j<results.length; j++ ) {
-					var method:Method = applyOrderToParameterizedTestMethod( methodXML, j, results.length );
-					paramMethod = new ParameterizedMethod( method, results[ j ] );
+				var length:uint = results.length;
+				for ( var j:uint=0; j<length; j++ ) {
+					paramMethod = new ParameterizedMethod( fwMethod.method, results[ j ], j, length );
 					finalArray.push( paramMethod ); 	
 				}
 			} else {
@@ -330,52 +345,6 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 		}
 		
 		return finalArray;
-	}
-
-	/**
-	 * 
-	 * @param method Method currently under test
-	 * @return an XML clone of this method with Order metadata inserted
-	 * 
-	 */
-	protected function insertOrderMetadataIfNecessary( method : Method ) : XML
-	{
-		var xmlCopy:XML = method.methodXML.copy();
-		
-		var a:MetaDataAnnotation = method.getMetaData( AnnotationConstants.TEST );
-		var arg:MetaDataArgument;
-		
-		if ( a )
-			arg = a.getArgument( AnnotationArgumentConstants.ORDER );
-		else	// CJP: If the method doesn't contain a "TEST" metadata tag, we probably shouldn't be in  here anyway... throw Error?
-			return xmlCopy;
-		
-		if ( !arg )
-			xmlCopy.metadata.(@name=="Test").appendChild( <arg key="order" value="0"/> );
-		
-		return xmlCopy;
-	}
-	
-	/**
-	 * 
-	 * Returns a new method with order metadata injected to ensure parameters run in an expected order
-	 * 
-	 * @param methodXML an XML descriptor of the method
-	 * @param dataSetIndex an index into the data being applied to the method
-	 * @param totalMethods the total number of methods expanded by this dataprovider
-	 * @return a new Method
-	 * 
-	 */
-	protected function applyOrderToParameterizedTestMethod( methodXML : XML, dataSetIndex : int, totalMethods : int ) : Method
-	{
-		var xmlCopy:XML = methodXML.copy();
-		
-		var orderValueDec : Number = (dataSetIndex + 1) / ( Math.pow( 10, totalMethods ) );
-		var newOrderValue : Number = xmlCopy.metadata.(@name=="Test").arg.( @key == "order" ).attribute( "value" ) + orderValueDec;
-		
-		xmlCopy.metadata.(@name=="Test").arg.( @key == "order" ).( @value = newOrderValue );
-		var newMethod:Method = new Method( xmlCopy );
-		return newMethod;
 	}
 	
 	/**

@@ -89,10 +89,10 @@ package org.flexunit.runner.external {
 		/**
 		 * Notifies the resolver of successful data retrieval
 		 *  
-		 * @param data
+		 * @param data Only needed when using an IExternalDependencyLoader and not an IExternalDependencyValue
 		 * 
 		 */
-		public function notifyResult( data:Object ):void {
+		public function notifyResult( data:Object=null ):void {
 			resolver.dependencyResolved( this, data );			
 		}
 

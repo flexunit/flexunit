@@ -312,7 +312,18 @@ package flex.lang.reflect {
 
 			return null;
 		}
-
+		
+		/**
+		 * Clones the existing method 
+		 * @return a new Method
+		 * 
+		 */
+		public function clone():Method {
+			var xmlCopy:XML = methodXML.copy();
+			var newMethod:Method = new Method( xmlCopy, isStatic );
+			
+			return newMethod;
+		}
 		/**
 		 * <code>Method</code> Constructor
 		 * 
