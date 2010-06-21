@@ -401,9 +401,9 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 			throw new InitializationError( "Parameterized runner has not been provided data" );
 		}*/
 
-		var paramName:String = params?params.join ( "_" ):"Missing Params";
+		var paramName:String = params?params.join ( "," ):"Missing Params";
 		var method:FrameworkMethod = FrameworkMethod( child );
-		return Description.createTestDescription( testClass.asClass, method.name + '_' + paramName, method.metadata );
+		return Description.createTestDescription( testClass.asClass, method.name + '(' + paramName + ')', method.metadata );
 	}
 
 

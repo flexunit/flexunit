@@ -36,8 +36,8 @@ package org.flexunit.runners.model {
 		 * 
 		 */
 		override public function get name():String {
-			var paramName:String = _arguments.join ( "_" );
-			return method.name + '_' + paramName;
+			var paramName:String = _arguments.join ( "," );
+			return method.name + '(' + paramName + ')';
 		}
 
 		/**
