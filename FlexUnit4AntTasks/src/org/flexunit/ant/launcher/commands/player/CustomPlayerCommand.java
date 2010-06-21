@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.tools.ant.Project;
+import org.flexunit.ant.LoggingUtil;
 
 public class CustomPlayerCommand implements PlayerCommand
 {
@@ -41,16 +42,13 @@ public class CustomPlayerCommand implements PlayerCommand
       proxiedCommand.getCommandLine().clearArgs();
       proxiedCommand.getCommandLine().addArguments(new String[]{proxiedCommand.getSwf().getAbsolutePath()});
       
+      LoggingUtil.log(proxiedCommand.getCommandLine().describeCommand());
+      
       //execute the command directly using Runtime
       return Runtime.getRuntime().exec(
             proxiedCommand.getCommandLine().getCommandline(), 
             proxiedCommand.getEnvironment(), 
             proxiedCommand.getProject().getBaseDir());
-   }
-
-   public String describe()
-   {
-      return proxiedCommand.describe();
    }
 
    public void setEnvironment(String[] variables)

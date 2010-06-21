@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.types.Commandline;
+import org.flexunit.ant.LoggingUtil;
 
 public abstract class Command
 {
@@ -39,6 +40,9 @@ public abstract class Command
       execute.setCommandline(getCommandLine().getCommandline());
       execute.setAntRun(getProject());
       execute.setEnvironment(getEnvironment());
+      
+      LoggingUtil.log(getCommandLine().describeCommand());
+      
       return execute.execute();
    }
    
@@ -48,6 +52,9 @@ public abstract class Command
       execute.setCommandline(getCommandLine().getCommandline());
       execute.setAntRun(getProject());
       execute.setEnvironment(getEnvironment());
+      
+      LoggingUtil.log(getCommandLine().describeCommand());
+      
       execute.execute();
       
       //By default we use the Ant Execute task which does not give us a handle to a process
@@ -62,11 +69,6 @@ public abstract class Command
    public String[] getEnvironment()
    {
       return environment;
-   }
-   
-   public String describe()
-   {
-      return getCommandLine().describeCommand();
    }
 
 }
