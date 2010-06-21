@@ -80,6 +80,7 @@ public class FlexUnitLauncher
       if (runHeadless())
       {
          command.setEnvironment(new String[]{ "DISPLAY=:" + xvncStart.getCurrentDisplay() });
+         LoggingUtil.log("Setting DISPLAY=:" + xvncStart.getCurrentDisplay());
       }
 
       LoggingUtil.log("Launching player:\n" + command.describe());
