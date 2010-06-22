@@ -33,6 +33,9 @@ package org.flexunit
 	 */
 	public class ComparisonFailure
 	{
+		/**
+		 * Not yet implemented
+		 */
 		public function ComparisonFailure()
 		{
 		}

@@ -51,6 +51,13 @@ package org.flexunit.internals.builders
 		}
 		
 		/**
+		 * @inheritDoc
+		 */
+		override public function canHandleClass(testClass:Class):Boolean {
+			return true;
+		}
+		
+		/**
 		 * Returns a <code>BlockFlexUnit4ClassRunner</code> for the provided <code>testClass</code>.
 		 * 
 		 * @param testClass The test class provided to the builder.

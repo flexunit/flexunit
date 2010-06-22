@@ -33,7 +33,14 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite
 		
 		//Expected boolean results
 		protected static var allBooleanValues : Array = [true, false];
-
+		
+		//Combo test variables
+		protected static var testedComboArray : Array;
+		
+		//Expected combo results
+		protected static var allComboArray : Array = ["true:one","true:two","true:three","true:four","true:five","true:happy","true:days",
+			"false:one","false:two","false:three","false:four","false:five","false:happy","false:days"];
+		
 		//*****************************************************
 		//
 		// DataPoints
@@ -126,6 +133,12 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite
 		public static function setUpBooleanTest() : void
 		{
 			testedBooleanArray = new Array();
+		}
+		
+		[BeforeClass]
+		public static function setUpComboTest() : void
+		{
+			testedComboArray = new Array();
 		}
 		
 		//*****************************************************
@@ -229,6 +242,24 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite
 			testedBooleanArray = null;
 		}
 		
+		[AfterClass]
+		public static function breakDownComboTest() : void
+		{
+			var comboCount : int = 0;
+			for ( var i : int = 0; i < testedComboArray.length; i++ )
+			{
+				if ( allComboArray.indexOf( testedComboArray[i] ) != -1 )
+				{
+					comboCount++;
+				} else {
+					Assert.fail("Test Theories Suite failed while testing the combo tests.");
+				}
+			}
+			
+			assertEquals( comboCount, allComboArray.length );
+			
+			testedComboArray = null;
+		}
 		
 		//*****************************************************
 		//
@@ -261,10 +292,19 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite
 		{
 			testedBooleanArray.push( value1 );
 		}
-/*		[Theory]
+		
+		[Theory]
 		public function testStringIntCombo( boolValue:Boolean, stringValue:String ):void {
-			//trace( boolValue + " " + stringValue );
+			trace( "boolValue: ", boolValue, "stringValue: ", stringValue );
+			var arrayStr : String = boolValue.toString() + ":" + stringValue;
+			testedComboArray.push( arrayStr );
 		} 	
-*/	
+		
+		[Ignore]
+		[Theory]
+		public function testIgnoreMetadata( value1 : Boolean ) : void
+		{
+			Assert.assertTrue( false );
+		}
 	}
 }

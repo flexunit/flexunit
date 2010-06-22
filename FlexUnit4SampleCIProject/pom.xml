@@ -19,8 +19,8 @@
    <name>FlexUnit4 Demo</name>
 
    <properties>
-      <flex.sdk.version>3.4.0.9271</flex.sdk.version>
-      <flexmojos.version>3.4.2</flexmojos.version>
+      <flex.sdk.version>3.5.0.12683</flex.sdk.version>
+      <flexmojos.version>3.6.1</flexmojos.version>
    </properties>
 
    <build>
@@ -60,19 +60,11 @@
          <version>${flex.sdk.version}</version>
          <type>pom</type>
       </dependency>
-      <!-- Unit testing support baked into FlexMojos -->
-      <dependency>
-         <groupId>org.sonatype.flexmojos</groupId>
-         <artifactId>flexmojos-unittest-support</artifactId>
-         <version>${flexmojos.version}</version>
-         <type>swc</type>
-         <scope>test</scope>
-      </dependency>
       <!-- Based on testing library dependency specified, FlexMojos will know how to test your application -->
       <dependency>
          <groupId>com.adobe.flexunit</groupId>
          <artifactId>flexunit</artifactId>
-         <version>4.0-beta-2</version>
+         <version>4.0-rc-1</version>
          <type>swc</type>
          <scope>test</scope>
       </dependency>

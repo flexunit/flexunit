@@ -25,6 +25,11 @@
 package org.fluint.sequence {
 	import flash.events.IEventDispatcher;
 	
+	/**
+	 * Interface describing a step in a sequence  
+	 * @author mlabriola
+	 * 
+	 */
 	public interface ISequenceStep {
 
 		/** 

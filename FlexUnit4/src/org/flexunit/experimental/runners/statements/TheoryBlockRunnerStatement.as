@@ -40,6 +40,9 @@ package org.flexunit.experimental.runners.statements
 	 * method with specific arguments was successful.
 	 */
 	public class TheoryBlockRunnerStatement extends AsyncStatementBase implements IAsyncStatement {
+		/**
+		 * @private
+		 */
 		use namespace classInternal;
 	
 		/**

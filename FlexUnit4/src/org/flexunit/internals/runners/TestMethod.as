@@ -33,6 +33,9 @@ package org.flexunit.internals.runners
 	 */
 	public class TestMethod
 	{
+		/**
+		 * Not yet implemented. Candidate for removal
+		 */
 		public function TestMethod()
 		{
 		}

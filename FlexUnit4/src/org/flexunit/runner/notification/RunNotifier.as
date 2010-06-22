@@ -26,6 +26,8 @@
  * @version    
  **/ 
 package org.flexunit.runner.notification {
+	import flash.utils.*;
+	
 	import org.flexunit.runner.Description;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.Result;
@@ -46,11 +48,6 @@ package org.flexunit.runner.notification {
 	 * the <code>RunNotifier</code> encounters one of the conditions stated above, all registered 
 	 * <code>IRunListeners</code> will be notified.<br/>
 	 * 
-	 * The <code>RunNotifier</code> also contains a <code>#pleaseStop()</code> method.  This method is responsible for
-	 * halting the execution of the test run.  It seems a little odd to put this functionality in this class, but the 
-	 * <code>RunNotifier</code> is the only object guaranteed to be shared amongst the many <code>IRunners</code>
-	 * in the test run.<br/>
-	 * 
 	 * If one writes an <code>IRunner</code>, they may need to notify FlexUnit4 of their progress while 
 	 * running tests.  This is accomplished by invoking the <code>IRunNotifier</code> passed to the
 	 * implementation of <code>org.flexunit.runner.IRunner#run(RunNotifier)</code>.
@@ -59,8 +56,14 @@ package org.flexunit.runner.notification {
 	 * @see org.flexunit.runner.notification.IRunListener
 	 */
 	public class RunNotifier implements IRunNotifier {
+		/**
+		 * @private 
+		 */
 		private var listeners:Array = new Array();
-		private var pleaseStopBool:Boolean = false;
+		/**
+		 * @private 
+		 */
+		private var startTime:Number;
 
 		/**
 		 * Do not invoke. 
@@ -97,9 +100,6 @@ package org.flexunit.runner.notification {
 		 * requested that the test run stop.
 		 */
 		public function fireTestStarted( description:IDescription ):void {
-			if (pleaseStopBool)
-				throw new StoppedByUserException();
-
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
 			
 			notifier.notifyListener = function( item:IRunListener ):void {
@@ -107,6 +107,9 @@ package org.flexunit.runner.notification {
 			}
 
 			notifier.run();
+			
+			//Capture start time
+			startTime = getTimer();
 		}
 
 		/**
@@ -115,9 +118,16 @@ package org.flexunit.runner.notification {
 		 * @param failure The description of the test that failed and the exception thrown.
 		 */
 		public function fireTestFailure( failure:Failure ):void {
+			//capture end time
+			var endTime:Number = getTimer() - startTime;
+			
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
 			
 			notifier.notifyListener = function( item:IRunListener ):void {
+				if ( item is ITemporalRunListener ) {
+					( item as ITemporalRunListener ).testTimed( failure.description, endTime );
+				}
+
 				item.testFailure(failure);
 			}
 
@@ -132,9 +142,16 @@ package org.flexunit.runner.notification {
 		 * <code>AssumptionViolatedException</code> thrown.
 		 */
 		public function fireTestAssumptionFailed( failure:Failure ):void {
+			//capture end time
+			var endTime:Number = getTimer() - startTime;
+
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
 			
 			notifier.notifyListener = function( item:IRunListener ):void {
+				if ( item is ITemporalRunListener ) {
+					( item as ITemporalRunListener ).testTimed( failure.description, endTime );
+				}
+
 				item.testAssumptionFailure(failure);
 			}
 
@@ -147,9 +164,15 @@ package org.flexunit.runner.notification {
 		 * @param description The description of the ignored test.
 		 */
 		public function fireTestIgnored( description:IDescription ):void {
+			//capture end time
+			var endTime:Number = getTimer() - startTime;
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
 			
 			notifier.notifyListener = function( item:IRunListener ):void {
+				if ( item is ITemporalRunListener ) {
+					( item as ITemporalRunListener ).testTimed( description, endTime );
+				}
+
 				item.testIgnored(description);
 			}
 
@@ -165,23 +188,18 @@ package org.flexunit.runner.notification {
 		 * @see #fireTestStarted()
 		 */
 		public function fireTestFinished( description:IDescription ):void {
+			var endTime:Number = getTimer() - startTime;
 			var notifier:SafeNotifier = new SafeNotifier( this, listeners );
 			
 			notifier.notifyListener = function( item:IRunListener ):void {
+				if ( item is ITemporalRunListener ) {
+					( item as ITemporalRunListener ).testTimed( description, endTime );
+				}
+
 				item.testFinished(description);
 			}
 
 			notifier.run();
-		}
-
-		/**
-		 * Ask that the tests run stop before starting the next test. Phrased politely because
-		 * the test currently running will not be interrupted. It seems a little odd to put this
-		 * functionality here, but the <code>RunNotifier</code> is the only object guaranteed 
-		 * to be shared amongst the many runners involved.
-		 */
-		public function pleaseStop():void {
-			pleaseStopBool = true;
 		}
 
 		/** 
@@ -217,13 +235,13 @@ package org.flexunit.runner.notification {
 	}
 }
 
-import org.flexunit.runner.notification.RunListener;
-import org.flexunit.runner.notification.Failure;
 import org.flexunit.runner.Description;
-import org.flexunit.runner.notification.RunNotifier;
 import org.flexunit.runner.Result;
-import org.flexunit.runner.notification.IRunNotifier;
+import org.flexunit.runner.notification.Failure;
 import org.flexunit.runner.notification.IRunListener;
+import org.flexunit.runner.notification.IRunNotifier;
+import org.flexunit.runner.notification.RunListener;
+import org.flexunit.runner.notification.RunNotifier;
 
 class SafeNotifier {
 	protected var notifier:IRunNotifier;

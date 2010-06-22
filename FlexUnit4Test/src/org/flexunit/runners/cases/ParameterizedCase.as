@@ -6,7 +6,7 @@ package org.flexunit.runners.cases
 	{
 		[Test]
 		public function NotYetImplemented() : void {
-			var parameterized : Parameterized = new Parameterized();
+			//var parameterized : Parameterized = new Parameterized();
 		}
 	}
 }

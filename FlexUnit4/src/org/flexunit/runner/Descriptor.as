@@ -32,9 +32,22 @@ package org.flexunit.runner
 	 */
 	public class Descriptor
 	{
+		/**
+		 * @private 
+		 */
 		public var path:String;
+		/**
+		 * @private 
+		 */
 		public var suite:String;
+		/**
+		 * @private 
+		 */
 		public var method:String;
+
+		/**
+		 * Constructor
+		 */
 		public function Descriptor(path:String="", suite:String="", method:String="")
 		{
 			this.path = path;

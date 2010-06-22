@@ -15,7 +15,7 @@
 			
 			public function runMe():void {
 				core = new FlexUnitCore();
-				core.addListener(new UIListener(uiListener));
+				core.addListener( uiListener );
 				core.run( compilationSuite.SuitesToRun );
 			}
 		]]>

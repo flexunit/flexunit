@@ -31,6 +31,7 @@ package org.flexunit.internals.builders {
 	import flex.lang.reflect.Klass;
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	
+	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runners.model.IRunnerBuilder;
@@ -72,7 +73,6 @@ package org.flexunit.internals.builders {
 	 * Where testClass is the class to be run and suiteBuilder is an <code>IRunnerBuilder</code>.
 	 */
 	public class MetaDataBuilder extends RunnerBuilderBase {
-		public static const RUN_WITH:String = "RunWith";
 		/**
 		 * @private
 		 */
@@ -92,6 +92,48 @@ package org.flexunit.internals.builders {
 		private var suiteBuilder:IRunnerBuilder;
 		
 		/**
+		 *
+		 * Looks through the inheritance hierarchy for a given piece of metadata to determine
+		 * if it was declared on a super class
+		 *  
+		 * @param testClass
+		 * @param metadata
+		 * @return true if found on this or a super class 
+		 * 
+		 */
+		private function lookForMetaDataThroughInheritance( testClass:Class, metadata:String ):MetaDataAnnotation {
+			var klassInfo:Klass = new Klass( testClass );
+			var ancestorInfo:Klass;
+			var annotation:MetaDataAnnotation;
+
+			annotation = klassInfo.getMetaData( metadata );
+			
+			if ( !annotation ) {
+				var inheritance:Array = klassInfo.classInheritance;
+
+				for ( var i:int=0; i<inheritance.length; i++ ) {
+					ancestorInfo = new Klass( inheritance[ i ] );
+					annotation = ancestorInfo.getMetaData( metadata );
+					
+					if ( annotation ) {
+						break;
+					}
+				}
+			}
+			
+			return annotation;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function canHandleClass( testClass:Class ):Boolean {
+			var annotation:MetaDataAnnotation = lookForMetaDataThroughInheritance( testClass, AnnotationConstants.RUN_WITH );
+			
+			return ( annotation != null );
+		}
+		
+		/**
 		 * Returns an <code>IRunner</code> based on the metadata of the provided <code>testClass</code>.
 		 * 
 		 * @param testClass The test class for which to find an <code>IRunner</code>.
@@ -103,19 +145,15 @@ package org.flexunit.internals.builders {
 			var klassInfo:Klass = new Klass( testClass );
 			
 			//Determine if the testClass references a runner in its metadata
-			if ( klassInfo.hasMetaData( RUN_WITH ) ) {
-				//Get the definition for the runner class
-				var runWithValue:String = ""; 
-				var runWithAnnotation:MetaDataAnnotation = klassInfo.getMetaData( RUN_WITH );
+			//Get the definition for the runner class
+			var runWithValue:String = ""; 
+			var runWithAnnotation:MetaDataAnnotation = lookForMetaDataThroughInheritance( testClass, AnnotationConstants.RUN_WITH );
 				
-				if ( runWithAnnotation && runWithAnnotation.defaultArgument ) {
-					runWithValue = runWithAnnotation.defaultArgument.key;
-				}
-
-				return buildRunner( runWithValue, testClass);
+			if ( runWithAnnotation && runWithAnnotation.defaultArgument ) {
+				runWithValue = runWithAnnotation.defaultArgument.key;
 			}
 			
-			return null;
+			return buildRunner( runWithValue, testClass);
 		}
 		
 		/**

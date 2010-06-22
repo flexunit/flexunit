@@ -59,6 +59,7 @@ package org.flexunit.flexui.controls
       public static const ASSERTIONS_PER_TEST_IN_AVERAGE : String = "assertions per test " + IN_AVERAGE;
       public static const EXPECTED : String = "Expected";
       public static const ACTUAL : String = "Actual";
+	  public static const TEST_TIME : String = "Time";
       
       /* RESULTS POD*/
       public static const ASSERTIONS_MADE_MESSAGE : String = "{0} assertion{1} ha{2} been made {3}";

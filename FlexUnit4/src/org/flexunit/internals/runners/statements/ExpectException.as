@@ -29,6 +29,8 @@ package org.flexunit.internals.runners.statements {
 	import flash.utils.*;
 	
 	import org.flexunit.AssertionError;
+	import org.flexunit.constants.AnnotationArgumentConstants;
+	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.internals.runners.model.MultipleFailureException;
 	import org.flexunit.runners.model.FrameworkMethod;
 	import org.flexunit.token.AsyncTestToken;
@@ -102,12 +104,12 @@ package org.flexunit.internals.runners.statements {
 		public static function hasExpected( method:FrameworkMethod ):String {
 			//There is conflicting docs in the JUnit world about expects versus expected being the right metadata for this
 			//particular case, so we are going to support them both
-			var expected:String = method.getSpecificMetaDataArgValue( "Test", "expects" );
+			var expected:String = method.getSpecificMetaDataArgValue( AnnotationConstants.TEST, AnnotationArgumentConstants.EXPECTS );
 			var hasExpected:Boolean = expected && ( expected.length>0 );
 
 			if ( !hasExpected ) {
 				//check for the tag expected too, as it is documented both ways
-				expected = method.getSpecificMetaDataArgValue( "Test", "expected" );
+				expected = method.getSpecificMetaDataArgValue( AnnotationConstants.TEST, AnnotationArgumentConstants.EXPECTED );
 				hasExpected = expected && ( expected.length>0 );
 			} 
 			return hasExpected?expected:null;			

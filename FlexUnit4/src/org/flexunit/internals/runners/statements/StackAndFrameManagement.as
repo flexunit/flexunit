@@ -34,6 +34,7 @@ package org.flexunit.internals.runners.statements {
 	
 	import mx.core.Application;
 	
+	import org.flexunit.internals.runners.watcher.FrameWatcher;
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.utils.ClassNameUtil;
@@ -71,11 +72,7 @@ package org.flexunit.internals.runners.statements {
 		/**
 		 * @private
 		 */
-		private static var greenThreadStartTime:Number; //this can eventually be computed
-		/**
-		 * @private
-		 */
-  		private static var frameLength:Number = 40; //given standard frame rates for flex a frame passes every 42 or so milliseconds, so we are going to try to use about 38 of those
+		private static var frameWatcher:FrameWatcher;
   		
 		/**
 		 * Constructor.
@@ -87,14 +84,13 @@ package org.flexunit.internals.runners.statements {
 			
 			this.statement = statement;
 			
-			//Determine if the greenThreadStartTime has been obtained
-			if ( !greenThreadStartTime ) {
-				greenThreadStartTime = getTimer();
-			}
-			
 			//Create a new token that will track the progress of frame management
 			myToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			myToken.addNotificationMethod( handleNextExecuteComplete );
+			
+			if ( !frameWatcher ) {
+				frameWatcher = new FrameWatcher();
+			}
 		}
 		
 		/**
@@ -107,13 +103,11 @@ package org.flexunit.internals.runners.statements {
 		public function evaluate( previousToken:AsyncTestToken ):void {
 			parentToken = previousToken;
 			
-			var now:Number = getTimer();
-			
 			//this algorithm is still imperfect. Right now, it waits an extra frame after async tests because they always effectively
 			//took more than a frame, so we need to make this a bit better. Eventually we may need a component that actaully watches
 			//the frames directly to make better choices
-			if ( ( now - greenThreadStartTime ) > frameLength ) {
-				//If we have been going for more than 80% of the framelength, it is time to give
+			if ( !frameWatcher.timeRemaining ) {
+				//If we have been going for more than an allowable amount of the framelength, it is time to give
 				//the player a chance to catch up 
 				//This timer must *NOT* have a weak reference. Sometimes things run fast enough
 				//that this class will be eligible for garbage collection in between the frames
@@ -122,10 +116,13 @@ package org.flexunit.internals.runners.statements {
 				timer = new Timer( 5, 1 );
 				timer.addEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete, false, 0, false );
 				timer.start();
-				greenThreadStartTime = now;
-				//trace("restart");
+				
+				//This is not nearly as good as using the stage's enter frame event, but if we have no other choice, then simulate the click 
+				if ( frameWatcher.approximateMode ) {
+					frameWatcher.simulateTick();
+				}
 			} else {
-				//trace("continue");
+				//trace("Evaluate");
 				statement.evaluate( myToken );	
 			}
 		}

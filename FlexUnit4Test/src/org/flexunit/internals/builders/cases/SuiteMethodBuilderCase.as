@@ -20,9 +20,14 @@ package org.flexunit.internals.builders.cases
 			suiteMethodBuilder = null;
 		}
 		
-		[Test(description="Ensure that the runnerForClass function returns null if the Class does not have a suite method")]
-		public function runnerForClassNullTest():void {
-			Assert.assertNull( suiteMethodBuilder.runnerForClass(Object) );
+		[Test(description="Ensure the runner can handle a real Suite class")]
+		public function canHandleClassRight() : void {
+			Assert.assertTrue( suiteMethodBuilder.canHandleClass( FlexUnit4Class ) );
+		}
+		
+		[Test(description="Ensure the runner doesn't handle a non Suite class")]
+		public function canHandleClassWrong() : void {
+			Assert.assertFalse( suiteMethodBuilder.canHandleClass( Object ) );
 		}
 		
 		[Ignore]

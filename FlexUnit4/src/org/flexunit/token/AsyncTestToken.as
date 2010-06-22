@@ -39,6 +39,7 @@ package org.flexunit.token {
 	 * runners, statements, and parts of a test when a certain activity has finished.
 	 */
 	dynamic public class AsyncTestToken implements IAsyncTestToken {
+		public var pend:Boolean = false;
 		/**
 		 * @private
 		 */
@@ -99,9 +100,9 @@ package org.flexunit.token {
 		 * @return a <code>ChildResult</code> using this <code>AsynctestToken</code> and the provided <code>error</code>.
 		 */
 		private function createChildResult( error:Error ):ChildResult {
-			if ( error ) {
+/*			if ( error ) {
 				//trace("break here");
-			}
+			}*/
 			return new ChildResult( this, error );
 		}
 		

@@ -33,6 +33,9 @@ package org.flexunit.experimental.results
 	 */
 	public class ResultMatchers
 	{
+		/**
+		 * Not yet implemented
+		 */
 		public function ResultMatchers()
 		{
 		}

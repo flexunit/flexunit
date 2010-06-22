@@ -64,16 +64,17 @@ package org.flexunit.runner.notification.cases
 			runListenerMock.mock.verify();
 		}
 		
+		[Ignore("This functionality has been moved to the core and IRunner.. test needs refactor")]
 		[Test(expected="org.flexunit.runner.notification.StoppedByUserException",
 			description="Ensure that the next test does not start if it has been requested that execution of tests stop")]
 		public function fireTestStartedStoppedTest():void {
-			var descriptionMock:DescriptionMock = new DescriptionMock();
+/*			var descriptionMock:DescriptionMock = new DescriptionMock();
 			
 			runListenerMock.mock.method("testStarted").withArgs(descriptionMock).never;
 			runNotifier.pleaseStop();
 			runNotifier.fireTestStarted(descriptionMock);
 			
-			runListenerMock.mock.verify();
+			runListenerMock.mock.verify();*/
 		}
 		
 		[Test(description="Ensure that each listener is notified that there was a test failure")]

@@ -48,10 +48,6 @@ package org.flexunit.internals.runners.statements
 		 * @private
 		 */
 		private var target:Object;
-		/**
-		 * @private
-		 */
-		private var afters:Array;
 		
 		/**
 		 * Creates an <code>InvokeMethod</code> object for the given method and test class
@@ -113,8 +109,8 @@ package org.flexunit.internals.runners.statements
 		 * @param afters An array of potential statements that need to be executed at a specific time
 		 * @target target The test class
 		 */
-		public function SequencerWithDecoration( afters:Array, target:Object ) {
-			super( afters );
+		public function SequencerWithDecoration( steps:Array, target:Object ) {
+			super( steps );
 			this.target = target;
 		}
 	}

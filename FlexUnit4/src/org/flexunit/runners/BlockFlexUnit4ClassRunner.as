@@ -26,6 +26,9 @@
  * @version    
  **/ 
 package org.flexunit.runners {
+	import flex.lang.reflect.Field;
+	
+	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.internals.AssumptionViolatedException;
 	import org.flexunit.internals.runners.model.EachTestNotifier;
 	import org.flexunit.internals.runners.statements.ExpectAsync;
@@ -35,13 +38,21 @@ package org.flexunit.runners {
 	import org.flexunit.internals.runners.statements.IAsyncStatement;
 	import org.flexunit.internals.runners.statements.InvokeMethod;
 	import org.flexunit.internals.runners.statements.RunAfters;
+	import org.flexunit.internals.runners.statements.RunAftersInline;
 	import org.flexunit.internals.runners.statements.RunBefores;
+	import org.flexunit.internals.runners.statements.RunBeforesInline;
 	import org.flexunit.internals.runners.statements.StackAndFrameManagement;
 	import org.flexunit.internals.runners.statements.StatementSequencer;
+	import org.flexunit.rules.IMethodRule;
 	import org.flexunit.runner.Description;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.manipulation.IFilterable;
+	import org.flexunit.runner.manipulation.ISorter;
+	import org.flexunit.runner.manipulation.OrderArgumentPlusInheritanceSorter;
+	import org.flexunit.runner.manipulation.fields.FieldMetaDataSorter;
+	import org.flexunit.runner.manipulation.fields.IFieldSorter;
 	import org.flexunit.runner.notification.IRunNotifier;
+	import org.flexunit.runner.notification.StoppedByUserException;
 	import org.flexunit.runners.model.FrameworkMethod;
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
@@ -107,6 +118,11 @@ package org.flexunit.runners {
 		 * @inheritDoc
 		 */
 		override protected function runChild( child:*, notifier:IRunNotifier, childRunnerToken:AsyncTestToken ):void {
+			if ( stopRequested ) {
+				childRunnerToken.sendResult( new StoppedByUserException() );
+				return;
+			}
+
 			var method:FrameworkMethod = FrameworkMethod( child ); 
 			var eachNotifier:EachTestNotifier = makeNotifier( method, notifier);
 			var error:Error;
@@ -117,7 +133,7 @@ package org.flexunit.runners {
 			token[ ParentRunner.EACH_NOTIFIER ] = eachNotifier;
 			
 			//Determine if the method should be ignored and not run
-			if ( method.hasMetaData( "Ignore" ) ) {
+			if ( method.hasMetaData( AnnotationConstants.IGNORE ) ) {
 				eachNotifier.fireTestIgnored();
 				childRunnerToken.sendResult();
 				return;
@@ -171,6 +187,7 @@ package org.flexunit.runners {
 		 * @inheritDoc
 		 */
 		override protected function describeChild( child:* ):IDescription {
+			//OPTIMIZATION POINT
 			var method:FrameworkMethod = FrameworkMethod( child );
 			return Description.createTestDescription( testClass.asClass, method.name, method.metadata );
 		}
@@ -192,7 +209,8 @@ package org.flexunit.runners {
 		 * class and superclasses that are not overridden.
 		 */
 		protected function computeTestMethods():Array {
-			return testClass.getMetaDataMethods( "Test" );
+			//OPTIMIZATION POINT
+			return testClass.getMetaDataMethods( AnnotationConstants.TEST );
 		}
 		
 		/**
@@ -213,8 +231,8 @@ package org.flexunit.runners {
 		 * method with no arguments.
 		 */
 		protected function validateInstanceMethods( errors:Array ):void {
-			validatePublicVoidNoArgMethods( "After", false, errors);
-			validatePublicVoidNoArgMethods( "Before", false, errors);
+			validatePublicVoidNoArgMethods( AnnotationConstants.AFTER, false, errors);
+			validatePublicVoidNoArgMethods( AnnotationConstants.BEFORE, false, errors);
 			validateTestMethods(errors);
 	
 			if (computeTestMethods().length == 0)
@@ -226,7 +244,7 @@ package org.flexunit.runners {
 		 * is not a public, void instance method with no arguments.
 		 */
 		protected function validateTestMethods( errors:Array ):void {
-			validatePublicVoidNoArgMethods( "Test", false, errors);
+			validatePublicVoidNoArgMethods( AnnotationConstants.TEST, false, errors);
 		}
 
 		/**
@@ -281,6 +299,7 @@ package org.flexunit.runners {
 		 */
 		protected function methodBlock( method:FrameworkMethod ):IAsyncStatement {
 			var c:Class;
+			var sequencer:StatementSequencer;
 
 			var test:Object;
 			//might need to be reflective at some point
@@ -291,13 +310,7 @@ package org.flexunit.runners {
 				return new Fail(e);
 			}
 
-			var sequencer:StatementSequencer = new StatementSequencer();
-			
-			sequencer.addStep( withBefores( method, test) );
-			sequencer.addStep( withDecoration( method, test ) );
-			sequencer.addStep( withAfters( method, test ) );
-			
-			return sequencer;
+			return withDecoration( method, test );;
 		}
 
 		/**
@@ -337,6 +350,10 @@ package org.flexunit.runners {
 			return async ? new ExpectAsync( test, statement ) : statement;
 		}
 		
+		protected function withAfterStatements( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
+			return statement;			
+		}
+		
 		/**
 		 * Returns an <code>IAsyncStatement</code> that invokes <code>method</code> on a decorated <code>test</code>.
 		 */
@@ -345,7 +362,46 @@ package org.flexunit.runners {
 			statement = withPotentialAsync( method, test, statement );
 			statement = withPotentialTimeout( method, test, statement );
 			statement = possiblyExpectingExceptions( method, test, statement );
+			statement = withBefores( method, test, statement );
+			statement = withAfters( method, test, statement );
+			statement = withPotentialRules( method, test, statement );
 			statement = withStackManagement( method, test, statement );
+			
+			return statement;
+		}
+		
+		/**
+		 * Potentially returns a new <code>IAsyncStatement</code> defined by the user on the testcase via the Rule metadata.
+		 * This needs to be factored to a new class
+		 */
+		protected function withPotentialRules( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
+			var ruleFields:Array = testClass.getMetaDataFields( AnnotationConstants.RULE );
+			var rule:IMethodRule;
+			var ruleField:Field;
+
+			//Should be facotred to a common sorter implementation
+			var fieldSorter:IFieldSorter = new FieldMetaDataSorter( true );
+
+			//Sort the rules array
+			ruleFields.sort( fieldSorter.compare );
+			
+			for ( var i:int=0; i<ruleFields.length; i++ ) {
+				ruleField = ruleFields[ i ] as Field;
+
+				if ( test[ ruleField.name ] is IMethodRule ) {
+					rule = test[ ruleField.name ] as IMethodRule;
+
+					//build statement wrappers
+					statement = rule.apply( statement, method, test );
+				}
+				else {
+					// CJP: This error will be thrown if an object marked with the [Rule] metadata tag either
+					//		a) does not implement the IMethodRule interface -or-
+					//		b) is null (even if defined as an IMethodRule)
+					//		Additionally, it will get thrown once for EACH test in the TestCase class.
+					throw new Error( "Something marked as [Rule] that does not implement IMethodRule!" );
+				}
+			}
 			
 			return statement;
 		}
@@ -362,11 +418,20 @@ package org.flexunit.runners {
 		 * methods on this class and superclasses before running <code>statement</code>; if
 		 * any throws an Exception, stop execution and pass the exception on.
 		 */
-		protected function withBefores( method:FrameworkMethod, target:Object ):IAsyncStatement {
-			var befores:Array = testClass.getMetaDataMethods( "Before" );
-			//Sort the befores array
-			befores.sort(compare);
-			return new RunBefores( befores, target );
+		protected function withBefores( method:FrameworkMethod, target:Object, statement:IAsyncStatement ):IAsyncStatement {
+			var statement:IAsyncStatement;
+			
+			var befores:Array = testClass.getMetaDataMethods( AnnotationConstants.BEFORE );
+			
+			if ( befores.length > 1 ) {
+				var inheritanceSorter:ISorter = new OrderArgumentPlusInheritanceSorter( sorter, testClass, true );
+				//Sort the befores array
+				befores.sort( function compare(o1:Object, o2:Object):int {
+									return inheritanceSorter.compare(describeChild(o1), describeChild(o2));
+							  } );
+			}
+
+			return (befores.length)?new RunBeforesInline( befores, target, statement ):statement;
 		}
 	
 		/**
@@ -376,11 +441,19 @@ package org.flexunit.runners {
 		 * are combined, if necessary, with exceptions from After methods into a
 		 * <code>MultipleFailureException</code>.
 		 */
-		protected function withAfters( method:FrameworkMethod, target:Object ):IAsyncStatement {
-			var afters:Array = testClass.getMetaDataMethods( "After" );
-			//Sort the afters array
-			afters.sort(compare);
-			return new RunAfters( afters, target);
+		protected function withAfters( method:FrameworkMethod, target:Object, statement:IAsyncStatement ):IAsyncStatement {
+			var statement:IAsyncStatement;
+			var afters:Array = testClass.getMetaDataMethods( AnnotationConstants.AFTER );
+
+			if ( afters.length > 1 ) {
+				var inheritanceSorter:ISorter = new OrderArgumentPlusInheritanceSorter( sorter, testClass, false );
+	
+				afters.sort( function compare(o1:Object, o2:Object):int {
+					return inheritanceSorter.compare(describeChild(o1), describeChild(o2));
+				} );
+			}
+
+			return (afters.length)?new RunAftersInline( afters, target, statement ):statement;
 		}
 	}
 }

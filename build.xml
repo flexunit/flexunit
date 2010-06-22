@@ -8,225 +8,172 @@ the following call should be made to run this script:
 	
 the build order is as such:
 
-	clean->init->anttasks->library->cilistener->test->uirunner->report->package
+	clean->anttasks->core->cilistener->test->listeners->package
 	
 Reporting is something each project implements which we then have hooked into Hudson
 to contribute to our CI process.
 -->
 <project name="FlexUnit4" basedir="." default="package">
-	<property environment="env" />
+   <property environment="env" />
 
-	<!-- Configuration -->
-	<property name="build.number" value="4.0.0" />
-	<property name="build.useFlex" value="true" />
-	<property name="final.artifact.name" value="flexunit-${build.number}.zip" />
+   <!-- Version info -->
+   <property file="${basedir}/version.properties" />
 
-	<!-- Project locations -->
-	<property name="anttasks.loc" location="${basedir}/FlexUnit4AntTasks" />
-	<property name="anttasks.artifact" value="flexUnitTasks-${build.number}.jar" />
-	<property name="core.loc" location="${basedir}/FlexUnit4" />
-	<property name="core.artifact" value="flexunit-${build.number}.swc" />
-	<property name="core.instrument.artifact" value="flexunit-instrument-${build.number}.swc" />
-	<property name="core.instrument.metadata" value="flexunit-instrument-${build.number}.cvm" />
-	<property name="cilistener.loc" location="${basedir}/FlexUnit4CIListener" />
-	<property name="cilistener.artifact" value="flexunit-cilistener-${build.number}.swc" />
-	<property name="tests.loc" location="${basedir}/FlexUnit4Test" />
-	<property name="uirunner.loc" location="${basedir}/FlexUnit4UIListener" />
-	<property name="uirunner.artifact" value="flexunit-uilistener-${build.number}.swc" />
-	<property name="aircilistener.loc" location="${basedir}/FlexUnit4AirCIListener" />
-	<property name="aircilistener.artifact" value="flexunit-aircilistener-${build.number}.swc" />
-	<property name="flexcoverlistener.loc" location="${basedir}/FlexUnit4FlexCoverListener" />
-	<property name="flexcoverlistener.artifact" value="flexunit-flexcoverlistener-${build.number}.swc" />
+   <!-- Configuration -->
+   <property name="build.useFlex" value="true" />
+   <property name="finalName" value="flexunit.zip" />
 
-	<!-- Cleans up all projects -->
-	<target name="clean">
-		<!-- Ask each project to clean up -->
-		<ant dir="${anttasks.loc}" target="clean" inheritall="false" />
-		<ant dir="${core.loc}" target="clean" inheritall="false" />
-		<ant dir="${cilistener.loc}" target="clean" inheritall="false" />
-		<ant dir="${tests.loc}" target="clean" inheritall="false" />
-		<ant dir="${uirunner.loc}" target="clean" inheritall="false" />
-		<ant dir="${aircilistener.loc}" target="clean" inheritall="false" />
-		<ant dir="${flexcoverlistener.loc}" target="clean" inheritall="false" />
+   <!-- Project locations -->
+   <property name="anttasks.loc" location="${basedir}/FlexUnit4AntTasks" />
+   <property name="core.loc" location="${basedir}/FlexUnit4" />
+   <property name="cilistener.loc" location="${basedir}/FlexUnit4CIListener" />
+   <property name="tests.loc" location="${basedir}/FlexUnit4Test" />
+   <property name="uilistener.loc" location="${basedir}/FlexUnit4UIListener" />
+   <property name="aircilistener.loc" location="${basedir}/FlexUnit4AirCIListener" />
+   <property name="flexcoverlistener.loc" location="${basedir}/FlexUnit4FlexCoverListener" />
+   <property name="turnkey.loc" location="${basedir}/FlexUnit4TurnKey" />
+   <property name="sampleCI.loc" location="${basedir}/FlexUnit4SampleCIProject" />
 
-		<!-- Clean up cross project dependencies -->
-		<delete file="${cilistener.loc}/libs/${core.artifact}" failonerror="false" />
-		<delete file="${tests.loc}/libs/${anttasks.artifact}" failonerror="false" />
-		<delete file="${tests.loc}/libs/${core.artifact}" failonerror="false" />
-		<delete file="${tests.loc}/libs/${core.instrument.artifact}" failonerror="false" />
-		<delete file="${tests.loc}/libs/${core.instrument.metadata}" failonerror="false" />
-		<delete file="${tests.loc}/libs/${cilistener.artifact}" failonerror="false" />
-		<delete file="${uirunner.loc}/libs/${core.artifact}" failonerror="false" />
-		<delete file="${aircilistener.loc}/libs/${core.artifact}" failonerror="false" />
-		<delete file="${aircilistener.loc}/libs/${cilistener.artifact}" failonerror="false" />
-		<delete file="${flexcoverlistener.loc}/libs/${core.artifact}" failonerror="false" />
-		<delete file="${flexcoverlistener.loc}/libs/${cilistener.artifact}" failonerror="false" />
-		<delete file="${basedir}/${final.artifact.name}" failonerror="false" />
-	</target>
+   <!-- Cleans up all projects -->
+   <target name="clean">
+      <!-- Ask each project to clean up -->
+      <ant dir="${anttasks.loc}" target="clean" inheritall="false" />
+      <ant dir="${core.loc}" target="clean" inheritall="false" />
+      <ant dir="${cilistener.loc}" target="clean" inheritall="false" />
+      <ant dir="${tests.loc}" target="clean" inheritall="false" />
+      <ant dir="${uilistener.loc}" target="clean" inheritall="false" />
+      <ant dir="${aircilistener.loc}" target="clean" inheritall="false" />
+      <ant dir="${flexcoverlistener.loc}" target="clean" inheritall="false" />
 
-	<!-- Builds the FlexUnit4AntTasks project -->
-	<target name="anttasks">
-		<ant dir="${anttasks.loc}" target="package" inheritall="false">
-			<propertyset>
-				<propertyref prefix="build" />
-			</propertyset>
-		</ant>
-	</target>
+      <delete file="${basedir}/${finalName}" failonerror="false" />
+   </target>
 
-	<!-- Builds the core FlexUnit4 project -->
-	<target name="core">
-		<ant dir="${core.loc}" target="package" inheritall="false">
-			<propertyset>
-				<propertyref prefix="build" />
-			</propertyset>
-		</ant>
-	</target>
+   <!-- Builds the FlexUnit4AntTasks project -->
+   <target name="anttasks">
+      <ant dir="${anttasks.loc}" target="package" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+   </target>
 
-	<!-- Prepares and builds the FlexUnit4CIListener project -->
-	<target name="cilistener" depends="core">
-		<!-- Copy over required libraries -->
-		<copy file="${core.loc}/target/${core.artifact}" todir="${cilistener.loc}/libs" overwrite="true" />
+   <!-- Builds the core FlexUnit4 project -->
+   <target name="core">
+      <ant dir="${core.loc}" target="package" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+   </target>
 
-		<ant dir="${cilistener.loc}" target="package" inheritall="false">
-			<propertyset>
-				<propertyref prefix="build" />
-			</propertyset>
-		</ant>
-	</target>
+   <!-- Prepares and builds the FlexUnit4CIListener project -->
+   <target name="cilistener" depends="core">
+      <ant dir="${cilistener.loc}" target="package" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+   </target>
 
-	<!-- Prepares and builds the FlexUnit4Test project -->
-	<target name="test" depends="anttasks,core,cilistener">
-		<patternset id="core.default.lib">
-			<include name="${core.artifact}" />
-		</patternset>
+   <!-- Prepares and builds the FlexCover Listener project -->
+   <target name="flexcoverlistener" depends="core,cilistener">
+      <ant dir="${flexcoverlistener.loc}" target="package" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+   </target>
 
-		<patternset id="core.instrument.lib">
-			<include name="${core.instrument.artifact}" />
-			<include name="${core.instrument.metadata}" />
-		</patternset>
+   <!-- Prepares and builds the FlexUnit4Test project -->
+   <target name="test" depends="anttasks,core,cilistener,flexcoverlistener" unless="build.skipTests">
+      <ant dir="${tests.loc}" target="test" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+   </target>
 
-		<!-- Do we want to copy over the instrumentation swc for a FlexCover run -->
-		<condition property="core.lib" value="core.instrument.lib" else="core.default.lib">
-			<available file="${core.loc}/target/${core.instrument.metadata}" />
-		</condition>
+   <target name="listeners" depends="uilistener,aircilistener" />
 
-		<!-- Copy over required libraries -->
-		<copy file="${anttasks.loc}/target/${anttasks.artifact}" todir="${tests.loc}/libs" overwrite="true" />
-		<copy todir="${tests.loc}/libs" overwrite="true">
-			<fileset dir="${core.loc}/target">
-				<patternset refid="${core.lib}" />
-			</fileset>
-		</copy>
-		<copy file="${cilistener.loc}/target/${cilistener.artifact}" todir="${tests.loc}/libs" overwrite="true" />
+   <!-- Prepares and builds the FlexUnit4UIRunner project -->
+   <target name="uilistener" depends="core,cilistener">
+      <ant dir="${uilistener.loc}" target="package" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+   </target>
 
-		<!-- Run tests -->
-		<ant dir="${tests.loc}" target="test" inheritall="false">
-			<propertyset>
-				<propertyref prefix="build" />
-			</propertyset>
-		</ant>
-	</target>
+   <!-- Prepares and builds the Air CI Listener project -->
+   <target name="aircilistener" depends="core,cilistener">
+      <ant dir="${aircilistener.loc}" target="package" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+   </target>
 
-	<!-- Prepares and builds the FlexUnit4UIRunner project -->
-	<target name="uirunner" depends="test">
-		<!-- Copy over required libraries -->
-		<copy file="${core.loc}/target/${core.artifact}" todir="${uirunner.loc}/libs" overwrite="true" />
+   <!-- Prepares and assembles the final zip artifact with all of the FlexUnit4 components and docs -->
+   <target name="package" depends="test,listeners">
+      <zip destfile="${basedir}/${finalName}">
+         <!-- Docs -->
+         <zipfileset dir="${anttasks.loc}/target/docs" prefix="flexunit/docs/anttasks" />
+         <zipfileset dir="${core.loc}/target/docs" prefix="flexunit/docs/flexunit" />
+         <zipfileset dir="${cilistener.loc}/target/docs" prefix="flexunit/docs/cilistener" />
+         <zipfileset dir="${uilistener.loc}/target/docs" prefix="flexunit/docs/uilistener" />
+         <zipfileset dir="${aircilistener.loc}/target/docs" prefix="flexunit/docs/aircilistener" />
+         <zipfileset dir="${flexcoverlistener.loc}/target/docs" prefix="flexunit/docs/flexcoverlistener" />
 
-		<ant dir="${uirunner.loc}" target="package" inheritall="false">
-			<propertyset>
-				<propertyref prefix="build" />
-			</propertyset>
-		</ant>
-	</target>
-
-	<!-- Prepares and builds the Air CI Listener project -->
-	<target name="aircilistener" depends="uirunner">
-		<!-- Copy over required libraries -->
-		<copy file="${core.loc}/target/${core.artifact}" todir="${aircilistener.loc}/libs" overwrite="true" />
-		<copy file="${cilistener.loc}/target/${cilistener.artifact}" todir="${aircilistener.loc}/libs" overwrite="true" />
-
-		<ant dir="${aircilistener.loc}" target="package" inheritall="false">
-			<propertyset>
-				<propertyref prefix="build" />
-			</propertyset>
-		</ant>
-	</target>
-	
-	<!-- Prepares and builds the FlexCover Listener project -->
-	<target name="flexcoverlistener" depends="aircilistener">
-		<!-- Copy over required libraries -->
-		<copy file="${core.loc}/target/${core.artifact}" todir="${flexcoverlistener.loc}/libs" overwrite="true" />
-		<copy file="${cilistener.loc}/target/${cilistener.artifact}" todir="${flexcoverlistener.loc}/libs" overwrite="true" />
-
-		<ant dir="${flexcoverlistener.loc}" target="package" inheritall="false">
-			<propertyset>
-				<propertyref prefix="build" />
-			</propertyset>
-		</ant>
-	</target>
-
-	<!-- Generates CI reporting and documentation for all projects -->
-	<target name="report" depends="flexcoverlistener">
-		<ant dir="${anttasks.loc}" target="report" inheritall="false">
-			<propertyset>
-				<propertyref prefix="build" />
-			</propertyset>
-		</ant>
-		<ant dir="${core.loc}" target="report" inheritall="false">
-			<propertyset>
-				<propertyref prefix="build" />
-			</propertyset>
-		</ant>
-		<ant dir="${cilistener.loc}" target="report" inheritall="false">
-			<propertyset>
-				<propertyref prefix="build" />
-			</propertyset>
-		</ant>
-		<ant dir="${uirunner.loc}" target="report" inheritall="false">
-			<propertyset>
-				<propertyref prefix="build" />
-			</propertyset>
-		</ant>
-		<ant dir="${aircilistener.loc}" target="report" inheritall="false">
-			<propertyset>
-				<propertyref prefix="build" />
-			</propertyset>
-		</ant>
-		<ant dir="${flexcoverlistener.loc}" target="report" inheritall="false">
-			<propertyset>
-				<propertyref prefix="build" />
-			</propertyset>
-		</ant>
-	</target>
-
-	<!-- Prepares and assembles the final zip artifact with all of the FlexUnit4 components and docs -->
-	<target name="package" depends="report">
-		<zip destfile="${basedir}/${final.artifact.name}">
-			<zipfileset dir="${anttasks.loc}/target/docs" prefix="flexunit/docs/anttasks" />
-			<zipfileset dir="${core.loc}/target/docs" prefix="flexunit/docs/flexunit" />
-			<zipfileset dir="${cilistener.loc}/target/docs" prefix="flexunit/docs/cilistener" />
-			<zipfileset dir="${uirunner.loc}/target/docs" prefix="flexunit/docs/uilistener" />
-			<zipfileset dir="${aircilistener.loc}/target/docs" prefix="flexunit/docs/aircilistener" />
-			<zipfileset dir="${flexcoverlistener.loc}/target/docs" prefix="flexunit/docs/flexcoverlistener" />
-
-			<zipfileset dir="${anttasks.loc}/target" prefix="flexunit">
-				<include name="${anttasks.artifact}" />
-			</zipfileset>
-			<zipfileset dir="${core.loc}/target" prefix="flexunit">
-				<include name="${core.artifact}" />
-			</zipfileset>
-			<zipfileset dir="${cilistener.loc}/target" prefix="flexunit">
-				<include name="${cilistener.artifact}" />
-			</zipfileset>
-			<zipfileset dir="${uirunner.loc}/target" prefix="flexunit">
-				<include name="${uirunner.artifact}" />
-			</zipfileset>
-			<zipfileset dir="${aircilistener.loc}/target" prefix="flexunit">
-				<include name="${aircilistener.artifact}" />
-			</zipfileset>
-			<zipfileset dir="${flexcoverlistener.loc}/target" prefix="flexunit">
-				<include name="${flexcoverlistener.artifact}" />
-			</zipfileset>
-		</zip>
-	</target>
+         <!-- Artifacts -->
+         <zipfileset dir="${anttasks.loc}/target" prefix="flexunit">
+            <include name="*.jar" />
+         </zipfileset>
+         <zipfileset dir="${core.loc}/target" prefix="flexunit">
+            <include name="*core*.swc" />
+         </zipfileset>
+         <zipfileset dir="${cilistener.loc}/target" prefix="flexunit">
+            <include name="*.swc" />
+         </zipfileset>
+         <zipfileset dir="${flexcoverlistener.loc}/target" prefix="flexunit">
+            <include name="*.swc" />
+         </zipfileset>
+         <zipfileset dir="${uilistener.loc}/target" prefix="flexunit">
+            <include name="*.swc" />
+         </zipfileset>
+         <zipfileset dir="${aircilistener.loc}/target" prefix="flexunit">
+            <include name="*.swc" />
+         </zipfileset>
+         
+         <!-- Turnkey -->
+         <zipfileset dir="${turnkey.loc}" prefix="flexunit/turnkey">
+         	<exclude name="**/export/**/*" />
+         </zipfileset>
+         <zipfileset dir="${core.loc}/target" prefix="flexunit/turnkey/libs">
+            <include name="*core*.swc" />
+         </zipfileset>
+         <zipfileset dir="${uilistener.loc}/target" prefix="flexunit/turnkey/libs">
+            <include name="*.swc" />
+         </zipfileset>
+         
+         <!-- Sample CI project -->
+         <zipfileset dir="${sampleCI.loc}" prefix="flexunit/sampleCIProject">
+            <exclude name="**/libs/**/*" />
+         </zipfileset>
+         <zipfileset dir="${anttasks.loc}/target" prefix="flexunit/sampleCIProject/libs">
+            <include name="*.jar" />
+         </zipfileset>
+         <zipfileset dir="${core.loc}/target" prefix="flexunit/sampleCIProject/libs">
+            <include name="*core*.swc" />
+         </zipfileset>
+         <zipfileset dir="${cilistener.loc}/target" prefix="flexunit/sampleCIProject/libs">
+            <include name="*.swc" />
+         </zipfileset>
+         <zipfileset dir="${uilistener.loc}/target" prefix="flexunit/sampleCIProject/libs">
+            <include name="*.swc" />
+         </zipfileset>
+         <zipfileset dir="${aircilistener.loc}/target" prefix="flexunit/sampleCIProject/libs">
+            <include name="*.swc" />
+         </zipfileset>
+      </zip>
+   </target>
 </project>

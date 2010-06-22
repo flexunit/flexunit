@@ -30,6 +30,7 @@ package org.flexunit.internals.builders {
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.notification.IRunNotifier;
+	import org.flexunit.runner.notification.StoppedByUserException;
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.IAsyncTestToken;
 	
@@ -44,7 +45,12 @@ package org.flexunit.internals.builders {
 		 * @private
 		 */
 		private var testClass:Class;
-		
+
+		/**
+		 * @private
+		 */
+		protected var stopRequested:Boolean = false;
+
 		/** 
 		 * Constructor. 
 		 * 
@@ -63,10 +69,23 @@ package org.flexunit.internals.builders {
 		 * @param token The <code>AsyncTestToken</code> to notify that the test class has been ignored.
 		 */ 
 		public function run( notifier:IRunNotifier, previousToken:IAsyncTestToken ):void {
+			if ( stopRequested ) {
+				previousToken.sendResult( new StoppedByUserException() );
+				return;
+			}
+
 			notifier.fireTestIgnored( description );
 			previousToken.sendResult();
 		}
 		
+		/**
+		 * Ask that the tests run stop before starting the next test. Phrased politely because
+		 * the test currently running will not be interrupted. 
+		 */
+		public function pleaseStop():void {
+			stopRequested = true;
+		}		
+
 		/**
 		 * Returns an <code>IDescription</code> of the testClass.  This <code>IDescription</code>
 		 * is used to provide information about this testClass that can be used in order to determine

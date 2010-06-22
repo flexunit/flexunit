@@ -1,5 +1,6 @@
 package org.fluint.uiImpersonation.flex {
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.utils.getDefinitionByName;
 	
@@ -11,27 +12,44 @@ package org.fluint.uiImpersonation.flex {
 	import org.fluint.uiImpersonation.IVisualEnvironmentBuilder;
 	import org.fluint.uiImpersonation.IVisualTestEnvironment;
 
+	/**
+	 * Builds a visual test environment for Flex projects 
+	 * @author mlabriola
+	 * 
+	 */
 	public class FlexEnvironmentBuilder implements IVisualEnvironmentBuilder {
+		/**
+		 * @private 
+		 */
 		protected var environment:IVisualTestEnvironment;
-		protected var systemManager:Sprite;
+		/**
+		 * @private 
+		 */
+		protected var visualDisplayRoot:DisplayObjectContainer;
 
+		/** 
+		 * Returns a reference to the single instance of a Canvas
+		 * where all visual components will be created during testing.
+		 * 
+		 * @return A reference to the Canvas that serves as the display environment class.
+		 */
 		public function buildVisualTestEnvironment():IVisualTestEnvironment {
 			
 			if ( !environment ) {
 				environment = new FlexVisualTestEnvironment();
 				
-				if ( !systemManager ) {
+				if ( !visualDisplayRoot ) {
 					if ( FlexVersion.CURRENT_VERSION > FlexVersion.VERSION_3_0 ) {
 						var flexGlobals:Class = Class(getDefinitionByName("mx.core::FlexGlobals"));
-						systemManager = flexGlobals.topLevelApplication.systemManager;
+						visualDisplayRoot = flexGlobals.topLevelApplication.systemManager;
 					} else {
 						var appGlobals:Class = Class(getDefinitionByName("mx.core::ApplicationGlobals"));
-						systemManager = appGlobals.application.systemManager;
+						visualDisplayRoot = appGlobals.application.systemManager;
 					}
 				}
 				
-				if ( systemManager && ( environment is DisplayObject ) ) {
-					systemManager.addChild( environment as DisplayObject );
+				if ( visualDisplayRoot && ( environment is DisplayObject ) ) {
+					visualDisplayRoot.addChild( environment as DisplayObject );
 				}
 				
 				//If the SystemManager tries to remove a child bridge from the instance, from say a SWFLoader,
@@ -50,8 +68,13 @@ package org.fluint.uiImpersonation.flex {
 			return environment;
 		}
 		
-		public function FlexEnvironmentBuilder( systemManager:Sprite=null ) {
-			this.systemManager = systemManager;			
+		/**
+		 * Constructor 
+		 * @param visualDisplayRoot
+		 * 
+		 */
+		public function FlexEnvironmentBuilder( visualDisplayRoot:DisplayObjectContainer ) {
+			this.visualDisplayRoot = visualDisplayRoot;			
 		}
 	}
 }

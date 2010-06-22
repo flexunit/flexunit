@@ -33,6 +33,9 @@ package org.flexunit.internals.runners
 	 */
 	public class MethodValidator
 	{
+		/**
+		 * Not yet implemented. Candidate for removal
+		 */
 		public function MethodValidator()
 		{
 		}

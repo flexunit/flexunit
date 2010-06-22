@@ -28,6 +28,7 @@ package org.flexunit.internals.runners.statements.cases
 			testMethod = null;
 		}
 		
+		[Ignore("invokeExplosivelyAsync no longer exists")]
 		[Test(description="Ensure that the evalute fucntion correctly works when no error is thrown")]
 		public function evaluateSuccessTest():void {
 			var parentToken:AsyncTestTokenMock = new AsyncTestTokenMock();
@@ -39,6 +40,7 @@ package org.flexunit.internals.runners.statements.cases
 			testMethod.mock.verify();
 		}
 		
+		[Ignore("invokeExplosivelyAsync no longer exists")]
 		[Test(description="Ensure that the evalute fucntion correctly works when an error is thrown")]
 		public function evaluateFailureTest():void {
 			var parentToken:AsyncTestTokenMock = new AsyncTestTokenMock();

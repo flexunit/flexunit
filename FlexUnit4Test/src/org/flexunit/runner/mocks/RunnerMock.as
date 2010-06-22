@@ -16,7 +16,11 @@ package org.flexunit.runner.mocks
 		{
 			mock.run(notifier, previousToken);
 		}
-		
+	
+		public function pleaseStop():void {
+			mock.pleaseStop();
+		}
+
 		public function get description():IDescription
 		{
 			return mock.description;

@@ -29,6 +29,7 @@ package org.flexunit.runner.manipulation {
 	import flex.lang.reflect.metadata.MetaDataAnnotation;
 	import flex.lang.reflect.metadata.MetaDataArgument;
 	
+	import org.flexunit.constants.AnnotationArgumentConstants;
 	import org.flexunit.runner.IDescription;
 	
 	/**
@@ -52,10 +53,10 @@ package org.flexunit.runner.manipulation {
 		 * @param o1 <code>IDescription</code> the first object to be compared.
 		 * @param o2 <code>IDescription</code> the second object to be compared.
 		 * */
-		private static function none( o1:IDescription, o2:IDescription ):int {
+/*		private static function none( o1:IDescription, o2:IDescription ):int {
 			return 0;
 		}
-
+*/
 		/**
 		 * Sorts the test in <code>runner</code> using <code>compare function</code>.
 		 * 
@@ -73,7 +74,7 @@ package org.flexunit.runner.manipulation {
 		 * 
 		 * @param o1 <code>IDescription</code> the object to have its order checked.
 		 * */
-		private static function getOrderValueFrom( object:IDescription ):Number {
+		protected function getOrderValueFrom( object:IDescription ):Number {
 			var order:Number = 0;		
 			
 			var metadataArray:Array = object.getAllMetadata();
@@ -87,7 +88,7 @@ package org.flexunit.runner.manipulation {
 				metaDataAnnotation = metadataArray[ i ] as MetaDataAnnotation;
 				
 				//Determine if the node contains an 'order' key, if it does, get the order number
-				var metaArg:MetaDataArgument = metaDataAnnotation.getArgument( "order", true );
+				var metaArg:MetaDataArgument = metaDataAnnotation.getArgument( AnnotationArgumentConstants.ORDER, true );
 				if ( metaArg ) {
 					order = Number( metaArg.value );
 					break;

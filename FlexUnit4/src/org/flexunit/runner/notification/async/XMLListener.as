@@ -48,31 +48,82 @@ package org.flexunit.runner.notification.async
 		//private var logger:ILogger = Log.getLogger( "XMLListener" );
 		
 		
+		/**
+		 * Constant to be sent on success  of a test
+		 */
 		private static const SUCCESS:String = "success";
+		/**
+		 * Constant to be sent on error of a test
+		 */
 		private static const ERROR:String = "error";
+		/**
+		 * Constant to be sent on failure of a test
+		 */
 		private static const FAILURE:String = "failure";
+		/**
+		 * Constant to be sent on ignore of a test 
+		 */
 		private static const IGNORE:String = "ignore";
 		
+		/**
+		 * @private 
+		 */
 		private var successes:Array = new Array();
+		/**
+		 * @private 
+		 */
 		private var ignores:Array = new Array();
 		
+		/**
+		 * @private 
+		 */
 		private var _ready:Boolean = false;
 		
+		/**
+		 * @private 
+		 */
 		private static const END_OF_TEST_RUN : String = "<endOfTestRun/>";
 		
+		/**
+		 * @private 
+		 */
 		private var socket:XMLSocket;
+
 		[Inspectable]
+		/**
+		 * The port used to communicate with the server receiving this XML 
+		 */
 		public var port : uint = 8765;
 		
 		[Inspectable]
+		/**
+		 * The ip address of the server receiving this XML 
+		 */
 		public var server : String = "127.0.0.1"; //this is local host. same machine
 		
+		/**
+		 * @private 
+		 */
 		private var lastFailedTest:IDescription;
 		
 		//private var msgQueue:Array = new Array();
+		/**
+		 * @private 
+		 */
 		private var projectName:String;
+		/**
+		 * @private 
+		 */
 		private var contextName:String;
 
+		/**
+		 * An implementation of an XMLListener designed to communicate with Adobe Flash Builder Pro
+		 * to send results to the flash builder FlexUnit panel
+		 *  
+		 * @param projectName Name of the project in FlashBuilder
+		 * @param contextName
+		 * 
+		 */
 		public function XMLListener( projectName:String = "", contextName:String = "" ) {
 			this.projectName = projectName;
 			this.contextName = contextName;
@@ -93,14 +144,29 @@ package org.flexunit.runner.notification.async
 		}
 		
 		[Bindable(event="listenerReady")]
+		/**
+		 * 
+		 * Indicates if the listener is ready and connected to Flash Builder
+		 * 
+		 */
 		public function get ready():Boolean {
 			return _ready;
 		}
 		
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		private function getTestCount( description:IDescription ):int {
 			return description.testCount;
 		}
 		
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		public function testRunStarted( description:IDescription ):void{
 			// XML Socket in flexbuilder is expecting a startTestRun node at the begining of the results.
 			// it seems to use this to reset hte current results, and prepopulate the total number of tests
@@ -109,6 +175,11 @@ package org.flexunit.runner.notification.async
 			sendResults("<startTestRun totalTestCount='" + getTestCount( description ) + "'  projectName='" + projectName + "' contextName='" + contextName +"' />");
 		}
 
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		public function testRunFinished( result:Result ):void {
 		
 			// if we want to wait until all tests are finished before sending any results, 
@@ -119,10 +190,20 @@ package org.flexunit.runner.notification.async
 			printFooter( result );
 		}
 
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		public function testStarted( description:IDescription ):void {
 			// called before each test
 		}
 		
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		public function testFinished( description:IDescription ):void {
 			// called after each test
 			if(!lastFailedTest || description.displayName != lastFailedTest.displayName){
@@ -132,10 +213,20 @@ package org.flexunit.runner.notification.async
 			}
 		}
 
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		public function testAssumptionFailure( failure:Failure ):void {
 			// called on assumptionFail
 		}
 
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		public function testIgnored( description:IDescription ):void {
 			// called on ignored test
 			var desc:Descriptor = getDescriptorFromDescription(description);
@@ -144,6 +235,11 @@ package org.flexunit.runner.notification.async
 		}
 	
 	
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		public function testFailure( failure:Failure ):void {
 			// called on a test failure
 			lastFailedTest = failure.description;
@@ -159,6 +255,11 @@ package org.flexunit.runner.notification.async
 			sendResults( xmlString );
 		}
 		
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		private function createMessage( isError:Boolean, methodName:String, suite:String, type:String, message:String, stackTrace:String ):String {
 			var xmlString:String;
 			if ( isError ) {
@@ -170,6 +271,11 @@ package org.flexunit.runner.notification.async
 			return xmlString;
 		}
 
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		private function createFailureMessage( methodName:String, suite:String, type:String, message:String, stackTrace:String ):String {
 			var xml : String =
 				"<testCase name='"+methodName+"' testSuite='"+suite+"'  status='"+FAILURE+"'>"+
@@ -182,6 +288,11 @@ package org.flexunit.runner.notification.async
 			return xml;
 		}
 
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		private function createErrorMessage( methodName:String, suite:String, type:String, message:String, stackTrace:String ):String {
 			var xml : String =
 				"<testCase name='"+methodName+"' testSuite='"+suite+"'  status='"+ERROR+"'>"+
@@ -198,6 +309,11 @@ package org.flexunit.runner.notification.async
 		 * Internal methods
 		 */
 
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		private function getDescriptorFromDescription(description:IDescription ):Descriptor{
 			// reads relavent data from descriptor
 			/**
@@ -222,6 +338,11 @@ package org.flexunit.runner.notification.async
 			return descriptor;
 		}
 		
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		protected function printHeader( result:Result ):void {
 			var totalTestCount:int = result.runCount;
 			var currentProjectName:String = "currentProjectName";
@@ -230,6 +351,11 @@ package org.flexunit.runner.notification.async
 			
 		}
 	
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		protected function printResults( result:Result ):void{
 			//logger.info("printResults");
 /*			for(var i:int=0;i<msgQueue.length;i++){
@@ -237,11 +363,21 @@ package org.flexunit.runner.notification.async
 			}
 */		}
 	
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		protected function printFooter( result:Result ):void {
 		//	logger.warn(END_OF_TEST_RUN);
 			sendResults(END_OF_TEST_RUN);
 		}
 	
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		protected function sendResults(msg:String):void{
 			if(socket.connected){
 				socket.send( msg );
@@ -250,12 +386,22 @@ package org.flexunit.runner.notification.async
 			
 		}
 
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		private function handleConnect(event:Event):void{
 			_ready = true;
 			dispatchEvent( new Event( AsyncListenerWatcher.LISTENER_READY ) );
 			
 			
 		}
+		/**
+		 * 
+		 * @private
+		 * 
+		 */
 		private function errorHandler(event:Event):void{
 			dispatchEvent( new Event( AsyncListenerWatcher.LISTENER_FAILED ) );
 		}

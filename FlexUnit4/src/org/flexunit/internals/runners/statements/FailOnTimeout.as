@@ -29,6 +29,8 @@ package org.flexunit.internals.runners.statements {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import org.flexunit.constants.AnnotationArgumentConstants;
+	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.internals.runners.statements.AsyncStatementBase;
 	import org.flexunit.internals.runners.statements.IAsyncStatement;
 	import org.flexunit.runners.model.FrameworkMethod;
@@ -104,10 +106,10 @@ package org.flexunit.internals.runners.statements {
 		 * will be returned.
 		 */
 		public static function hasTimeout( method:FrameworkMethod ):String {
-			var timeout:String = String( method.getSpecificMetaDataArgValue( "Test", "timeout" ) );
-			var hasTimeout:Boolean = timeout && ( timeout != "null" ) && ( timeout.length>0 );
+			var timeoutStr:String = String( method.getSpecificMetaDataArgValue( AnnotationConstants.TEST, AnnotationArgumentConstants.TIMEOUT ) );
+			var hasTimeout:Boolean = timeoutStr && ( timeoutStr != "null" ) && ( timeoutStr.length>0 );
 
-			return hasTimeout?timeout:null;			
+			return hasTimeout?timeoutStr:null;			
 		}
 		
 		/**

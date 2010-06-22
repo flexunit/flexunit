@@ -26,12 +26,19 @@
  * @version    
  **/ 
 package org.flexunit.runner {
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
+	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.*;
 	
 	import org.flexunit.IncludeFlexClasses;
 	import org.flexunit.experimental.theories.Theories;
+	import org.flexunit.internals.dependency.ExternalRunnerDependencyWatcher;
+	import org.flexunit.internals.runners.watcher.FrameWatcher;
+	import org.flexunit.runner.external.IExternalDependencyRunner;
 	import org.flexunit.runner.notification.Failure;
 	import org.flexunit.runner.notification.IAsyncStartupRunListener;
 	import org.flexunit.runner.notification.IRunListener;
@@ -39,13 +46,19 @@ package org.flexunit.runner {
 	import org.flexunit.runner.notification.RunListener;
 	import org.flexunit.runner.notification.RunNotifier;
 	import org.flexunit.runner.notification.async.AsyncListenerWatcher;
-	import org.flexunit.token.AsyncListenersToken;
+	import org.flexunit.runners.Parameterized;
+	import org.flexunit.token.AsyncCoreStartupToken;
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.utils.ClassNameUtil;
+	import org.fluint.uiImpersonation.VisualTestEnvironmentBuilder;
+
+	[Event(type="testsComplete", type="flash.events.Event")]
+	[Event(type="runnerStart", type="flash.events.Event")]
+	[Event(type="testsStopped", type="flash.events.Event")]
 
 	/**  
-	 * FlexUnit4 Version: 4.0.0b2<br/>
+	 * FlexUnit4 Version: 4.1.00<br/>
 	 * 
 	 * The <code>FlexUnitCore</code> is responsible for executing objects that implement an <code>IRequest</code>
 	 * interface.  There are several ways that the <code>IRequest</code> can be provided to the 
@@ -96,16 +109,24 @@ package org.flexunit.runner {
 		 * @private
 		 */
 		private var notifier:IRunNotifier;
+		
+		
+		private var runnerExternalDependencyWatcher:ExternalRunnerDependencyWatcher;
+		
 		/**
 		 * @private
 		 */
 		private var asyncListenerWatcher:AsyncListenerWatcher;
 		
+		private var _visualDisplayRoot:DisplayObjectContainer;
+
+		private var topLevelRunner:IRunner;
 		/**
 		 * @private
 		 */
 		private static const RUN_LISTENER:String = "runListener";
 		public static const TESTS_COMPLETE : String = "testsComplete";
+		public static const TESTS_STOPPED : String = "testsStopped";
 		public static const RUNNER_START : String = "runnerStart";
 		public static const RUNNER_COMPLETE : String = "runnerComplete";
 
@@ -114,12 +135,42 @@ package org.flexunit.runner {
 		 * @private
 		 */
 		private var theory:Theories;
+		/**
+		 * @private
+		 */
+		private var params:Parameterized;
 		
 		/**
 		 * Returns the version number.
 		 */
 		public static function get version():String {
-			return "4.0.0rc1";
+			return "4.1.0.0b1";
+		}
+		
+
+		public function get visualDisplayRoot():DisplayObjectContainer {
+			return _visualDisplayRoot; 
+		}
+		
+		public function set visualDisplayRoot( value:DisplayObjectContainer ):void {
+			_visualDisplayRoot = value;
+
+			//pass the stage along to the VisualEnvironmentBuilder.. 
+			VisualTestEnvironmentBuilder.getInstance( value );
+		}
+
+		/**
+		 * Requests that the FlexUnitCore stop execution of the test environment.
+		 * As Flash Player is single threaded, we will only be able to stop execution after the currently running test completes
+		 * and before the next one begins, so this will always have a margin of error.
+		 */
+		public function pleaseStop():void {
+			
+			if ( topLevelRunner ) {
+				topLevelRunner.pleaseStop();
+			}
+
+			//dispatchEvent( new Event( TESTS_STOPPED ) );			
 		}
 
 		private function dealWithArgArray( ar:Array, foundClasses:Array, missingClasses:Array ):void {
@@ -158,9 +209,9 @@ package org.flexunit.runner {
 		 * <code>Request</code>, and that <code>Request</code> will be used for the test run.
 		 * 
 		 * @param args The arguments are provided for the test run.
-		 * @return a <code>Result</code> describing the details of the test run and the failed tests.
+		 * @return void.
 		 */
-		public function run( ...args ):Result {
+		public function run( ...args ):void {
 			var foundClasses:Array = new Array();
 			//Unlike JUnit, missing classes is probably unlikely here, but lets preserve the metaphor
 			//just in case
@@ -168,13 +219,14 @@ package org.flexunit.runner {
 			
 			dealWithArgArray( args, foundClasses, missingClasses );
 
-			var result:Result = runClasses.apply( this, foundClasses );
+			runClasses.apply( this, foundClasses );
 			
+			//This is kind of fake
+			//Need to tie this to the remaining result set
+			var result:Result = new Result();
 			for ( var i:int=0; i<missingClasses.length; i++ ) {
 				result.failures.push( missingClasses[ i ] );
 			}
-			
-			return result;
 		}
 
 		/**
@@ -185,6 +237,9 @@ package org.flexunit.runner {
 		 * @param args The class arguments that are provided for the test run.
 		 */
 		public function runClasses( ...args ):void {
+			//This is just an optimization for the case where we are passed an IRequest
+			//Otherwise it goes through the trouble of re-wrapping it in a suite.
+			//When that happens we end up with potential sorting and filtering issues
 			if ( args && ( args.length == 1 ) && args[ 0 ] is IRequest ) {
 				runRequest( args[ 0 ] );
 			} else {
@@ -216,16 +271,38 @@ package org.flexunit.runner {
 		 * @param runner The <code>IRunner</code> to use for this test run.
 		 */
 		public function runRunner( runner:IRunner ):void {
-			if ( asyncListenerWatcher.allListenersReady ) {
+
+			//Record the top level runner. This is the active runner in case we need to
+			//do something like stop the execution of the test run
+			topLevelRunner = runner;
+
+			if ( runner is IExternalDependencyRunner ) {
+				( runner as IExternalDependencyRunner ).dependencyWatcher = runnerExternalDependencyWatcher; 
+			}
+
+			if ( runnerExternalDependencyWatcher.allDependenciesResolved && asyncListenerWatcher.allListenersReady ) {
 				beginRunnerExecution( runner );
-			} else {
-				//we need to wait until all listeners are ready (or failed) before we can continue
-				var token:AsyncListenersToken = asyncListenerWatcher.startUpToken;
-				token.runner = runner;
-				token.addNotificationMethod( beginRunnerExecution );
+			} else {				
+				if ( !asyncListenerWatcher.allListenersReady ) {
+					//we need to wait until all listeners are ready (or failed) before we can continue
+					var tokenListeners:AsyncCoreStartupToken = asyncListenerWatcher.startUpToken;
+					tokenListeners.runner = runner;
+					tokenListeners.addNotificationMethod( verifyRunnerCanBegin );
+				}
+				
+				if ( !runnerExternalDependencyWatcher.allDependenciesResolved ) {
+					var tokenRunners:AsyncCoreStartupToken = runnerExternalDependencyWatcher.token;
+					tokenRunners.runner = runner;
+					tokenRunners.addNotificationMethod( verifyRunnerCanBegin );
+				} 
 			}
 		}
 		
+		protected function verifyRunnerCanBegin( runner:IRunner ):void {
+			if ( runnerExternalDependencyWatcher.allDependenciesResolved && asyncListenerWatcher.allListenersReady ) {
+				beginRunnerExecution( runner );
+			}
+		}
 		/**
 		 * Starts the execution of the <code>IRunner</code>.
 		 */
@@ -270,7 +347,8 @@ package org.flexunit.runner {
 		private function finishRun( runListener:RunListener ):void {
 			notifier.fireTestRunFinished( runListener.result );
 			removeListener( runListener );
-			
+
+			//Consider making this a custom event and attaching the result set
 			dispatchEvent( new Event( TESTS_COMPLETE ) );
 		}
 
@@ -305,18 +383,15 @@ package org.flexunit.runner {
 			}			
 		}
 		
-		protected function handleAllListenersReady( event:Event ):void {
-			
-		}
-		
 		/**
 		 * Create a new <code>FlexUnitCore</code> to run tests.
 		 */
 		public function FlexUnitCore() {
 			notifier = new RunNotifier();
+
+			runnerExternalDependencyWatcher = new ExternalRunnerDependencyWatcher();
 			
 			asyncListenerWatcher = new AsyncListenerWatcher( notifier, null );
-			//asyncListenerWatcher.addEventListener( AsyncListenerWatcher.ALL_LISTENERS_READY, handleAllListenersReady, false, 0, true );
 		}
 	}
 }
