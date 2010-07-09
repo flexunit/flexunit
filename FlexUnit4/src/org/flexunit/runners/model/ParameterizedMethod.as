@@ -87,11 +87,16 @@ package org.flexunit.runners.model {
 						}
 					}
 				} else {
+					orderArg.@value = orderValueDec;
 					annotation.arguments.push( new MetaDataArgument( orderArg ) ); 
 				}
-
 			}
 			
+			if ( annotation.getArgument( AnnotationArgumentConstants.ORDER ).value == "0" ) {
+				trace( "New Order " + annotation.getArgument( AnnotationArgumentConstants.ORDER ).value );	
+			}
+			
+
 			return newMethod;
 		}
 		

@@ -1,6 +1,4 @@
 package flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite {
-	import flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite.helper.SampleTheoryDataHelper;
-	
 	import org.flexunit.assertThat;
 	import org.flexunit.assumeThat;
 	import org.flexunit.experimental.theories.Theories;
@@ -9,15 +7,9 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite {
 	import org.hamcrest.object.instanceOf;
 	
 	[RunWith("org.flexunit.experimental.theories.Theories")]
-	public class ExternalTheorySuite {
+	public class FunctionalTheorySuite {
 		private var theory:Theories;
-
-		public static var dataRetriever1:SampleTheoryDataHelper = new SampleTheoryDataHelper( "someFakeDataPath.stuff" );
-
-		[DataPoints(loader="dataRetriever1")]
-		[ArrayElementType("int")]
-		public static var intValues:Array;
-
+ 
    		[DataPoints]
   		[ArrayElementType("Boolean")]
 		public static var boolValues:Array = [true, false];
@@ -25,6 +17,10 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite {
    		[DataPoints]
   		[ArrayElementType("String")]
 		public static var stringValues:Array = ["one","two","three","four","five"];
+
+   		[DataPoints]
+  		[ArrayElementType("int")]
+		public static var intValues:Array = [1,2,3,4,5,6,7,8,9];
 
    		[DataPoint]
 		public static var values1:int = 10;
@@ -66,7 +62,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite {
 			//trace( boolValue + " " + stringValue );
 		} 	
 
-		public function ExternalTheorySuite():void {
+		public function FunctionalTheorySuite():void {
 			//assumeThat( intValue, lessThan( 2 ) );
 			//assumptions in constructor do not yet work... don't know if they ever could, what exactly would you do if you couldn't construct?
 			//trace("Constructor with " + intValue );
