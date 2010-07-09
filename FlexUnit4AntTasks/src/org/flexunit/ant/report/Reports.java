@@ -26,7 +26,7 @@ public class Reports extends HashMap<String, Report>
       int errors = 0;
       int failures = 0;
       int skips = 0;
-      double time = 0.00;
+      long time = 0;
       
       for(Report report : this.values())
       {
@@ -48,7 +48,7 @@ public class Reports extends HashMap<String, Report>
                new Integer(failures), 
                new Integer(errors),
                new Integer(skips),
-               new Double(time)
+               formatTime(time)
             });
       }
       catch(Exception e)
@@ -59,6 +59,11 @@ public class Reports extends HashMap<String, Report>
       summary += "\n";
       
       return summary;
+   }
+   
+   private String formatTime(long time)
+   {
+      return String.format("%.3f", new Double(time / 1000.0000));
    }
    
    /**

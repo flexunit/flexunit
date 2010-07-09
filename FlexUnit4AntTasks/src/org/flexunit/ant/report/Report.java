@@ -115,7 +115,7 @@ public class Report
    
    private String formatTime(long time)
    {
-      return String.valueOf(time / 1000.0000);
+      return String.format("%.3f", new Double(time / 1000.0000));
    }
 
    /**
@@ -225,7 +225,7 @@ public class Report
          { new String(suite.getName()), new Integer(suite.getTests()),
                new Integer(suite.getFailures()),
                new Integer(suite.getErrors()), new Integer(suite.getSkips()),
-               new Double(suite.getTime()) });
+               formatTime(suite.getTime()) });
       } catch (Exception e)
       {
          // ignore

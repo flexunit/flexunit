@@ -126,13 +126,6 @@ package org.flexunit.listeners
 		{
 			return description.testCount;
 		}
-		
-		private function testTimeString( time:Number ):String {
-			var timeShifted:Number = time * 1000;
-			var timeFloor:Number = Math.floor( timeShifted );
-			var timeStr:String = String( ( timeFloor/1000 ) );
-			return timeStr;
-		}
 
 		public function testTimed( description:IDescription, runTime:Number ):void {
 			lastTestTime = runTime;
@@ -161,7 +154,7 @@ package org.flexunit.listeners
 			// called after each test
 			if(!lastFailedTest || description.displayName != lastFailedTest.displayName){
 				var desc:Descriptor = getDescriptorFromDescription(description);
-				sendResults("<testcase classname=\""+desc.suite+"\" name=\""+desc.method+"\" time=\"" + testTimeString( lastTestTime )  + "\" status=\""+SUCCESS+"\" />");
+				sendResults("<testcase classname=\""+desc.suite+"\" name=\""+desc.method+"\" time=\"" + lastTestTime  + "\" status=\""+SUCCESS+"\" />");
 			}
 		}
 		
@@ -176,7 +169,7 @@ package org.flexunit.listeners
 			var descriptor:Descriptor = getDescriptorFromDescription(description);
 
 			var xml:String =
-				"<testcase classname=\""+descriptor.suite+"\" name=\""+descriptor.method+"\" time=\"" + testTimeString( lastTestTime )  + "\" status=\""+IGNORE+"\">"
+				"<testcase classname=\""+descriptor.suite+"\" name=\""+descriptor.method+"\" time=\"" + lastTestTime  + "\" status=\""+IGNORE+"\">"
 				+ "<skipped />"
 				+ "</testcase>";
 
@@ -205,7 +198,7 @@ package org.flexunit.listeners
 			if(FailureFormatter.isError(failure.exception)) 
 			{
 				xml =
-					"<testcase classname=\""+descriptor.suite+"\" name=\""+descriptor.method+"\" time=\"" + testTimeString( lastTestTime )  + "\" status=\""+ERROR+"\">"
+					"<testcase classname=\""+descriptor.suite+"\" name=\""+descriptor.method+"\" time=\"" + lastTestTime  + "\" status=\""+ERROR+"\">"
 					+ "<error message=\"" + message + "\" type=\""+ type +"\" >"
 					+ "<![CDATA[" + stackTrace + "]]>"
 					+ "</error>"
@@ -214,7 +207,7 @@ package org.flexunit.listeners
 			else 
 			{
 				xml =
-					"<testcase classname=\""+descriptor.suite+"\" name=\""+descriptor.method+"\" time=\"" + testTimeString( lastTestTime )  + "\" status=\""+FAILURE+"\">"
+					"<testcase classname=\""+descriptor.suite+"\" name=\""+descriptor.method+"\" time=\"" + lastTestTime  + "\" status=\""+FAILURE+"\">"
 					+ "<failure message=\"" + message + "\" type=\""+ type +"\" >"
 					+ "<![CDATA[" + stackTrace + "]]>"
 					+ "</failure>"
