@@ -204,16 +204,24 @@ public class TestRunConfiguration implements StepConfiguration
    public void log()
    {
       LoggingUtil.log("Using the following settings for the test run:");
-      LoggingUtil.log("\tFLEX_HOME: [" + flexHome.getAbsolutePath() + "]");
+      
+      //FLEX_HOME not required to run if not using ADL
+      if(flexHome != null)
+      {
+         LoggingUtil.log("\tFLEX_HOME: [" + flexHome.getAbsolutePath() + "]");         
+      }
+      
       LoggingUtil.log("\thaltonfailure: [" + failOnTestFailure + "]");
       LoggingUtil.log("\theadless: [" + headless + "]");
       LoggingUtil.log("\tdisplay: [" + display + "]");
       LoggingUtil.log("\tlocalTrusted: [" + isLocalTrusted + "]");
       LoggingUtil.log("\tplayer: [" + player + "]");
+      
       if(isCustomCommand())
       {
          LoggingUtil.log("\tcommand: [" + command + "]");
       }
+      
       LoggingUtil.log("\tport: [" + port + "]");
       LoggingUtil.log("\tswf: [" + swf + "]");
       LoggingUtil.log("\ttimeout: [" + socketTimeout + "ms]");
