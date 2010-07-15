@@ -78,7 +78,7 @@ package org.flexunit.listeners
 		
 		private var lastFailedTest:IDescription;
 		private var timeOut:Timer;
-		private var lastTestTime:Number;
+		private var lastTestTime:Number = 0;
 		
 		public function CIListener(port : uint = DEFAULT_PORT, server : String = DEFAULT_SERVER) 
 		{
@@ -128,7 +128,15 @@ package org.flexunit.listeners
 		}
 
 		public function testTimed( description:IDescription, runTime:Number ):void {
-			lastTestTime = runTime;
+			if(!runTime || isNaN(runTime))
+         {
+            lastTestTime = 0;
+         }
+         else
+         {
+            lastTestTime = runTime;
+         }
+         
 			//trace( description.displayName + " took " + runTime + " ms " );
 		}
 		
