@@ -19,4 +19,4 @@ Documentation for FlexUnit can be found at "docs.flexunit.org":http://docs.flexu
 
 h3. Code
 
-The code for FlexUnit can be found on github at "github.com/flexunit/":http://github.com/flexunit
+The code for FlexUnit can be found on "github":http://github.com/flexunit
