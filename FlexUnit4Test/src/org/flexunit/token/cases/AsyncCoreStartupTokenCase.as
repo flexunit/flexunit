@@ -49,7 +49,7 @@ package org.flexunit.token.cases
 			}
 		}
 		
-		[Test(description="Ensure that the sendReady function correctly calls all functions with the runner")]
+/*		[Test(description="Ensure that the sendReady function correctly calls all functions with the runner")]
 		public function sendCompleteTest():void {
 			var runnerMock:RunnerMock = new RunnerMock();
 			asyncCoreStartupToken.runner = runnerMock;
@@ -60,7 +60,7 @@ package org.flexunit.token.cases
 			if(runnerFunctionCalled != 1) {
 				Assert.fail("The sendComplete function did not call the correct function with the right runner");
 			}
-		}
+		}*/
 		
 		protected function runnerTest(runner:IRunner):void {
 			runnerFunctionCalled++;

@@ -14,11 +14,6 @@ package org.flexunit.token {
 		function set parentToken( value:IAsyncTestToken ):void;
 		
 		/**
-		 * Returns the error associated with the <code>AsyncTestToken</code>.
-		 */		
-		function get error():Error;
-		
-		/**
 		 * Adds a notification <code>method</code> to the <code>AsyncTestToken</code> and returns the token.
 		 * 
 		 * @param method A <code>Function</code> that will be invoked when results are sent.

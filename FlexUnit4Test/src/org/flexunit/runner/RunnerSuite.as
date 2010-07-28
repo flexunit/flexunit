@@ -4,7 +4,6 @@ package org.flexunit.runner
 	import org.flexunit.runner.cases.DescriptorCase;
 	import org.flexunit.runner.cases.RequestCase;
 	import org.flexunit.runner.cases.ResultCase;
-	import org.flexunit.runner.cases.RunnerLocatorCase;
 	import org.flexunit.runner.manipulation.ManipulationSuite;
 	import org.flexunit.runner.notification.NotificationSuite;
 
@@ -19,7 +18,6 @@ package org.flexunit.runner
 		// Cases
 		public var descriptionCase:DescriptionCase;
 		public var descriptorCase:DescriptorCase;
-		public var runnerLocatorCase:RunnerLocatorCase;
 		public var requestCase:RequestCase;
 		public var resultCase:ResultCase;
 	}

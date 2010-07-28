@@ -63,7 +63,7 @@ package org.flexunit.experimental.theories.cases
 		public function createParameterSignature():void {
 			methodMock = strict(Method,null,[new XML(),false]);
 			constructorMock = strict(Constructor,null,[null,klassMock]);
-			fieldMock = strict(Field,null,[new XML(),false,null,false]);
+			fieldMock = strict(Field,null,[new XML(),false,Object,false]);
 			
 			type = Object;
 			metadata = convertToMetaDataAnnotations( metadataXML.value );

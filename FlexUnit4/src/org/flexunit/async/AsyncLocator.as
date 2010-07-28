@@ -79,6 +79,7 @@ package org.flexunit.async {
 			
 			//If no handler was obtained from the dictionary, the test case was never marked as asynchronous, throw an AssertionError
 			if ( !handler ) {
+				//TODO: Refactor this to some other type of error
 				throw new AssertionError("Cannot add asynchronous functionality to methods defined by Test,Before or After that are not marked async");	
 			}
 
@@ -94,18 +95,5 @@ package org.flexunit.async {
 		public static function cleanUpCallableForTest( testCase:Object ):void {
 			delete asyncHandlerMap[ testCase ];
 		} 
-		
-/*		private static var instance:AsyncLocator;
-		public static function getInstance():AsyncLocator {
-			if ( !instance ) {
-				instance = new AsyncLocator();
-			}
-			
-			return instance;
-		}
-
-		public function AsyncLocator() {
-			callableMap = new Dictionary();
-		}
-*/	}
+	}
 }

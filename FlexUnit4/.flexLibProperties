@@ -5,13 +5,14 @@
     <classEntry path="flex.lang.reflect.Field"/>
     <classEntry path="flex.lang.reflect.Klass"/>
     <classEntry path="flex.lang.reflect.Method"/>
+    <classEntry path="flex.lang.reflect.builders.MethodBuilder"/>
+    <classEntry path="flex.lang.reflect.cache.ClassDataCache"/>
     <classEntry path="flex.lang.reflect.metadata.MetaDataAnnotation"/>
     <classEntry path="flex.lang.reflect.metadata.MetaDataArgument"/>
     <classEntry path="flex.lang.reflect.utils.MetadataTools"/>
     <classEntry path="org.flexunit.Assert"/>
     <classEntry path="org.flexunit.AssertionError"/>
     <classEntry path="org.flexunit.Assume"/>
-    <classEntry path="org.flexunit.ComparisonFailure"/>
     <classEntry path="org.flexunit.assertThat"/>
     <classEntry path="org.flexunit.asserts.assertEquals"/>
     <classEntry path="org.flexunit.asserts.assertFalse"/>
@@ -24,11 +25,9 @@
     <classEntry path="org.flexunit.async.Async"/>
     <classEntry path="org.flexunit.async.AsyncHandler"/>
     <classEntry path="org.flexunit.async.AsyncLocator"/>
+    <classEntry path="org.flexunit.constants.AnnotationArgumentConstants"/>
+    <classEntry path="org.flexunit.constants.AnnotationConstants"/>
     <classEntry path="org.flexunit.events.AsyncEvent"/>
-    <classEntry path="org.flexunit.experimental.results.FailureList"/>
-    <classEntry path="org.flexunit.experimental.results.PrintableResult"/>
-    <classEntry path="org.flexunit.experimental.results.ResultMatchers"/>
-    <classEntry path="org.flexunit.experimental.runners.Enclosed"/>
     <classEntry path="org.flexunit.experimental.runners.statements.AssignmentSequencer"/>
     <classEntry path="org.flexunit.experimental.runners.statements.MethodCompleteWithParamsStatement"/>
     <classEntry path="org.flexunit.experimental.runners.statements.TheoryAnchor"/>
@@ -37,19 +36,13 @@
     <classEntry path="org.flexunit.experimental.theories.IParameterSupplier"/>
     <classEntry path="org.flexunit.experimental.theories.IPotentialAssignment"/>
     <classEntry path="org.flexunit.experimental.theories.ParameterSignature"/>
-    <classEntry path="org.flexunit.experimental.theories.ParametersSuppliedBy"/>
     <classEntry path="org.flexunit.experimental.theories.PotentialAssignment"/>
     <classEntry path="org.flexunit.experimental.theories.Theories"/>
     <classEntry path="org.flexunit.experimental.theories.internals.AllMembersSupplier"/>
     <classEntry path="org.flexunit.experimental.theories.internals.Assignments"/>
     <classEntry path="org.flexunit.experimental.theories.internals.ParameterizedAssertionError"/>
     <classEntry path="org.flexunit.experimental.theories.internals.error.CouldNotGenerateValueException"/>
-    <classEntry path="org.flexunit.experimental.theories.suppliers.TestedOn"/>
-    <classEntry path="org.flexunit.experimental.theories.suppliers.TestedOnSupplier"/>
-    <classEntry path="org.flexunit.internals.ArrayComparisonFailure"/>
     <classEntry path="org.flexunit.internals.AssumptionViolatedException"/>
-    <classEntry path="org.flexunit.internals.FlexUnitSystem"/>
-    <classEntry path="org.flexunit.internals.RealSystem"/>
     <classEntry path="org.flexunit.internals.TraceListener"/>
     <classEntry path="org.flexunit.internals.builders.AllDefaultPossibilitiesBuilder"/>
     <classEntry path="org.flexunit.internals.builders.FlexUnit1Builder"/>
@@ -60,6 +53,10 @@
     <classEntry path="org.flexunit.internals.builders.NullBuilder"/>
     <classEntry path="org.flexunit.internals.builders.OnlyRecognizedTestClassBuilder"/>
     <classEntry path="org.flexunit.internals.builders.SuiteMethodBuilder"/>
+    <classEntry path="org.flexunit.internals.dependency.ExternalDependencyResolver"/>
+    <classEntry path="org.flexunit.internals.dependency.ExternalRunnerDependencyWatcher"/>
+    <classEntry path="org.flexunit.internals.dependency.IExternalDependencyResolver"/>
+    <classEntry path="org.flexunit.internals.dependency.IExternalRunnerDependencyWatcher"/>
     <classEntry path="org.flexunit.internals.events.ExecutionCompleteEvent"/>
     <classEntry path="org.flexunit.internals.flexunit_internal"/>
     <classEntry path="org.flexunit.internals.matchers.Each"/>
@@ -69,15 +66,10 @@
     <classEntry path="org.flexunit.internals.requests.QualifyingRequest"/>
     <classEntry path="org.flexunit.internals.requests.SortingRequest"/>
     <classEntry path="org.flexunit.internals.runners.ChildRunnerSequencer"/>
-    <classEntry path="org.flexunit.internals.runners.ClassRoadie"/>
     <classEntry path="org.flexunit.internals.runners.ErrorReportingRunner"/>
-    <classEntry path="org.flexunit.internals.runners.FailedBefore"/>
     <classEntry path="org.flexunit.internals.runners.FlexUnit1ClassRunner"/>
     <classEntry path="org.flexunit.internals.runners.InitializationError"/>
-    <classEntry path="org.flexunit.internals.runners.MethodRoadie"/>
-    <classEntry path="org.flexunit.internals.runners.MethodValidator"/>
     <classEntry path="org.flexunit.internals.runners.SuiteMethod"/>
-    <classEntry path="org.flexunit.internals.runners.TestMethod"/>
     <classEntry path="org.flexunit.internals.runners.model.EachTestNotifier"/>
     <classEntry path="org.flexunit.internals.runners.model.IReflectiveCallable"/>
     <classEntry path="org.flexunit.internals.runners.model.MultipleFailureException"/>
@@ -97,7 +89,7 @@
     <classEntry path="org.flexunit.internals.runners.statements.SequencerWithDecoration"/>
     <classEntry path="org.flexunit.internals.runners.statements.StackAndFrameManagement"/>
     <classEntry path="org.flexunit.internals.runners.statements.StatementSequencer"/>
-    <classEntry path="org.flexunit.matchers.FlexUnitMatchers"/>
+    <classEntry path="org.flexunit.internals.runners.watcher.FrameWatcher"/>
     <classEntry path="org.flexunit.rules.IMethodRule"/>
     <classEntry path="org.flexunit.runner.Description"/>
     <classEntry path="org.flexunit.runner.Descriptor"/>
@@ -108,7 +100,10 @@
     <classEntry path="org.flexunit.runner.IRunner"/>
     <classEntry path="org.flexunit.runner.Request"/>
     <classEntry path="org.flexunit.runner.Result"/>
-    <classEntry path="org.flexunit.runner.RunnerLocator"/>
+    <classEntry path="org.flexunit.runner.external.ExternalDependencyToken"/>
+    <classEntry path="org.flexunit.runner.external.IExternalDependencyData"/>
+    <classEntry path="org.flexunit.runner.external.IExternalDependencyLoader"/>
+    <classEntry path="org.flexunit.runner.external.IExternalDependencyRunner"/>
     <classEntry path="org.flexunit.runner.manipulation.IFilter"/>
     <classEntry path="org.flexunit.runner.manipulation.IFilterable"/>
     <classEntry path="org.flexunit.runner.manipulation.NoTestsRemainException"/>
@@ -116,6 +111,8 @@
     <classEntry path="org.flexunit.runner.manipulation.OrderArgumentPlusInheritanceSorter"/>
     <classEntry path="org.flexunit.runner.manipulation.OrderArgumentSorter"/>
     <classEntry path="org.flexunit.runner.manipulation.Sorter"/>
+    <classEntry path="org.flexunit.runner.manipulation.fields.FieldMetaDataSorter"/>
+    <classEntry path="org.flexunit.runner.manipulation.fields.IFieldSorter"/>
     <classEntry path="org.flexunit.runner.manipulation.filters.AbstractFilter"/>
     <classEntry path="org.flexunit.runner.manipulation.filters.DynamicFilter"/>
     <classEntry path="org.flexunit.runner.manipulation.filters.IncludeAllFilter"/>
@@ -131,7 +128,6 @@
     <classEntry path="org.flexunit.runner.notification.async.AsyncListenerWatcher"/>
     <classEntry path="org.flexunit.runner.notification.async.WaitingListener"/>
     <classEntry path="org.flexunit.runner.notification.async.XMLListener"/>
-    <classEntry path="org.flexunit.runners.AllTests"/>
     <classEntry path="org.flexunit.runners.BlockFlexUnit4ClassRunner"/>
     <classEntry path="org.flexunit.runners.Parameterized"/>
     <classEntry path="org.flexunit.runners.ParentRunner"/>
@@ -153,19 +149,8 @@
     <classEntry path="org.fluint.uiImpersonation.VisualTestEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptVisualTestEnvironment"/>
-    <classEntry path="org.flexunit.internals.dependency.ExternalDependencyResolver"/>
-    <classEntry path="org.flexunit.runner.external.ExternalDependencyToken"/>
-    <classEntry path="org.flexunit.runner.external.IExternalDependencyRunner"/>
-    <classEntry path="org.flexunit.internals.dependency.ExternalRunnerDependencyWatcher"/>
-    <classEntry path="org.flexunit.runner.external.IExternalDependencyLoader"/>
-    <classEntry path="org.flexunit.internals.dependency.IExternalRunnerDependencyWatcher"/>
-    <classEntry path="org.flexunit.internals.dependency.IExternalDependencyResolver"/>
-    <classEntry path="org.flexunit.constants.AnnotationArgumentConstants"/>
-    <classEntry path="org.flexunit.constants.AnnotationConstants"/>
-    <classEntry path="org.flexunit.runner.manipulation.fields.FieldMetaDataSorter"/>
-    <classEntry path="org.flexunit.runner.manipulation.fields.IFieldSorter"/>
-    <classEntry path="org.flexunit.internals.runners.watcher.FrameWatcher"/>
-    <classEntry path="org.flexunit.runner.external.IExternalDependencyData"/>
+    <classEntry path="flex.lang.reflect.builders.FieldBuilder"/>
+    <classEntry path="flex.lang.reflect.builders.MetaDataAnnotationBuilder"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

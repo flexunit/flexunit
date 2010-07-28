@@ -54,7 +54,7 @@ package org.hamcrest.mxml.object
         {
             matcher.target = null;
             
-            assertMismatchDescription("was null", matcher);
+            assertMismatchDescription("no property \"type\" on null", matcher);
         }
     }
 }

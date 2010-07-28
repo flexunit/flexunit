@@ -17,10 +17,6 @@ package org.flexunit.token.mocks
 			mock.parentToken = value;
 		}
 		
-		override public function get error():Error {
-			return mock.error;
-		}
-		
 		override public function addNotificationMethod(method:Function, debugClassName:String=null):IAsyncTestToken {
 			return mock.addNotificationMethod(method, debugClassName);
 		}

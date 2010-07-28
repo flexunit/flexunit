@@ -26,10 +26,13 @@
  * @version    
  **/ 
 package org.flexunit.runners {
+	import flash.utils.getQualifiedClassName;
+	
 	import flex.lang.reflect.Field;
 	
 	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.internals.AssumptionViolatedException;
+	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.internals.runners.model.EachTestNotifier;
 	import org.flexunit.internals.runners.statements.ExpectAsync;
 	import org.flexunit.internals.runners.statements.ExpectException;
@@ -399,7 +402,9 @@ package org.flexunit.runners {
 					//		a) does not implement the IMethodRule interface -or-
 					//		b) is null (even if defined as an IMethodRule)
 					//		Additionally, it will get thrown once for EACH test in the TestCase class.
-					throw new Error( "Something marked as [Rule] that does not implement IMethodRule!" );
+					var ruleVal:* = test[ ruleField.name ];
+					var typeOfRule:String = ruleVal?getQualifiedClassName(ruleVal):"null";
+					throw new InitializationError( ruleField.name + " is marked as [Rule] but does not implement IMethodRule. It appears to be " + typeOfRule );
 				}
 			}
 			
