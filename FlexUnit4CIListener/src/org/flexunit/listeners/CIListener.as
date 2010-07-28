@@ -177,7 +177,7 @@ package org.flexunit.listeners
 			var descriptor:Descriptor = getDescriptorFromDescription(description);
 
 			var xml:String =
-				"<testcase classname=\""+descriptor.suite+"\" name=\""+descriptor.method+"\" time=\"0\" status=\""+IGNORE+"\">"
+				"<testcase classname=\""+descriptor.suite+"\" name=\""+descriptor.method+"\" time=\"" + lastTestTime  + "\" status=\""+IGNORE+"\">"
 				+ "<skipped />"
 				+ "</testcase>";
 
