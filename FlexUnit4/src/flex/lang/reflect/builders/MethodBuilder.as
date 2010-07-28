@@ -138,7 +138,9 @@ package flex.lang.reflect.builders {
 				}
 
 				for ( var j:int=0; j<inheritance.length; j++ ) {
-					addMetaDataPerSuperClass( methodMap, ClassDataCache.describeType( inheritance[ j ] ) ); 
+					if ( inheritance[ j ] != Object ) {
+						addMetaDataPerSuperClass( methodMap, ClassDataCache.describeType( inheritance[ j ] ) );
+					}
 				}
 			}
 			
