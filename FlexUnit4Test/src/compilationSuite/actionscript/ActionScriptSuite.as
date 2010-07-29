@@ -5,6 +5,7 @@ package compilationSuite.actionscript {
 	import tests.org.flexunit.assert.AssertionAndAssumptionSuite;
 	import tests.org.flexunit.async.AsyncSuite;
 	import tests.org.flexunit.events.EventsSuite;
+	import tests.org.flexunit.runner.util.DescriptionUtilTest;
 	import tests.org.flexunit.token.TokenSuite;
 	import tests.org.flexunit.utils.UtilsSuite;
 
@@ -17,7 +18,8 @@ package compilationSuite.actionscript {
 		public var utilsSuite:UtilsSuite;
 		public var tokenSuite:TokenSuite;
 		public var async:AsyncSuite;
-		
+
+		public var descriptionUtil:DescriptionUtilTest;
 		public var flexUnit4ASSuite:FlexUnit4ASSuite;
 	}
 }

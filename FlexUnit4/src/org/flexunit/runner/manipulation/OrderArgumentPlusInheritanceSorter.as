@@ -35,6 +35,7 @@ package org.flexunit.runner.manipulation {
 	
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runners.model.TestClass;
+	import org.flexunit.utils.DescriptionUtil;
 	
 	/**
 	 * A <code>MetadataSorter</code> compares two values to determine which value is greater. This particular
@@ -77,11 +78,13 @@ package org.flexunit.runner.manipulation {
 		}
 		
 		/**
-		 * @private 
+		 * @private
+		 * 
+		 * This is ugly and needs to be refactored. I think we need to modify description
+		 * to accomplish what I want, but I need to fix this for the moment 
 		 */		
 		private function returnOnlyName( description:IDescription ):String {
-			var index:int = description.displayName.lastIndexOf( "." );
-			return description.displayName.substr( index + 1 );
+			return DescriptionUtil.getMethodNameFromDescription( description );
 		}
 
 		/**
