@@ -151,6 +151,7 @@
     <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptVisualTestEnvironment"/>
     <classEntry path="flex.lang.reflect.builders.FieldBuilder"/>
     <classEntry path="flex.lang.reflect.builders.MetaDataAnnotationBuilder"/>
+    <classEntry path="org.flexunit.utils.DescriptionUtil"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
