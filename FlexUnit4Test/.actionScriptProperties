@@ -12,9 +12,8 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="UIRunner.mxml"/>
     <application path="TestRunner.mxml"/>
-    <application path="FlexUnitApplication.mxml"/>
+    <application path="UIRunner.mxml"/>
   </applications>
   <modules/>
   <buildCSSFiles/>

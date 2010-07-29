@@ -152,6 +152,9 @@
     <classEntry path="flex.lang.reflect.builders.FieldBuilder"/>
     <classEntry path="flex.lang.reflect.builders.MetaDataAnnotationBuilder"/>
     <classEntry path="org.flexunit.utils.DescriptionUtil"/>
+    <classEntry path="org.flexunit.runner.manipulation.IFixtureSorter"/>
+    <classEntry path="org.flexunit.runner.manipulation.sortingInheritance.ISortingInheritanceCache"/>
+    <classEntry path="org.flexunit.runner.manipulation.sortingInheritance.ClassInheritanceOrderCache"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

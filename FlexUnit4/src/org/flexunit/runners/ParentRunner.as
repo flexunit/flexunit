@@ -44,6 +44,7 @@ package org.flexunit.runners {
 	import org.flexunit.runner.manipulation.ISortable;
 	import org.flexunit.runner.manipulation.ISorter;
 	import org.flexunit.runner.manipulation.NoTestsRemainException;
+	import org.flexunit.runner.manipulation.OrderArgumentPlusInheritanceSorter;
 	import org.flexunit.runner.manipulation.OrderArgumentSorter;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runner.notification.StoppedByUserException;
@@ -97,7 +98,7 @@ package org.flexunit.runners {
 		/**
 		 * @private
 		 */
-		protected var sorter:ISorter = OrderArgumentSorter.ORDER_ARG_SORTER;
+		protected var sorter:ISorter = OrderArgumentPlusInheritanceSorter.DEFAULT_SORTER;
 		/**
 		 * @private
 		 */
@@ -579,7 +580,7 @@ package org.flexunit.runners {
 			//Determine if the runner has already specified a ISorter besides the default META Sorter,
 			//if it has, ignore the new ISorter.  This is to prevent a potential problem with a parent Runner
 			//overwriting a child's non-default ISorter.
-			if(OrderArgumentSorter.ORDER_ARG_SORTER == this.sorter) {
+			if( OrderArgumentPlusInheritanceSorter.DEFAULT_SORTER == this.sorter ) {
 				this.sorter = sorter;
 				childrenFiltered = false;
 			}

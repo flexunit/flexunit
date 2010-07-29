@@ -30,14 +30,15 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestAsynchronousSetUpTearDown;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestBeforeAfterClassOrder;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestBeforeAfterClassOrderAsync;
+	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestBeforeAfterInheritance;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestBeforeAfterOrder;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestBeforeAfterOrderAsync;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestDoubleMetaData;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestIgnore;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestMethodOrder;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.cases.TestSynchronousSetUpTearDown;
-	import flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite.TestTheoriesSuite;
 	import flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite.FunctionalTheorySuite;
+	import flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite.TestTheoriesSuite;
 	
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
@@ -55,6 +56,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite
 		public var testBeforeAfterClassOrder:TestBeforeAfterClassOrder;
 		public var testBeforeAfterOrderAsync:TestBeforeAfterOrderAsync;
 		public var testBeforeAfterClassOrderAsync:TestBeforeAfterClassOrderAsync;
+		public var testBEforeAfterInheritance:TestBeforeAfterInheritance;
 		public var testAsynchronous:TestAsynchronousAS;
 		public var testSynchronousSetUpTearDown:TestSynchronousSetUpTearDown;
 		public var testAsynchronousSetUpTearDown:TestAsynchronousSetUpTearDown;
