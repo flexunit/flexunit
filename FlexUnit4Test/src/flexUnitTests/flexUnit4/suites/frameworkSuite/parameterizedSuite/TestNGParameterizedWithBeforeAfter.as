@@ -19,26 +19,26 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.parameterizedSuite
 		public static function beforeClass() : void
 		{
 			++beforeClassCount;
-			trace( "beforeClass()" );
+/*			trace( "beforeClass()" );
 			trace( "beforeClassCount: ", beforeClassCount );
 			trace( "beforeCount: ", beforeCount );
 			trace( "testCount: ", testCount );
 			trace( "afterCount: ", afterCount );
 			trace( "afterClassCount: ", afterClassCount );
-			trace();
+			trace();*/
 		}
 		
 		[AfterClass]
 		public static function afterClass() : void
 		{
 			++afterClassCount;
-			trace( "afterClass()" );
+/*			trace( "afterClass()" );
 			trace( "beforeClassCount: ", beforeClassCount );
 			trace( "beforeCount: ", beforeCount );
 			trace( "testCount: ", testCount );
 			trace( "afterCount: ", afterCount );
 			trace( "afterClassCount: ", afterClassCount );
-			trace();
+			trace();*/
 			Assert.assertEquals( testCount, 3 );
 			Assert.assertEquals( afterClassCount, 1 );
 		}
@@ -47,13 +47,13 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.parameterizedSuite
 		public function before() : void
 		{
 			++beforeCount;
-			trace( "before()" );
+/*			trace( "before()" );
 			trace( "beforeClassCount: ", beforeClassCount );
 			trace( "beforeCount: ", beforeCount );
 			trace( "testCount: ", testCount );
 			trace( "afterCount: ", afterCount );
 			trace( "afterClassCount: ", afterClassCount );
-			trace();
+			trace();*/
 		}
 		
 		[After]
@@ -62,13 +62,13 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.parameterizedSuite
 			++afterCount;
 			// Since [AfterClass] method shouldn't be called yet, and should be
 			// called once per test run, these should be equivalent.
-			trace( "after()" );
+/*			trace( "after()" );
 			trace( "beforeClassCount: ", beforeClassCount );
 			trace( "beforeCount: ", beforeCount );
 			trace( "testCount: ", testCount );
 			trace( "afterCount: ", afterCount );
 			trace( "afterClassCount: ", afterClassCount );
-			trace();
+			trace();*/
 			Assert.assertEquals( afterCount, testCount );
 		}
 		
@@ -78,14 +78,14 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.parameterizedSuite
 		public function parameterized_testng_verifyBeforeClass( num : int ) : void
 		{
 			++testCount;
-			trace( "parameterized_testng_verifyBeforeClass()" );
+/*			trace( "parameterized_testng_verifyBeforeClass()" );
 			trace( "num: ", num );
 			trace( "beforeClassCount: ", beforeClassCount );
 			trace( "beforeCount: ", beforeCount );
 			trace( "testCount: ", testCount );
 			trace( "afterCount: ", afterCount );
 			trace( "afterClassCount: ", afterClassCount );
-			trace();
+			trace();*/
 			Assert.assertEquals( beforeClassCount, 1 );
 			Assert.assertEquals( num + 1, beforeCount );
 			Assert.assertEquals( num + 1, testCount );
