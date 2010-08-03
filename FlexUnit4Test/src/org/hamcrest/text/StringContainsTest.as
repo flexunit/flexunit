@@ -1,6 +1,5 @@
 package org.hamcrest.text
 {
-
     import org.hamcrest.*;
     import org.hamcrest.core.*;
 
@@ -8,15 +7,16 @@ package org.hamcrest.text
 
     public class StringContainsTest extends AbstractMatcherTestCase
     {
-
         private static const EXCERPT:String = "EXCERPT";
 
         private var stringContains:Matcher;
+        private var stringContainsIgnoreCase:Matcher;
 
         [Before]
         public function setUp():void
         {
             stringContains = containsString(EXCERPT);
+            stringContainsIgnoreCase = containsString(EXCERPT, true);
         }
 
         [Test]
@@ -39,6 +39,34 @@ package org.hamcrest.text
 
             assertDoesNotMatch("should not be true if part of excerpt is in string",
                 stringContains, EXCERPT.substring(1));
+        }
+        
+        [Test]
+        public function evaluatesToTrueIfArgumentContainsSpecifiedSubstringIgnoringCase():void 
+        {
+            assertMatches("should be true if excerpt at beginning",
+                stringContainsIgnoreCase, 
+                EXCERPT.toLowerCase() + "END");
+
+            assertMatches("should be true if excerpt at end",
+                stringContainsIgnoreCase, 
+                "START" + EXCERPT.toLowerCase());
+
+            assertMatches("should be true if excerpt in middle",
+                stringContainsIgnoreCase, 
+                "START" + EXCERPT.toLowerCase() + "END");
+
+            assertMatches("should be true if excerpt is repeated",
+                stringContainsIgnoreCase, 
+                EXCERPT.toLowerCase() + EXCERPT);
+
+            assertDoesNotMatch("should not be true if excerpt is not in string",
+                stringContainsIgnoreCase, 
+                "Something else");
+
+            assertDoesNotMatch("should not be true if part of excerpt is in string",
+                stringContainsIgnoreCase, 
+                EXCERPT.toLowerCase().substring(1));
         }
 
         [Test]

@@ -36,8 +36,9 @@
       <delete>
          <fileset dir="${lib.loc}">
             <exclude name="FlexUnit1Lib.swc" />
-            <exclude name="hamcrest-1.0.2.swc" />
+            <exclude name="hamcrest-as3-1.1.0.swc" />
             <exclude name="mock-as3.swc" />
+            <exclude name="mockolate-0.9.0.swc" />
             <exclude name="build/saxon*.jar" />
          </fileset>
       </delete>

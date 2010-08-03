@@ -1,12 +1,9 @@
 package org.hamcrest.collection
 {
-
-    import org.hamcrest.AbstractMatcherTestCase;
     import org.hamcrest.object.equalTo;
 
-    public class IsArrayTest extends AbstractMatcherTestCase
+    public class IsArrayTest extends AbstractArrayMatcherTestCase
     {
-
         [Test]
         public function matchesAnArrayThatMatchesAllTheElementMatchers():void
         {
@@ -48,6 +45,15 @@ package org.hamcrest.collection
         public function hasAReadableDescription():void
         {
             assertDescription("[\"a\", \"b\"]", array(equalTo("a"), equalTo("b")));
+        }
+        
+        [Test]
+        public function describesMismatches():void 
+        {
+            assertMismatch(
+                "was [\"a\",\"b\",\"d\"]",
+                array("a", "b", "c"), 
+                ['a', 'b', 'd']);
         }
     }
 }

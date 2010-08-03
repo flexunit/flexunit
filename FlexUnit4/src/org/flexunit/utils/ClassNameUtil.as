@@ -33,22 +33,24 @@ package org.flexunit.utils {
 		import flash.utils.getQualifiedClassName;
 
 		/**
-		 * Returns a logger friendly class name for the provided <code>instance</code>.  The
-		 * normal qualified class name will have all "::" and "." replaced with underscores.
+		 * Returns a logger friendly class name for the provided instance or class.  The
+		 * normal qualified class name will have all "::", "." and "$" replaced with underscores.
 		 * 
-		 * @param instance The Object for which to obtain a logger friendly class name.
+		 * @param instance or class The Object for which to obtain a logger friendly class name.
 		 * 
-		 * @return a qualified path name with all "::" and "." replaced with underscores.
+		 * @return an escaped path that the Logger class can parse
 		 */
-		public static function getLoggerFriendlyClassName( instance:Object ):String {
+		public static function getLoggerFriendlyClassName( instanceOrClass:Object ):String {
 			var periodReplace:RegExp = /\./g;
 			var colonReplace:RegExp = /::/g;
+			var dollarSignReplace:RegExp = /\$/g;
 
-			var fullname:String = getQualifiedClassName( instance );
-			fullname = fullname.replace( periodReplace, "_" );
-			fullname = fullname.replace( colonReplace, "_" );
+			var escapedName:String = getQualifiedClassName( instanceOrClass );
+			escapedName = escapedName.replace( periodReplace, "_" );
+			escapedName = escapedName.replace( colonReplace, "_" );
+			escapedName = escapedName.replace( dollarSignReplace, "_" );
 
-			return fullname;
+			return escapedName;
 		}
 		
 		/**

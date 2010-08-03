@@ -186,7 +186,7 @@ package org.flexunit.internals.runners.statements {
 				sendComplete( new Error("Test Completed, but additional async event added") );
 			}
 
-			var asyncHandler:AsyncHandler = new AsyncHandler( this, eventHandler )
+			var asyncHandler:AsyncHandler = new AsyncHandler( eventHandler )
 			asyncHandler.addEventListener( AsyncHandler.EVENT_FIRED, handleAsyncErrorFired, false, 0, true );
 			//asyncHandler.addEventListener( AsyncHandler.TIMER_EXPIRED, handleAsyncTimeOut, false, 0, true );
 
@@ -215,7 +215,7 @@ package org.flexunit.internals.runners.statements {
 				sendComplete( new Error("Test Completed, but additional async event added") );
 			}
 
-			var asyncHandler:AsyncHandler = new AsyncHandler( this, eventHandler, timeout, passThroughData, timeoutHandler )
+			var asyncHandler:AsyncHandler = new AsyncHandler( eventHandler, timeout, passThroughData, timeoutHandler )
 			asyncHandler.addEventListener( AsyncHandler.EVENT_FIRED, handleAsyncEventFired, false, 0, true );
 			asyncHandler.addEventListener( AsyncHandler.TIMER_EXPIRED, handleAsyncTimeOut, false, 0, true );
 
@@ -270,7 +270,7 @@ package org.flexunit.internals.runners.statements {
 				asyncResponder = new AsyncTestResponder( responder );
 			}
 
-			var asyncHandler:AsyncHandler = new AsyncHandler( this, handleAsyncTestResponderEvent, timeout, passThroughData, timeoutHandler )
+			var asyncHandler:AsyncHandler = new AsyncHandler( handleAsyncTestResponderEvent, timeout, passThroughData, timeoutHandler )
 			asyncHandler.addEventListener( AsyncHandler.EVENT_FIRED, handleAsyncEventFired, false, 0, true );
 			asyncHandler.addEventListener( AsyncHandler.TIMER_EXPIRED, handleAsyncTimeOut, false, 0, true );
 
@@ -473,7 +473,7 @@ package org.flexunit.internals.runners.statements {
 			
 			asyncResponder = new AsyncNativeTestResponder( resultHandler, faultHandler );
 			
-			var asyncHandler:AsyncHandler = new AsyncHandler( this, handleAsyncNativeTestResponderEvent, timeout, passThroughData, timeoutHandler )
+			var asyncHandler:AsyncHandler = new AsyncHandler( handleAsyncNativeTestResponderEvent, timeout, passThroughData, timeoutHandler )
 			asyncHandler.addEventListener( AsyncHandler.EVENT_FIRED, handleAsyncEventFired, false, 0, true );
 			asyncHandler.addEventListener( AsyncHandler.TIMER_EXPIRED, handleAsyncTimeOut, false, 0, true );
 			

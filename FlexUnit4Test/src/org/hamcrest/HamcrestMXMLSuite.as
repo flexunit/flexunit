@@ -1,5 +1,6 @@
 package org.hamcrest
 {
+	import org.hamcrest.mxml.BaseMXMLMatcherTest;
     import org.hamcrest.mxml.collection.ArrayTest;
     import org.hamcrest.mxml.collection.ArrayWithSizeTest;
     import org.hamcrest.mxml.collection.EmptyArrayTest;
@@ -10,6 +11,7 @@ package org.hamcrest
     import org.hamcrest.mxml.core.AllOfTest;
     import org.hamcrest.mxml.core.AnyOfTest;
     import org.hamcrest.mxml.core.AnythingTest;
+    import org.hamcrest.mxml.BaseMXMLMatcherTest;
     import org.hamcrest.mxml.core.DescribedAsTest;
     import org.hamcrest.mxml.core.NotTest;
     import org.hamcrest.mxml.date.DateAfterTest;
@@ -23,13 +25,17 @@ package org.hamcrest
     import org.hamcrest.mxml.number.LessThanOrEqualToTest;
     import org.hamcrest.mxml.number.LessThanTest;
     import org.hamcrest.mxml.object.EqualToTest;
+    import org.hamcrest.mxml.object.HasPropertyChainTest;
     import org.hamcrest.mxml.object.HasPropertyTest;
     import org.hamcrest.mxml.object.HasPropertyWithValueTest;
     import org.hamcrest.mxml.object.InstanceOfTest;
+    import org.hamcrest.mxml.object.IsFalseTest;
+    import org.hamcrest.mxml.object.IsTrueTest;
     import org.hamcrest.mxml.object.NotNullTest;
     import org.hamcrest.mxml.object.NullTest;
     import org.hamcrest.mxml.object.SameInstanceTest;
     import org.hamcrest.mxml.text.ContainsStringTest;
+    import org.hamcrest.mxml.text.EmptyStringTest;
     import org.hamcrest.mxml.text.EndsWithTest;
     import org.hamcrest.mxml.text.StartsWithTest;
 
@@ -37,6 +43,9 @@ package org.hamcrest
     [RunWith("org.flexunit.runners.Suite")]
     public class HamcrestMXMLSuite
     {
+		// base
+		public var baseMatcher:BaseMXMLMatcherTest;
+		
         // collection
         public var array:ArrayTest;
         public var arrayWithSize:ArrayWithSizeTest;
@@ -71,8 +80,11 @@ package org.hamcrest
         public var equalTo:EqualToTest;
         public var hasPropety:HasPropertyTest;
         public var hasPropetyWithValue:HasPropertyWithValueTest;
+        public var hasPropertyChain:HasPropertyChainTest;
 //        public var hasProperties:HasPropertiesTest;
         public var instanceOf:InstanceOfTest;
+        public var isTrue:IsTrueTest;
+        public var isFalse:IsFalseTest;
         public var notNull:NotNullTest;
         public var nullTest:NullTest;
         public var sameInstance:SameInstanceTest;
@@ -82,6 +94,7 @@ package org.hamcrest
         public var endsWith:EndsWithTest;
 //        public var matchesPattern:MatchesPatternTest;
         public var startsWith:StartsWithTest;
+        public var emptyString:EmptyStringTest;
 
     }
 }

@@ -19,28 +19,28 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite
 		public static function beforeClass() : void
 		{
 			++beforeClassCount;
-			trace( "beforeClassCount: ", beforeClassCount );
+			//trace( "beforeClassCount: ", beforeClassCount );
 		}
 		
 		[AfterClass]
 		public static function afterClass() : void
 		{
 			++afterClassCount;
-			trace( "afterClassCount: ", afterClassCount );
+			//trace( "afterClassCount: ", afterClassCount );
 		}
 		
 		[Before]
 		public function before() : void
 		{
 			++beforeCount;
-			trace( "beforeCount: ", beforeCount );
+			//trace( "beforeCount: ", beforeCount );
 		}
 		
 		[After]
 		public function after() : void
 		{
 			++afterCount;
-			trace( "afterCount: ", afterCount );
+			//trace( "afterCount: ", afterCount );
 		}
 		
 		[Theory]
@@ -52,7 +52,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite
 			Assert.assertEquals( beforeClassCount, 1 );
 			Assert.assertEquals( afterClassCount, 0 );
 			++testCount;
-			trace( "testCount: ", testCount );
+			//trace( "testCount: ", testCount );
 		}
 	}
 }

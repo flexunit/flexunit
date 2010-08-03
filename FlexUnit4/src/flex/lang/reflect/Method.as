@@ -32,9 +32,8 @@ package flex.lang.reflect {
 	import org.flexunit.constants.AnnotationConstants;
 	
 	/**
-	 * Used to create XML style methods for use with FlexUnit
-	 * These XML "methods" are then run through the associated
-	 * apply/invoke call and allowing FlexUnit to pull the results
+	 * An object representing a method of a class or instance. You can invoke
+	 * the method as well as inspect its metadata. 
 	 */
 	public class Method {
 		/**
@@ -78,7 +77,62 @@ package flex.lang.reflect {
 		private var _elementType:Class;
 
 		/**
-		 * Returns the <code>Method</code> metadata.
+		 * Returns the name of the <code>Method</code>
+		 */
+		public function get name():String {
+			return _name;
+		} 
+
+		/**
+		 * Returns true if the method is static and false if it is an instance method
+		 */
+		public function get isStatic():Boolean {
+			return _isStatic;
+		} 
+
+		/**
+		 * Returns the XML used to build this <code>Method</code>
+		 */
+		public function get methodXML():XML {
+			return _methodXML;
+		} 		
+
+		/**
+		 * Returns the the class where this <code>Method</code> is defined.
+		 */
+		public function get declaringClass():Class {
+			if ( !_declaringClass ) {
+				_declaringClass = getDeclaringClassFromMeta( methodXML );
+			}
+			
+			return _declaringClass;
+		}
+
+		/**
+		 * Returns the return type of the <code>Method</code>
+		 */
+		public function get returnType():Class {
+			if ( !_returnType ) { 
+				_returnType = getReturnTypeFromMeta( methodXML );
+			}
+			
+			return _returnType;
+		} 
+		
+		/**
+		 * Returns the <code>Method</code> parameter types as an array.
+		 */
+		public function get parameterTypes():Array {
+			if ( !_parameterTypes ) {
+				_parameterTypes = getParameterTypes( methodXML );
+			}
+			
+			return _parameterTypes;
+		} 
+
+		/**
+		 * Returns an array of <code>MetaDataAnnotation</code> instances associated with this
+		 * <code>Method</code>.
 		 */
 		public function get metadata():Array {
 			if ( !_metaData ) {
@@ -95,51 +149,37 @@ package flex.lang.reflect {
 		}
 
 		/**
-		 * Returns the <code>Method</code> XML
+		 * Checks for the existance of a metadata annotation using the annotation's name
+		 * 
+		 * @param name the name of the annotation
+		 * @return Returns true if the annotation exists, false if it does not.
+		 * 
+		 * @see #getMetaData()
 		 */
-		public function get methodXML():XML {
-			return _methodXML;
-		} 
-
+		public function hasMetaData( name:String ):Boolean {
+			return ( getMetaData( name ) != null );
+		}
+		
 		/**
-		 * Returns the <code>Method</code>'s class.
+		 * Returns the MetaDataAnnotation associated with a given annotation using the annotation's name
+		 *  
+		 * @param name the name of the annotation
+		 * @return the MetaDataAnnotation instance for the annotation name, or null if it was not found.
+		 * 
 		 */
-		public function get declaringClass():Class {
-			if ( !_declaringClass ) {
-				_declaringClass = getDeclaringClassFromMeta( methodXML );
+		public function getMetaData( name:String ):MetaDataAnnotation {
+			var metadataAr:Array = metadata;
+			
+			if ( metadataAr.length ) {
+				for ( var i:int=0; i<metadataAr.length; i++ ) {
+					if ( ( metadataAr[ i ] as MetaDataAnnotation ).name == name ) {
+						return metadataAr[ i ];
+					}
+				}				
 			}
-
-			return _declaringClass;
-		} 
-
-		/**
-		 * Returns the name of the <code>Method</code>
-		 */
-		public function get name():String {
-			return _name;
-		} 
-
-		/**
-		 * Returns the <code>Method</code> paramater types as an array.
-		 */
-		public function get parameterTypes():Array {
-			if ( !_parameterTypes ) {
-				_parameterTypes = getParameterTypes( methodXML );
-			}
-
-			return _parameterTypes;
-		} 
-
-		/**
-		 * Returns the return type of the <code>Method</code>
-		 */
-		public function get returnType():Class {
-			if ( !_returnType ) { 
-				_returnType = getReturnTypeFromMeta( methodXML );
-			}
-
-			return _returnType;
-		} 
+			
+			return null;
+		}
 
 		/**
 		 * If the return type is an array, returns the type of each element
@@ -160,6 +200,7 @@ package flex.lang.reflect {
 					}
 					_elementType = Klass.getClassFromName( potentialClassName );
 				} catch ( error:Error ) {
+					_elementType = null;
 					trace("Cannot find specified ArrayElementType("+meta+") in SWF");
 				}
 					
@@ -167,13 +208,6 @@ package flex.lang.reflect {
 			
 			return _elementType;
 		}
-
-		/**
-		 * Returns whether the method is static or not
-		 */
-		public function get isStatic():Boolean {
-			return _isStatic;
-		} 
 		
 		/**
 		 * @private
@@ -196,7 +230,7 @@ package flex.lang.reflect {
 		 * @param obj the item to call
 		 * @param argArray the paramaters to call with apply, if any
 		 * 
-		 * @return normal return value of the method
+		 * @return return value of the method
 		 * 
 		 * @see #invoke()
 		 */
@@ -219,7 +253,7 @@ package flex.lang.reflect {
 		 * @param obj the item to call
 		 * @param args the paramaters to call with apply, if any
 		 * 
-		 * @return normal return value of the method
+		 * @return return value of the method
 		 * @see #apply()
 		 */
 		public function invoke( obj:Object, ...args ):Object {
@@ -239,21 +273,39 @@ package flex.lang.reflect {
 		 * @private
 		 */
 		private static function getDeclaringClassFromMeta( methodXML:XML ):Class {
-			return Klass.getClassFromName( methodXML.@declaredBy );
+			var type:Class;
+			
+			if ( String( methodXML.@declaredBy ).length > 0 ) {
+				type = Klass.getClassFromName( methodXML.@declaredBy ); 	
+			}
+			
+			return type; 
 		} 
 
 		/**
 		 * @private
 		 */
 		private static function getReturnTypeFromMeta( methodXML:XML ):Class {
-			return Klass.getClassFromName( methodXML.@returnType );
+			var type:Class;
+
+			if ( String( methodXML.@returnType ).length > 0 ) {
+				type = Klass.getClassFromName( methodXML.@returnType ); 	
+			}
+			
+			return type; 
 		} 
 		
 		/**
 		 * @private
 		 */
 		private static function getParameterClass( parameter:XML ):Class {
-			return Klass.getClassFromName( parameter.@type );
+			var type:Class;
+			
+			if ( String( parameter.@type ).length > 0 ) {
+				type = Klass.getClassFromName( parameter.@type ); 	
+			}
+			
+			return type; 
 		}
 
 		/**
@@ -280,40 +332,6 @@ package flex.lang.reflect {
 		}
 
 		/**
-		 * Tests if the <code>Method</code> has the paramater metadata
-		 * 
-		 * @param name of the metadata
-		 * 
-		 * @return <code>true</code> if found, else <code>false</code>
-		 */
-		public function hasMetaData( name:String ):Boolean {
-			return ( getMetaData( name ) != null );
-		}
-		
-		/**
-		 * Retrieves the value of the metadata defined by the paramater name with the paramater key.
-		 * If key is left blank, will match the first metadata with the paramater name
-		 * 
-		 * @param name of the metadata
-		 * @param key matching the name (<code>null</code> ok)
-		 * 
-		 * @return value of the metadata
-		 */
-		public function getMetaData( name:String ):MetaDataAnnotation {
-			var metadataAr:Array = metadata;
-			
-			if ( metadataAr.length ) {
-				for ( var i:int=0; i<metadataAr.length; i++ ) {
-					if ( ( metadataAr[ i ] as MetaDataAnnotation ).name == name ) {
-						return metadataAr[ i ];
-					}
-				}				
-			}
-
-			return null;
-		}
-		
-		/**
 		 * Clones the existing method 
 		 * @return a new Method
 		 * 
@@ -324,13 +342,90 @@ package flex.lang.reflect {
 			
 			return newMethod;
 		}
+		
 		/**
-		 * <code>Method</code> Constructor
+		 * Compares two Method instances for equality
 		 * 
-		 * @param methodXML XML of the method to create
-		 * @param isStatic specifies whether the method is static or not
+		 * @return Returns boolean indicating equality
+		 * 
+		 */
+		public function equals( item:Method ):Boolean {
+			if ( !item ) {
+				return false;
+			}
+			
+			var equiv:Boolean = ( ( this.name == item.name ) && 
+				( this.isStatic == item.isStatic ) &&
+				( this.declaringClass == item.declaringClass ) &&
+				( this.returnType == item.returnType ) );
+
+			var localParams:Array = this.parameterTypes;
+			var remoteParams:Array = item.parameterTypes;
+
+			var localMetaData:Array = this.metadata;
+			var remoteMetaData:Array = item.metadata;
+			
+			if ( equiv ) {
+				var localParamLen:int = localParams?localParams.length:0;
+				var remoteParamLen:int = remoteParams?remoteParams.length:0;
+
+				if ( localParamLen != remoteParamLen ) {
+					return false;
+				}
+
+				if ( localParamLen > 0) {
+					for ( var j:int=0; j<localParamLen; j++ ) {
+						equiv = localParams[ j ] == remoteParams[ j ];
+						if (!equiv) {
+							break;
+						}
+					}
+				}
+
+				var localMetaLen:int = localMetaData?localMetaData.length:0;
+				var remoteMetaLen:int = remoteMetaData?remoteMetaData.length:0;
+				
+				if ( localMetaLen != remoteMetaLen ) {
+					return false;
+				}
+				
+				if ( localMetaLen > 0) {
+					for ( var i:int=0; i<localMetaLen; i++ ) {
+						var localMeta:MetaDataAnnotation = localMetaData[ i ];
+						var remoteMeta:MetaDataAnnotation = remoteMetaData[ i ];
+						
+						equiv = localMeta.equals( remoteMeta );
+						if (!equiv) {
+							break;
+						}
+					}
+				}
+			}
+			
+			return equiv;
+		}		
+		
+		/**
+		 * Constructor 
+		 * Parses <method/> nodes returned from a call to <code>describeType</code> to provide an 
+		 * object wrapper for Methods
+		 * 
+		 * Expected format of the argument is
+		 *     <method name="someMethod" declaredBy="tests::SomeClass" returnType="void">
+		 * 		 <metadata name="Before">
+		 * 			<arg key="order" value="2"/>
+		 * 		 </metadata>
+		 * 	   </method>
+		 * 
+		 * @param A <metadata/> XML node.
+		 * 
 		 */
 		public function Method( methodXML:XML, isStatic:Boolean=false ) {
+
+			if ( !methodXML ) {
+				throw new ArgumentError("Valid XML must be provided to Method Constructor");
+			}
+			
 			_methodXML = methodXML;
 			_isStatic = isStatic;
 

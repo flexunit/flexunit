@@ -25,15 +25,13 @@
  * @author     Michael Labriola 
  * @version    
  **/ 
-package org.flexunit.runner.manipulation
-{
+package org.flexunit.runner.manipulation {
 	import org.flexunit.runner.IDescription;
 	
 	/**
 	 * Sorters should implement this interface.
 	 */
-	public interface ISorter
-	{	
+	public interface ISorter {	
 		/**
 		 * Sorts the test in <code>runner</code> using <code>compare function</code>.
 		 * 

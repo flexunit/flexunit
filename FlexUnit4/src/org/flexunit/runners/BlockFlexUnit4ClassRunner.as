@@ -26,10 +26,13 @@
  * @version    
  **/ 
 package org.flexunit.runners {
+	import flash.utils.getQualifiedClassName;
+	
 	import flex.lang.reflect.Field;
 	
 	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.internals.AssumptionViolatedException;
+	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.internals.runners.model.EachTestNotifier;
 	import org.flexunit.internals.runners.statements.ExpectAsync;
 	import org.flexunit.internals.runners.statements.ExpectException;
@@ -47,10 +50,13 @@ package org.flexunit.runners {
 	import org.flexunit.runner.Description;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.manipulation.IFilterable;
+	import org.flexunit.runner.manipulation.IFixtureSorter;
 	import org.flexunit.runner.manipulation.ISorter;
 	import org.flexunit.runner.manipulation.OrderArgumentPlusInheritanceSorter;
 	import org.flexunit.runner.manipulation.fields.FieldMetaDataSorter;
 	import org.flexunit.runner.manipulation.fields.IFieldSorter;
+	import org.flexunit.runner.manipulation.sortingInheritance.ISortingInheritanceCache;
+	import org.flexunit.runner.manipulation.sortingInheritance.ClassInheritanceOrderCache;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runner.notification.StoppedByUserException;
 	import org.flexunit.runners.model.FrameworkMethod;
@@ -399,7 +405,9 @@ package org.flexunit.runners {
 					//		a) does not implement the IMethodRule interface -or-
 					//		b) is null (even if defined as an IMethodRule)
 					//		Additionally, it will get thrown once for EACH test in the TestCase class.
-					throw new Error( "Something marked as [Rule] that does not implement IMethodRule!" );
+					var ruleVal:* = test[ ruleField.name ];
+					var typeOfRule:String = ruleVal?getQualifiedClassName(ruleVal):"null";
+					throw new InitializationError( ruleField.name + " is marked as [Rule] but does not implement IMethodRule. It appears to be " + typeOfRule );
 				}
 			}
 			
@@ -422,13 +430,20 @@ package org.flexunit.runners {
 			var statement:IAsyncStatement;
 			
 			var befores:Array = testClass.getMetaDataMethods( AnnotationConstants.BEFORE );
+			var sortMethod:Function;
 			
 			if ( befores.length > 1 ) {
-				var inheritanceSorter:ISorter = new OrderArgumentPlusInheritanceSorter( sorter, testClass, true );
-				//Sort the befores array
-				befores.sort( function compare(o1:Object, o2:Object):int {
-									return inheritanceSorter.compare(describeChild(o1), describeChild(o2));
-							  } );
+				if ( sorter is IFixtureSorter ) {
+					var cache:ISortingInheritanceCache = new ClassInheritanceOrderCache( testClass );
+
+					befores.sort( function compare( o1:Object, o2:Object ):int {
+						return ( sorter as IFixtureSorter ).compareFixtureElements( describeChild( o1 ), describeChild( o2 ), cache, true );
+					} );
+				} else {
+					befores.sort( function compare( o1:Object, o2:Object ):int {
+						return sorter.compare( describeChild( o1 ), describeChild( o2 ) );
+					} );
+				}
 			}
 
 			return (befores.length)?new RunBeforesInline( befores, target, statement ):statement;
@@ -446,11 +461,17 @@ package org.flexunit.runners {
 			var afters:Array = testClass.getMetaDataMethods( AnnotationConstants.AFTER );
 
 			if ( afters.length > 1 ) {
-				var inheritanceSorter:ISorter = new OrderArgumentPlusInheritanceSorter( sorter, testClass, false );
-	
-				afters.sort( function compare(o1:Object, o2:Object):int {
-					return inheritanceSorter.compare(describeChild(o1), describeChild(o2));
-				} );
+				if ( sorter is IFixtureSorter ) {
+					var cache:ISortingInheritanceCache = new ClassInheritanceOrderCache( testClass );
+					
+					afters.sort( function compare( o1:Object, o2:Object ):int {
+						return ( sorter as IFixtureSorter ).compareFixtureElements( describeChild( o1 ), describeChild( o2 ), cache, false );
+					} );
+				} else {
+					afters.sort( function compare( o1:Object, o2:Object ):int {
+						return sorter.compare( describeChild( o1 ), describeChild( o2 ) );
+					} );
+				}
 			}
 
 			return (afters.length)?new RunAftersInline( afters, target, statement ):statement;

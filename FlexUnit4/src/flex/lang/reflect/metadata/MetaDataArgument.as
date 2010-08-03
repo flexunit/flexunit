@@ -26,6 +26,11 @@
  * @version    
  **/ 
 package flex.lang.reflect.metadata {
+
+	/**
+	 * An object representing an argument of a metadata tag, in the example [Test(arg="1")]
+	 * arg="1" is the argument. You can interrogate the arguments key and value. 
+	 */
 	public class MetaDataArgument {
 		/**
 		 * @private
@@ -40,6 +45,11 @@ package flex.lang.reflect.metadata {
 		 */
 		private var _value:String;
 
+		/**
+		 * @private
+		 */
+		private var _unpaired:Boolean = false;
+		
 		/**
 		 * Retrieves the key of an argument. Read Only. (The name of a name/value pair.)
 		 * @return 
@@ -60,6 +70,20 @@ package flex.lang.reflect.metadata {
 		}
 
 		/**
+		 * Indicates if the argument is unpaired. Given the following example:
+		 * 
+		 * [RunWith("org.flexunit.runners.Suite",order=1)]
+		 * 
+		 * order="1" is a paired argument where as "org.flexunit.runners.Suite" is unpaired. 
+		 * 
+		 * @return true if unpaired
+		 * 
+		 */
+		public function get unpaired():Boolean {
+			return _unpaired;
+		}
+
+		/**
 		 * Compares two MetaDataArguments for key and value equality
 		 * 
 		 * @return Returns boolean indicating equality
@@ -71,23 +95,33 @@ package flex.lang.reflect.metadata {
 
 		/**
 		 * Constructor
-		 * Takes the XML that is passed in to it that represents an argument from a metadata annotation and stores it.
+		 * Parses <arg/> nodes returned from a call to <code>describeType</code> to provide an object wrapper. 
+		 * Expected format of the argument is
 		 * 
-		 * @param argument The XML of an argument from a piece of metadata annotation.
+		 * <arg key="someKey" value="someValue"/>
+		 * 
+		 * @param An <arg/> XML node.
 		 * 
 		 */
-		public function MetaDataArgument( argument:XML ) {
-			this.argument = argument;
-			
+		public function MetaDataArgument( argumentXML:XML ) {
+
+			if ( !argumentXML ) {
+				throw new ArgumentError("Valid XML must be provided to MetaDataArgument Constructor");
+			}
+
+			this.argument = argumentXML;
+
 			var potentialKey:String = argument.@key;
 			_value = argument.@value;
 
 			if ( potentialKey && potentialKey.length>0 ) {
 				_key = potentialKey;
-				_value = argument.@value; 
-			} else {
+			} else if ( _value && _value.length>0 ){
+				_unpaired = true;
 				_key = _value;
 				_value = "true";
+			} else {
+				_key = argument.@key;
 			}
 		}
 	}

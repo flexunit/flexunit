@@ -1,6 +1,5 @@
 package org.flexunit.runners
 {
-	import org.flexunit.runners.cases.AllTestsCase;
 	import org.flexunit.runners.cases.BlockFlexUnit4ClassRunnerCase;
 	import org.flexunit.runners.cases.ParameterizedCase;
 	import org.flexunit.runners.cases.ParentRunnerCase;
@@ -13,7 +12,6 @@ package org.flexunit.runners
 	{
 		public var modelSuite:ModelSuite;
 		
-		public var allTestsCase:AllTestsCase;
 		public var blockFlexUnit4ClassRunnerCase:BlockFlexUnit4ClassRunnerCase;
 		public var parentRunnerCase:ParentRunnerCase;
 		public var parametizedCase:ParameterizedCase;
