@@ -407,17 +407,17 @@ package flex.lang.reflect {
 		
 		/**
 		 * Constructor 
-		 * Parses <method/> nodes returned from a call to <code>describeType</code> to provide an 
+		 * Parses &lt;method/&gt; nodes returned from a call to &lt;code&gt;describeType&lt;/code&gt; to provide an 
 		 * object wrapper for Methods
 		 * 
 		 * Expected format of the argument is
-		 *     <method name="someMethod" declaredBy="tests::SomeClass" returnType="void">
-		 * 		 <metadata name="Before">
-		 * 			<arg key="order" value="2"/>
-		 * 		 </metadata>
-		 * 	   </method>
+		 *     &lt;method name=&quot;someMethod&quot; declaredBy=&quot;tests::SomeClass&quot; returnType=&quot;void&quot;&gt;
+		 * 		 &lt;metadata name=&quot;Before&quot;&gt;
+		 * 			&lt;arg key=&quot;order&quot; value=&quot;2&quot;/&gt;
+		 * 		 &lt;/metadata&gt;
+		 * 	   &lt;/method&gt;
 		 * 
-		 * @param A <metadata/> XML node.
+		 * @param A &lt;metadata/&gt; XML node.
 		 * 
 		 */
 		public function Method( methodXML:XML, isStatic:Boolean=false ) {

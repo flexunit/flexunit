@@ -29,7 +29,7 @@ package flex.lang.reflect {
 	import flash.utils.describeType;
 	
 	/**
-	 * Parses <constructor/> node returned from a call to <code>describeType</code> to provide an
+	 * Parses &lt;constructor/&gt; node returned from a call to <code>describeType</code> to provide an
 	 * object wrapper for the Constructor
 	 * 
 	 * @see Klass
@@ -270,15 +270,15 @@ package flex.lang.reflect {
 		/**
 		 * Constructor
 		 *  
-		 * Parses <constructor/> node returned from a call to <code>describeType</code> to provide an 
+		 * Parses &lt;constructor/&gt; node returned from a call to <code>describeType</code> to provide an 
 		 * object wrapper for the Constructor
 		 * 
 		 * Expected format of the argument is
-		 * 		<constructor>
-		 * 			<parameter index="1" type="*" optional="false"/>
-		 * 		</constructor>		 
+		 * 		&lt;constructor&gt;
+		 * 			&lt;parameter index=&quot;1&quot; type=&quot;*&quot; optional=&quot;false&quot;/&gt;
+		 * 		&lt;/constructor&gt;		 
 		 *  
-		 * @param A <constructor/> XML node.
+		 * @param A &lt;constructor/&gt; XML node.
 		 * 
 		 */
 		public function Constructor( constructorXML:XML, klass:Klass ) {
