@@ -17,6 +17,7 @@ public abstract class Command
    {
       super();
       this.commandLine = new Commandline();
+      environment = new String[0];
    }
 
    public void setProject(Project project)

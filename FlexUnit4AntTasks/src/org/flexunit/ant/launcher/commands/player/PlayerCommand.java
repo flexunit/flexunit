@@ -15,5 +15,6 @@ public interface PlayerCommand
    public void setProject(Project project);
    public void setEnvironment(String[] variables);
    public void setSwf(File swf);
+   public void prepare();
    public Process launch() throws IOException;
 }

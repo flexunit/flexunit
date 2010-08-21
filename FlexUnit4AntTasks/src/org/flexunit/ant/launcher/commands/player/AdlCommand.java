@@ -1,7 +1,6 @@
 package org.flexunit.ant.launcher.commands.player;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.taskdefs.Java;
@@ -36,7 +35,7 @@ public class AdlCommand extends DefaultPlayerCommand
       try
       {
          //Template location in JAR
-         URLResource template = new URLResource(getClass().getResource(File.separatorChar + DESCRIPTOR_TEMPLATE));
+         URLResource template = new URLResource(getClass().getResource("/" + DESCRIPTOR_TEMPLATE));
          
          //Descriptor location, same location as SWF due to relative path required in descriptor
          File descriptor = new File(swf.getParentFile().getAbsolutePath() + File.separatorChar + DESCRIPTOR_FILE);
@@ -96,13 +95,10 @@ public class AdlCommand extends DefaultPlayerCommand
    }
    
    @Override
-   public Process launch() throws IOException
+   public void prepare()
    {
       //Create Adl descriptor file
       createApplicationDescriptor(getSwf());
-      
-      //Run command
-      return super.launch();
    }
    
    private String generateExecutable()

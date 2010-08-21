@@ -54,7 +54,8 @@ public class TestRun
          // print summaries and check for failure
          analyzeReports();
 
-      } catch (Exception e)
+      } 
+      catch (Exception e)
       {
          throw new BuildException(e);
       }
@@ -66,14 +67,14 @@ public class TestRun
    protected Process launchTestSuite()
    {
       Process process = null;
-      final FlexUnitLauncher browser = new FlexUnitLauncher(project,
+      final FlexUnitLauncher launcher = new FlexUnitLauncher(project,
             configuration.isLocalTrusted(), configuration.isHeadless(),
             configuration.getDisplay(), configuration.getPlayer(),
             configuration.getCommand());
 
       try
       {
-         process = browser.runTests(configuration.getSwf());
+         process = launcher.runTests(configuration.getSwf());
       } catch (Exception e)
       {
          throw new BuildException("Error launching the test runner.", e);

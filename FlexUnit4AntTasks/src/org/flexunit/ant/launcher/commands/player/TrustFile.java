@@ -29,7 +29,7 @@ public class TrustFile
       {
          try
          {
-            trustDirectory.mkdir();
+            trustDirectory.mkdirs();
          }
          catch (Exception e)
          {

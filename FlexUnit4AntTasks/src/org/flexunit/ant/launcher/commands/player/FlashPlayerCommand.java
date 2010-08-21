@@ -1,7 +1,6 @@
 package org.flexunit.ant.launcher.commands.player;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Abstracts the assembly of a command-line call to the Flash player for all platforms.  
@@ -39,7 +38,7 @@ public class FlashPlayerCommand extends DefaultPlayerCommand
    }
 
    @Override
-   public Process launch() throws IOException
+   public void prepare()
    {
       TrustFile trustFile = new TrustFile(getProject(), getDefaults().getFlashPlayerUserTrustDirectory(), getDefaults().getFlashPlayerGlobalTrustDirectory());
       
@@ -52,8 +51,5 @@ public class FlashPlayerCommand extends DefaultPlayerCommand
       {
          trustFile.remove(getSwf());
       }
-      
-      //Run command
-      return super.launch();
    }
 }
