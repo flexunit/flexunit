@@ -37,11 +37,11 @@ package org.flexunit
 	/**
 	 * A set of methods useful for stating assumptions about the conditions in which a test is meaningful.
 	 * A failed assumption does not mean the code is broken, but that the test provides no useful information.
-	 * The default FlexUnit runner treats tests with failing assumptions as ignored.  Custom runners may behave differently.
+	 * The default Theories runner treats tests with failing assumptions as ignored.  Custom runners may behave differently.
 	 * 
 	 * For example:
 	 * <pre>
-	 * [Test]
+	 * [Theory]
 	 * public function checkBasedOnValue():void {
 	 * 	var testValue:String = getValue();
 	 * 	Assume.assumeNotNull(testValue);
@@ -85,7 +85,6 @@ package org.flexunit
 		 * @param matcher An expression, built of <code>Matcher</code>s, specifying allowed values.
 		 * 
 		 * @see org.hamcrest.CoreMatchers
-		 * @see org.flexunit.matchers.FlexUnitMatchers
 		 */
 		public static function assumeThat( actual:Object, matcher:Matcher ):void {
 			if (!matcher.matches(actual))

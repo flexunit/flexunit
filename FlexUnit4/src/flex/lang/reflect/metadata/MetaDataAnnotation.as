@@ -26,6 +26,12 @@
  * @version    
  **/ 
 package flex.lang.reflect.metadata {
+
+	/**
+	 * An object representing an annotation represented as a metadata tag, in the example 
+	 * [Test(arg="1")] Test is the annotation. You can interrogate the annotation's name and
+	 * arguments. 
+	 */
 	public class MetaDataAnnotation {
 		/**
 		 * @private
@@ -41,8 +47,15 @@ package flex.lang.reflect.metadata {
 		private var _arguments:Array;
 
 		/**
-		 * Getter for retrieving the metadata annotation (e.g. Test, Before, AfterClass) 
-		 * @return The annotation as a String
+		 * Getter for retrieving the metadata annotation name.
+		 * 
+		 * Given the following example
+		 * 
+		 * [Test(async='true',expects="TypeError")]
+		 * 
+		 * Test is the annotation name. 
+		 * 
+		 * @return The annotation name as a String
 		 * 
 		 */
 		public function get name():String {
@@ -50,7 +63,14 @@ package flex.lang.reflect.metadata {
 		}
 		
 		/**
-		 * Getter for retrieving the list of arguments for the metadata annotation.
+		 * Getter for retrieving an array of arguments specified for the metadata annotation.
+		 * 
+		 * Given the following example
+		 * 
+		 * [Test(async="true",expects="TypeError")]
+		 * 
+		 * async="true" and expects="TypeError" are the arguments
+		 * 
 		 * @return An array of <code>MetaDataArgument</code> objects.
 		 * 
 		 */
@@ -63,40 +83,59 @@ package flex.lang.reflect.metadata {
 		}
 		
 		/**
-		 * Returns the first argument of an annotation.
-		 * Used for annotations such as RunWith.
-		 * This will change to getting the first argument with a key but no value later,
-		 * to prevent some issues when there can be more than one argument and the empty value one is not put first. 
-		 * @return A MetaDataArgument.
+		 * Returns the first unpaired argument of an annotation.
+		 * 
+		 * Given the following example
+		 * 
+		 * [RunWith("org.flexunit.runners.Suite",order="1")]
+		 * 
+		 * The default argument would be "org.flexunit.runners.Suite". This is often used
+		 * with MetaData such as RunWith which expects to have a default value. 
+		 * 
+		 * @return A MetaDataArgument instance.
 		 */
 		public function get defaultArgument():MetaDataArgument {
 			var firstArg:MetaDataArgument;
+			var arg:MetaDataArgument;
+			var argLen:uint = 0;
 
-			if ( this.arguments && this.arguments.length > 0 ) {
-				firstArg = this.arguments[ 0 ];	
+			//You must keep the this when referring to arguments here
+			//or actionscript thinks you mean unknown arguments being passed
+			//to the function
+			if ( this.arguments ) {
+				argLen = this.arguments.length;
+				for ( var i:uint=0; i<argLen; i++ ) {
+					arg = this.arguments[ i ] as MetaDataArgument;
+					
+					if ( arg.unpaired ) {
+						firstArg = arg;
+						break;
+					} 
+				}
 			}
 			
 			return firstArg;
 		}
 		
 		/**
-		 * Given a key, checks the arguments of an annotation to see if the key exists for that annotation.
-		 * Uses getArgument to find the key.
+		 * Checks for the existance of a given argument within this annotation using the argument's key
 		 * 
-		 * @param key The String value of the argument being looked for on an annotation.
-		 * @return Returns a boolean True if the key exists, False if it does not.
+		 * @param key An argument key
+		 * @param caseInsensitive default false, if set to true, then the key is matched in a case insensitive manner.
+		 * @return Returns true if the key exists, false if it does not.
+		 * 
 		 * @see #getArgument()
 		 */
-		public function hasArgument( key:String ):Boolean {
-			return ( getArgument( key ) != null );
+		public function hasArgument( key:String, caseInsensitive:Boolean = false ):Boolean {
+			return ( getArgument( key, caseInsensitive ) != null );
 		}
 		
 		/**
-		 * Given a key, returns the MetaDataArgument with that key, if it exists, or null if it does not.
+		 * Returns the MetaDataArgument associated with a given argument using the argument's key
 		 *  
-		 * @param key The string version of the MetaDataArgument that is being looked for. e.g. order.
-		 * @param caseInsensitive default False, if set to true, then the key is looked for without regard to case.
-		 * @return Returns the full MetaDataArgument object for the found key, or null if it was not found.
+		 * @param key An argument key
+		 * @param caseInsensitive default false, if set to true, then the key is matched in a case insensitive manner.
+		 * @return the MetaDataArgument instance for the argument key, or null if it was not found.
 		 * 
 		 */
 		public function getArgument( key:String, caseInsensitive:Boolean = false ):MetaDataArgument {
@@ -114,7 +153,7 @@ package flex.lang.reflect.metadata {
 					hayStackKey = hayStackKey.toLowerCase();
 				}
 
-				if ( ( this.arguments[ i ] as MetaDataArgument ).key == key ) {
+				if ( hayStackKey == needleKey ) {
 					return this.arguments[ i ];
 				}
 			}	
@@ -123,9 +162,9 @@ package flex.lang.reflect.metadata {
 		}
 
 		/**
-		 * Builds the MetaDataArgument objects that were passed into the constructor as XML.
+		 * Builds an array of MetaDataArguments from metadata nodes
 		 * 
-		 * @return Returns an array, with MetaDataArgument objects inside. 
+		 * @return Returns an array containing MetaDataArgument instances. 
 		 * 
 		 */
 		protected function buildArguments():Array {
@@ -182,11 +221,23 @@ package flex.lang.reflect.metadata {
 		
 		/**
 		 * Constructor 
-		 * @param metaDataXML The metaDataXML that is passed to the class to be parsed to find
-		 * 						the annotation and arguments for a piece of metadata.
+		 * Parses <metadata/> nodes returned from a call to <code>describeType</code> to provide an 
+		 * object wrapper for annotations
+		 * 
+		 * Expected format of the argument is
+		 * 		<metadata name="metaDataParam">
+		 * 			<arg key="someKey" value="someValue"/>
+		 * 			<arg key="someKey" value="someValue"/>
+		 * 		</metadata>
+		 * 
+		 * @param A <metadata/> XML node.
 		 * 
 		 */
 		public function MetaDataAnnotation( metaDataXML:XML ) {
+			if ( !metaDataXML ) {
+				throw new ArgumentError("Valid XML must be provided to MetaDataAnnotation Constructor");
+			}
+			
 			this.metaData = metaDataXML;
 			_name = metaDataXML.@name;
 		}

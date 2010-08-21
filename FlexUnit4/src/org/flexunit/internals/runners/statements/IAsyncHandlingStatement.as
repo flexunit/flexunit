@@ -82,8 +82,9 @@ package org.flexunit.internals.runners.statements
 		 * 
 		 * @return an <code>IResponder</code> that will determine whether the <code>timeout</code> has been reached.
 		 */
-		CONFIG::useFlexClasses
+		CONFIG::useFlexClasses {
 		function asyncResponder( responder:*, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):IResponder;
+		}
 		
 		/**
 		 * Creates an <code>IAsyncNativeTestResponder</code> that pend and either call the <code>eventHandler</code> or the
@@ -107,8 +108,9 @@ package org.flexunit.internals.runners.statements
 		// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
 		// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
 		// flex classes since it will cause errors.
-		CONFIG::useFlexClasses
+		CONFIG::useFlexClasses {
 		function handleBindableNextSequence( event:Event, sequenceRunner:SequenceRunner ):void;
+		}
 		
 		/**
 		 * A handler method that is called in order to fail for a given asynchronous event once an it

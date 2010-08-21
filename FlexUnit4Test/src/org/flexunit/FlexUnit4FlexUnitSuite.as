@@ -1,19 +1,10 @@
-package org.flexunit
-{
-	import org.flexunit.asserts.cases.assertEqualsCase;
-	import org.flexunit.asserts.cases.assertFalseCase;
-	import org.flexunit.asserts.cases.assertNotNullCase;
-	import org.flexunit.asserts.cases.assertNullCase;
-	import org.flexunit.asserts.cases.assertStrictlyEqualsCase;
-	import org.flexunit.asserts.cases.assertTrueCase;
-	import org.flexunit.asserts.cases.failCase;
+package org.flexunit {
 	import org.flexunit.async.AsyncSuite;
 	import org.flexunit.cases.AssertCase;
 	import org.flexunit.cases.AssertThatCase;
 	import org.flexunit.cases.AssertionErrorCase;
 	import org.flexunit.cases.AssumeCase;
 	import org.flexunit.cases.AssumeThatCase;
-	import org.flexunit.cases.ComparisonFailureCase;
 
 	import org.flexunit.events.EventsSuite;
 	import org.flexunit.experimental.ExperimentSuite;
@@ -45,17 +36,5 @@ package org.flexunit
 		public var assertThatCase:AssertThatCase;
 		public var assumeCase:AssumeCase;
 		public var assumeThatCase:AssumeThatCase;
-		
-		//Assert Alias Cases
-		public var assertEqualsAliasCase:assertEqualsCase;
-		public var assertFalseAliasCase:assertFalseCase;
-		public var assertNotNullAliasCase:assertNotNullCase;
-		public var assertNullAliasCase:assertNullCase;
-		public var assertStrictlyEqualsAliasCase:assertStrictlyEqualsCase;
-		public var assertTrueAliasCase:assertTrueCase;
-		public var failAliasCase:failCase;
-		
-		//Cases not yet implemented
-		public var comparisonFailureCase:ComparisonFailureCase;
 	}
 }

@@ -30,7 +30,6 @@ package org.flexunit.async {
 	
 	import org.flexunit.events.AsyncEvent;
 	import org.flexunit.runner.IRunner;
-	import org.flexunit.runner.RunnerLocator;
 	
 	/** 
 	 * The 'eventFired' event is fired when the event specified in the 
@@ -136,11 +135,6 @@ package org.flexunit.async {
 		public var timeoutHandler:Function = null;
 
 		/** 
-		 * A reference to the runner executing the testCase being monitored. 
-		 */
-		public var runner:IRunner;
-
-		/** 
 		 * A generic handler called by an unknown object when a specific event fires. 
 		 * 
 		 * The object and event are known in the TestCase when calling the TestCase.asyncHandler(). 
@@ -189,8 +183,6 @@ package org.flexunit.async {
 		/** 
 		 * Constructor. 
 		 * 
-		 * @param testCase A reference to the TestCase class that instantiated this handler.
-		 * 
 		 * @param eventHandler Method to call when an event occurs.
 		 * 
 		 * @param timeout Number of milliseconds to wait for an event.
@@ -200,15 +192,7 @@ package org.flexunit.async {
 		 * 
 		 * @param timeoutHandler A method to call if the timeout occurs before the event.
 		 */
-		public function AsyncHandler( runner:*, eventHandler:Function, timeout:int=0, passThroughData:Object = null, timeoutHandler:Function = null ) {
-			
-			if ( runner is IRunner ) {			
-				this.runner = runner as IRunner;
-			} else {
-				this.runner = RunnerLocator.getInstance().getRunnerForTest( runner );
-				//so, this is a generic object, a JUnit4 style test, we need to get the TestCase wrapper for this case.
-				//throw new Error("Not yet ready for Async in non ITestCaseRunner environments");
-			}
+		public function AsyncHandler( eventHandler:Function, timeout:int=0, passThroughData:Object = null, timeoutHandler:Function = null ) {
 
 			this.eventHandler = eventHandler;
 			this.timeout = timeout;

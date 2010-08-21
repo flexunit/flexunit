@@ -295,7 +295,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.theorySuite
 		
 		[Theory]
 		public function testStringIntCombo( boolValue:Boolean, stringValue:String ):void {
-			trace( "boolValue: ", boolValue, "stringValue: ", stringValue );
+			//trace( "boolValue: ", boolValue, "stringValue: ", stringValue );
 			var arrayStr : String = boolValue.toString() + ":" + stringValue;
 			testedComboArray.push( arrayStr );
 		} 	

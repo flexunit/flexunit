@@ -29,8 +29,8 @@ package flex.lang.reflect {
 	import flash.utils.describeType;
 	
 	/**
-	 * Used by flexunit to create of object constructors as XML so that
-	 * they may be parsed and used by FlexUnit
+	 * Parses &lt;constructor/&gt; node returned from a call to <code>describeType</code> to provide an
+	 * object wrapper for the Constructor
 	 * 
 	 * @see Klass
 	 * @see Method
@@ -54,26 +54,14 @@ package flex.lang.reflect {
 		 */
 		private var triedToRegetConstructorParams:Boolean = false;
 		
-		//TODO: This is not currently set or used anywhere
-		/**
-		 * @private
-		 */
-		private var _name:String;
-		/**
-		 * Retrieves the name associated with the constructor. 
-		 */
-		public function get name():String {
-			return _name;
-		}
-		
 		/**
 		 * @private
 		 */
 		private var _parameterTypes:Array;
 		
 		/**
-		 *  Builds and returns an an object of type <code>Array</code> which contains a list
-		 *  of paramater types required by the Constructor
+		 *  Builds and returns an Array containing the types of 
+		 *  of parameters used by the Constructor
 		 * 
 		 *  @return _parameterTypes
 		 */
@@ -83,19 +71,6 @@ package flex.lang.reflect {
 			}
 
 			return _parameterTypes;
-		}
-
-		//TODO: This is not currently set or used anywhere
-		/**
-		 * @private
-		 */
-		private var _parameterMetaData:Array = new Array();
-		
-		/**
-		 * Retrieves the parameterMetaData array.  
-		 */
-		public function get parameterMetaData():Array {
-			return _parameterMetaData;
 		}
 
 		/**
@@ -172,8 +147,11 @@ package flex.lang.reflect {
 			}
 			
 			//Ask the Klass to recache its XML based on the actionscript class definition 
-			_klass.setDefintionForClass( _klass.asClass );
-			var x:XML = describeType( _klass.asClass );
+			_klass.refreshClassXML( _klass.asClass );
+			
+			//I don't think this should be here
+			//var x:XML = describeType( _klass.asClass );
+			
 			//Recache our internal XML structure 
 			_constructorXML = _klass.constructorXML;
 
@@ -247,20 +225,26 @@ package flex.lang.reflect {
 		 * 
 		 * @param params An array of paramaters to be used by the constructor (max 5). 
 		 * 
-		 * @return A new instance of the object defined by the constructor
+		 * @return A new instance of the object created by this constructor
 		 * 
 		 * @see #newInstance()
 		 */
 		public function newInstanceApply( params:Array ):Object {
+			
+			if ( !params ) {
+				//null should mean the same as no params
+				params = [];
+			}
+			
 			var localParams:Array = params.slice();
 			var mapIndex : uint = Math.min( parameterTypes.length, localParams.length );
 			
 			if ( !canInstantiateWithParams( localParams ) || ( requiredArgNum > mapIndex ) ) {
-				throw new Error("Invalid number or type of arguments to contructor");
+				throw new ArgumentError("Invalid number or type of arguments to contructor");
 			}    
 
 			if ( localParams.length > argMap.length ) {
-				throw new Error("Sorry, we can't support constructors with more than " + argMap.length + " args out of the box... yes, its dumb, take a look at Constructor.as to modify on your own");
+				throw new ArgumentError("Sorry, we can't support constructors with more than " + argMap.length + " args out of the box... yes, its dumb, take a look at Constructor.as to modify on your own");
 			}
 			
 			var generator:Function = argMap[ mapIndex ];
@@ -275,23 +259,32 @@ package flex.lang.reflect {
 		 * list is currently restriced to 5.  If more paramaters are needed, take a look at <code>
 		 * Constructor.as</code> on how to create your own.
 		 * 
-		 * @param args a comma list or array of elements to be used by the constructor as paramaters (max 5).
+		 * @param args the arguments to pass to the constructor(max 5).
 		 * 
-		 * @return A new instance of the object defined by the constructor
+		 * @return A new instance of the object created by this constructor
 		 */
 		public function newInstance( ...args ):Object {
 			return newInstanceApply( args );
 		}
 
 		/**
-		 * Creates a new XML Constructor
+		 * Constructor
+		 *  
+		 * Parses &lt;constructor/&gt; node returned from a call to <code>describeType</code> to provide an 
+		 * object wrapper for the Constructor
 		 * 
-		 * @param constructorXML the constructor definition as XML
-		 * @param klass Klass which defines the contructor paramater
+		 * Expected format of the argument is
+		 * 		&lt;constructor&gt;
+		 * 			&lt;parameter index=&quot;1&quot; type=&quot;*&quot; optional=&quot;false&quot;/&gt;
+		 * 		&lt;/constructor&gt;		 
+		 *  
+		 * @param A &lt;constructor/&gt; XML node.
 		 * 
-		 * @see Klass
 		 */
 		public function Constructor( constructorXML:XML, klass:Klass ) {
+			
+			//Unlike the other metadata class parsers, this one creates a default node if it does not exist
+			//in the xml serving the role of a default constructor
 			if ( constructorXML ) {
 				_constructorXML = constructorXML;
 			} else {

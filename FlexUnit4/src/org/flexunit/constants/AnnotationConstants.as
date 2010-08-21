@@ -24,6 +24,11 @@ package org.flexunit.constants {
 		public static const PARAMETERS:String = "Parameters";
 		
 		/**
+		 * Annotation constant used with the Suite Runner
+		 */
+		public static const SUITE:String = "Suite";
+
+		/**
 		 * Annotation constant used with all runners to indicate a Test to be executed
 		 */
 		public static const TEST:String = "Test";

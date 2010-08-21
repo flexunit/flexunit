@@ -30,10 +30,10 @@ package org.flexunit.token {
 	import org.flexunit.runner.IRunner;
 	
 	/**
-	 * The <code>AsyncCoreStartupToken</code> is responsible for indicating the statuses of <code>IAsyncRunListener</code>s
-	 * and indicating when the <code>IAsyncRunListener</code>s are ready or have completed.  Additionally, the token
-	 * keeps track of an <code>IRunner</code> that can be stored while waiting for listeners to report that they
-	 * are ready.  The <code>IRunner</code> can then be extracted an the test run can proceed.
+	 * The <code>AsyncCoreStartupToken</code> is used when the FlexUnit frameworks needs to wait for an
+	 * asynchronous operation before it can begin test execution. The token is returned by a class needing
+	 * to do the operation. The class pending can add a notificationMethod (a method to be called when the
+	 * async operation is complete).
 	 * 
 	 * @see org.flexunit.runner.FlexUnitCore#runRunner()
 	 */
@@ -42,14 +42,6 @@ package org.flexunit.token {
 		 * @private
 		 */
 		private var methodsEntries:Array;
-		/**
-		 * @private
-		 */
-		private var _error:Error;
-		/**
-		 * @private
-		 */
-		private var _token:AsyncTestToken;
 		/**
 		 * @private
 		 */
@@ -87,17 +79,6 @@ package org.flexunit.token {
 		 * Calls each notification method and passes the current <code>IRunner</code> to that method.
 		 */
 		public function sendReady():void {
-			if ( methodsEntries ) {
- 				for ( var i:int=0; i<methodsEntries.length; i++ ) {
-					methodsEntries[ i ]( runner );
-				}
- 			}
-		}
-		
-		/**
-		 * Calls each notification method and passes the current <code>IRunner</code> to that method.
-		 */
-		public function sendComplete():void {
 			if ( methodsEntries ) {
  				for ( var i:int=0; i<methodsEntries.length; i++ ) {
 					methodsEntries[ i ]( runner );

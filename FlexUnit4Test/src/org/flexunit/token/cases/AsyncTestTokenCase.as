@@ -103,7 +103,7 @@ package org.flexunit.token.cases
 			asyncTestToken.addNotificationMethod(testFunction);
 			asyncTestToken.addNotificationMethod(testFunction);
 			
-			Assert.assertEquals( "2 listeners", asyncTestToken.toString() );
+			Assert.assertEquals( "1 listeners", asyncTestToken.toString() );
 		}
 		
 		[Test(description="Ensure that the toString function returns the proper value when the dubuggerClassName is not null")]
