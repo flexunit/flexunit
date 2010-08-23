@@ -17,14 +17,9 @@ public class FlashPlayerCommand extends DefaultPlayerCommand
    }
 
    @Override
-   public void setSwf(File swf)
+   public File getFileToExecute()
    {
-      super.setSwf(swf);
-      
-      //setup the command line now that we have swf available
-      getCommandLine().setExecutable(getDefaults().getOpenCommand());
-      getCommandLine().addArguments(getDefaults().getOpenSystemArguments());
-      getCommandLine().addArguments(new String[]{swf.getAbsolutePath()});
+      return getSwf();
    }
    
    public void setLocalTrusted(boolean localTrusted)
@@ -40,9 +35,13 @@ public class FlashPlayerCommand extends DefaultPlayerCommand
    @Override
    public void prepare()
    {
-      TrustFile trustFile = new TrustFile(getProject(), getDefaults().getFlashPlayerUserTrustDirectory(), getDefaults().getFlashPlayerGlobalTrustDirectory());
-      
+      //setup the command line now
+      getCommandLine().setExecutable(getDefaults().getOpenCommand());
+      getCommandLine().addArguments(getDefaults().getOpenSystemArguments());
+      getCommandLine().addArguments(new String[]{getFileToExecute().getAbsolutePath()});
+
       //handle local trust
+      TrustFile trustFile = new TrustFile(getProject(), getDefaults().getFlashPlayerUserTrustDirectory(), getDefaults().getFlashPlayerGlobalTrustDirectory());
       if (localTrusted)
       {
          trustFile.add(getSwf());

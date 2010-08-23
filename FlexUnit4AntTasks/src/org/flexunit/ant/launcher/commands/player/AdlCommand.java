@@ -19,18 +19,15 @@ public class AdlCommand extends DefaultPlayerCommand
    private final String DESCRIPTOR_FILE = "flexUnitDescriptor.xml";
    
    @Override
-   public void setSwf(File swf)
+   public File getFileToExecute()
    {
-      super.setSwf(swf);
-      
-      getCommandLine().setExecutable(generateExecutable());
-      getCommandLine().addArguments(new String[]{swf.getParentFile().getAbsolutePath() + File.separatorChar + DESCRIPTOR_FILE});      
+      return new File(getSwf().getParentFile().getAbsolutePath() + File.separatorChar + DESCRIPTOR_FILE);
    }
 
    /**
     * Used to create the application descriptor used to invoke adl
     */
-   private void createApplicationDescriptor(File swf)
+   private void createApplicationDescriptor()
    {
       try
       {
@@ -38,11 +35,11 @@ public class AdlCommand extends DefaultPlayerCommand
          URLResource template = new URLResource(getClass().getResource("/" + DESCRIPTOR_TEMPLATE));
          
          //Descriptor location, same location as SWF due to relative path required in descriptor
-         File descriptor = new File(swf.getParentFile().getAbsolutePath() + File.separatorChar + DESCRIPTOR_FILE);
+         File descriptor = new File(getSwf().getParentFile().getAbsolutePath() + File.separatorChar + DESCRIPTOR_FILE);
          
          //Create tokens to filter
          FilterSet filters = new FilterSet();
-         filters.addFilter("ADL_SWF", swf.getName());
+         filters.addFilter("ADL_SWF", getSwf().getName());
          filters.addFilter("ADT_VERSION", Double.toString(getVersion()));
          
          //Copy descriptor template to SWF folder performing token replacement
@@ -97,8 +94,11 @@ public class AdlCommand extends DefaultPlayerCommand
    @Override
    public void prepare()
    {
+      getCommandLine().setExecutable(generateExecutable());
+      getCommandLine().addArguments(new String[]{getFileToExecute().getAbsolutePath()});   
+      
       //Create Adl descriptor file
-      createApplicationDescriptor(getSwf());
+      createApplicationDescriptor();
    }
    
    private String generateExecutable()

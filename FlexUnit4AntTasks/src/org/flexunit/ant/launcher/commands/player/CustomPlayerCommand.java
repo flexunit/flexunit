@@ -2,6 +2,7 @@ package org.flexunit.ant.launcher.commands.player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Vector;
 
 import org.apache.tools.ant.Project;
@@ -38,18 +39,28 @@ public class CustomPlayerCommand implements PlayerCommand
       proxiedCommand.setProject(project);
    }
    
+   public void setSwf(File swf)
+   {
+      proxiedCommand.setSwf(swf);
+   }
+   
+   public File getFileToExecute()
+   {
+      return proxiedCommand.getFileToExecute();
+   }
+   
    public void prepare()
    {
       proxiedCommand.prepare();
+      
+      proxiedCommand.getCommandLine().setExecutable(executable.getAbsolutePath());
+      proxiedCommand.getCommandLine().clearArgs();
+      proxiedCommand.getCommandLine().addArguments(new String[]{getFileToExecute().getAbsolutePath()});
    }
    
    public Process launch() throws IOException
    {
       prepare();
-      
-      proxiedCommand.getCommandLine().setExecutable(executable.getAbsolutePath());
-      proxiedCommand.getCommandLine().clearArgs();
-      proxiedCommand.getCommandLine().addArguments(new String[]{proxiedCommand.getSwf().getAbsolutePath()});
       
       LoggingUtil.log(proxiedCommand.getCommandLine().describeCommand());
       
@@ -77,11 +88,8 @@ public class CustomPlayerCommand implements PlayerCommand
       System.arraycopy(procEnvironment.toArray(), 0, environment, 0, procEnvironment.size());
       System.arraycopy(proxiedCommand.getEnvironment(), 0, environment, procEnvironment.size(), proxiedCommand.getEnvironment().length);
       
+      LoggingUtil.log("Environment variables: " + Arrays.toString(environment));
+      
       return environment;
-   }
-
-   public void setSwf(File swf)
-   {
-      proxiedCommand.setSwf(swf);
    }
 }

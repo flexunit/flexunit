@@ -21,7 +21,7 @@ public class FlexUnitTaskHarness extends TestCase
       
       //call all setters for task attributes
       fixture.setHaltonfailure(true);
-      fixture.setLocalTrusted(true);
+      fixture.setLocalTrusted(false);
       fixture.setPort(1024);
       fixture.setTimeout(10000);
       fixture.setBuffer(555555);
@@ -29,8 +29,8 @@ public class FlexUnitTaskHarness extends TestCase
       fixture.setToDir("test/sandbox");
       fixture.setVerbose(true);
       fixture.setFailureproperty("failedtests");
-      fixture.setPlayer("flash");
-      //fixture.setCommand("/Applications/Safari.app/Contents/MacOS/Safari");
+      fixture.setPlayer("air");
+      fixture.setCommand("/Users/dblegros/api/flexsdk/3.5.0/bin/adl");
       fixture.setHeadless(false);
       fixture.setWorkingDir("test/sandbox");
       

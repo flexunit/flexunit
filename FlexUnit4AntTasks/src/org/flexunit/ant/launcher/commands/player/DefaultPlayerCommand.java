@@ -36,6 +36,8 @@ public abstract class DefaultPlayerCommand extends Command implements PlayerComm
       return defaults;
    }
    
+   public abstract File getFileToExecute();
+   
    public abstract void prepare();
    
    @Override
