@@ -64,11 +64,12 @@ public class CustomPlayerCommand implements PlayerCommand
       
       LoggingUtil.log(proxiedCommand.getCommandLine().describeCommand());
       
-      //execute the command directly using Runtime
-      return Runtime.getRuntime().exec(
-            proxiedCommand.getCommandLine().getCommandline(), 
-            getProcessEnvironment(), 
-            proxiedCommand.getProject().getBaseDir());
+      //execute the command directly
+      return Execute.launch(proxiedCommand.getProject(), proxiedCommand.getCommandLine().getCommandline(), getProcessEnvironment(), proxiedCommand.getProject().getBaseDir(), false);
+//      return Runtime.getRuntime().exec(
+//            proxiedCommand.getCommandLine().getCommandline(), 
+//            getProcessEnvironment(), 
+//            proxiedCommand.getProject().getBaseDir());
    }
 
    public void setEnvironment(String[] variables)
