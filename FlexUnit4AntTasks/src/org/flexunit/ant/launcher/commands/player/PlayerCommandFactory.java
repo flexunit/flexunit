@@ -1,17 +1,13 @@
-package org.flexunit.ant.launcher;
+package org.flexunit.ant.launcher.commands.player;
 
 import java.io.File;
 
-import org.flexunit.ant.launcher.commands.player.AdlCommand;
-import org.flexunit.ant.launcher.commands.player.CustomPlayerCommand;
-import org.flexunit.ant.launcher.commands.player.DefaultPlayerCommand;
-import org.flexunit.ant.launcher.commands.player.FlashPlayerCommand;
-import org.flexunit.ant.launcher.commands.player.PlayerCommand;
+import org.flexunit.ant.launcher.OperatingSystem;
 import org.flexunit.ant.launcher.platforms.LinuxDefaults;
 import org.flexunit.ant.launcher.platforms.MacOSXDefaults;
 import org.flexunit.ant.launcher.platforms.WindowsDefaults;
 
-public class CommandFactory
+public class PlayerCommandFactory
 {
    /**
     * Factory method to create the appropriate player and provide it with a set of defaults for

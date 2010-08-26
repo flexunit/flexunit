@@ -43,7 +43,6 @@ public abstract class DefaultPlayerCommand extends Command implements PlayerComm
    @Override
    public Process launch() throws IOException
    {
-      prepare();
       return super.launch();
    }
 }

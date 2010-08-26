@@ -2,7 +2,6 @@ package org.flexunit.ant.launcher.commands.player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Vector;
 
 import org.apache.tools.ant.Project;
@@ -60,16 +59,13 @@ public class CustomPlayerCommand implements PlayerCommand
    
    public Process launch() throws IOException
    {
-      prepare();
-      
       LoggingUtil.log(proxiedCommand.getCommandLine().describeCommand());
       
       //execute the command directly
-      return Execute.launch(proxiedCommand.getProject(), proxiedCommand.getCommandLine().getCommandline(), getProcessEnvironment(), proxiedCommand.getProject().getBaseDir(), false);
-//      return Runtime.getRuntime().exec(
-//            proxiedCommand.getCommandLine().getCommandline(), 
-//            getProcessEnvironment(), 
-//            proxiedCommand.getProject().getBaseDir());
+      return Runtime.getRuntime().exec(
+            proxiedCommand.getCommandLine().getCommandline(), 
+            getJointEnvironment(), 
+            proxiedCommand.getProject().getBaseDir());
    }
 
    public void setEnvironment(String[] variables)
@@ -79,17 +75,16 @@ public class CustomPlayerCommand implements PlayerCommand
 
    /**
     * Combine process environment variables and command's environment to emulate the default
-    * behavior of the Execute task.  Needed especially when using Xvnc with a custom command.
+    * behavior of the Execute task.  Needed especially when user expects environment to be 
+    * available to custom command (e.g. - xvnc with player not on path).
     */
    @SuppressWarnings("unchecked")
-   private String[] getProcessEnvironment()
+   private String[] getJointEnvironment()
    {
       Vector procEnvironment = Execute.getProcEnvironment();
       String[] environment = new String[procEnvironment.size() + proxiedCommand.getEnvironment().length];
       System.arraycopy(procEnvironment.toArray(), 0, environment, 0, procEnvironment.size());
       System.arraycopy(proxiedCommand.getEnvironment(), 0, environment, procEnvironment.size(), proxiedCommand.getEnvironment().length);
-      
-      LoggingUtil.log("Environment variables: " + Arrays.toString(environment));
       
       return environment;
    }

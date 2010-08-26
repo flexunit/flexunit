@@ -16,12 +16,13 @@ public class FlexUnitTaskHarness extends TestCase
    {
       fixture = new FlexUnitTask();
       Project project = new Project();
+      project.setProperty("ant.home", "/usr/share/java/ant-1.7.1");
       project.setProperty("FLEX_HOME", System.getenv("FLEX_HOME"));
       fixture.setProject(project);
       
       //call all setters for task attributes
       fixture.setHaltonfailure(true);
-      fixture.setLocalTrusted(false);
+      fixture.setLocalTrusted(true);
       fixture.setPort(1024);
       fixture.setTimeout(10000);
       fixture.setBuffer(555555);
@@ -29,8 +30,8 @@ public class FlexUnitTaskHarness extends TestCase
       fixture.setToDir("test/sandbox");
       fixture.setVerbose(true);
       fixture.setFailureproperty("failedtests");
-      fixture.setPlayer("air");
-      fixture.setCommand("/Users/dblegros/api/flexsdk/3.5.0/bin/adl");
+      fixture.setPlayer("flash");
+      //fixture.setCommand("/Applications/Safari.app/Contents/MacOS/Safari");
       fixture.setHeadless(false);
       fixture.setWorkingDir("test/sandbox");
       

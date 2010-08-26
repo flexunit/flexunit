@@ -90,6 +90,10 @@ public class TrustFile
 
          LoggingUtil.log("Updated local trust file at [" + trustFile.getAbsolutePath() + "], added [" + path + "].");
       }
+      else
+      {
+         LoggingUtil.log("Entry [" + path + "] already available in local trust file at [" + trustFile.getAbsolutePath() + "].");
+      }
    }
 
    private void write()
