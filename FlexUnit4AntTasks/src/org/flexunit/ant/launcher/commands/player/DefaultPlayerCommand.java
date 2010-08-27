@@ -1,6 +1,7 @@
 package org.flexunit.ant.launcher.commands.player;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.flexunit.ant.launcher.commands.Command;
 import org.flexunit.ant.launcher.platforms.PlatformDefaults;
@@ -33,5 +34,15 @@ public abstract class DefaultPlayerCommand extends Command implements PlayerComm
    public PlatformDefaults getDefaults()
    {
       return defaults;
+   }
+   
+   public abstract File getFileToExecute();
+   
+   public abstract void prepare();
+   
+   @Override
+   public Process launch() throws IOException
+   {
+      return super.launch();
    }
 }

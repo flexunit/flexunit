@@ -218,7 +218,7 @@ public class TaskConfiguration
       }
 
       //create directory just to be sure it exists, already existing dirs will not be overwritten
-      workingDir.mkdir();
+      workingDir.mkdirs();
       
       compilationConfiguration.setWorkingDir(workingDir);
       

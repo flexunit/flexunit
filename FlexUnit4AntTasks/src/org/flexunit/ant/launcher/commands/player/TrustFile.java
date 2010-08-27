@@ -29,7 +29,7 @@ public class TrustFile
       {
          try
          {
-            trustDirectory.mkdir();
+            trustDirectory.mkdirs();
          }
          catch (Exception e)
          {
@@ -89,6 +89,10 @@ public class TrustFile
          write();
 
          LoggingUtil.log("Updated local trust file at [" + trustFile.getAbsolutePath() + "], added [" + path + "].");
+      }
+      else
+      {
+         LoggingUtil.log("Entry [" + path + "] already available in local trust file at [" + trustFile.getAbsolutePath() + "].");
       }
    }
 

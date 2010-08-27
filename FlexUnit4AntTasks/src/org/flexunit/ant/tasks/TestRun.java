@@ -10,7 +10,10 @@ import org.apache.tools.ant.Project;
 import org.flexunit.ant.FlexUnitSocketServer;
 import org.flexunit.ant.FlexUnitSocketThread;
 import org.flexunit.ant.LoggingUtil;
-import org.flexunit.ant.launcher.FlexUnitLauncher;
+import org.flexunit.ant.launcher.commands.player.PlayerCommand;
+import org.flexunit.ant.launcher.commands.player.PlayerCommandFactory;
+import org.flexunit.ant.launcher.contexts.ExecutionContext;
+import org.flexunit.ant.launcher.contexts.ExecutionContextFactory;
 import org.flexunit.ant.report.Reports;
 import org.flexunit.ant.tasks.configuration.TestRunConfiguration;
 
@@ -36,52 +39,73 @@ public class TestRun
       
       try
       {
-         // setup callable thread
-         Future<Object> future = setupSocketThread();
+         // setup daemon
+         Future<Object> daemon = setupSocketThread();
 
-         // launch FlashPlayer and test SWF
-         Process player = launchTestSuite();
+         // run the execution context and player
+         PlayerCommand player = obtainPlayer();
+         ExecutionContext context = obtainContext(player);
+         
+         //start the execution context
+         context.start();
+         
+         //launch the player
+         Process process = player.launch();
 
-         // block until thread is completely done with all tests
-         future.get();
+         // block until daemon is completely done with all test data
+         daemon.get();
 
-         // kill the player if using a custom command
-         if (configuration.isCustomCommand())
-         {
-            player.destroy();
-         }
+         //stop the execution context now that socket thread is done
+         context.stop(process);
 
          // print summaries and check for failure
          analyzeReports();
 
-      } catch (Exception e)
+      } 
+      catch (Exception e)
       {
          throw new BuildException(e);
       }
    }
    
    /**
-    * Create and launch the swf player in the appropriate domain
+    * Fetch the player command to execute the SWF.
+    * 
+    * @return PlayerCommand based on user config
     */
-   protected Process launchTestSuite()
+   protected PlayerCommand obtainPlayer()
    {
-      Process process = null;
-      final FlexUnitLauncher browser = new FlexUnitLauncher(project,
-            configuration.isLocalTrusted(), configuration.isHeadless(),
-            configuration.getDisplay(), configuration.getPlayer(),
-            configuration.getCommand());
-
-      try
-      {
-         process = browser.runTests(configuration.getSwf());
-      } catch (Exception e)
-      {
-         throw new BuildException("Error launching the test runner.", e);
-      }
-
-      return process;
+      // get command from factory
+      PlayerCommand command = PlayerCommandFactory.createPlayer(
+            configuration.getOs(), 
+            configuration.getPlayer(), 
+            configuration.getCommand(), 
+            configuration.isLocalTrusted());
+      
+      command.setProject(project);
+      command.setSwf(configuration.getSwf());
+      
+      return command;
    }
-
+   
+   /**
+    * 
+    * @param player PlayerCommand which should be executed
+    * @return Context to wrap the execution of the PlayerCommand
+    */
+   protected ExecutionContext obtainContext(PlayerCommand player)
+   {
+      ExecutionContext context = ExecutionContextFactory.createContext(
+            configuration.getOs(), 
+            configuration.isHeadless(), 
+            configuration.getDisplay());
+      
+      context.setProject(project);
+      context.setCommand(player);
+      
+      return context;
+   }
+   
    /**
     * Create a server socket for receiving the test reports from FlexUnit. We
     * read and write the test reports inside of a Thread.
