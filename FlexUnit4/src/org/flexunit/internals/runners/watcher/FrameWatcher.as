@@ -71,7 +71,7 @@ package org.flexunit.internals.runners.watcher {
 				frameLength = 1000/fps;
 				maxFrameUsage = frameLength * ALLOWABLE_FRAME_USE;
 				
-				_approximateMode = true;
+				_approximateMode = false;
 				_stage.addEventListener( Event.ENTER_FRAME, handleEnterFrame );
 			} 
 		}

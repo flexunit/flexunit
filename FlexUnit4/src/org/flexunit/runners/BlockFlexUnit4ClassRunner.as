@@ -30,6 +30,7 @@ package org.flexunit.runners {
 	
 	import flex.lang.reflect.Field;
 	
+	import org.flexunit.async.AsyncLocator;
 	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.internals.AssumptionViolatedException;
 	import org.flexunit.internals.runners.InitializationError;
@@ -55,8 +56,8 @@ package org.flexunit.runners {
 	import org.flexunit.runner.manipulation.OrderArgumentPlusInheritanceSorter;
 	import org.flexunit.runner.manipulation.fields.FieldMetaDataSorter;
 	import org.flexunit.runner.manipulation.fields.IFieldSorter;
-	import org.flexunit.runner.manipulation.sortingInheritance.ISortingInheritanceCache;
 	import org.flexunit.runner.manipulation.sortingInheritance.ClassInheritanceOrderCache;
+	import org.flexunit.runner.manipulation.sortingInheritance.ISortingInheritanceCache;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runner.notification.StoppedByUserException;
 	import org.flexunit.runners.model.FrameworkMethod;
@@ -352,8 +353,15 @@ package org.flexunit.runners {
 		 * encounters an exception during execution.
 		 */
 		protected function withPotentialAsync( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
+			//Does this method need Async?
 			var async:Boolean = ExpectAsync.hasAsync( method );
-			return async ? new ExpectAsync( test, statement ) : statement;
+			var needsMonitor:Boolean = false;
+			//Do we already have an ExpectAsync instance for this class?
+			if ( async ) {
+				needsMonitor = ( !AsyncLocator.hasCallableForTest( test ) );
+			}
+			
+			return ( async && needsMonitor ) ? new ExpectAsync( test, statement ) : statement;
 		}
 		
 		protected function withAfterStatements( method:FrameworkMethod, test:Object, statement:IAsyncStatement ):IAsyncStatement {
