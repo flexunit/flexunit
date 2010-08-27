@@ -555,7 +555,7 @@ package org.flexunit.internals.runners.statements {
 			if ( !testComplete ) {
 				methodBodyExecuting = false;
 				testComplete = true;
-				AsyncLocator.cleanUpCallableForTest( objectUnderTest );
+				AsyncLocator.cleanUpCallableForTest( getObjectForRegistration( objectUnderTest ) );
 				removeAllAsyncEventListeners();
 				parentToken.sendResult( error );
 			}
