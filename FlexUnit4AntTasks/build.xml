@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="FlexUnitAntTasks" basedir="." default="package">
+   <import file="${basedir}/../utils.xml" />
 
    <!--Configuration-->
    <property name="build.artifactId" value="flexUnitTasks" />
-   <property name="build.finalName" value="${build.artifactId}-${build.version}.${build.number}.jar" />
+   <property name="build.finalName" value="${build.artifactId}-${build.version}-${build.number}" />
+   <property name="build.packaging" value="jar" />
+   <property name="build.deploy.name" value="FlexUnit Ant Tasks" />
+   <property name="build.deploy.description" value="Ant tasks which allow the compilation, execution, and reporting for FlexUnit test suites." />
 
    <!-- Existing -->
    <property name="src.loc" location="${basedir}/src" />
@@ -11,6 +15,7 @@
 
    <!-- Generated -->
    <property name="dist.loc" location="${basedir}/target" />
+   <property name="sonatype.loc" location="${dist.loc}/sonatype" />
    <property name="bin.loc" location="${basedir}/target/bin" />
    <property name="doc.loc" location="${basedir}/target/docs" />
 
@@ -20,6 +25,7 @@
 
    <target name="init">
       <mkdir dir="${dist.loc}" />
+      <mkdir dir="${sonatype.loc}" />
       <mkdir dir="${bin.loc}" />
       <mkdir dir="${doc.loc}" />
    </target>
@@ -39,6 +45,7 @@
    </target>
 
    <target name="package" depends="report">
+      <!-- prep bin dir to be JARd -->
       <copy file="${src.loc}/flexUnitTasks.tasks" todir="${bin.loc}" />
       <copy file="${src.loc}/flexUnitDescriptor.template" todir="${bin.loc}" />
    	  <copy file="${src.loc}/TestRunner.template" todir="${bin.loc}" />
@@ -46,10 +53,50 @@
       <unjar src="${lib.loc}/dom4j-1.6.1.jar" dest="${bin.loc}" />
       <unjar src="${lib.loc}/jaxen-1.1-beta-6.jar" dest="${bin.loc}" />
 
-      <jar destfile="${dist.loc}/${build.finalName}">
+      <!-- Create JAR for binaries, source and javadoc -->
+      <jar destfile="${dist.loc}/${build.finalName}.${build.packaging}">
          <fileset dir="${bin.loc}">
             <include name="**/*" />
          </fileset>
       </jar>
+      
+      <jar destfile="${dist.loc}/${build.finalName}-sources.${build.packaging}">
+         <fileset dir="${src.loc}">
+            <include name="**/*" />
+         </fileset>
+      </jar>
+      
+      <jar destfile="${dist.loc}/${build.finalName}-javadoc.${build.packaging}">
+         <fileset dir="${doc.loc}">
+            <include name="**/*" />
+         </fileset>
+      </jar>
+   </target>
+   
+   <target name="deploy" depends="package" description="Requires Ant-Contrib and GPG to work.">
+      <!-- Copy artifacts w/o build number for use with sonatype -->
+   	  <copy todir="${sonatype.loc}">
+   	  	<fileset dir="${dist.loc}">
+   	  	   <include name="*.jar" />
+   	  	</fileset>
+   	  	<filtermapper>
+      	  <replacestring from="-${build.number}" to="" />
+		</filtermapper>
+   	  </copy>
+   
+      <!-- prepare sonatype bundle -->
+      <sonatype-bundle dir="${sonatype.loc}" 
+         todir="${sonatype.loc}" 
+         pomTemplate="${basedir}/../pom.template" 
+         artifact="${build.artifactId}" 
+         type="${build.packaging}" 
+         name="${build.deploy.name}" 
+         version="${build.version}" 
+         description="${build.deploy.description}">
+         <includes>
+            <include name="*.jar" />
+            <include name="pom.xml" />
+         </includes>
+      </sonatype-bundle>
    </target>
 </project>
