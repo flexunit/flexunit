@@ -59,7 +59,13 @@ package org.flexunit.async {
 		 * @param testCase The test case to associate with the particular <code>expectAsyncInstance</code>.
 		 */
 		public static function registerStatementForTest( expectAsyncInstance:IAsyncHandlingStatement, testCase:Object ):void {
-			asyncHandlerMap[ testCase ] = expectAsyncInstance;
+			var monitor:StatementDependencyMonitor = getDependencyMonitor( testCase );
+			
+			if ( !monitor ) {
+				monitor = createDependencyMonitor( testCase, expectAsyncInstance );
+			}
+
+			monitor.addDependency();
 		} 
 		
 		/**
@@ -75,17 +81,25 @@ package org.flexunit.async {
 		 * for the provided <code>testCase</code>.
 		 */
 		public static function getCallableForTest( testCase:Object ):IAsyncHandlingStatement {
-			var handler:IAsyncHandlingStatement = asyncHandlerMap[ testCase ];
+			var monitor:StatementDependencyMonitor = getDependencyMonitor( testCase );
 			
 			//If no handler was obtained from the dictionary, the test case was never marked as asynchronous, throw an AssertionError
-			if ( !handler ) {
+			if ( !monitor ) {
 				//TODO: Refactor this to some other type of error
 				throw new AssertionError("Cannot add asynchronous functionality to methods defined by Test,Before or After that are not marked async");	
 			}
 
+			var handler:IAsyncHandlingStatement = monitor.statement;
+
 			return handler;
 		} 
-		
+
+		public static function hasCallableForTest( testCase:Object ):Boolean {
+			var monitor:StatementDependencyMonitor = getDependencyMonitor( testCase );
+			
+			return ( monitor != null );
+		} 
+
 		/**
 		 * Removes the registration for the <code>IAsyncHandlingStatement</code> that was associated with the
 		 * provided <code>testCase</code>.
@@ -93,7 +107,57 @@ package org.flexunit.async {
 		 * @param testCase The test case to remove the association with the <code>IAsyncHandlingStatement</code>.
 		 */
 		public static function cleanUpCallableForTest( testCase:Object ):void {
-			delete asyncHandlerMap[ testCase ];
+			var monitor:StatementDependencyMonitor = getDependencyMonitor( testCase );
+			
+			if (!monitor) {
+				trace("Yo");
+			}
+			monitor.removeDependency();
+			
+			if ( monitor.complete ) {
+				removeDependencyMonitor( testCase );
+			}
 		} 
+		
+		private static function getDependencyMonitor( testCase:Object ):StatementDependencyMonitor {
+			return asyncHandlerMap[ testCase ];
+		}
+
+		private static function createDependencyMonitor( testCase:Object, statement:IAsyncHandlingStatement ):StatementDependencyMonitor {
+			var monitor:StatementDependencyMonitor = new StatementDependencyMonitor( statement );
+			asyncHandlerMap[ testCase ] = monitor;
+			return monitor;
+		}
+
+		private static function removeDependencyMonitor( testCase:Object ):void {
+			delete asyncHandlerMap[ testCase ];
+		}
+
+	}
+}
+import org.flexunit.internals.runners.statements.IAsyncHandlingStatement;
+
+class StatementDependencyMonitor { 
+	private var dependencyCount:int = 0;
+	private var _statement:IAsyncHandlingStatement;
+	
+	public function StatementDependencyMonitor( statement:IAsyncHandlingStatement ) {
+		_statement = statement;
+	} 
+
+	public function addDependency():void {
+		dependencyCount++;
+	}
+	
+	public function removeDependency():void {
+		dependencyCount--;	
+	}
+	
+	public function get statement():IAsyncHandlingStatement {
+		return _statement;
+	}
+
+	public function get complete():Boolean {
+		return ( dependencyCount == 0 );
 	}
 }
