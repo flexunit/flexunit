@@ -42,7 +42,7 @@
       <!-- Copy required dependencies -->
       <copy todir="${lib.loc}" overwrite="true" failonerror="false">
          <fileset dir="${basedir}/../FlexUnit4/target">
-            <include name="*core*.swc" />
+            <include name="flexunit*as3*.swc" />
          </fileset>
       </copy>
 
