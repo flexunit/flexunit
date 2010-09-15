@@ -54,8 +54,12 @@
       <compc output="${bin.loc}/${build.finalName}.${build.packaging}">
          <include-sources dir="${src.loc}" includes="*" append="true" />
          <source-path path-element="${src.loc}" />
+         <library-path dir="${lib.loc}" append="true">
+            <include name="CoverageAgent.swc" />
+         </library-path>
          <compiler.external-library-path dir="${lib.loc}" append="true">
             <include name="*.swc" />
+            <exclude name="CoverageAgent.swc" />
          </compiler.external-library-path>
          <compiler.external-library-path dir="${FLEX_HOME}/frameworks/libs" append="true">
             <include name="flex.swc" />
