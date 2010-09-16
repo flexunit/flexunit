@@ -179,4 +179,59 @@ to contribute to our CI process.
          </zipfileset>
       </zip>
    </target>
+   
+   <target name="sonatype" description="Target used to generate bundles for deployment to Sonatype.">
+      <ant dir="${anttasks.loc}" target="deploy" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+      <ant dir="${core.loc}" target="deploy" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+      <ant dir="${cilistener.loc}" target="deploy" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+      <ant dir="${flexcoverlistener.loc}" target="deploy" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+      <ant dir="${uilistener.loc}" target="deploy" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+      <ant dir="${aircilistener.loc}" target="deploy" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+      
+      <zip destfile="${basedir}/sonatype-${finalName}.zip">
+         <zipfileset dir="${anttasks.loc}/target/sonatype">
+            <include name="sonatype-*.zip" />
+         </zipfileset>
+         <zipfileset dir="${core.loc}/target/sonatype">
+            <include name="sonatype-*.zip" />
+         </zipfileset>
+         <zipfileset dir="${cilistener.loc}/target/sonatype">
+            <include name="sonatype-*.zip" />
+         </zipfileset>
+         <zipfileset dir="${flexcoverlistener.loc}/target/sonatype">
+            <include name="sonatype-*.zip" />
+         </zipfileset>
+         <zipfileset dir="${uilistener.loc}/target/sonatype">
+            <include name="sonatype-*.zip" />
+         </zipfileset>
+         <zipfileset dir="${aircilistener.loc}/target/sonatype">
+            <include name="sonatype-*.zip" />
+         </zipfileset>
+      </zip>
+
+   </target>
 </project>
