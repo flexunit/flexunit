@@ -132,7 +132,7 @@ to contribute to our CI process.
             <include name="*.jar" />
          </zipfileset>
          <zipfileset dir="${core.loc}/target" prefix="flexunit">
-            <include name="*core*.swc" />
+            <include name="flexunit*.swc" />
          </zipfileset>
          <zipfileset dir="${cilistener.loc}/target" prefix="flexunit">
             <include name="*.swc" />
