@@ -306,7 +306,7 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 		
 		for ( var i:int=0; i<testMethods.length; i++ ) {
 			var fwMethod:FrameworkMethod = testMethods[ i ];
-			var argument:MetaDataArgument = fwMethod.method.getMetaData( AnnotationConstants.TEST ).getArgument( AnnotationArgumentConstants.DATAPROVIDER );
+			var argument:MetaDataArgument = fwMethod.method.getMetaData( AnnotationConstants.TEST ).getArgument( AnnotationArgumentConstants.DATAPROVIDER, true );
 			var classMethod:Method;
 			var field:Field;
 			var results:Array;
@@ -377,7 +377,7 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 			
 			if ( annotation ) {
 				//Does it have a dataProvider?
-				argument = annotation.getArgument( AnnotationArgumentConstants.DATAPROVIDER );
+				argument = annotation.getArgument( AnnotationArgumentConstants.DATAPROVIDER, true );
 			}
 			
 			//If there is an argument, we need to punt on verification of arguments until later when we know how many there actually are
