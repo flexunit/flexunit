@@ -33,6 +33,7 @@ package org.flexunit.experimental.theories.internals
 	import org.flexunit.experimental.theories.IParameterSupplier;
 	import org.flexunit.experimental.theories.ParameterSignature;
 	import org.flexunit.experimental.theories.PotentialAssignment;
+	import org.flexunit.runner.external.IExternalDependencyData;
 	import org.flexunit.runners.model.FrameworkMethod;
 	import org.flexunit.runners.model.TestClass;
 	
@@ -95,6 +96,9 @@ package org.flexunit.experimental.theories.internals
 					} else if (sig.canAcceptType(field.type) && field.hasMetaData( AnnotationConstants.DATA_POINT ) ) {
 						list.push(PotentialAssignment
 								.forValue(field.name, getStaticFieldValue(field)));
+					} else if ( ( field.getObj() is IExternalDependencyData ) && 
+						        ( field.hasMetaData( AnnotationConstants.DATA_POINTS ) ) ) {
+						addArrayValues(field.name, list, getExternalFieldValue(field));
 					}
 				}
 			}
@@ -175,6 +179,18 @@ package org.flexunit.experimental.theories.internals
 			}
 			return null; 
 		}
+
+		private function getExternalFieldValue( field:Field ):Object {
+			try {
+				var loader:IExternalDependencyData = field.getObj(null) as IExternalDependencyData; 
+				return loader.data;
+			} catch ( e:TypeError ) {
+				throw new Error(
+					"Unable to retrieve data from IExternalDependencyData source");
+			}
+			return null; 
+		}
+		
 	}
 }
 
