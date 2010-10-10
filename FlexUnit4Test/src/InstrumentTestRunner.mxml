@@ -13,6 +13,7 @@
 
 			public function runMe():void {
 				core = new FlexUnitCore();
+				core.addUncaughtErrorListener( systemManager.loaderInfo );
 				core.addListener(new FlexCoverListener());
 				core.run( compilationSuite.SuitesToRun );
 			}
