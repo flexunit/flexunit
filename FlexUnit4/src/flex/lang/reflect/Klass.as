@@ -67,7 +67,25 @@ package flex.lang.reflect {
 		public function get asClass():Class {
 			return clazz;
 		}
-		
+
+		/**
+		 * Indicates if this class is actually interface. In ActionScript, you can't easily tell the difference as both are of Class type.
+		 * 
+		 * @return Boolean indicating if the described class is an interface
+		 */
+		public function get isInterface():Boolean {
+			var isInt:Boolean = true;
+			
+			if ( classXML && classXML.factory ) {
+				var obj:XMLList = classXML.factory.extendsClass.(@type=="Object");
+				if ( obj && obj.length() > 0 ) {
+					isInt = false;
+				}
+			}
+
+			return isInt;
+		}
+
 		/**
 		 * @private
 		 */
@@ -338,7 +356,6 @@ package flex.lang.reflect {
 			//We also need to check if it extends from object.  If so, it does not have any other
 			//superclass. //|| stringName == "Object"
 			if ( stringName == "void" || stringName == "*" ) {
-			//if ( stringName == "void" || stringName == "*" ) {
 				return null;
 			}
 
