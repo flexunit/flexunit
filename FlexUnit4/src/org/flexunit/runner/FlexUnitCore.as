@@ -343,7 +343,7 @@ package org.flexunit.runner {
 		 * All tests have finished execution.
 		 */
 		private function handleRunnerComplete( result:ChildResult ):void {
-			var runListener:RunListener = result.token[ RUN_LISTENER ];
+			var tokenRunListener:RunListener = result.token[ RUN_LISTENER ];
 
 			//Cleanup the top level runner
 			topLevelRunner = null;
@@ -351,7 +351,7 @@ package org.flexunit.runner {
 			//Cleanup up runListener reference
 			runListener = null;
 
-			finishRun( runListener );
+			finishRun( tokenRunListener );
 		}
 		
 		/**

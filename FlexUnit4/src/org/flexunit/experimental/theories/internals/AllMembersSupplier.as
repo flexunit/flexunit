@@ -157,8 +157,9 @@ package org.flexunit.experimental.theories.internals
 		 * @param array An object that contains all possible values that are contained in the field.
 		 */
 		private function addArrayValues( name:String, list:Array, array:Object ):void {
-			for (var i:int=0; i < (array as Array).length; i++)
+			for (var i:int=0; i < (array as Array).length; i++) {
 				list.push( PotentialAssignment.forValue( name + "[" + i + "]", array[i] ) );
+			} 
 		}
 		
 		/**

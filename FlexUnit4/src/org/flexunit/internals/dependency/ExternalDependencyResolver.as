@@ -41,9 +41,9 @@ package org.flexunit.internals.dependency {
 	import org.flexunit.internals.builders.MetaDataBuilder;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.external.ExternalDependencyToken;
+	import org.flexunit.runner.external.IExternalDependencyData;
 	import org.flexunit.runner.external.IExternalDependencyLoader;
 	import org.flexunit.runner.external.IExternalDependencyRunner;
-	import org.flexunit.runner.external.IExternalDependencyData;
 
 	public class ExternalDependencyResolver extends EventDispatcher implements IExternalDependencyResolver {
 		/**
@@ -164,31 +164,43 @@ package org.flexunit.internals.dependency {
 			var metaDataAnnotation:MetaDataAnnotation;
 			var loaderField:Field;
 			var counter:uint = 0;
-
+			
 			//perhaps mark the class?
 			for ( var i:int=0; i<targetFields.length; i++ ) {
 				targetField = targetFields[ i ] as Field;
 				
 				if ( targetField.isStatic ) {
-					if ( isDependencyValue( targetField ) ) {
-						//this field is a loader
+					/**
+					 * Bug context:
+					 * 
+					 * This bug occurs because the loader is an IExternalDependencyData.
+					 * This means it gets loaded independently by the first if statement
+					 * and then again in the final one where it is referenced as a loader
+					 * 
+					 * Things is, when it loads, it needs to know the value it is populating
+					 * Therefore, we need to execute the first one only when it is an
+					 * IExternalDependencyData AND there happens to be metadata indicating
+					 * it is either a DataPoint or a Parameter... it is not enough to know
+					 * it implements the interface
+					 * */
+					//first check for parameters
+					metaDataAnnotation = targetField.getMetaData( AnnotationConstants.PARAMETERS );
+					
+					if ( !metaDataAnnotation ) {
+						//then check for datapoints
+						metaDataAnnotation = targetField.getMetaData( AnnotationConstants.DATA_POINTS );
+					}
+					
+					if ( ( metaDataAnnotation != null ) && isDependencyValue( targetField ) ) {
+						//this field is an IExternalDependencyData and has a relevant piece of metadata
 						executeDependencyLoader( targetField, targetField );
 						counter++;
-					} else {
-						//first check for parameters
-						metaDataAnnotation = targetField.getMetaData( AnnotationConstants.PARAMETERS );
-						
-						if ( !metaDataAnnotation ) {
-							//then check for datapoints
-							metaDataAnnotation = targetField.getMetaData( AnnotationConstants.DATA_POINTS );
-						}
-						
-						if ( metaDataAnnotation ) {
-							loaderField = getLoaderField( klassInfo, metaDataAnnotation );
-							if ( loaderField ) {
-								executeDependencyLoader( loaderField, targetField );
-								counter++;
-							}
+					} else if ( metaDataAnnotation ) {
+						//It may be a loader scenario
+						loaderField = getLoaderField( klassInfo, metaDataAnnotation );
+						if ( loaderField && targetField ) {
+							executeDependencyLoader( loaderField, targetField );
+							counter++;
 						}
 					}
 				}
@@ -275,7 +287,7 @@ package org.flexunit.internals.dependency {
 		private function shouldResolveClass():Boolean {
 			 return metaDataBuilder.canHandleClass( clazz );
 		}
-
+		
 		/**
 		 * Constructor 
 		 * @param clazz with possible dependencies
