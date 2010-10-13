@@ -172,7 +172,7 @@
  	 				description="%flexunit.description"
  	 				 />		
   	</metadata>
-  	<metadata name="Test" description="%flexunit.theory">
+  	<metadata name="Theory" description="%flexunit.theory">
   		<context name="method" /> 
  		<attribute  name="async" 
  					type="Boolean" 
