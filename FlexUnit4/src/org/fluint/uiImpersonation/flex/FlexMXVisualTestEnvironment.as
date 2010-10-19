@@ -26,22 +26,34 @@
  * @version    
  **/ 
 
-package org.fluint.uiImpersonation {
+package org.fluint.uiImpersonation.flex {
+	import mx.core.Container;
+	
+	import org.fluint.uiImpersonation.VisualTestEnvironment;
+	
 	/**
-	 * 
-	 * Implemented by classes capable of building a visual test environment
-	 * for the UIImpersonator to use
-	 * 
+	 * A visual test environment for Flex projects
 	 * @author mlabriola
 	 * 
 	 */
-	public interface IVisualEnvironmentBuilder {
+	public class FlexMXVisualTestEnvironment extends VisualTestEnvironment {
+		
 		/**
-		 * Builds and returns an IVisualTestEnvironment
 		 * 
-		 * @return IVisualTestEnvironment
+		 * Constructor
+		 * 
+		 * <p>Creates a new test environment using the <code>baseClass</code> as a base. This base
+		 * needs to be a container that implements <code>IVisualElementContainer</code>. If no base class
+		 * is provided, automatically uses mx.core.Container.
+		 * 
+		 * @param baseClass A class reference to the container the environment should be built from.
 		 * 
 		 */
-		function buildVisualTestEnvironment():IVisualTestEnvironment;		
+		public function FlexMXVisualTestEnvironment(baseClass:Class) {
+			if( !baseClass )
+				baseClass = Container;
+			
+			super( baseClass );
+		}
 	}
 }

@@ -1,7 +1,8 @@
 package org.fluint.uiImpersonation
 {
 	import flash.display.DisplayObject;
-
+	import flash.display.Sprite;
+	
 	/**
 	 * Implemented by visual test environment facades
 	 *  
@@ -83,5 +84,63 @@ package org.fluint.uiImpersonation
 		 * 
 		 */
 		function get numChildren():int;
+		
+		/**
+		 * Adds a visual element to the test environment
+		 * @param element
+		 *
+		 */
+		function addElement(element:DisplayObject):DisplayObject;
+		
+		/**
+		 * Adds a visual element at the specified index to the test environment
+		 * @param element
+		 *
+		 */
+		function addElementAt(element:DisplayObject, index:int):DisplayObject;
+		
+		/**
+		 * Removes the specified visual element from the test environment
+		 * @param element
+		 *
+		 */
+		function removeElement(element:DisplayObject):DisplayObject;
+		
+		/**
+		 * Removes the visual element at the specified index from the test environment
+		 * @param element
+		 *
+		 */
+		function removeElementAt(index:int):DisplayObject;
+		
+		/**
+		 * Removes all visiual element from the test environment
+		 *
+		 */
+		function removeAllElements():void;
+		
+		/**
+		 * Set the specified visual element to the specified index in the test environment
+		 *
+		 */
+		function setElementIndex(element:DisplayObject, index:int):void;
+		
+		/**
+		 * Returns the visual element at the specified index in the test environment
+		 *
+		 */
+		function getElementAt(index:int):DisplayObject;
+		
+		/**
+		 * Returns the index of the specified visual element in the test environment
+		 * 
+		 */
+		function getElementIndex(element:DisplayObject):int;
+		
+		/**
+		 * Returns the current test environment
+		 * 
+		 */
+		function get testEnvironment():Sprite;
 	}
 }
