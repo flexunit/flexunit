@@ -8,6 +8,7 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
 import org.flexunit.ant.LoggingUtil;
+import org.flexunit.ant.tasks.types.LoadConfig;
 
 public class TaskConfiguration
 {
@@ -233,5 +234,15 @@ public class TaskConfiguration
       reportDir.mkdir();
       
       testRunConfiguration.setReportDir(reportDir);
+   }
+   
+   public void setDebug(boolean value)
+   {
+       compilationConfiguration.setDebug(value);
+   }
+
+   public void setLoadConfig(LoadConfig loadconfig)
+   {
+       compilationConfiguration.setLoadConfig(loadconfig);
    }
 }
