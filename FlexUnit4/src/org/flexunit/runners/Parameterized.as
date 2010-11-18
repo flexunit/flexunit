@@ -322,6 +322,9 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 					field = klassInfo.getField( argument.value );
 					
 					if ( field ) {
+						if (!field.isStatic)
+							throw Error("test parameters " + field.name + " must be static");
+							
 						property = field.getObj( null );
 						
 						if ( property is Array ) {
@@ -330,7 +333,11 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 						} else if ( property is IExternalDependencyData ) {
 							results = [];
 							results = results.concat( ( property as IExternalDependencyData ).data );
+						} else {
+							throw Error("invalid value for parameterized field " + field.name + ": " + property);
 						}
+					} else {
+						throw Error("unable to get parameters field " + argument.value);
 					}
 				}
 				
