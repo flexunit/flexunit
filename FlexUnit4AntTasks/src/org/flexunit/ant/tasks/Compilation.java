@@ -169,17 +169,18 @@ public class Compilation
       sourcePath.setLine("-source-path " + configuration.getSources().getPathElements(" ") + " " + configuration.getTestSources().getPathElements(" "));
       
       determineLibraryPath( task );
-      
+     
+      determineLoadConfigArgument( task );
+       
+      Argument debug = task.createArg();
+      debug.setLine( "-debug=" + configuration.getDebug() );
+
       Argument headlessServer = task.createArg();
       headlessServer.setLine("-headless-server=true");
       
-      determineLoadConfigArgument( task );
       
       Argument mainFile = task.createArg();
       mainFile.setValue(runnerFile.getAbsolutePath());
-      
-      Argument debug = task.createArg();
-      debug.setLine( "-debug=" + configuration.getDebug() );
       
       return task;
    }

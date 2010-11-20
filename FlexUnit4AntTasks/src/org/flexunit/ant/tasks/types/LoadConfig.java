@@ -31,7 +31,9 @@ public class LoadConfig implements DynamicAttribute
         }
         else
         {
-        	argument = "-load-config+=" + filename;
+        	
+        	argument = "-load-config+=\"" + filename + "\"";
+
         }
         
         return argument;
