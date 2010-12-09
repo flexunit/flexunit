@@ -15,6 +15,9 @@ public class FlexUnitTask extends Task
    {
    }
    
+   public void setLocation(final String location) {
+   }
+
    @Override
    public void setProject(Project project)
    {
