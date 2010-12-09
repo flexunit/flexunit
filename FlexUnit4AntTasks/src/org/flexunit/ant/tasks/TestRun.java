@@ -10,6 +10,7 @@ import org.apache.tools.ant.Project;
 import org.flexunit.ant.FlexUnitSocketServer;
 import org.flexunit.ant.FlexUnitSocketThread;
 import org.flexunit.ant.LoggingUtil;
+import org.flexunit.ant.launcher.commands.player.AdlCommand;
 import org.flexunit.ant.launcher.commands.player.PlayerCommand;
 import org.flexunit.ant.launcher.commands.player.PlayerCommandFactory;
 import org.flexunit.ant.launcher.contexts.ExecutionContext;
@@ -84,6 +85,12 @@ public class TestRun
       
       command.setProject(project);
       command.setSwf(configuration.getSwf());
+      command.setUrl(configuration.getUrl());
+      
+      if(command instanceof AdlCommand) 
+      {
+    	  ((AdlCommand)command).setPrecompiledAppDescriptor(configuration.getPrecompiledAppDescriptor());
+      }
       
       return command;
    }

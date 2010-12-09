@@ -15,9 +15,6 @@ public class FlexUnitTask extends Task
    {
    }
    
-   public void setLocation(final String location) {
-   }
-
    @Override
    public void setProject(Project project)
    {
@@ -75,6 +72,16 @@ public class FlexUnitTask extends Task
    public void setSWF(final String testSWF)
    {
       configuration.setSwf(testSWF);
+   }
+   
+   /**
+    * The URL of a Flex application to run.
+    * 
+    * @param url
+    */
+   public void setUrl(final String url)
+   {
+	   configuration.setUrl(url);
    }
 
    /**
@@ -158,6 +165,16 @@ public class FlexUnitTask extends Task
       configuration.setWorkingDir(workingDirPath);
    }
    
+   /**
+    * 
+    * 
+    * @param testDescriptor
+    */
+   public void setPrecompiledAppDescriptor(final String testDescriptor)
+   {
+	   configuration.setPrecompiledAppDescriptor(testDescriptor);
+   }
+
    /**
     * Called by Ant to execute the task.
     */
