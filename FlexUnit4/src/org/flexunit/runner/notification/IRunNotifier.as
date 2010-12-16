@@ -130,5 +130,12 @@ package org.flexunit.runner.notification {
 		 * @param listener The <code>IRunListener</code> to remove.
 		 */
 		function removeListener( listener:IRunListener ):void;
+
+		/**
+		 * Removes all <code>IRunListener</code> instances from the list of registered listeners 
+		 * in the <code>IRunNotifier</code>.
+		 * 
+		 */
+		function removeAllListeners():void;
 	}
 }

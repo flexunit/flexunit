@@ -13,8 +13,9 @@
 
 			public function runMe():void {
 				core = new FlexUnitCore();
+				core.addUncaughtErrorListener( systemManager.loaderInfo );
 				core.addListener( uiListener );
-				core.run( compilationSuite.SuitesToRun );
+				core.run( SuitesToRun );
 			}
 		]]>
 	</mx:Script>

@@ -55,6 +55,8 @@
             <arg line="-define=CONFIG::useFlexClasses,@{useFlex}" />
             <arg line="-verbose-stacktraces=true" />
             <arg line="-headless-server=true" />
+         	<arg line="-include-file=metadata.xml,'${src.loc}'/metadata.xml" />
+         	<arg line="-include-file=locale/en_US/metadata.properties,'${src.loc}'/locale/en_US/metadata.properties" />
             <args />
          </java>
       </sequential>

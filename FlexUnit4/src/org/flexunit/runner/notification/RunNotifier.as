@@ -227,6 +227,10 @@ package org.flexunit.runner.notification {
 			}
 		}
 		
+		public function removeAllListeners():void {
+			listeners = new Array();
+		}
+		
 		/**
 		 * Constructor.
 		 */

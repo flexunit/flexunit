@@ -71,7 +71,7 @@ package org.flexunit.runners.model {
 			var orderValueDec : Number = ( methodIndex + 1) / ( Math.pow( 10, totalMethods ) );
 
 			if ( annotation ) {
-				arg = annotation.getArgument( AnnotationArgumentConstants.ORDER );
+				arg = annotation.getArgument( AnnotationArgumentConstants.ORDER, true );
 
 				var orderArg:XML = <arg key="order" value="0"/>;
 				
@@ -92,10 +92,10 @@ package org.flexunit.runners.model {
 				}
 			}
 			
-			if ( annotation.getArgument( AnnotationArgumentConstants.ORDER ).value == "0" ) {
+/*			if ( annotation.getArgument( AnnotationArgumentConstants.ORDER, true ).value == "0" ) {
 				trace( "New Order " + annotation.getArgument( AnnotationArgumentConstants.ORDER ).value );	
 			}
-			
+*/			
 
 			return newMethod;
 		}

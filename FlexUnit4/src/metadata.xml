@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<annotations version="1.0">
+	<metadata name="Test" description="%flexunit.test">
+  		<context name="method" /> 
+ 		<attribute  name="async" 
+ 					type="Boolean" 
+ 	 				required="false"
+ 	 				hint="boolean" 
+ 	 				defaultValue="true"
+ 	 				description="%flexunit.async"
+ 	 				 /> 
+ 	 	<attribute  name="ui" 
+ 					type="Boolean" 
+ 	 				required="false"
+ 	 				hint="boolean" 
+ 	 				defaultValue="true"
+ 	 				description="%flexunit.ui"
+ 	 				 /> 
+ 	 	<attribute  name="order" 
+ 					type="Number" 
+ 	 				required="false" 
+ 	 				description="%flexunit.order"
+ 	 				 /> 
+ 	 	<attribute  name="timeout" 
+ 					type="Number" 
+ 	 				required="false"
+ 	 				description="%flexunit.timeout" 
+ 	 				 />
+ 	 	<attribute  name="expects" 
+ 					type="Class" 
+ 	 				required="false"
+ 	 				hint="classes"
+ 	 				hintType="Error" 
+ 	 				description="%flexunit.expects"
+ 	 				 />
+ 	 	<attribute  name="dataProvider" 
+ 	 				type="Array"
+ 	 				required="false" 
+ 	 				description="%flexunit.dataProvider"
+ 	 				 />
+ 	 	<attribute  name="description" 
+ 					type="String" 
+ 	 				required="false" 
+ 	 				description="%flexunit.description"
+ 	 				 />		  			 
+  	</metadata>
+  	<metadata name="Before" description="%flexunit.before">
+  		<context name="method" /> 
+ 		<attribute  name="async" 
+ 					type="Boolean" 
+ 	 				required="false"
+ 	 				hint="boolean" 
+ 	 				defaultValue="true"
+ 	 				description="%flexunit.async"
+ 	 				 /> 
+ 	 	<attribute  name="ui" 
+ 					type="Boolean" 
+ 	 				required="false"
+ 	 				hint="boolean" 
+ 	 				defaultValue="true"
+ 	 				description="%flexunit.ui"
+ 	 				 /> 
+ 	 	<attribute  name="order" 
+ 					type="Number" 
+ 	 				required="false" 
+ 	 				description="%flexunit.order"
+ 	 				 /> 
+ 	 	<attribute  name="timeout" 
+ 					type="Number" 
+ 	 				required="false" 
+ 	 				description="%flexunit.timeout"
+ 	 				 />
+ 	 	<attribute  name="description" 
+ 					type="String" 
+ 	 				required="false" 
+ 	 				description="%flexunit.description"
+ 	 				 />		
+  	</metadata>
+  	<metadata name="After" description="%flexunit.after">
+  		<context name="method" /> 
+ 		<attribute  name="async" 
+ 					type="Boolean" 
+ 	 				required="false"
+ 	 				hint="boolean" 
+ 	 				defaultValue="true"
+ 	 				description="%flexunit.async"
+ 	 				 /> 
+ 	 	<attribute  name="ui" 
+ 					type="Boolean" 
+ 	 				required="false"
+ 	 				hint="boolean" 
+ 	 				defaultValue="true"
+ 	 				description="%flexunit.ui"
+ 	 				 /> 
+ 	 	<attribute  name="order" 
+ 					type="Number" 
+ 	 				required="false" 
+ 	 				description="%flexunit.order"
+ 	 				 /> 
+ 	 	<attribute  name="timeout" 
+ 					type="Number" 
+ 	 				required="false" 
+ 	 				description="%flexunit.timeout"
+ 	 				 />
+ 	 	<attribute  name="description" 
+ 					type="String" 
+ 	 				required="false" 
+ 	 				description="%flexunit.description"
+ 	 				 />		
+  	</metadata>
+  	<metadata name="BeforeClass" description="%flexunit.beforeclass">
+  		<context name="method" /> 
+ 		<attribute  name="async" 
+ 					type="Boolean" 
+ 	 				required="false"
+ 	 				hint="boolean" 
+ 	 				defaultValue="true"
+ 	 				description="%flexunit.async"
+ 	 				 /> 
+ 	 	<attribute  name="ui" 
+ 					type="Boolean" 
+ 	 				required="false"
+ 	 				hint="boolean" 
+ 	 				defaultValue="true"
+ 	 				description="%flexunit.ui"
+ 	 				 /> 
+ 	 	<attribute  name="order" 
+ 					type="Number" 
+ 	 				required="false" 
+ 	 				description="%flexunit.order"
+ 	 				 /> 
+ 	 	<attribute  name="timeout" 
+ 					type="Number" 
+ 	 				required="false" 
+ 	 				description="%flexunit.timeout"
+ 	 				 />
+ 	 	<attribute  name="description" 
+ 					type="String" 
+ 	 				required="false" 
+ 	 				description="%flexunit.description"
+ 	 				 />			
+  	</metadata>
+  	<metadata name="AfterClass" description="%flexunit.afterclass">
+  		<context name="method" /> 
+ 		<attribute  name="async" 
+ 					type="Boolean" 
+ 	 				required="false"
+ 	 				hint="boolean" 
+ 	 				defaultValue="true"
+ 	 				description="%flexunit.async"
+ 	 				 /> 
+ 	 	<attribute  name="ui" 
+ 					type="Boolean" 
+ 	 				required="false"
+ 	 				hint="boolean" 
+ 	 				defaultValue="true"
+ 	 				description="%flexunit.ui"
+ 	 				 /> 
+ 	 	<attribute  name="order" 
+ 					type="Number" 
+ 	 				required="false" 
+ 	 				description="%flexunit.order"
+ 	 				 /> 
+ 	 	<attribute  name="timeout" 
+ 					type="Number" 
+ 	 				required="false" 
+ 	 				description="%flexunit.timeout"
+ 	 				 />
+ 	 	<attribute  name="description" 
+ 					type="String" 
+ 	 				required="false" 
+ 	 				description="%flexunit.description"
+ 	 				 />		
+  	</metadata>
+  	<metadata name="Theory" description="%flexunit.theory">
+  		<context name="method" /> 
+ 		<attribute  name="async" 
+ 					type="Boolean" 
+ 	 				required="false"
+ 	 				hint="boolean" 
+ 	 				defaultValue="true"
+ 	 				description="%flexunit.async"
+ 	 				 /> 
+ 	 	<attribute  name="ui" 
+ 					type="Boolean" 
+ 	 				required="false"
+ 	 				hint="boolean" 
+ 	 				defaultValue="true"
+ 	 				description="%flexunit.ui"
+ 	 				 /> 
+ 	 	<attribute  name="order" 
+ 					type="Number" 
+ 	 				required="false" 
+ 	 				description="%flexunit.order"
+ 	 				 /> 
+ 	 	<attribute  name="timeout" 
+ 					type="Number" 
+ 	 				required="false"
+ 	 				description="%flexunit.timeout" 
+ 	 				 />
+ 	 	<attribute  name="expects" 
+ 					type="Class" 
+ 	 				required="false"
+ 	 				hint="classes"
+ 	 				hintType="Error" 
+ 	 				description="%flexunit.expects"
+ 	 				 />
+ 	 	<attribute  name="description" 
+ 					type="String" 
+ 	 				required="false" 
+ 	 				description="%flexunit.description"
+ 	 				 />		  			 
+  	</metadata>
+  	<metadata name="DataPoint" description="%flexunit.datapoint">
+  		<context name="variable" /> 
+ 	 	<attribute  name="description" 
+ 					type="String" 
+ 	 				required="false" 
+ 	 				description="%flexunit.description"
+ 	 				 />		
+  	</metadata>
+  	<metadata name="DataPoints" description="%flexunit.datapoints">
+  		<context name="variable" type="Array" /> 
+ 	 	<attribute  name="loader" 
+ 					type="Class" 
+ 	 				required="false" 
+ 	 				hint="classes"
+ 	 				hintType="org.flexunit.runner.external.IExternalDependencyLoader"
+ 	 				description="%flexunit.loader"
+ 	 				 />
+ 	 	<attribute  name="description" 
+ 					type="String" 
+ 	 				required="false" 
+ 	 				description="%flexunit.description"
+ 	 				 />		
+  	</metadata>
+  	<metadata name="Parameters" description="%flexunit.parameters">
+  		<context name="method" /> 
+ 	 	<attribute  name="loader" 
+ 					type="Class" 
+ 	 				required="false" 
+ 	 				hint="classes"
+ 	 				hintType="org.flexunit.runner.external.IExternalDependencyLoader"
+ 	 				description="%flexunit.loader"
+ 	 				 />
+ 	 	<attribute  name="description" 
+ 					type="String" 
+ 	 				required="false" 
+ 	 				description="%flexunit.description"
+ 	 				 />		
+  	</metadata>
+  	<metadata name="RunWith" description="%flexunit.runwith" >
+  		<context name="class" />
+  		<attribute type="Class" required="true" hint="classes" hintType="org.flexunit.runner.IRunner" />
+  	</metadata>
+  	<metadata name="Suite" description="%flexunit.suite" >
+  		<context name="class" />
+  	</metadata>
+  	<metadata name="Ignore" description="%flexunit.ignore" >
+  		<context name="class" />
+  		<context name="method" />
+  		<attribute  name="description" 
+ 					type="String" 
+ 	 				required="false" 
+ 	 				description="%flexunit.description"
+ 	 				 />		
+  	</metadata>
+  	<metadata name="Rule" description="%flexunit.rule" >
+  		<context name="variable" type="org.flexunit.rules.IMethodRule" />
+  		<context name="method" type="org.flexunit.rules.IMethodRule" />
+  	</metadata>
+  	
+</annotations>

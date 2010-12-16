@@ -26,18 +26,17 @@
  * @version    
  **/ 
 package org.flexunit.runner {
-	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	import flash.display.Sprite;
-	import flash.display.Stage;
+	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 	import flash.utils.*;
 	
 	import org.flexunit.IncludeFlexClasses;
+	import org.flexunit.events.UnknownError;
 	import org.flexunit.experimental.theories.Theories;
 	import org.flexunit.internals.dependency.ExternalRunnerDependencyWatcher;
-	import org.flexunit.internals.runners.watcher.FrameWatcher;
 	import org.flexunit.runner.external.IExternalDependencyRunner;
 	import org.flexunit.runner.notification.Failure;
 	import org.flexunit.runner.notification.IAsyncStartupRunListener;
@@ -118,9 +117,19 @@ package org.flexunit.runner {
 		 */
 		private var asyncListenerWatcher:AsyncListenerWatcher;
 		
+		/**
+		 * @private
+		 */
 		private var _visualDisplayRoot:DisplayObjectContainer;
 
+		/**
+		 * @private
+		 */
 		private var topLevelRunner:IRunner;
+		/**
+		 * @private
+		 */
+		private var runListener:RunListener;
 		/**
 		 * @private
 		 */
@@ -144,7 +153,7 @@ package org.flexunit.runner {
 		 * Returns the version number.
 		 */
 		public static function get version():String {
-			return "4.1.0.0rc1";
+			return "4.1.0.0rc2";
 		}
 		
 
@@ -308,7 +317,7 @@ package org.flexunit.runner {
 		 */
 		protected function beginRunnerExecution( runner:IRunner ):void {
 			var result:Result = new Result();
-			var runListener:RunListener = result.createListener();
+			runListener = result.createListener();
 			addFirstListener( runListener );
 
 			var token:AsyncTestToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
@@ -334,9 +343,15 @@ package org.flexunit.runner {
 		 * All tests have finished execution.
 		 */
 		private function handleRunnerComplete( result:ChildResult ):void {
-			var runListener:RunListener = result.token[ RUN_LISTENER ];
+			var tokenRunListener:RunListener = result.token[ RUN_LISTENER ];
 
-			finishRun( runListener );
+			//Cleanup the top level runner
+			topLevelRunner = null;
+			
+			//Cleanup up runListener reference
+			runListener = null;
+
+			finishRun( tokenRunListener );
 		}
 		
 		/**
@@ -347,11 +362,49 @@ package org.flexunit.runner {
 		private function finishRun( runListener:RunListener ):void {
 			notifier.fireTestRunFinished( runListener.result );
 			removeListener( runListener );
-
+				
 			//Consider making this a custom event and attaching the result set
 			dispatchEvent( new Event( TESTS_COMPLETE ) );
 		}
 
+		/**
+		 * Adds a generic listener for errors. In practice this is used to catch global
+		 * errors to ensure that, if a developer does not properly code an async test
+		 * using FlexUnit APIs, that the player is not stopped by a message dialog
+		 * Receiving this top level error is *very* bad and causes an immediate stop.
+		 * 
+		 * @param listener the listener to add
+		 * @see org.flexunit.runner.notification.RunListener
+		 */
+		public function addUncaughtErrorListener( loaderInfo:LoaderInfo ):void {
+			//dereferencing this anonymously so we don't have problems with other
+			//FP versions
+		
+			if(loaderInfo.hasOwnProperty("uncaughtErrorEvents"))
+				IEventDispatcher(loaderInfo["uncaughtErrorEvents"]).addEventListener("uncaughtError", uncaughtErrorHandler);
+		}
+		
+		private function uncaughtErrorHandler( event:Event ):void {
+			//We received a top level error here... this is most likely because
+			//someone screwed up an async call, however, even in that case
+			//we have limited ways to figure out why. we need to stop all 
+			//of the tests immediately.
+			event.preventDefault();
+
+			var unknownError:UnknownError = new UnknownError( event );
+			var description:IDescription = Description.createTestDescription( UnknownError, "Uncaught Top Level Exception" );
+			var failure:Failure = new Failure( description, unknownError );
+			
+			notifier.fireTestFailure( failure );
+			notifier.fireTestRunFinished( runListener.result );
+
+			//Kill all listeners so they get no further events
+			notifier.removeAllListeners();
+
+			//Issue the pleaseStop to make the runners stop execution
+			pleaseStop();
+		}
+		
 		/**
 		 * Add a listener to be notified as the tests run.
 		 * @param listener the listener to add
