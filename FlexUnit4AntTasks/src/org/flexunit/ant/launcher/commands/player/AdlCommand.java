@@ -18,9 +18,15 @@ public class AdlCommand extends DefaultPlayerCommand
    private final String DESCRIPTOR_TEMPLATE = "flexUnitDescriptor.template";
    private final String DESCRIPTOR_FILE = "flexUnitDescriptor.xml";
    
+   private File precompiledAppDescriptor;
+   
    @Override
    public File getFileToExecute()
    {
+	  if(getPrecompiledAppDescriptor() != null) 
+	  {
+		  return new File(getPrecompiledAppDescriptor().getAbsolutePath());
+	  }
       return new File(getSwf().getParentFile().getAbsolutePath() + File.separatorChar + DESCRIPTOR_FILE);
    }
 
@@ -95,14 +101,28 @@ public class AdlCommand extends DefaultPlayerCommand
    public void prepare()
    {
       getCommandLine().setExecutable(generateExecutable());
-      getCommandLine().addArguments(new String[]{getFileToExecute().getAbsolutePath()});   
+      getCommandLine().addArguments(new String[]{getFileToExecute().getAbsolutePath()});
       
-      //Create Adl descriptor file
-      createApplicationDescriptor();
+      if(getPrecompiledAppDescriptor() == null) 
+      {
+    	  //Create Adl descriptor file
+    	  createApplicationDescriptor();
+      }
    }
    
    private String generateExecutable()
    {
       return getProject().getProperty("FLEX_HOME") + "/bin/" + getDefaults().getAdlCommand();
    }
+   
+   public File getPrecompiledAppDescriptor() 
+   {
+	   return precompiledAppDescriptor;
+   }
+
+   public void setPrecompiledAppDescriptor(File precompiledAppDescriptor) 
+   {
+	   this.precompiledAppDescriptor = precompiledAppDescriptor;
+   }
+
 }

@@ -73,6 +73,16 @@ public class FlexUnitTask extends Task
    {
       configuration.setSwf(testSWF);
    }
+   
+   /**
+    * The URL of a Flex application to run.
+    * 
+    * @param url
+    */
+   public void setUrl(final String url)
+   {
+	   configuration.setUrl(url);
+   }
 
    /**
     * Set the directory to output the test reports to.
@@ -155,6 +165,16 @@ public class FlexUnitTask extends Task
       configuration.setWorkingDir(workingDirPath);
    }
    
+   /**
+    * 
+    * 
+    * @param testDescriptor
+    */
+   public void setPrecompiledAppDescriptor(final String testDescriptor)
+   {
+	   configuration.setPrecompiledAppDescriptor(testDescriptor);
+   }
+
    /**
     * Called by Ant to execute the task.
     */

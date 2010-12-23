@@ -43,6 +43,14 @@ public class CustomPlayerCommand implements PlayerCommand
       proxiedCommand.setSwf(swf);
    }
    
+   public String getUrl() {
+	   return proxiedCommand.getUrl();
+   }
+
+   public void setUrl(String url) {
+	   proxiedCommand.setUrl(url);
+   }
+   
    public File getFileToExecute()
    {
       return proxiedCommand.getFileToExecute();
@@ -54,7 +62,16 @@ public class CustomPlayerCommand implements PlayerCommand
       
       proxiedCommand.getCommandLine().setExecutable(executable.getAbsolutePath());
       proxiedCommand.getCommandLine().clearArgs();
-      proxiedCommand.getCommandLine().addArguments(new String[]{getFileToExecute().getAbsolutePath()});
+      
+      if(getUrl() != null)
+      {    	  
+    	  proxiedCommand.getCommandLine().addArguments(new String[]{getUrl()});
+      } 
+      else 
+      {  
+    	  proxiedCommand.getCommandLine().addArguments(new String[]{getFileToExecute().getAbsolutePath()});
+      }
+
    }
    
    public Process launch() throws IOException

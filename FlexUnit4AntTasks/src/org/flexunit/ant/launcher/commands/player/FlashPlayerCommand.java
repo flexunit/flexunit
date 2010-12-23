@@ -35,20 +35,34 @@ public class FlashPlayerCommand extends DefaultPlayerCommand
    @Override
    public void prepare()
    {
-      //setup the command line now
-      getCommandLine().setExecutable(getDefaults().getOpenCommand());
-      getCommandLine().addArguments(getDefaults().getOpenSystemArguments());
-      getCommandLine().addArguments(new String[]{getFileToExecute().getAbsolutePath()});
-
-      //handle local trust
-      TrustFile trustFile = new TrustFile(getProject(), getDefaults().getFlashPlayerUserTrustDirectory(), getDefaults().getFlashPlayerGlobalTrustDirectory());
-      if (localTrusted)
-      {
-         trustFile.add(getSwf());
-      }
-      else
-      {
-         trustFile.remove(getSwf());
-      }
+	   if(getSwf() != null)
+	   {
+		  //setup the command line now
+	      getCommandLine().setExecutable(getDefaults().getOpenCommand());
+	      getCommandLine().addArguments(getDefaults().getOpenSystemArguments());
+	      getCommandLine().addArguments(new String[]{getFileToExecute().getAbsolutePath()});
+	      
+	      //handle local trust
+	      TrustFile trustFile = new TrustFile(getProject(), getDefaults().getFlashPlayerUserTrustDirectory(), getDefaults().getFlashPlayerGlobalTrustDirectory());
+	      if (localTrusted)
+	      {
+	         trustFile.add(getSwf());
+	      }
+	      else
+	      {
+	         trustFile.remove(getSwf());
+	      }
+	   } else if(getUrl() != null) {
+	      //handle local trust
+	      TrustFile trustFile = new TrustFile(getProject(), getDefaults().getFlashPlayerUserTrustDirectory(), getDefaults().getFlashPlayerGlobalTrustDirectory());
+	      if (localTrusted)
+	      {
+	         trustFile.add(getUrl());
+	      }
+	      else
+	      {
+	    	  trustFile.remove(getUrl());
+	      }		   
+	   }
    }
 }

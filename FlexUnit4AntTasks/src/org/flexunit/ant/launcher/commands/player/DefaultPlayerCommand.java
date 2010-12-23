@@ -8,6 +8,7 @@ import org.flexunit.ant.launcher.platforms.PlatformDefaults;
 
 public abstract class DefaultPlayerCommand extends Command implements PlayerCommand
 {
+   private String url;
    private File swf;
    private PlatformDefaults defaults;
    
@@ -25,6 +26,14 @@ public abstract class DefaultPlayerCommand extends Command implements PlayerComm
    {
       return swf;
    }
+
+   public String getUrl() {
+	   return url;
+   }
+
+   public void setUrl(String url) {
+	   this.url = url;
+   }   
 
    public void setDefaults(PlatformDefaults defaults)
    {
