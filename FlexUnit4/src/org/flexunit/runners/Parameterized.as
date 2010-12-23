@@ -40,10 +40,11 @@ package org.flexunit.runners
 	import org.flexunit.internals.runners.ErrorReportingRunner;
 	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.internals.runners.statements.IAsyncStatement;
+	import org.flexunit.runner.Description;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
-	import org.flexunit.runner.external.IExternalDependencyRunner;
 	import org.flexunit.runner.external.IExternalDependencyData;
+	import org.flexunit.runner.external.IExternalDependencyRunner;
 	import org.flexunit.runner.notification.IRunNotifier;
 	import org.flexunit.runner.notification.StoppedByUserException;
 	import org.flexunit.runners.model.FrameworkMethod;
@@ -51,7 +52,7 @@ package org.flexunit.runners
 	import org.flexunit.token.AsyncTestToken;
 	
 	public class Parameterized extends ParentRunner implements IExternalDependencyRunner {
-
+		
 		/**
 		 * @private
 		 */
@@ -80,7 +81,7 @@ package org.flexunit.runners
 		 * @private
 		 */
 		private var externalError:Boolean = false;
-
+		
 		/**
 		 * Setter for a dependency watcher. This is a class that implements IExternalRunnerDependencyWatcher
 		 * and watches for any external dependencies (such as loading data) are finalized before execution of
@@ -122,20 +123,20 @@ package org.flexunit.runners
 			dr = new ExternalDependencyResolver( klass, this );
 			dr.resolveDependencies();
 		}
-
+		
 		/**
 		 * @private
 		 */
 		private function buildErrorRunner( message:String ):Array {
 			return [new ErrorReportingRunner( klass, new Error("There was an error retrieving the parameters for the testcase: cause " + message ) ) ];			
 		}
-
+		
 		/**
 		 * @private
 		 */
 		private function buildRunners():Array {
 			var runners:Array = new Array();
-
+			
 			try {
 				var parametersList:Array = getParametersList(klass);
 				if ( parametersList.length == 0 ) {
@@ -165,14 +166,14 @@ package org.flexunit.runners
 			var fields:Array = getParametersFields(klass);
 			var property:*;
 			var data:Array;
-
+			
 			for ( var i:int=0; i<methods.length; i++ ) {
 				frameworkMethod = methods[ i ];
 				
 				data = frameworkMethod.invokeExplosively(klass) as Array;
 				allParams = allParams.concat( data );
 			}
-
+			
 			for ( var j:int=0; j<fields.length; j++ ) {
 				field = fields[ j ];
 				
@@ -183,7 +184,7 @@ package org.flexunit.runners
 				} else if ( property is IExternalDependencyData ) {
 					data = ( property as IExternalDependencyData ).data;
 				}
-
+				
 				allParams = allParams.concat( data );
 			}
 			
@@ -197,7 +198,7 @@ package org.flexunit.runners
 			var methods:Array = testClass.getMetaDataMethods( AnnotationConstants.PARAMETERS );
 			return methods;
 		}
-
+		
 		/**
 		 * @private
 		 */
@@ -205,7 +206,26 @@ package org.flexunit.runners
 			var fields:Array = testClass.getMetaDataFields( AnnotationConstants.PARAMETERS, true );
 			return fields;
 		}
-
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function get description():IDescription {
+			/** This is more complicated for us as we could have pending external data when we are asked for our
+			 *  description. This happens when a Request is created and has a filter applied to it. So, we can't cache
+			 *  nor give a real description if we don't have dependencies resolved. **/  
+			
+			var description:IDescription;
+			
+			if ( dr.ready ) {
+				description = super.description;
+			} else {
+				description = Description.createSuiteDescription( name, testClass.metadata ); 				
+			}
+			
+			return description;
+		}		
+		
 		/**
 		 * @inheritDoc
 		 */
@@ -217,17 +237,17 @@ package org.flexunit.runners
 					runners = buildErrorRunner( _externalDependencyError );
 				}
 			}
-
+			
 			return runners;
 		}
-
+		
 		/**
 		 * @inheritDoc
 		 */
 		override protected function describeChild( child:* ):IDescription {
 			return IRunner( child ).description;
 		}
-
+		
 		/**
 		 * @inheritDoc
 		 */
@@ -274,7 +294,7 @@ import org.flexunit.runners.BlockFlexUnit4ClassRunner;
 import org.flexunit.runners.model.FrameworkMethod;
 import org.flexunit.runners.model.ParameterizedMethod;
 import org.flexunit.token.AsyncTestToken;
-	
+
 class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 	/**
 	 * @private
@@ -355,7 +375,7 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 		if ( !expandedTestList ) {
 			expandedTestList = buildExpandedTestList();
 		}
-
+		
 		return expandedTestList; 
 	}
 	
@@ -397,23 +417,23 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 		
 		var params:Array = computeParams();
 		
-/*		if ( !params ) {
-			throw new InitializationError( "Parameterized runner has not been provided data" );
+		/*		if ( !params ) {
+		throw new InitializationError( "Parameterized runner has not been provided data" );
 		}*/
-
+		
 		var paramName:String = params?params.join ( "," ):"Missing Params";
 		var method:FrameworkMethod = FrameworkMethod( child );
 		return Description.createTestDescription( testClass.asClass, method.name + ' (' + paramName + ')', method.metadata );
 	}
-
-
+	
+	
 	/**
 	 * @private
 	 */
 	private function computeParams():Array {
 		return parameterList?parameterList[parameterSetNumber]:null;
 	}
-
+	
 	/**
 	 * 
 	 * Creates a new instance of the test with possible arguments
@@ -430,7 +450,7 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 			return testClass.klassInfo.constructor.newInstance();
 		}
 	}
-
+	
 	//we don't want the BeforeClass and AfterClass on this run to execute, this will be handled by Parameterized
 	/**
 	 * @inheritDoc
@@ -438,7 +458,7 @@ class TestClassRunnerForParameters extends BlockFlexUnit4ClassRunner {
 	override protected function classBlock( notifier:IRunNotifier ):IAsyncStatement {
 		return childrenInvoker( notifier );
 	}
-
+	
 	/**
 	 * Constructor.
 	 * 

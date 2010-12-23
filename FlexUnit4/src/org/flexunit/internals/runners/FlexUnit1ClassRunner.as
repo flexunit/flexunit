@@ -174,6 +174,13 @@ package org.flexunit.internals.runners {
 			} else {
 				var suite:TestSuite = new TestSuite();
 				var klassInfo:Klass = new Klass( klassOrTest );
+				
+				if ( klassOrTest is Class ) {
+					klassInfo = new Klass( klassOrTest );
+				} else {
+					klassInfo = new Klass( klassOrTest.constructor );
+				}
+				
 				var methodList:Array = getMethodListFromFilter( klassInfo, filter );
 
 				for ( var i:int=0; i<methodList.length; i++ ) {

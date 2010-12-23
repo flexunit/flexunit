@@ -17,7 +17,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.parameterizedSuite
 		[Parameters]
 		public static var ensureRunOnceData : Array = [ [ 0 ] ];
 		
-		public static var dataRetriever1:ParamDataHelper = new ParamDataHelper( "someFakeDataPath.stuff" );
+		public static var dataRetriever1:ParamDataHelper = new ParamDataHelper( "TestJUnitParameterizedExternal.stuff" );
 		
 		[Parameters(loader="dataRetriever1")]
 		public static var someData:Array;

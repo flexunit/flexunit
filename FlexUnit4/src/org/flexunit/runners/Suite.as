@@ -30,6 +30,7 @@ package org.flexunit.runners {
 	
 	import org.flexunit.internals.dependency.IExternalRunnerDependencyWatcher;
 	import org.flexunit.internals.runners.InitializationError;
+	import org.flexunit.runner.Description;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.external.IExternalDependencyRunner;
@@ -94,6 +95,55 @@ package org.flexunit.runners {
 			}
 		}
 		
+		private static var someCounter:uint = 0;
+		/**
+		 * @private
+		 */
+		private var descriptionIsCached:Boolean = false;
+
+		/**
+		 * @inheritDoc
+		 */
+		override public function get description():IDescription {
+			var desc:IDescription;
+
+			if ( descriptionIsCached ) {
+				desc = super.description;
+			} else {				
+				trace( someCounter++ );
+				if ( _dependencyWatcher && _dependencyWatcher.allDependenciesResolved ) {
+					//We are good to go, so let it cache this time and from now on we will defer to the super class' copy
+					descriptionIsCached = true;
+					desc = super.description;
+				} else {
+					//For some reason we still have unresolved dependencies.. most likey, we have external dependencies
+					//but we are being filtered, so, just keep generating new descriptions when asked as we could change
+					desc = generateDescription();
+				}
+			} 
+
+			return desc;
+		}
+		
+/*		override public function get description():IDescription {
+
+			//Unless I can find a better way to do this, suites are not allowed to cache their descriptions for now
+			//as these descriptions could be built before parameterized dependencies are loaded.
+			//Might be able to optimize by watching for this condition specifically
+			
+			var description:IDescription = Description.createSuiteDescription( name, testClass.metadata ); //?testClass.metadata[ 0 ]:null );
+			var filtered:Array = getFilteredChildren();
+			var child:*;
+			
+			for ( var i:int=0; i<filtered.length; i++ ) {
+				child = filtered[ i ];
+				description.addChild( describeChild( child ) );
+			}
+			
+			trace( someCounter++ );
+			return description;
+		}		
+		*/
 		/**
 		 * @inheritDoc
 		 */
