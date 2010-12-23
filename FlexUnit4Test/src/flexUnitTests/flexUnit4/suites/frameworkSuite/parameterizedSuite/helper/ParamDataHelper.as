@@ -8,6 +8,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.parameterizedSuite.helper 
 	public class ParamDataHelper implements IExternalDependencyLoader {
 		private var dToken:ExternalDependencyToken;
 		private var timer:Timer;
+		private var url:String;
 
 		private function success( data:TimerEvent ):void {
 			timer.removeEventListener(TimerEvent.TIMER_COMPLETE, success );
@@ -27,8 +28,10 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.parameterizedSuite.helper 
 		}
 		
 		public function ParamDataHelper( url:String ) {
+			this.url = url;
+
 			timer = new Timer( 250, 1 );
-			timer .addEventListener(TimerEvent.TIMER_COMPLETE, success );
+			timer.addEventListener(TimerEvent.TIMER_COMPLETE, success );
 			//Just fake this with a timer to illustrate the point
 
 			dToken = new ExternalDependencyToken();

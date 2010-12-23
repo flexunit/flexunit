@@ -16,7 +16,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases {
 		
 		public static var dataTwo:ParamDataExt = new ParamDataExt( "someFakeDataPath.stuff" );
 
-		public static var helper:ParamDataHelper = new ParamDataHelper( "someFakeDataPath.stuff" );
+		public static var helper:ParamDataHelper = new ParamDataHelper( "TestParameterized2.stuff" );
 
 		[DataPoints(loader="helper")]
 		public static var dataFour:Array;

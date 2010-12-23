@@ -13,7 +13,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.parameterizedSuite
 		private var foo : Parameterized;
 		
 		public static var testCount : int = 0;
-		public static var dataRetriever1:ParamDataHelper = new ParamDataHelper( "someFakeDataPath.stuff" );
+		public static var dataRetriever1:ParamDataHelper = new ParamDataHelper( "TestNGPatameterizedExternal.stuff" );
 		
 		[DataPoints(loader="dataRetriever1")]
 		public static var someData:Array;

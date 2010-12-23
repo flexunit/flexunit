@@ -25,7 +25,7 @@ package flexUnitTests.flexUnit4.suites.frameworkSuite.cases
 		[Parameters]
 		public static var dataRetriever:ParamDataExt = new ParamDataExt( "someFakeDataPath.stuff" );
 
-		public static var dataRetriever1:ParamDataHelper = new ParamDataHelper( "someFakeDataPath.stuff" );
+		public static var dataRetriever1:ParamDataHelper = new ParamDataHelper( "TestParameterized.stuff" );
 
 		[Parameters(loader="dataRetriever1")]
 		public static var someData:Array;
