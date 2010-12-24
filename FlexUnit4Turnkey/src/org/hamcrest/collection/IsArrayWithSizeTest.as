@@ -1,11 +1,9 @@
 package org.hamcrest.collection
 {
-
     import org.hamcrest.AbstractMatcherTestCase;
 
-    public class IsArrayWithSizeTest extends AbstractMatcherTestCase
+    public class IsArrayWithSizeTest extends AbstractArrayMatcherTestCase
     {
-
         [Test]
         public function matchesWhenSizeIsCorrect():void
         {
@@ -32,6 +30,15 @@ package org.hamcrest.collection
         {
             assertDescription("an Array with size <3>", arrayWithSize(3));
             assertDescription("an empty Array", emptyArray());
+        }
+        
+        [Test]
+        public function describesMismatch():void 
+        {
+            assertMismatch(
+                "size was <4>", 
+                arrayWithSize(3),
+                [1, 2, 3, 4]);
         }
     }
 }

@@ -30,13 +30,13 @@ package org.hamcrest.number
         [Test]
         public function hasMismatchDescription():void
         {
-            assertMismatch("<3> was greater than <3>", lessThan(3), 3);
+            assertMismatch("<3> was not less than <3>", lessThan(3), 3);
         }
 
         [Test]
         public function hasMismatchDescriptionIfNotEqualTo():void
         {
-            assertMismatch("was <4>", lessThanOrEqualTo(3), 4);
+            assertMismatch("<4> was not less than or equal to <3>", lessThanOrEqualTo(3), 4);
         }
     }
 }
