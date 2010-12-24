@@ -152,7 +152,11 @@ to contribute to our CI process.
          	<exclude name="**/export/**/*" />
          </zipfileset>
          <zipfileset dir="${core.loc}/target" prefix="flexunit/turnkey/libs">
-            <include name="*core*.swc" />
+            <include name="flexunit*flex*.swc" />
+         </zipfileset>
+		<zipfileset dir="${core.loc}/libs" prefix="flexunit/turnkey/libs">
+            <include name="*.swc" />
+ 			<exclude name="fluint-1_2.swc" />
          </zipfileset>
          <zipfileset dir="${uilistener.loc}/target" prefix="flexunit/turnkey/libs">
             <include name="*.swc" />
