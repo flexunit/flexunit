@@ -1,8 +1,6 @@
 package org.hamcrest.collection
 {
-	import org.hamcrest.AbstractMatcherTestCase;
-	
-	public class InArrayTest extends AbstractMatcherTestCase
+	public class InArrayTest extends AbstractArrayMatcherTestCase
 	{		
 		[Test]
 		public function matchesAnItemInArray():void 

@@ -1,31 +1,32 @@
-package org.hamcrest.mxml.number
+package org.hamcrest.mxml.text
 {
+    import flash.events.Event;
+
     import org.hamcrest.mxml.AbstractMXMLMatcherTestCase;
 
     /*
-       <LessThan value="{ 3 }" />
+       <EmptyString />
      */
-    public class LessThanTest extends AbstractMXMLMatcherTestCase
+    public class EmptyStringTest extends AbstractMXMLMatcherTestCase
     {
-        private var matcher:LessThan;
+        private var matcher:EmptyString;
 
         [Before]
         public function createMatcher():void
         {
-            matcher = new LessThan();
-            matcher.value = 3;
+            matcher = new EmptyString();
         }
 
         [Test]
         public function hasDescription():void
         {
-            assertDescription("a value less than <3>", matcher);
+            assertDescription('an empty String', matcher);
         }
 
         [Test]
         public function matchedIsTrueIfTargetMatches():void
         {
-            matcher.target = 2;
+            matcher.target = "   ";
 
             assertMatched("matched if target matches", matcher);
         }
@@ -33,7 +34,7 @@ package org.hamcrest.mxml.number
         [Test]
         public function matchedIsFalseIfTargetDoesNotMatch():void
         {
-            matcher.target = 4;
+            matcher.target = "not empty string";
 
             assertNotMatched("not matched if target does not match", matcher);
         }
@@ -41,7 +42,7 @@ package org.hamcrest.mxml.number
         [Test]
         public function mismatchDescriptionIsNullIfTargetMatches():void
         {
-            matcher.target = 2;
+            matcher.target = "   ";
 
             assertMatchedMismatchDescription(matcher);
         }
@@ -49,9 +50,9 @@ package org.hamcrest.mxml.number
         [Test]
         public function mismatchDescriptionIsSetIfTargetDoesNotMatch():void
         {
-            matcher.target = 4;
+            matcher.target = "not empty string";
 
-            assertMismatchDescription("<4> was not less than <3>", matcher);
+            assertMismatchDescription("was \"not empty string\"", matcher);
         }
     }
 }

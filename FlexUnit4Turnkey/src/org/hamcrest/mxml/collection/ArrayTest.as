@@ -3,7 +3,7 @@ package org.hamcrest.mxml.collection
     import org.flexunit.assertThat;
     import org.hamcrest.mxml.collection.Array;
     import org.hamcrest.mxml.AbstractMXMLMatcherTestCase;
-    import org.hamcrest.object.equalTo;
+    import org.hamcrest.mxml.object.EqualTo;
 
     /*
        <Array>
@@ -20,34 +20,34 @@ package org.hamcrest.mxml.collection
         public function createMatcher():void
         {
             matcher = new org.hamcrest.mxml.collection.Array();
+
+            matcher.matchers = [ eq(1), eq(2), eq(3) ];
+        }
+        
+        public function eq(value:Number):EqualTo
+        {
+            var m:EqualTo = new EqualTo();
+            m.value = value;
+            return m;
         }
 
         [Test]
         public function hasDescriptionWithNoMatchers():void
         {
+            matcher.matchers = [];
+            
             assertDescription("[]", matcher);
         }
 
         [Test]
         public function hasDescriptionWithMatchers():void
         {
-            matcher.matchers = [
-                equalTo(1),
-                equalTo(2),
-                equalTo(3)
-                ];
-
             assertDescription("[<1>, <2>, <3>]", matcher);
         }
 
         [Test]
         public function matchedIsTrueIfTargetMatches():void
         {
-            matcher.matchers = [
-                equalTo(1),
-                equalTo(2),
-                equalTo(3)
-                ];
             matcher.target = [ 1, 2, 3 ];
 
             assertMatched("matched if target matches", matcher);
@@ -56,11 +56,6 @@ package org.hamcrest.mxml.collection
         [Test]
         public function matchedIsFalseIfTargetDoesNotMatch():void
         {
-            matcher.matchers = [
-                equalTo(1),
-                equalTo(2),
-                equalTo(3)
-                ];
             matcher.target = [ 2, 3, 4 ];
 
             assertNotMatched("not matched if target does not match", matcher);
@@ -69,11 +64,6 @@ package org.hamcrest.mxml.collection
         [Test]
         public function mismatchDescriptionIsNullIfTargetMatches():void
         {
-            matcher.matchers = [
-                equalTo(1),
-                equalTo(2),
-                equalTo(3)
-                ];
             matcher.target = [ 1, 2, 3 ];
 
             assertMatchedMismatchDescription(matcher);
@@ -82,11 +72,6 @@ package org.hamcrest.mxml.collection
         [Test]
         public function mismatchDescriptionIsSetIfTargetDoesNotMatch():void
         {
-            matcher.matchers = [
-                equalTo(1),
-                equalTo(2),
-                equalTo(3)
-                ];
             matcher.target = [ 2, 3, 4 ];
 
             assertMismatchDescription("was [<2>,<3>,<4>]", matcher);

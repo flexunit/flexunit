@@ -51,7 +51,7 @@ package org.hamcrest.mxml.collection
         {
             matcher.target = [ 2, 3, 4 ];
 
-            assertMismatchDescription("was [<2>,<3>,<4>]", matcher);
+            assertMismatchDescription("size was <3>", matcher);
         }
     }
 }

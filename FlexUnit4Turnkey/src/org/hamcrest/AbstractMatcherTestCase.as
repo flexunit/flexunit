@@ -25,9 +25,10 @@ package org.hamcrest
 
         public function assertMismatch(expected:String, matcher:Matcher, arg:Object):void
         {
-            var description:Description = new StringDescription();
             assertFalse("Precondition: Matcher should not match item.", matcher.matches(arg));
-            matcher.describeMismatch(arg, description);
+
+            var description:Description = new StringDescription();            
+            description.appendMismatchOf(matcher, arg);
             assertEquals("Expected mismatch description", expected, description.toString());
         }
     }
