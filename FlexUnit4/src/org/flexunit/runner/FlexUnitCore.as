@@ -110,6 +110,9 @@ package org.flexunit.runner {
 		private var notifier:IRunNotifier;
 		
 		
+		/**
+		 * @private
+		 */
 		private var runnerExternalDependencyWatcher:ExternalRunnerDependencyWatcher;
 		
 		/**
