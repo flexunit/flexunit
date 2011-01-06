@@ -24,7 +24,13 @@
 	<!-- You can set this directly so mxmlc will work correctly, or set FLEX_HOME as an environment variable and use as below -->
 	<property name="FLEX_HOME" location="${env.FLEX_HOME}" />
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
-	<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks-4.1.0.jar" />
+	<taskdef resource="flexUnitTasks.tasks">
+	   <classpath>
+	      <fileset dir="${lib.loc}">
+	         <include name="flexUnitTasks*.jar" />
+	      </fileset>
+	   </classpath>
+	</taskdef>
 
 	<target name="clean">
 		<!-- Remove all directories created during the build process -->

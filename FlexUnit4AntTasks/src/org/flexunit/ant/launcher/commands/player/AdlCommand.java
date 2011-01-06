@@ -1,7 +1,6 @@
 package org.flexunit.ant.launcher.commands.player;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.taskdefs.Java;
@@ -19,31 +18,34 @@ public class AdlCommand extends DefaultPlayerCommand
    private final String DESCRIPTOR_TEMPLATE = "flexUnitDescriptor.template";
    private final String DESCRIPTOR_FILE = "flexUnitDescriptor.xml";
    
+   private File precompiledAppDescriptor;
+   
    @Override
-   public void setSwf(File swf)
+   public File getFileToExecute()
    {
-      super.setSwf(swf);
-      
-      getCommandLine().setExecutable(generateExecutable());
-      getCommandLine().addArguments(new String[]{swf.getParentFile().getAbsolutePath() + File.separatorChar + DESCRIPTOR_FILE});      
+	  if(getPrecompiledAppDescriptor() != null) 
+	  {
+		  return new File(getPrecompiledAppDescriptor().getAbsolutePath());
+	  }
+      return new File(getSwf().getParentFile().getAbsolutePath() + File.separatorChar + DESCRIPTOR_FILE);
    }
 
    /**
     * Used to create the application descriptor used to invoke adl
     */
-   private void createApplicationDescriptor(File swf)
+   private void createApplicationDescriptor()
    {
       try
       {
          //Template location in JAR
-         URLResource template = new URLResource(getClass().getResource(File.separatorChar + DESCRIPTOR_TEMPLATE));
+         URLResource template = new URLResource(getClass().getResource("/" + DESCRIPTOR_TEMPLATE));
          
          //Descriptor location, same location as SWF due to relative path required in descriptor
-         File descriptor = new File(swf.getParentFile().getAbsolutePath() + File.separatorChar + DESCRIPTOR_FILE);
+         File descriptor = new File(getSwf().getParentFile().getAbsolutePath() + File.separatorChar + DESCRIPTOR_FILE);
          
          //Create tokens to filter
          FilterSet filters = new FilterSet();
-         filters.addFilter("ADL_SWF", swf.getName());
+         filters.addFilter("ADL_SWF", getSwf().getName());
          filters.addFilter("ADT_VERSION", Double.toString(getVersion()));
          
          //Copy descriptor template to SWF folder performing token replacement
@@ -96,17 +98,31 @@ public class AdlCommand extends DefaultPlayerCommand
    }
    
    @Override
-   public Process launch() throws IOException
+   public void prepare()
    {
-      //Create Adl descriptor file
-      createApplicationDescriptor(getSwf());
+      getCommandLine().setExecutable(generateExecutable());
+      getCommandLine().addArguments(new String[]{getFileToExecute().getAbsolutePath()});
       
-      //Run command
-      return super.launch();
+      if(getPrecompiledAppDescriptor() == null) 
+      {
+    	  //Create Adl descriptor file
+    	  createApplicationDescriptor();
+      }
    }
    
    private String generateExecutable()
    {
       return getProject().getProperty("FLEX_HOME") + "/bin/" + getDefaults().getAdlCommand();
    }
+   
+   public File getPrecompiledAppDescriptor() 
+   {
+	   return precompiledAppDescriptor;
+   }
+
+   public void setPrecompiledAppDescriptor(File precompiledAppDescriptor) 
+   {
+	   this.precompiledAppDescriptor = precompiledAppDescriptor;
+   }
+
 }

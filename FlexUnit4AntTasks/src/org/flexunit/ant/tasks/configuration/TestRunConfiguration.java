@@ -24,6 +24,9 @@ public class TestRunConfiguration implements StepConfiguration
    private int serverBufferSize = 262144; //bytes
    private int socketTimeout = 60000; //milliseconds
    private File swf = null;
+   private String url = null;
+   private File precompiledAppDescriptor = null;
+   private OperatingSystem os = OperatingSystem.identify();
    
    public File getCommand()
    {
@@ -163,6 +166,31 @@ public class TestRunConfiguration implements StepConfiguration
    public void setSwf(File swf)
    {
       this.swf = swf;
+   }
+   
+   public String getUrl() 
+   {
+	   return url;
+   }
+
+   public void setUrl(String url) 
+   {
+	   this.url = url;
+   }
+
+   public File getPrecompiledAppDescriptor() 
+   {
+	   return precompiledAppDescriptor;
+   }
+
+   public void setPrecompiledAppDescriptor(File precompiledAppDescriptor) 
+   {
+	   this.precompiledAppDescriptor = precompiledAppDescriptor;
+   }
+
+   public OperatingSystem getOs()
+   {
+      return os;
    }
 
    public void validate() throws BuildException

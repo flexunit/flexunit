@@ -14,6 +14,9 @@ public interface PlayerCommand
 {
    public void setProject(Project project);
    public void setEnvironment(String[] variables);
+   public File getFileToExecute();
    public void setSwf(File swf);
+   public void setUrl(String url);
+   public void prepare();
    public Process launch() throws IOException;
 }

@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="FlexUnit4UIRunner" basedir="." default="package">
+<project name="FlexUnit4UIListener" basedir="." default="package">
+   <import file="${basedir}/../utils.xml" />
    <property environment="env" />
 
    <!-- Configuration -->
    <property name="build.artifactId" value="flexunit-uilistener" />
-   <property name="build.finalName" value="${build.artifactId}-${build.version}.${build.number}-sdk${build.sdk}.swc" />
    <property name="build.namespace" value="http://www.adobe.com/2009/flexUnitUIRunner" />
-   <property name="build.useFlex" value="true" />
+   <property name="build.finalName" value="${build.artifactId}-${build.version}-${build.number}-${build.sdk}" />
+   <property name="build.packaging" value="swc" />
+   <property name="build.deploy.name" value="FlexUnit UI Listener" />
+   <property name="build.deploy.description" value="Listener used to show a UI report for FlexUnit test results." />
 
    <!-- Existing -->
    <property name="src.loc" location="${basedir}/src" />
@@ -14,6 +17,7 @@
 
    <!-- Generated -->
    <property name="dist.loc" location="${basedir}/target" />
+   <property name="sonatype.loc" location="${dist.loc}/sonatype" />
    <property name="bin.loc" location="${basedir}/target/bin" />
    <property name="doc.loc" location="${basedir}/target/docs" />
 
@@ -31,13 +35,14 @@
    <target name="init">
       <mkdir dir="${lib.loc}" />
       <mkdir dir="${dist.loc}" />
+      <mkdir dir="${sonatype.loc}" />
       <mkdir dir="${bin.loc}" />
       <mkdir dir="${doc.loc}" />
 
       <!-- Copy required dependencies -->
       <copy todir="${lib.loc}" overwrite="true" failonerror="false">
          <fileset dir="${basedir}/../FlexUnit4/target">
-            <include name="*core*.swc" />
+            <include name="flexunit*as3*.swc" />
          </fileset>
       </copy>
 
@@ -64,7 +69,7 @@
       <property file="${bin.loc}/flexLib.properties" />
 
       <!-- Compile swc -->
-      <compc output="${bin.loc}/${build.finalName}" include-classes="${src.class-list}">
+      <compc output="${bin.loc}/${build.finalName}.${build.packaging}" include-classes="${src.class-list}">
          <source-path path-element="${src.loc}" />
          <namespace uri="${build.namespace}" manifest="${src.loc}/FlexUnit4UIRunner-manifest.xml" />
          <include-namespaces>http://www.adobe.com/2009/flexUnitUIRunner</include-namespaces>
@@ -79,7 +84,6 @@
          </compiler.external-library-path>
          <compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
          <compiler.headless-server>true</compiler.headless-server>
-         <define name="CONFIG::useFlexClasses" value="${build.useFlex}" />
       </compc>
    </target>
 
@@ -97,11 +101,10 @@
          <arg line="-include-namespaces ${build.namespace}" />
          <arg line="-include-classes ${src.class-list}" />
          <arg line="-source-path+='${src.loc}'" />
-         <arg line="-output '${bin.loc}/${build.finalName}'" />
+         <arg line="-output '${bin.loc}/${build.finalName}.${build.packaging}'" />
          <arg line="-external-library-path+='${lib.loc}'" />
          <arg line="-external-library-path+='${FLEX_HOME}/frameworks/libs'" />
          <arg line="-theme '${FLEX_HOME}/frameworks/themes/Halo/halo.swc'" />
-         <arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
       </java>
    </target>
    
@@ -115,7 +118,6 @@
          <arg line="-source-path+='${src.loc}'" />
          <arg line="-output '${doc.loc}'" />
          <arg line="-library-path+='${lib.loc}'" />
-         <arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
       </java>
    </target>
 
@@ -129,11 +131,37 @@
          <arg line="-library-path+='${lib.loc}'" />
          <arg line="-compatibility-version=3.0.0" />
          <arg line="-theme '${FLEX_HOME}/frameworks/themes/Halo/halo.swc'" />
-         <arg line="-define=CONFIG::useFlexClasses,${build.useFlex}" />
       </java>
    </target>
 
    <target name="package" depends="report">
-      <copy file="${bin.loc}/${build.finalName}" todir="${dist.loc}" />
+      <copy file="${bin.loc}/${build.finalName}.${build.packaging}" todir="${dist.loc}" />
+   </target>
+   
+   <target name="deploy" depends="package" description="Requires Ant-Contrib and GPG to work.">
+      <!-- Copy artifacts w/o build number for use with sonatype -->
+   	  <copy todir="${sonatype.loc}">
+   	  	<fileset dir="${dist.loc}">
+   	  	   <include name="*.swc" />
+   	  	</fileset>
+   	  	<filtermapper>
+      	  <replacestring from="-${build.number}-" to="-" />
+		</filtermapper>
+   	  </copy>
+   
+      <!-- prepare sonatype bundle -->
+      <sonatype-bundle dir="${sonatype.loc}" 
+         todir="${sonatype.loc}" 
+         pomTemplate="${basedir}/../pom.template" 
+         artifact="${build.artifactId}" 
+         type="${build.packaging}" 
+         name="${build.deploy.name}" 
+         version="${build.version}" 
+         description="${build.deploy.description}">
+         <includes>
+            <include name="*.swc" />
+            <include name="pom.xml" />
+         </includes>
+      </sonatype-bundle>
    </target>
 </project>

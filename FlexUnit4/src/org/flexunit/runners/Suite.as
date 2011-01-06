@@ -30,6 +30,7 @@ package org.flexunit.runners {
 	
 	import org.flexunit.internals.dependency.IExternalRunnerDependencyWatcher;
 	import org.flexunit.internals.runners.InitializationError;
+	import org.flexunit.runner.Description;
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runner.external.IExternalDependencyRunner;
@@ -92,6 +93,34 @@ package org.flexunit.runners {
 					( _runners[ i ] as IRunner ).pleaseStop(); 
 				}
 			}
+		}
+		
+		/**
+		 * @private
+		 */
+		private var descriptionIsCached:Boolean = false;
+
+		/**
+		 * @inheritDoc
+		 */
+		override public function get description():IDescription {
+			var desc:IDescription;
+
+			if ( descriptionIsCached ) {
+				desc = super.description;
+			} else {				
+				if ( _dependencyWatcher && _dependencyWatcher.allDependenciesResolved ) {
+					//We are good to go, so let it cache this time and from now on we will defer to the super class' copy
+					descriptionIsCached = true;
+					desc = super.description;
+				} else {
+					//For some reason we still have unresolved dependencies.. most likey, we have external dependencies
+					//but we are being filtered, so, just keep generating new descriptions when asked as we could change
+					desc = generateDescription();
+				}
+			} 
+
+			return desc;
 		}
 		
 		/**

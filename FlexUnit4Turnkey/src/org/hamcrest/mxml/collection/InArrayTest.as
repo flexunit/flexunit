@@ -1,74 +1,51 @@
 package org.hamcrest.mxml.collection
 {
+	import org.hamcrest.collection.InArrayMatcher;
 	import org.hamcrest.mxml.AbstractMXMLMatcherTestCase;
 
 	public class InArrayTest extends AbstractMXMLMatcherTestCase
 	{
-		/*
-			<InArray>
-		       <EqualTo value="{ 1 }"/>
-		       <EqualTo value="{ 2 }"/>
-		       <EqualTo value="{ 3 }"/>
-			</InArray> 
-		 */
-		
-		private var matcher:InArray;
-		
-		
-		[Before]
-		public function createMatcher():void 
-		{
-			matcher = new InArray();
-		}
-		
+	  private var matcher:InArray;
+	  
+	  [Before]
+	  public function createMatcher():void 
+	  {
+	    matcher = new InArray();
+	    matcher.elements = [ 1, 2, 3 ];
+	  }
+	  
 		[Test]
-		public function hasDescriptionWithNoElements():void 
+		public function hasDescription():void 
 		{
-			assertDescription("contained in []", matcher);
-		}
-		
-		[Test]
-		public function hasDescriptionWithElements():void 
-		{
-			matcher.elements = ['a', 'b', 'c'];
-			
-			assertDescription('contained in ["a", "b", "c"]', matcher);			
-		}
+		  assertDescription("contained in [<1>, <2>, <3>]", matcher);
+		} 
 		
 		[Test]
 		public function matchedIsTrueIfTargetMatches():void 
 		{
-			matcher.elements = ["a", "b", "c"];
-			matcher.target = "a"
-			
-			assertMatched("matched if target matches", matcher);
+		   matcher.target = 2;
+		   assertMatched("matched if target matches", matcher);
 		}
 		
 		[Test]
 		public function matchedIsFalseIfTargetDoesNotMatch():void 
 		{
-			matcher.elements = ["b", "c"];
-			matcher.target = "a"
-			
-			assertNotMatched("not matched if target does not match", matcher);			
+		  matcher.target = 4;
+		  assertNotMatched("not matched if target does not match", matcher);
 		}
 		
-        [Test]
-        public function mismatchDescriptionIsNullIfTargetMatches():void
-        {
-            matcher.elements = ['a', 'b', 'c'];
-            matcher.target = 'a';
+    [Test]
+    public function mismatchDescriptionIsNullIfTargetMatches():void
+    {
+      matcher.target = 2;
+      assertMatchedMismatchDescription(matcher);
+    }
 
-            assertMatchedMismatchDescription(matcher);
-        }
-
-        [Test]
-        public function mismatchDescriptionIsSetIfTargetDoesNotMatch():void
-        {
-            matcher.elements = ['b', 'c'];
-            matcher.target = 'a';
-
-            assertMismatchDescription('"a" was not contained in ["b", "c"]', matcher);
-        }
+    [Test]
+    public function mismatchDescriptionIsSetIfTargetDoesNotMatch():void
+    {
+      matcher.target = 4;  
+      assertMismatchDescription("<4> was not contained in [<1>, <2>, <3>]", matcher);
+    }
 	}
 }

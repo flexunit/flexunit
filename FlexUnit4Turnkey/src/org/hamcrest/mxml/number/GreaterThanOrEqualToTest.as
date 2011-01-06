@@ -51,7 +51,7 @@ package org.hamcrest.mxml.number
         {
             matcher.target = 2;
 
-            assertMismatchDescription("was <2>", matcher);
+            assertMismatchDescription("<2> was not greater than or equal to <3>", matcher);
         }
     }
 }

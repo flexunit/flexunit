@@ -146,25 +146,30 @@ package org.flexunit.runners {
 		protected function get testClass():TestClass {
 			return _testClass;
 		}
-		
+
 		/**
-		 * Retruns an <code>IDescription</code> of the test class that the runner is running.
+		 * Returns an <code>IDescription</code> of the test class that the runner is running.
+		 */
+		protected function generateDescription():IDescription {
+			var description:IDescription = Description.createSuiteDescription( name, testClass.metadata );
+			var filtered:Array = getFilteredChildren();
+			var child:*;
+			
+			for ( var i:int=0; i<filtered.length; i++ ) {
+				child = filtered[ i ];
+				description.addChild( describeChild( child ) );
+			}
+			
+			return description;			
+		}
+
+		/**
+		 * Returns an <code>IDescription</code> of the test class that the runner is running, caching it.
 		 */
 		public function get description():IDescription {
 			
 			if( !cachedDescription ) {
-				//TODO: Have an issue here, this is trying to use a createSuiteDescription which needs metadata
-				//this might be an issue here as I am now passing metaData through all of the time.. not sure if anyone was counting on a null
-				var description:IDescription = Description.createSuiteDescription( name, testClass.metadata ); //?testClass.metadata[ 0 ]:null );
-				var filtered:Array = getFilteredChildren();
-				var child:*;
-	
-				for ( var i:int=0; i<filtered.length; i++ ) {
-					child = filtered[ i ];
-					description.addChild( describeChild( child ) );
-				}
-				
-				cachedDescription = description;
+				cachedDescription = generateDescription();
 			}
 
 			return cachedDescription;

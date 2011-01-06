@@ -16,6 +16,7 @@ public class FlexUnitTaskHarness extends TestCase
    {
       fixture = new FlexUnitTask();
       Project project = new Project();
+      project.setProperty("ant.home", "/usr/share/java/ant-1.7.1");
       project.setProperty("FLEX_HOME", System.getenv("FLEX_HOME"));
       fixture.setProject(project);
       

@@ -29,7 +29,7 @@ public class TrustFile
       {
          try
          {
-            trustDirectory.mkdir();
+            trustDirectory.mkdirs();
          }
          catch (Exception e)
          {
@@ -71,7 +71,19 @@ public class TrustFile
       return paths;
    }
 
+   public void add(String url) 
+   {
+	   String path = new File(url).getParentFile().getAbsolutePath();
+	   addPath(path);
+   }
+   
    public void add(File swf)
+   {
+      String path = swf.getParentFile().getAbsolutePath();
+      addPath(path);
+   }
+   
+   private void addPath(String path)
    {
       // create the appropriate FP trust directory is it doesn't exist
       if (!trustDirectory.exists())
@@ -80,7 +92,6 @@ public class TrustFile
       }
 
       // Add path if it doesn't exist
-      String path = swf.getParentFile().getAbsolutePath();
       if (!paths.contains(path))
       {
          paths.add(path);
@@ -90,6 +101,10 @@ public class TrustFile
 
          LoggingUtil.log("Updated local trust file at [" + trustFile.getAbsolutePath() + "], added [" + path + "].");
       }
+      else
+      {
+         LoggingUtil.log("Entry [" + path + "] already available in local trust file at [" + trustFile.getAbsolutePath() + "].");
+      }	   
    }
 
    private void write()
@@ -111,10 +126,20 @@ public class TrustFile
       }
    }
 
+   public void remove(String url) {
+	   String path = new File(url).getParentFile().getAbsolutePath();
+	   removePath(path); 
+   }
+   
    public void remove(File swf)
    {
       // remove path if exists
       String path = swf.getParentFile().getAbsolutePath();
+      removePath(path);
+   }
+   
+   public void removePath(String path) 
+   {
       if (paths.contains(path))
       {
          paths.remove(path);
@@ -123,6 +148,7 @@ public class TrustFile
          write();
 
          LoggingUtil.log("Updated local trust file at [" + trustFile.getAbsolutePath() + "], removed [" + path + "].");
-      }
+      }	   
    }
+   
 }

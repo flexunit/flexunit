@@ -18,6 +18,26 @@ package org.hamcrest.object
         [Test]
         public function matchesObjectWithMatchedNamedProperty():void
         {
+            assertMatches("with property only",
+                hasProperty('property'), 
+                { property: false });
+            
+            assertDoesNotMatch("without property", 
+                hasProperty('property'), 
+                {});
+            
+            assertMismatch('no property "property" on <[object Object]>',
+                hasProperty("property"),
+                {  });
+            
+            assertMismatch('no property "property" on null',
+                hasProperty("property"),
+                null);
+        }
+        
+        [Test]
+        public function matchesObjectWithMatchedNamedPropertyAndValue():void 
+        {
             assertMatches("with property",
                 hasProperty("property", equalTo("is expected")),
                 shouldMatch);
@@ -51,6 +71,9 @@ package org.hamcrest.object
         [Test]
         public function describeTo():void
         {
+            assertDescription('has property "property"', 
+                hasProperty("property"));
+            
             assertDescription('has property "property" with <true>',
                 hasProperty("property", equalTo(true)));
         }

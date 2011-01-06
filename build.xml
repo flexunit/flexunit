@@ -20,8 +20,7 @@ to contribute to our CI process.
    <property file="${basedir}/version.properties" />
 
    <!-- Configuration -->
-   <property name="build.useFlex" value="true" />
-   <property name="finalName" value="flexunit.zip" />
+   <property name="finalName" value="flexunit-${build.version}-${build.number}-${build.sdk}" />
 
    <!-- Project locations -->
    <property name="anttasks.loc" location="${basedir}/FlexUnit4AntTasks" />
@@ -45,7 +44,11 @@ to contribute to our CI process.
       <ant dir="${aircilistener.loc}" target="clean" inheritall="false" />
       <ant dir="${flexcoverlistener.loc}" target="clean" inheritall="false" />
 
-      <delete file="${basedir}/${finalName}" failonerror="false" />
+      <delete failonerror="false">
+         <fileset dir="${basedir}">
+            <include name="*.zip" />
+         </fileset>
+      </delete>
    </target>
 
    <!-- Builds the FlexUnit4AntTasks project -->
@@ -115,7 +118,7 @@ to contribute to our CI process.
 
    <!-- Prepares and assembles the final zip artifact with all of the FlexUnit4 components and docs -->
    <target name="package" depends="test,listeners">
-      <zip destfile="${basedir}/${finalName}">
+      <zip destfile="${basedir}/${finalName}.zip">
          <!-- Docs -->
          <zipfileset dir="${anttasks.loc}/target/docs" prefix="flexunit/docs/anttasks" />
          <zipfileset dir="${core.loc}/target/docs" prefix="flexunit/docs/flexunit" />
@@ -129,7 +132,7 @@ to contribute to our CI process.
             <include name="*.jar" />
          </zipfileset>
          <zipfileset dir="${core.loc}/target" prefix="flexunit">
-            <include name="*core*.swc" />
+            <include name="flexunit*.swc" />
          </zipfileset>
          <zipfileset dir="${cilistener.loc}/target" prefix="flexunit">
             <include name="*.swc" />
@@ -149,7 +152,11 @@ to contribute to our CI process.
          	<exclude name="**/export/**/*" />
          </zipfileset>
          <zipfileset dir="${core.loc}/target" prefix="flexunit/turnkey/libs">
-            <include name="*core*.swc" />
+            <include name="flexunit*flex*.swc" />
+         </zipfileset>
+		<zipfileset dir="${core.loc}/libs" prefix="flexunit/turnkey/libs">
+            <include name="*.swc" />
+ 			<exclude name="fluint-1_2.swc" />
          </zipfileset>
          <zipfileset dir="${uilistener.loc}/target" prefix="flexunit/turnkey/libs">
             <include name="*.swc" />
@@ -175,5 +182,60 @@ to contribute to our CI process.
             <include name="*.swc" />
          </zipfileset>
       </zip>
+   </target>
+   
+   <target name="sonatype" description="Target used to generate bundles for deployment to Sonatype.">
+      <ant dir="${anttasks.loc}" target="deploy" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+      <ant dir="${core.loc}" target="deploy" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+      <ant dir="${cilistener.loc}" target="deploy" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+      <ant dir="${flexcoverlistener.loc}" target="deploy" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+      <ant dir="${uilistener.loc}" target="deploy" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+      <ant dir="${aircilistener.loc}" target="deploy" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+      
+      <zip destfile="${basedir}/sonatype-${finalName}.zip">
+         <zipfileset dir="${anttasks.loc}/target/sonatype">
+            <include name="sonatype-*.zip" />
+         </zipfileset>
+         <zipfileset dir="${core.loc}/target/sonatype">
+            <include name="sonatype-*.zip" />
+         </zipfileset>
+         <zipfileset dir="${cilistener.loc}/target/sonatype">
+            <include name="sonatype-*.zip" />
+         </zipfileset>
+         <zipfileset dir="${flexcoverlistener.loc}/target/sonatype">
+            <include name="sonatype-*.zip" />
+         </zipfileset>
+         <zipfileset dir="${uilistener.loc}/target/sonatype">
+            <include name="sonatype-*.zip" />
+         </zipfileset>
+         <zipfileset dir="${aircilistener.loc}/target/sonatype">
+            <include name="sonatype-*.zip" />
+         </zipfileset>
+      </zip>
+
    </target>
 </project>
