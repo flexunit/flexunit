@@ -96,7 +96,14 @@ package org.flexunit.events.rule
 			if ( complete ) {
 				return;
 			}
-			
+
+			//We are already in an error state, just pass it along and do no more
+			if ( result.error ) {
+				complete = true;
+				super.handleStatementComplete( result );
+				return;
+			}
+
 			//Do we have any pending async events? If so, we cannot evaluate this statement right now
 			var pendingAsync:Boolean = false;
 			for ( var i:int=0; i<expectedEvents.length; i++ ) {
@@ -107,15 +114,6 @@ package org.flexunit.events.rule
 				if ( pendingAsync ) {
 					return;
 				}
-			}
-			
-			
-
-			//We are already in an error state, just pass it along and do no more
-			if ( result.error ) {
-				complete = true;
-				super.handleStatementComplete( result );
-				return;
 			}
 			
 			for ( var j:int=0; j<expectedEvents.length; j++ ) {

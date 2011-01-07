@@ -5,8 +5,11 @@ package org.flexunit.events.rule {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import org.flexunit.async.Async;
 	import org.flexunit.events.rule.EventRule;
+	import org.hamcrest.assertThat;
 	import org.hamcrest.object.instanceOf;
+	import org.hamcrest.object.isTrue;
 
 	public class AsyncEventTesting {
 		
@@ -57,44 +60,67 @@ package org.flexunit.events.rule {
 			timer.start();
 		}
 		
-/*		[Test]
+		[Test(async)]
 		public function shouldPassCallMethod():void {
-			var called:Boolean = false;
-			var timer:Timer = new Timer( 10, 1);
+			var calledObject:Object = {};
+			var timer1:Timer = new Timer( 10, 1);
+			var timer2:Timer = new Timer( 100, 1);
 			
-			expectEvent.from( timer ).
+			expectEvent.from( timer1 ).
 				hasType( TimerEvent.TIMER_COMPLETE ).
-				withTimeout( 100 ).
-				instanceOf( DataEvent );
-
-			expectEvent.from( timer ).hasType( "Yo" ).calls(
+				withTimeout( 50 ).calls(
 				function( event:Event ):void {
-					called = true;
+					calledObject.called = true;
 				}
 			);
 			
-			timer.start();
-			assertThat( called, isTrue() );
-		}*/
+			Async.handleEvent( this, 
+							   timer2, 
+							   TimerEvent.TIMER_COMPLETE, 
+							   function( TimerEvent:Event, data:Object ):void {
+								   assertThat( calledObject.called, isTrue() );
+							   }, 
+							   200, calledObject ); 
+			timer1.start();
+			timer2.start();
+		}
 		
-/*		[Test]
+		[Test(async)]
 		public function shouldPassCallMethods():void {
-			var called1:Boolean = false;
-			var called2:Boolean = false;
-			var timer:Timer = new Timer( 10, 1);
+			var calledObject:Object = {};
+			var timer1:Timer = new Timer( 10, 1);
+			var timer2:Timer = new Timer( 10, 1);
+			var timer3:Timer = new Timer( 100, 1);
 			
-			expectEvent.from( timer ).hasType( "Yo" ).
-				calls( function( event:Event ):void {
-					called1 = true; 
-				} ).
-				calls( function( event:Event ):void {
-					called2 = true;
-				} );
+			expectEvent.from( timer1 ).
+				hasType( TimerEvent.TIMER_COMPLETE ).
+				withTimeout( 50 ).calls(
+					function( event:Event ):void {
+						calledObject.called1 = true;
+					}
+				);
+
+			expectEvent.from( timer2 ).
+				hasType( TimerEvent.TIMER_COMPLETE ).
+				withTimeout( 50 ).calls(
+					function( event:Event ):void {
+						calledObject.called2 = true;
+					}
+				);
 			
-			sprite.dispatchEvent( new Event( "Yo" ) );
-			assertThat( called1, isTrue() );
-			assertThat( called2, isTrue() );
-		}*/
+			Async.handleEvent( this, 
+				timer3, 
+				TimerEvent.TIMER_COMPLETE, 
+				function( TimerEvent:Event, data:Object ):void {
+					assertThat( calledObject.called1, isTrue() );
+					assertThat( calledObject.called2, isTrue() );
+				}, 
+				200, calledObject ); 
+
+			timer1.start();
+			timer2.start();
+			timer3.start();
+		}
 		
 		[Test]
 		public function shouldPassWithPropertyValue():void {

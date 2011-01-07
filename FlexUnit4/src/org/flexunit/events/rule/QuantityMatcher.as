@@ -16,8 +16,6 @@ package org.flexunit.events.rule {
 		private var immediatePassMatcher:Matcher;
 		private var immediateFailMatcher:Matcher;
 		
-		public var deferEvaluation:Boolean = false;
-
 		public function get resolved():Boolean {
 			return ( resolvedState != 0 );
 		}

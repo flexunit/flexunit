@@ -19,8 +19,6 @@ package org.flexunit.events.rule {
 	[Event(name="passEventExpectation", type="org.flexunit.events.rule.ExpectationEvent")]
 	public class EventExpectations extends EventDispatcher implements IEventExpectation {
 
-		private var evaluateWithAsync:Boolean = false;
-		
 		private var target:IEventDispatcher;
 		private var rule:IMethodRule;
 		
@@ -135,9 +133,6 @@ package org.flexunit.events.rule {
 		public function withTimeout( value:Number ):IEventExpectation {
 
 			if ( value > 0 ) {
-				evaluateWithAsync = true;
-				quantityMatcher.deferEvaluation = true;
-	
 				//Just in case someone tries to set multiple timeouts
 				if ( timeoutMonitor ) {
 					timeoutMonitor.removeEventListener( TimeoutMonitor.TIME_OUT_EXPIRED, handleTimeout );
@@ -151,7 +146,14 @@ package org.flexunit.events.rule {
 		}
 
 		private function handleTimeout( event:Event ):void {
-			notifyFailure( "Timeout occurred before event" );
+			//notifyFailure( "Timeout occurred before event" );
+			if ( !quantityMatcher.matches( actualEvents.length ) ) {
+				notifyFailure( describeMismatch( actualEvents.length, quantityMatcher ) );
+			} else if ( !multiMatcher.matches( actualEvents ) ) {
+				notifyFailure( describeMismatch( actualEvents, multiMatcher ) );
+			} else {
+				notifyPass();
+			}
 		}
 		
 		private function notifyFailure( message:String ):void {
