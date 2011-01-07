@@ -10,18 +10,6 @@ package org.flexunit.events.rule {
 
 	public class AsyncEventTesting {
 		
-/*		[Test]
-		public function shouldPassEvent():void {
-			var timer:Timer = new Timer( 10, 1 );
-			timer.addEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete );
-
-			expectEvent.from( timer ).
-						hasType( TimerEvent.TIMER_COMPLETE ).
-						withTimeout( 100 );
-
-			timer.start();
-		}
-*/
 		[Rule]
 		public var expectEvent:EventRule = new EventRule();
 		
@@ -241,7 +229,7 @@ package org.flexunit.events.rule {
 			timer2.start();	
 		}
 		
-		[Test(expects="org.flexunit.internals.runners.model.MultipleFailureException")]
+		[Test(expects="flexunit.framework.AssertionFailedError")]
 		public function shouldFailWithBothFailure():void {
 			var timer1:Timer = new Timer( 10, 1);
 			var timer2:Timer = new Timer( 10, 1);

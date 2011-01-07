@@ -190,11 +190,11 @@ package org.flexunit.events.rule {
 			actualEvents.push( event );
 
 			//Think this is wrong... probably need to know we got the right amount
-			//first
+			//first???
 			clearTimeout();
 
 			if ( !multiMatcher.matches( actualEvents ) ) {
-				fail( describeMismatch( actualEvents, multiMatcher ) );
+				notifyFailure( describeMismatch( actualEvents, multiMatcher ) );
 			} else {
 				if ( methodToCallStack ) {
 					for ( var i:int=0; i<methodToCallStack.length; i++ ) {

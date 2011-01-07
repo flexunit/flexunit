@@ -232,7 +232,7 @@ package org.flexunit.events.rule {
 			sprite.dispatchEvent( ev2 );
 		}
 
-		[Test(expects="org.flexunit.internals.runners.model.MultipleFailureException")]
+		[Test(expects="flexunit.framework.AssertionFailedError")]
 		public function shouldFailWithBothFailure():void {
 			var sprite:Sprite = new Sprite();
 			var ev1:DataEvent = new DataEvent( "Yo1", false, false, "test1" );
