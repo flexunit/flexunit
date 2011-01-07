@@ -5,6 +5,8 @@
     <classEntry path="flex.lang.reflect.Field"/>
     <classEntry path="flex.lang.reflect.Klass"/>
     <classEntry path="flex.lang.reflect.Method"/>
+    <classEntry path="flex.lang.reflect.builders.FieldBuilder"/>
+    <classEntry path="flex.lang.reflect.builders.MetaDataAnnotationBuilder"/>
     <classEntry path="flex.lang.reflect.builders.MethodBuilder"/>
     <classEntry path="flex.lang.reflect.cache.ClassDataCache"/>
     <classEntry path="flex.lang.reflect.metadata.MetaDataAnnotation"/>
@@ -28,6 +30,14 @@
     <classEntry path="org.flexunit.constants.AnnotationArgumentConstants"/>
     <classEntry path="org.flexunit.constants.AnnotationConstants"/>
     <classEntry path="org.flexunit.events.AsyncEvent"/>
+    <classEntry path="org.flexunit.events.UnknownError"/>
+    <classEntry path="org.flexunit.events.rule.EventExpectations"/>
+    <classEntry path="org.flexunit.events.rule.EventRule"/>
+    <classEntry path="org.flexunit.events.rule.ExpectationEvent"/>
+    <classEntry path="org.flexunit.events.rule.IEventExpectation"/>
+    <classEntry path="org.flexunit.events.rule.MultiMatcher"/>
+    <classEntry path="org.flexunit.events.rule.QuantityMatcher"/>
+    <classEntry path="org.flexunit.events.rule.TimeoutMonitor"/>
     <classEntry path="org.flexunit.experimental.runners.statements.AssignmentSequencer"/>
     <classEntry path="org.flexunit.experimental.runners.statements.MethodCompleteWithParamsStatement"/>
     <classEntry path="org.flexunit.experimental.runners.statements.TheoryAnchor"/>
@@ -106,6 +116,7 @@
     <classEntry path="org.flexunit.runner.external.IExternalDependencyRunner"/>
     <classEntry path="org.flexunit.runner.manipulation.IFilter"/>
     <classEntry path="org.flexunit.runner.manipulation.IFilterable"/>
+    <classEntry path="org.flexunit.runner.manipulation.IFixtureSorter"/>
     <classEntry path="org.flexunit.runner.manipulation.NoTestsRemainException"/>
     <classEntry path="org.flexunit.runner.manipulation.OrderArgumentPlusAlphaSorter"/>
     <classEntry path="org.flexunit.runner.manipulation.OrderArgumentPlusInheritanceSorter"/>
@@ -117,6 +128,8 @@
     <classEntry path="org.flexunit.runner.manipulation.filters.DynamicFilter"/>
     <classEntry path="org.flexunit.runner.manipulation.filters.IncludeAllFilter"/>
     <classEntry path="org.flexunit.runner.manipulation.filters.MethodNameFilter"/>
+    <classEntry path="org.flexunit.runner.manipulation.sortingInheritance.ClassInheritanceOrderCache"/>
+    <classEntry path="org.flexunit.runner.manipulation.sortingInheritance.ISortingInheritanceCache"/>
     <classEntry path="org.flexunit.runner.notification.Failure"/>
     <classEntry path="org.flexunit.runner.notification.IAsyncStartupRunListener"/>
     <classEntry path="org.flexunit.runner.notification.IRunListener"/>
@@ -143,19 +156,13 @@
     <classEntry path="org.flexunit.token.ChildResult"/>
     <classEntry path="org.flexunit.token.IAsyncTestToken"/>
     <classEntry path="org.flexunit.utils.ClassNameUtil"/>
+    <classEntry path="org.flexunit.utils.DescriptionUtil"/>
     <classEntry path="org.fluint.uiImpersonation.IVisualEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.IVisualTestEnvironment"/>
     <classEntry path="org.fluint.uiImpersonation.UIImpersonator"/>
     <classEntry path="org.fluint.uiImpersonation.VisualTestEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptEnvironmentBuilder"/>
     <classEntry path="org.fluint.uiImpersonation.actionScript.ActionScriptVisualTestEnvironment"/>
-    <classEntry path="flex.lang.reflect.builders.FieldBuilder"/>
-    <classEntry path="flex.lang.reflect.builders.MetaDataAnnotationBuilder"/>
-    <classEntry path="org.flexunit.utils.DescriptionUtil"/>
-    <classEntry path="org.flexunit.runner.manipulation.IFixtureSorter"/>
-    <classEntry path="org.flexunit.runner.manipulation.sortingInheritance.ISortingInheritanceCache"/>
-    <classEntry path="org.flexunit.runner.manipulation.sortingInheritance.ClassInheritanceOrderCache"/>
-    <classEntry path="org.flexunit.events.UnknownError"/>
   </includeClasses>
   <includeResources>
     <resourceEntry destPath="locale/en_US/metadata.properties" sourcePath="locale/en_US/metadata.properties"/>
