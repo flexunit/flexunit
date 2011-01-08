@@ -28,7 +28,9 @@
 package org.flexunit.async
 {
 	import flash.events.IEventDispatcher;
+	import flash.events.TimerEvent;
 	import flash.net.Responder;
+	import flash.utils.Timer;
 	
 	import mx.rpc.IResponder;
 	
@@ -211,6 +213,27 @@ package org.flexunit.async
 			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
 			
 			return asyncHandlingStatement.asyncNativeResponder( resultHandler, faultHandler, timeout, passThroughData, timeoutHandler );
+		}
+		
+		/**
+		 * Calls a method after a given delay. 
+		 * @param testCase The current asynchronous test case.
+		 * @param callback The function that will be executed if the <code>delay</delay> has been reached.
+		 * @param delay The length of time, in milliseconds, before calling the <code>callback</code>.
+		 */		
+		public static function delayCall(testCase:Object, callback:Function, delay:Number):void
+		{
+			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
+			var timer:Timer = new Timer(delay, 1);
+			var handler:Function;
+                   
+			handler = asyncHandlingStatement.asyncHandler( function(event:TimerEvent, object:Object):void
+			{
+				callback();
+			}, delay + 100.0);
+			
+			timer.addEventListener( TimerEvent.TIMER_COMPLETE, handler, false, 0, true );
+			timer.start();
 		}
 	}
 }

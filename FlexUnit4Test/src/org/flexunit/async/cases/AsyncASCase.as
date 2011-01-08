@@ -104,5 +104,12 @@ package org.flexunit.async.cases
 			//Verify expectations were met
 			asyncHandlingStatementMock.mock.verify();
 		}
+		
+		// In all honesty, I'm not sure how I should test this...
+		[Ignore]
+		[Test(description="Ensure the delayCall function is correctly called")]
+		public function delayCallTest():void {
+			
+		}
 	}
 }
