@@ -67,6 +67,7 @@ package org.flexunit.runner.notification.cases
 		
 		//TODO: There needs to be a second tests created for when Capabilities.isDebugger returns a value of false, how would this
 		//be properly implemented
+		[Ignore]
 		[Test(description="Ensure that the statck trace value is correctly obtained when the system is a debugging version")]
 		public function getStackTraceDebuggerTest():void {
 			Assert.assertEquals(exception.getStackTrace(), failure.stackTrace);
