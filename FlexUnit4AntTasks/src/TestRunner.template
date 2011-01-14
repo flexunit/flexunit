@@ -19,6 +19,7 @@ creationComplete="runTests();">
 					null, 
 [@CLASS_REFS@]
 				);
+			core.addUncaughtErrorListener( systemManager.loaderInfo );
             core.run(request);
          }
       ]]>
