@@ -375,10 +375,10 @@ package org.flexunit.runners {
 			var statement:IAsyncStatement = methodInvoker( method, test );
 			statement = withPotentialAsync( method, test, statement );
 			statement = withPotentialTimeout( method, test, statement );
-			statement = possiblyExpectingExceptions( method, test, statement );
 			statement = withBefores( method, test, statement );
 			statement = withAfters( method, test, statement );
 			statement = withPotentialRules( method, test, statement );
+			statement = possiblyExpectingExceptions( method, test, statement );
 			statement = withStackManagement( method, test, statement );
 			
 			return statement;
