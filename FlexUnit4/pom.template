@@ -2,11 +2,11 @@
    <modelVersion>4.0.0</modelVersion>
    
    <groupId>org.flexunit</groupId>
-   <artifactId>@ARTIFACT@</artifactId>
-   <packaging>@TYPE@</packaging>
-   <name>@NAME@</name>
+   <artifactId>flexunit</artifactId>
+   <packaging>pom</packaging>
+   <name>FlexUnit 4 Core Library</name>
    <version>@VERSION@</version>
-   <description>@DESCRIPTION@</description>
+   <description>FlexUnit 4 Core Library</description>
    <url>http://flexunit.org</url>
    
    <licenses>
@@ -46,6 +46,16 @@
          <timezone>-6</timezone>
       </developer>
       <developer>
+         <id>sbateman</id>
+         <name>Simeon Bateman</name>
+         <email>simeon@pnwrain.com</email>
+         <url>http://blog.simb.net/</url>
+         <roles>
+            <role>developer</role>
+         </roles>
+         <timezone>-8</timezone>
+      </developer>
+      <developer>
          <id>blegros</id>
          <name>Brian LeGros</name>
          <email>me@brianlegros.com</email>
@@ -62,4 +72,62 @@
       <developerConnection>scm:git:git@github.com:flexunit/flexunit.git</developerConnection>
       <url>git@github.com:flexunit/flexunit.git</url>
    </scm>
+   
+   <distributionManagement>
+   	<repository>
+	      <id>flexUnitSonatypeRelease</id>
+	      <name>FlexUnit Sonatype Release</name>
+	      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+	   </repository>
+    	<snapshotRepository>
+	      <id>flexUnitSonatypeSnapshot</id>
+	      <name>FlexUnit Sonatype Snapshots</name>
+	      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      </snapshotRepository>
+   </distributionManagement>
+   
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>attach-swc</id>
+                  <phase>package</phase>
+                  <goals>
+                     <goal>attach-artifact</goal>
+                  </goals>
+                  <configuration>
+                     <artifacts>
+                        <artifact>
+                           <file>flexunit-@VERSION@-as3_@SDK@.swc</file>
+                           <type>swc</type>
+                           <classifier>as3_@SDK@</classifier>
+                        </artifact>
+                        <artifact>
+                           <file>flexunit-@VERSION@-flex_@SDK@.swc</file>
+                           <type>swc</type>
+                           <classifier>flex_@SDK@</classifier>
+                        </artifact>
+                     </artifacts>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>sign-artifacts</id>
+                  <phase>verify</phase>
+                  <goals>
+                     <goal>sign</goal>
+                  </goals>
+              </execution>
+           </executions>
+         </plugin>
+      </plugins>
+   </build>
 </project>

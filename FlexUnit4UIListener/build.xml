@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="FlexUnit4UIListener" basedir="." default="package">
-   <import file="${basedir}/../utils.xml" />
    <property environment="env" />
 
    <!-- Configuration -->
@@ -8,8 +7,6 @@
    <property name="build.namespace" value="http://www.adobe.com/2009/flexUnitUIRunner" />
    <property name="build.finalName" value="${build.artifactId}-${build.version}-${build.number}-${build.sdk}" />
    <property name="build.packaging" value="swc" />
-   <property name="build.deploy.name" value="FlexUnit UI Listener" />
-   <property name="build.deploy.description" value="Listener used to show a UI report for FlexUnit test results." />
 
    <!-- Existing -->
    <property name="src.loc" location="${basedir}/src" />
@@ -136,32 +133,5 @@
 
    <target name="package" depends="report">
       <copy file="${bin.loc}/${build.finalName}.${build.packaging}" todir="${dist.loc}" />
-   </target>
-   
-   <target name="deploy" depends="package" description="Requires Ant-Contrib and GPG to work.">
-      <!-- Copy artifacts w/o build number for use with sonatype -->
-   	  <copy todir="${sonatype.loc}">
-   	  	<fileset dir="${dist.loc}">
-   	  	   <include name="*.swc" />
-   	  	</fileset>
-   	  	<filtermapper>
-      	  <replacestring from="-${build.number}-" to="-" />
-		</filtermapper>
-   	  </copy>
-   
-      <!-- prepare sonatype bundle -->
-      <sonatype-bundle dir="${sonatype.loc}" 
-         todir="${sonatype.loc}" 
-         pomTemplate="${basedir}/../pom.template" 
-         artifact="${build.artifactId}" 
-         type="${build.packaging}" 
-         name="${build.deploy.name}" 
-         version="${build.version}" 
-         description="${build.deploy.description}">
-         <includes>
-            <include name="*.swc" />
-            <include name="pom.xml" />
-         </includes>
-      </sonatype-bundle>
    </target>
 </project>

@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="FlexUnit4FlexCoverListener" basedir="." default="package">
-   <import file="${basedir}/../utils.xml" />
    <property environment="env" />
 
    <!-- Configuration -->
    <property name="build.artifactId" value="flexunit-flexcoverlistener" />
    <property name="build.finalName" value="${build.artifactId}-${build.version}-${build.number}-${build.sdk}" />
    <property name="build.packaging" value="swc" />
-   <property name="build.deploy.name" value="FlexUnit FlexCover Listener" />
-   <property name="build.deploy.description" value="Continuous integration listener to be used with the FlexUnit Ant Tasks and the FlexCover application." />
 
    <!-- Existing -->
    <property name="src.loc" location="${basedir}/src" />
@@ -16,7 +13,6 @@
 
    <!-- Generated -->
    <property name="dist.loc" location="${basedir}/target" />
-   <property name="sonatype.loc" location="${dist.loc}/sonatype" />
    <property name="bin.loc" location="${basedir}/target/bin" />
    <property name="doc.loc" location="${basedir}/target/docs" />
 
@@ -85,32 +81,5 @@
 
    <target name="package" depends="report">
       <copy file="${bin.loc}/${build.finalName}.${build.packaging}" todir="${dist.loc}" />
-   </target>
-   
-   <target name="deploy" depends="package" description="Requires Ant-Contrib and GPG to work.">
-      <!-- Copy artifacts w/o build number for use with sonatype -->
-   	  <copy todir="${sonatype.loc}">
-   	  	<fileset dir="${dist.loc}">
-   	  	   <include name="*.swc" />
-   	  	</fileset>
-   	  	<filtermapper>
-      	  <replacestring from="-${build.number}-" to="-" />
-		</filtermapper>
-   	  </copy>
-   
-      <!-- prepare sonatype bundle -->
-      <sonatype-bundle dir="${sonatype.loc}" 
-         todir="${sonatype.loc}" 
-         pomTemplate="${basedir}/../pom.template" 
-         artifact="${build.artifactId}" 
-         type="${build.packaging}" 
-         name="${build.deploy.name}" 
-         version="${build.version}" 
-         description="${build.deploy.description}">
-         <includes>
-            <include name="*.swc" />
-            <include name="pom.xml" />
-         </includes>
-      </sonatype-bundle>
-   </target>
+   </target>   
 </project>

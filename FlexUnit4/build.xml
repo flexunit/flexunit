@@ -1,197 +1,184 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="FlexUnit4Core" basedir="." default="package">
-   <import file="${basedir}/../utils.xml" />
-   <property environment="env" />
+	<property environment="env" />
 
-   <!-- Configuration -->
-   <property name="build.artifactId" value="flexunit" />
-   <property name="build.finalName.flex" value="${build.artifactId}-${build.version}-${build.number}-flex_${build.sdk}" />
-   <property name="build.finalName.as3" value="${build.artifactId}-${build.version}-${build.number}-as3_${build.sdk}" />
-   <property name="build.packaging" value="swc" />
-   <property name="instrument.finalName" value="instrument" />
-   <property name="instrument.metadata" value="flexunit-instrument.cvm" />
-   <property name="build.deploy.name" value="FlexUnit Core Library" />
-   <property name="build.deploy.description" value="FlexUnit core library" />
+	<!-- Configuration -->
+	<property name="build.artifactId" value="flexunit" />
+	<property name="build.finalName.flex" value="${build.artifactId}-${build.version}-${build.number}-flex_${build.sdk}" />
+	<property name="build.finalName.as3" value="${build.artifactId}-${build.version}-${build.number}-as3_${build.sdk}" />
+	<property name="build.packaging" value="swc" />
+	<property name="instrument.finalName" value="instrument" />
+	<property name="instrument.metadata" value="flexunit-instrument.cvm" />
 
-   <!-- Existing -->
-   <property name="src.loc" location="${basedir}/src" />
-   <property name="lib.loc" location="${basedir}/libs" />
+	<!-- Existing -->
+	<property name="src.loc" location="${basedir}/src" />
+	<property name="lib.loc" location="${basedir}/libs" />
 
-   <!-- Generated -->
-   <property name="dist.loc" location="${basedir}/target" />
-   <property name="sonatype.loc" location="${dist.loc}/sonatype" />
-   <property name="bin.loc" location="${basedir}/target/bin" />
-   <property name="report.loc" location="${basedir}/target/report" />
-   <property name="doc.loc" location="${basedir}/target/docs" />
+	<!-- Generated -->
+	<property name="dist.loc" location="${basedir}/target" />
+	<property name="sonatype.loc" location="${dist.loc}/sonatype" />
+	<property name="bin.loc" location="${basedir}/target/bin" />
+	<property name="report.loc" location="${basedir}/target/report" />
+	<property name="doc.loc" location="${basedir}/target/docs" />
 
-   <!-- Setup Flex Ant Resources -->
-   <property name="FLEX_HOME" location="${env.FLEX_HOME}" />
-   <property name="FLEX_COVER_HOME" location="${env.FLEX_COVER_HOME}" />
-   <taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+	<!-- Setup Flex Ant Resources -->
+	<property name="FLEX_HOME" location="${env.FLEX_HOME}" />
+	<property name="FLEX_COVER_HOME" location="${env.FLEX_COVER_HOME}" />
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 
-   <!-- Reusable macro for compile SWC variations -->
-   <macrodef name="compile-swc">
-      <attribute name="sdk" />
-      <attribute name="classes" />
-      <attribute name="artifact" />
-      <attribute name="useflex" />
-      <element name="args" optional="true" />
-      <sequential>
-         <echo />
-         <echo message="SDK: @{sdk}" />
-         <echo message="Artifact: @{artifact}" />
-         <echo message="UseFlex: @{useFlex}" />
-         <echo />
-         <java jar="@{sdk}/lib/compc.jar" fork="true" failonerror="true">
-            <jvmarg value="-Xmx256m" />
-            <arg line="+flexlib '@{sdk}/frameworks'" />
-            <arg line="-link-report '${bin.loc}/link-report-@{useflex}.xml'" />
-            <arg line="-include-classes @{classes}" />
-            <arg line="-source-path+='${src.loc}'" />
-            <arg line="-output '${bin.loc}/@{artifact}'" />
-            <arg line="-library-path+='${lib.loc}'" />
-            <arg line="-external-library-path+='@{sdk}/frameworks/libs/flex.swc'" />
-            <arg line="-external-library-path+='@{sdk}/frameworks/libs/framework.swc'" />
-            <arg line="-external-library-path+='@{sdk}/frameworks/libs/rpc.swc'" />
-            <arg line="-external-library-path+='@{sdk}/frameworks/libs/utilities.swc'" />
-            <arg line="-keep-as3-metadata+=RunWith,BeforeClass,AfterClass,Before,After,Suite,Test,TestCase,Ignore,Filter,Sort,Theory,DataPoint,DataPoints,ArrayElementType,Rule,Parameters" />
-            <arg line="-define=CONFIG::useFlexClasses,@{useFlex}" />
-            <arg line="-verbose-stacktraces=true" />
-            <arg line="-headless-server=true" />
-            <args />
-         </java>
-      </sequential>
-   </macrodef>
+	<!-- Reusable macro for compile SWC variations -->
+	<macrodef name="compile-swc">
+		<attribute name="sdk" />
+		<attribute name="classes" />
+		<attribute name="artifact" />
+		<attribute name="useflex" />
+		<element name="args" optional="true" />
+		<sequential>
+			<echo />
+			<echo message="SDK: @{sdk}" />
+			<echo message="Artifact: @{artifact}" />
+			<echo message="UseFlex: @{useFlex}" />
+			<echo />
+			<java jar="@{sdk}/lib/compc.jar" fork="true" failonerror="true">
+				<jvmarg value="-Xmx256m" />
+				<arg line="+flexlib '@{sdk}/frameworks'" />
+				<arg line="-link-report '${bin.loc}/link-report-@{useflex}.xml'" />
+				<arg line="-include-classes @{classes}" />
+				<arg line="-source-path+='${src.loc}'" />
+				<arg line="-output '${bin.loc}/@{artifact}'" />
+				<arg line="-library-path+='${lib.loc}'" />
+				<arg line="-external-library-path+='@{sdk}/frameworks/libs/flex.swc'" />
+				<arg line="-external-library-path+='@{sdk}/frameworks/libs/framework.swc'" />
+				<arg line="-external-library-path+='@{sdk}/frameworks/libs/rpc.swc'" />
+				<arg line="-external-library-path+='@{sdk}/frameworks/libs/utilities.swc'" />
+				<arg line="-keep-as3-metadata+=RunWith,BeforeClass,AfterClass,Before,After,Suite,Test,TestCase,Ignore,Filter,Sort,Theory,DataPoint,DataPoints,ArrayElementType,Rule,Parameters" />
+				<arg line="-define=CONFIG::useFlexClasses,@{useFlex}" />
+				<arg line="-verbose-stacktraces=true" />
+				<arg line="-headless-server=true" />
+				<args />
+			</java>
+		</sequential>
+	</macrodef>
 
-   <target name="clean">
-      <delete dir="${dist.loc}" />
-   </target>
+	<target name="clean">
+		<delete dir="${dist.loc}" />
+	</target>
 
-   <target name="init">
-      <!-- Create paths -->
-      <mkdir dir="${dist.loc}" />
-      <mkdir dir="${sonatype.loc}" />
-      <mkdir dir="${bin.loc}" />
-      <mkdir dir="${report.loc}" />
-      <mkdir dir="${doc.loc}" />
+	<target name="init">
+		<!-- Create paths -->
+		<mkdir dir="${dist.loc}" />
+		<mkdir dir="${sonatype.loc}" />
+		<mkdir dir="${bin.loc}" />
+		<mkdir dir="${report.loc}" />
+		<mkdir dir="${doc.loc}" />
 
-      <!-- Create properties file from .flexLibProperties -->
-      <xslt in="${basedir}/.flexLibProperties" out="${bin.loc}/flexLib.properties" style="${basedir}/flexLibProperties.xsl" />
-   </target>
+		<!-- Create properties file from .flexLibProperties -->
+		<xslt in="${basedir}/.flexLibProperties" out="${bin.loc}/flexLib.properties" style="${basedir}/flexLibProperties.xsl" />
+	</target>
 
-   <target name="compile" depends="init, compile-flex,compile-as3,as3-linker-check" />
-   
-   <target name="compile-flex">
-      <!-- Pull in class file list for compc -->
-      <property file="${bin.loc}/flexLib.properties" />
-      
-      <!-- Compile Flex SWC -->
-      <compile-swc sdk="${FLEX_HOME}" artifact="${build.finalName.flex}.${build.packaging}" classes="${src.class-list}" useflex="true" />
-   </target>
-   
-   <target name="compile-as3">
-      <!-- Pull in class file list for compc -->
-      <property file="${bin.loc}/flexLib.properties" />
-   
-      <!-- Compile AS3 SWC -->
-      <compile-swc sdk="${FLEX_HOME}" artifact="${build.finalName.as3}.${build.packaging}" classes="${src.class-list}" useflex="false" />
-   </target>
+	<target name="compile" depends="init, compile-flex,compile-as3,as3-linker-check" />
 
-   <target name="instrument-compile" depends="compile" if="build.instrument" description="All instrumentation on Flex SWC">
-      <!-- Pull in class file list for compc -->
-      <property file="${bin.loc}/flexLib.properties" />
+	<target name="compile-flex">
+		<!-- Pull in class file list for compc -->
+		<property file="${bin.loc}/flexLib.properties" />
 
-      <!-- Compile SWC using FlexCover SDK for flex -->
-      <compile-swc sdk="${FLEX_COVER_HOME}" artifact="${instrument.finalName}.${build.packaging}" classes="${src.class-list}" useflex="true">
-         <args>
-            <arg line="-coverage" />
-            <arg line="-coverage-metadata='${bin.loc}/${instrument.metadata}'" />
-         </args>
-      </compile-swc>
-   </target>
+		<!-- Compile Flex SWC -->
+		<compile-swc sdk="${FLEX_HOME}" artifact="${build.finalName.flex}.${build.packaging}" classes="${src.class-list}" useflex="true" />
+	</target>
 
-   <target name="as3-linker-check" depends="compile-as3">
-      <!-- Create properties file from link report for last built SWC, which should be Flex -->
-      <xslt in="${bin.loc}/link-report-false.xml" out="${bin.loc}/flex-dependencies.txt" style="${basedir}/link-report.xsl" />
+	<target name="compile-as3">
+		<!-- Pull in class file list for compc -->
+		<property file="${bin.loc}/flexLib.properties" />
 
-      <!-- Was the flex-dependencies report empty for AS3 only builds? -->
-      <fail message="Build contains depedencies on the Flex framework, but is being built for AS3.">
-         <condition>
-            <length file="${bin.loc}/flex-dependencies.txt" when="greater" length="0" />
-         </condition>
-      </fail>
-   </target>
+		<!-- Compile AS3 SWC -->
+		<compile-swc sdk="${FLEX_HOME}" artifact="${build.finalName.as3}.${build.packaging}" classes="${src.class-list}" useflex="false" />
+	</target>
 
-   <target name="report" depends="pmdReport" if="build.report" description="All reporting done on Flex SWC">
-      <!-- Pull in class file list to use with asdoc -->
-      <property file="${bin.loc}/flexLib.properties" />
+	<target name="instrument-compile" depends="compile" if="build.instrument" description="All instrumentation on Flex SWC">
+		<!-- Pull in class file list for compc -->
+		<property file="${bin.loc}/flexLib.properties" />
 
-      <!-- Generate asdocs -->
-      <java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
-         <jvmarg value="-Xmx256M" />
-         <arg line="+flexlib '${FLEX_HOME}/frameworks'" />
-         <arg line="-doc-classes ${src.class-list}" />
-         <arg line="-source-path+='${src.loc}'" />
-         <arg line="-output '${doc.loc}'" />
-         <arg line="-library-path+='${lib.loc}'" />
-         <arg line="-define=CONFIG::useFlexClasses,true" />
-      </java>
-   </target>
-   
-   <target name="pmdReport" if="build.pmd">
-      <taskdef name="pmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" />
-      <taskdef name="cpd" classname="com.adobe.ac.cpd.ant.FlexCpdAntTask" />
-      <taskdef name="metrics" classname="com.adobe.ac.pmd.metrics.ant.FlexMetricsAntTask" />
+		<!-- Compile SWC using FlexCover SDK for flex -->
+		<compile-swc sdk="${FLEX_COVER_HOME}" artifact="${instrument.finalName}.${build.packaging}" classes="${src.class-list}" useflex="true">
+			<args>
+				<arg line="-coverage" />
+				<arg line="-coverage-metadata='${bin.loc}/${instrument.metadata}'" />
+			</args>
+		</compile-swc>
+	</target>
 
-      <!-- Generate FlexPMD reports -->
-      <pmd sourceDirectory="${src.loc}" outputDirectory="${report.loc}" ruleset="${basedir}/pmd-ruleset.xml" />
+	<target name="as3-linker-check" depends="compile-as3">
+		<!-- Create properties file from link report for last built SWC, which should be Flex -->
+		<xslt in="${bin.loc}/link-report-false.xml" out="${bin.loc}/flex-dependencies.txt" style="${basedir}/link-report.xsl" />
 
-      <cpd minimumTokenCount="50" outputFile="${report.loc}/cpd.xml">
-         <fileset dir="${src.loc}">
-            <include name="**/*.as" />
-            <include name="**/*.mxml" />
-         </fileset>
-      </cpd>
+		<!-- Was the flex-dependencies report empty for AS3 only builds? -->
+		<fail message="Build contains depedencies on the Flex framework, but is being built for AS3.">
+			<condition>
+				<length file="${bin.loc}/flex-dependencies.txt" when="greater" length="0" />
+			</condition>
+		</fail>
+	</target>
 
-      <metrics sourcedirectory="${src.loc}" outputfile="${report.loc}/javancss.xml" />
-   </target>
+	<target name="report" depends="pmdReport" if="build.report" description="All reporting done on Flex SWC">
+		<!-- Pull in class file list to use with asdoc -->
+		<property file="${bin.loc}/flexLib.properties" />
 
-   <target name="package" depends="package-default,package-instrument,report" />
+		<!-- Generate asdocs -->
+		<java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
+			<jvmarg value="-Xmx256M" />
+			<arg line="+flexlib '${FLEX_HOME}/frameworks'" />
+			<arg line="-doc-classes ${src.class-list}" />
+			<arg line="-source-path+='${src.loc}'" />
+			<arg line="-output '${doc.loc}'" />
+			<arg line="-library-path+='${lib.loc}'" />
+			<arg line="-define=CONFIG::useFlexClasses,true" />
+		</java>
+	</target>
 
-   <target name="package-default" depends="compile">
-      <copy file="${bin.loc}/${build.finalName.as3}.${build.packaging}" todir="${dist.loc}" />
-      <copy file="${bin.loc}/${build.finalName.flex}.${build.packaging}" todir="${dist.loc}" />
-   </target>
+	<target name="pmdReport" if="build.pmd">
+		<taskdef name="pmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" />
+		<taskdef name="cpd" classname="com.adobe.ac.cpd.ant.FlexCpdAntTask" />
+		<taskdef name="metrics" classname="com.adobe.ac.pmd.metrics.ant.FlexMetricsAntTask" />
 
-   <target name="package-instrument" depends="instrument-compile" if="build.instrument">
-      <copy file="${bin.loc}/${instrument.metadata}" todir="${dist.loc}" />
-      <copy file="${bin.loc}/${instrument.finalName}.${build.packaging}" todir="${dist.loc}" />
-   </target>
-   
-   <target name="deploy" depends="package" description="Requires Ant-Contrib and GPG to work.">
-      <!-- Copy artifacts w/o build number for use with sonatype -->
-   	  <copy todir="${sonatype.loc}">
-   	  	<fileset dir="${dist.loc}">
-   	  	   <include name="flexunit*.swc" />
-   	  	</fileset>
-   	  	<filtermapper>
-      	  <replacestring from="-${build.number}-" to="-" />
-		</filtermapper>
-   	  </copy>
-   
-      <!-- prepare sonatype bundle -->
-      <sonatype-bundle dir="${sonatype.loc}" 
-         todir="${sonatype.loc}" 
-         pomTemplate="${basedir}/../pom.template" 
-         artifact="${build.artifactId}" 
-         type="${build.packaging}" 
-         name="${build.deploy.name}" 
-         version="${build.version}" 
-         description="${build.deploy.description}">
-         <includes>
-            <include name="flexunit*.swc" />
-            <include name="pom.xml" />
-         </includes>
-      </sonatype-bundle>
-   </target>
+		<!-- Generate FlexPMD reports -->
+		<pmd sourceDirectory="${src.loc}" outputDirectory="${report.loc}" ruleset="${basedir}/pmd-ruleset.xml" />
+
+		<cpd minimumTokenCount="50" outputFile="${report.loc}/cpd.xml">
+			<fileset dir="${src.loc}">
+				<include name="**/*.as" />
+				<include name="**/*.mxml" />
+			</fileset>
+		</cpd>
+
+		<metrics sourcedirectory="${src.loc}" outputfile="${report.loc}/javancss.xml" />
+	</target>
+
+	<target name="package" depends="package-default,package-instrument,report">
+		<!-- Copy artifacts w/o build number for use with sonatype -->
+		<copy todir="${sonatype.loc}">
+			<fileset dir="${dist.loc}">
+				<include name="flexunit*.swc" />
+			</fileset>
+			<filtermapper>
+				<replacestring from="-${build.number}-" to="-" />
+			</filtermapper>
+		</copy>
+
+		<!-- Create POM from template -->
+		<copy file="pom.template" tofile="${sonatype.loc}/pom.xml" />
+		<replace file="${sonatype.loc}/pom.xml">
+			<replacefilter token="@VERSION@" value="${build.version}" />
+			<replacefilter token="@SDK@" value="${build.sdk}" />
+		</replace>
+	</target>
+
+	<target name="package-default" depends="compile">
+		<copy file="${bin.loc}/${build.finalName.as3}.${build.packaging}" todir="${dist.loc}" />
+		<copy file="${bin.loc}/${build.finalName.flex}.${build.packaging}" todir="${dist.loc}" />
+	</target>
+
+	<target name="package-instrument" depends="instrument-compile" if="build.instrument">
+		<copy file="${bin.loc}/${instrument.metadata}" todir="${dist.loc}" />
+		<copy file="${bin.loc}/${instrument.finalName}.${build.packaging}" todir="${dist.loc}" />
+	</target>
 </project>
