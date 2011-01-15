@@ -181,4 +181,10 @@
 		<copy file="${bin.loc}/${instrument.metadata}" todir="${dist.loc}" />
 		<copy file="${bin.loc}/${instrument.finalName}.${build.packaging}" todir="${dist.loc}" />
 	</target>
+	
+	<target name="deploy" description="Requires a run of package, but should not be dependent so that compilation isn't run twice.">
+		<exec executable="mvn" dir="${sonatype.loc}">
+		   <arg line="clean deploy -Dgpg.passphrase=${gpg.passphrase}" />
+		</exec>
+	</target>
 </project>

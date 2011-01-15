@@ -183,4 +183,12 @@ to contribute to our CI process.
 			</zipfileset>
 		</zip>
 	</target>
+	
+	<target name="deploy" depends="package">
+	   <ant dir="${core.loc}" target="deploy" inheritall="false">
+			<propertyset>
+				<propertyref prefix="build" />
+			</propertyset>
+		</ant>
+	</target>
 </project>
