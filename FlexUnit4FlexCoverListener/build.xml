@@ -31,7 +31,6 @@
 
    <target name="init">
       <mkdir dir="${dist.loc}" />
-      <mkdir dir="${sonatype.loc}" />
       <mkdir dir="${bin.loc}" />
       <mkdir dir="${doc.loc}" />
 

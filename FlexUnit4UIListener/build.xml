@@ -14,7 +14,6 @@
 
    <!-- Generated -->
    <property name="dist.loc" location="${basedir}/target" />
-   <property name="sonatype.loc" location="${dist.loc}/sonatype" />
    <property name="bin.loc" location="${basedir}/target/bin" />
    <property name="doc.loc" location="${basedir}/target/docs" />
 
@@ -32,7 +31,6 @@
    <target name="init">
       <mkdir dir="${lib.loc}" />
       <mkdir dir="${dist.loc}" />
-      <mkdir dir="${sonatype.loc}" />
       <mkdir dir="${bin.loc}" />
       <mkdir dir="${doc.loc}" />
 
