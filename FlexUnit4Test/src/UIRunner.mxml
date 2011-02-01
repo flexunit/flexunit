@@ -7,6 +7,8 @@
 		<![CDATA[
 			import compilationSuite.SuitesToRun;
 			
+			import org.flexunit.events.rule.EventRuleSuite;
+			import org.flexunit.events.rule.cases.SyncEventTesting;
 			import org.flexunit.runner.FlexUnitCore;
 			
 			private var core:FlexUnitCore;
@@ -15,7 +17,7 @@
 				core = new FlexUnitCore();
 				core.addUncaughtErrorListener( systemManager.loaderInfo );
 				core.addListener( uiListener );
-				core.run( SuitesToRun );
+				core.run( EventRuleSuite );
 			}
 		]]>
 	</mx:Script>
