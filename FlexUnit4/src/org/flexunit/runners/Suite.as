@@ -28,6 +28,8 @@
 package org.flexunit.runners {
 	import flex.lang.reflect.Klass;
 	
+	import flexunit.framework.TestSuite;
+	
 	import org.flexunit.internals.dependency.IExternalRunnerDependencyWatcher;
 	import org.flexunit.internals.runners.InitializationError;
 	import org.flexunit.runner.Description;
@@ -199,6 +201,11 @@ package org.flexunit.runners {
 			var classArray:Array = new Array();
 			
 			var fields:Array = klassInfo.fields; 
+
+			//ADD CHECK FOR TESTRUNNER EXTENSION... this will cause an issue where the super class is introspected and attempts to test String and Collection
+			if ( klassInfo.descendsFrom( TestSuite ) ) {
+				throw new TypeError("This suite both extends from the FlexUnit 1 TestSuite class and has the FlexUnit 4 metada. Please do not extend from TestSuite.");
+			}
 
 			for ( var i:int=0; i<fields.length; i++ ) {
 				if ( !fields[ i ].isStatic ) {
