@@ -156,14 +156,22 @@ package org.flexunit.runner {
 		 * Returns the version number.
 		 */
 		public static function get version():String {
-			return "4.1.0.0rc2";
+			return "4.1.0.0rc3";
 		}
 		
-
+		/**
+		 * Allows you to get or set the appropriate visualDisplayRoot for this test run.
+		 * 
+		 * Mainly used in ActionScript only projects to provide a reference to the main sprite
+		 * 
+		 */
 		public function get visualDisplayRoot():DisplayObjectContainer {
 			return _visualDisplayRoot; 
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set visualDisplayRoot( value:DisplayObjectContainer ):void {
 			_visualDisplayRoot = value;
 
@@ -185,6 +193,9 @@ package org.flexunit.runner {
 			//dispatchEvent( new Event( TESTS_STOPPED ) );			
 		}
 
+		/**
+		 * @private
+		 */
 		private function dealWithArgArray( ar:Array, foundClasses:Array, missingClasses:Array ):void {
 			for ( var i:int=0; i<ar.length; i++ ) {
 				try {
@@ -310,6 +321,9 @@ package org.flexunit.runner {
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function verifyRunnerCanBegin( runner:IRunner ):void {
 			if ( runnerExternalDependencyWatcher.allDependenciesResolved && asyncListenerWatcher.allListenersReady ) {
 				beginRunnerExecution( runner );
@@ -375,18 +389,22 @@ package org.flexunit.runner {
 		 * errors to ensure that, if a developer does not properly code an async test
 		 * using FlexUnit APIs, that the player is not stopped by a message dialog
 		 * Receiving this top level error is *very* bad and causes an immediate stop.
-		 * 
+		 *
 		 * @param listener the listener to add
 		 * @see org.flexunit.runner.notification.RunListener
 		 */
-		public function addUncaughtErrorListener( loaderInfo:LoaderInfo ):void {
+		public function addUncaughtErrorListener(loaderInfo:LoaderInfo, priority:int = 1):void {
 			//dereferencing this anonymously so we don't have problems with other
 			//FP versions
-		
-			if(loaderInfo.hasOwnProperty("uncaughtErrorEvents"))
-				IEventDispatcher(loaderInfo["uncaughtErrorEvents"]).addEventListener("uncaughtError", uncaughtErrorHandler);
+			
+			if (loaderInfo.hasOwnProperty("uncaughtErrorEvents")) {
+				IEventDispatcher(loaderInfo["uncaughtErrorEvents"]).addEventListener("uncaughtError", uncaughtErrorHandler, false, priority);
+			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function uncaughtErrorHandler( event:Event ):void {
 			//We received a top level error here... this is most likely because
 			//someone screwed up an async call, however, even in that case
@@ -420,6 +438,9 @@ package org.flexunit.runner {
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		private function addFirstListener( listener:IRunListener ):void {
 			notifier.addFirstListener( listener );
 			if ( listener is IAsyncStartupRunListener ) {
