@@ -54,7 +54,7 @@ package org.flexunit.internals.runners {
 	import org.flexunit.utils.ClassNameUtil;
 	import org.fluint.uiImpersonation.IVisualTestEnvironment;
 	import org.fluint.uiImpersonation.VisualTestEnvironmentBuilder;
-	import org.fluint.uiImpersonation.flex.FlexVisualTestEnvironment;
+	import org.fluint.uiImpersonation.flex.FlexMXVisualTestEnvironment;
 	
 	/**
 	 * Runs the associated testClass that is passed into the <code>Fluint1ClassRunner</code>.

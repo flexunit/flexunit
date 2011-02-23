@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010 Digital Primates
+ * Copyright (c) 2010 Digital Primates IT Consulting Group
  * 
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -25,23 +25,35 @@
  * @author     Michael Labriola 
  * @version    
  **/ 
-package org.flexunit.asserts {
-	import org.flexunit.Assert;
 
+package org.fluint.uiImpersonation.flex {
+	import mx.core.Container;
+	
+	import org.fluint.uiImpersonation.VisualTestEnvironment;
+	
 	/**
-	 * Alias for org.flexunit.Assert assertTrue method
+	 * A visual test environment for Flex projects
+	 * @author mlabriola
 	 * 
-	 * @param rest
-	 * 			Accepts an argument of type Boolean.
-	 * 			If two arguments are passed the first argument must be  a String
-	 * 			and will be used as the error message.
-	 * 			
-	 * 			<code>assertTrue( String, Boolean );</code>
-	 * 			<code>assertTrue( Boolean );</code>
-	 * 
-	 * @see org.flexunit.Assert assertTrue;
 	 */
-	public function assertTrue(... rest):void {
-		Assert.assertTrue.apply( null, rest );
+	public class FlexMXVisualTestEnvironment extends VisualTestEnvironment {
+		
+		/**
+		 * 
+		 * Constructor
+		 * 
+		 * <p>Creates a new test environment using the <code>baseClass</code> as a base. This base
+		 * needs to be a container that implements <code>IVisualElementContainer</code>. If no base class
+		 * is provided, automatically uses mx.core.Container.
+		 * 
+		 * @param baseClass A class reference to the container the environment should be built from.
+		 * 
+		 */
+		public function FlexMXVisualTestEnvironment(baseClass:Class) {
+			if( !baseClass )
+				baseClass = Container;
+			
+			super( baseClass );
+		}
 	}
 }
