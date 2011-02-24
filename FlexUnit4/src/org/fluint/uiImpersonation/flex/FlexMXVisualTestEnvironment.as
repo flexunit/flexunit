@@ -27,8 +27,6 @@
  **/ 
 
 package org.fluint.uiImpersonation.flex {
-	import mx.core.Container;
-	
 	import org.fluint.uiImpersonation.VisualTestEnvironment;
 	
 	/**
@@ -50,9 +48,6 @@ package org.fluint.uiImpersonation.flex {
 		 * 
 		 */
 		public function FlexMXVisualTestEnvironment(baseClass:Class) {
-			if( !baseClass )
-				baseClass = Container;
-			
 			super( baseClass );
 		}
 	}

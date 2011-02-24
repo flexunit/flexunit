@@ -48,7 +48,7 @@ package org.fluint.uiImpersonation.actionScript {
 		/**
 		 * @private
 		 */
-		protected var environment:IVisualTestEnvironment;
+		protected var environmentProxy:IVisualTestEnvironment;
 	
 		/** 
 		 * Returns a reference to the single instance of the ActionScriptVisualTestEnvironment
@@ -57,15 +57,15 @@ package org.fluint.uiImpersonation.actionScript {
 		 * @return A reference to the ActionScriptVisualTestEnvironment class.
 		 */
 		public function buildVisualTestEnvironment():IVisualTestEnvironment {
-			if ( !environment ) {
-				environment = new ActionScriptVisualTestEnvironment();
+			if ( !environmentProxy ) {
+				environmentProxy = new ActionScriptVisualTestEnvironment();
 			}
 			
-			if ( visualDisplayRoot && ( environment is DisplayObject ) ) {
-				visualDisplayRoot.addChild( environment as DisplayObject );
+			if ( visualDisplayRoot && ( environmentProxy.testEnvironment is DisplayObject ) ) {
+				visualDisplayRoot.addChild( environmentProxy.testEnvironment );
 			}
 
-			return environment;			
+			return environmentProxy;			
 		}
 		
 		/**

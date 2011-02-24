@@ -29,13 +29,11 @@
 package org.fluint.uiImpersonation.flex {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	import flash.display.Sprite;
 	import flash.utils.getDefinitionByName;
 	
-	import mx.core.Container;
 	import mx.core.FlexVersion;
 	import mx.managers.FocusManager;
-	import mx.managers.SystemManager;
+	import mx.managers.IFocusManagerContainer;
 	
 	import org.fluint.uiImpersonation.IVisualEnvironmentBuilder;
 	import org.fluint.uiImpersonation.IVisualTestEnvironment;
@@ -49,7 +47,7 @@ package org.fluint.uiImpersonation.flex {
 		/**
 		 * @private 
 		 */
-		protected var environment:IVisualTestEnvironment;
+		protected var environmentProxy:IVisualTestEnvironment;
 		/**
 		 * @private 
 		 */
@@ -63,15 +61,22 @@ package org.fluint.uiImpersonation.flex {
 		 */
 		public function buildVisualTestEnvironment():IVisualTestEnvironment {
 			
-			if ( !environment ) {
+			if ( !environmentProxy ) {
 				var environmentType:Class;
-				if( FlexVersion.CURRENT_VERSION > FlexVersion.VERSION_3_0 ) {
-					environmentType = getDefinitionByName( "spark.components.Group" ) as Class;
-					environment = new FlexSparkVisualTestEnvironment( environmentType );
-				}
-				else {
+
+				/** First we are going to try to get a container for compatibility
+				 *  If we cannot, then and only then, will we grab a spark group instead
+				 **/
+				try {
 					environmentType = getDefinitionByName( "mx.core.Container" ) as Class;
-					environment = new FlexMXVisualTestEnvironment( environmentType );
+					environmentProxy = new FlexMXVisualTestEnvironment( environmentType );
+				} catch ( error:Error ) {
+					try {
+						environmentType = getDefinitionByName( "spark.components.Group" ) as Class;	
+						environmentProxy = new FlexSparkVisualTestEnvironment( environmentType );
+					} catch ( error:Error ) {
+						environmentType = null;
+					}
 				}
 				
 				if ( !visualDisplayRoot ) {
@@ -83,25 +88,25 @@ package org.fluint.uiImpersonation.flex {
 						visualDisplayRoot = appGlobals.application.systemManager;
 					}
 				}
+
+				if ( visualDisplayRoot && environmentProxy && ( environmentProxy.testEnvironment is DisplayObject ) ) {
+					visualDisplayRoot.addChild( environmentProxy.testEnvironment );
 				
-				if ( visualDisplayRoot && ( environment is DisplayObject ) ) {
-					visualDisplayRoot.addChild( environment as DisplayObject );
-				}
-				
-				//If the SystemManager tries to remove a child bridge from the instance, from say a SWFLoader,
-				//and there isn't a FocusManager, the SystemManager will throw an error.  To circumvent this,
-				//we'll give the instance a valid FocusManager.
-				//We need to be sure that the FocusManager is created *AFTER* adding the instance to the
-				//SystemManager, because the FocusManager uses the instance's SystemManager property
-				//during construction.
-				if ( environment is Container ) {
-					if ( !Container( environment ).focusManager ) {
-						Container( environment ).focusManager = new FocusManager( Container( environment ) );
+					//If the SystemManager tries to remove a child bridge from the instance, from say a SWFLoader,
+					//and there isn't a FocusManager, the SystemManager will throw an error.  To circumvent this,
+					//we'll give the instance a valid FocusManager.
+					//We need to be sure that the FocusManager is created *AFTER* adding the instance to the
+					//SystemManager, because the FocusManager uses the instance's SystemManager property
+					//during construction.
+					if ( environmentProxy is IFocusManagerContainer ) {
+						if ( !( environmentProxy as IFocusManagerContainer ).focusManager ) {
+							( environmentProxy as IFocusManagerContainer ).focusManager = new FocusManager( ( environmentProxy as IFocusManagerContainer ) );
+						}
 					}
 				}
 			}
 			
-			return environment;
+			return environmentProxy;
 		}
 		
 		/**

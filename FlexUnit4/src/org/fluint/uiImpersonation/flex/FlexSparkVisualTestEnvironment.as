@@ -29,7 +29,6 @@
 package org.fluint.uiImpersonation.flex
 {
 	import flash.display.DisplayObject;
-	import flash.utils.getDefinitionByName;
 
 	/**
 	 * Builds a visual test environment for Flex 4.0 and above projects 
@@ -140,9 +139,6 @@ package org.fluint.uiImpersonation.flex
 		 * 
 		 */
 		public function FlexSparkVisualTestEnvironment( baseClass:Class ) {
-			if( !baseClass )
-				baseClass = getDefinitionByName( "spark.components.Group" ) as Class;
-			
 			super( baseClass );
 		}
 	}
