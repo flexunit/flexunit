@@ -26,6 +26,8 @@
  * @version    
  **/ 
 package org.flexunit.internals.builders {
+	import flash.utils.getDefinitionByName;
+	
 	import org.flexunit.runner.IRunner;
 	import org.flexunit.runners.model.IRunnerBuilder;
 	import org.flexunit.runners.model.RunnerBuilderBase;
@@ -161,14 +163,20 @@ package org.flexunit.internals.builders {
 		 */
 		protected function fluint1Builder():IRunnerBuilder {
 			var runner:IRunnerBuilder;
+			var builder:Class;
 			
 			// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
 			// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the
 			// flex classes since it will cause errors.
 			CONFIG::useFlexClasses {
-				runner = new Fluint1Builder();
+				try {
+					builder = getDefinitionByName( "org.flexunit.internals.builders.Fluint1Builder" ) as Class;
+					runner = new builder();
+				} catch ( error:Error ) {
+
+				}
 			}
-			
+
 			//If the runner has not be set to a Fluint1Builder, set the runner to a NullBuilder
 			if ( !runner ) {
 				runner = new NullBuilder();
