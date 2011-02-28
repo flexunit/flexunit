@@ -1,6 +1,8 @@
 package compilationSuite.actionscript {
 	import compilationSuite.FlexUnit4ASSuite;
 	
+	import org.flexunit.events.rule.EventRuleSuite;
+	
 	import tests.flex.lang.reflect.ReflectionSuite;
 	import tests.org.flexunit.assert.AssertionAndAssumptionSuite;
 	import tests.org.flexunit.async.AsyncSuite;
@@ -18,6 +20,7 @@ package compilationSuite.actionscript {
 		public var utilsSuite:UtilsSuite;
 		public var tokenSuite:TokenSuite;
 		public var async:AsyncSuite;
+		public var eventRule:EventRuleSuite;
 
 		public var descriptionUtil:DescriptionUtilTest;
 		public var flexUnit4ASSuite:FlexUnit4ASSuite;
