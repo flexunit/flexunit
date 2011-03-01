@@ -25,6 +25,7 @@ to contribute to our CI process.
    <!-- Project locations -->
    <property name="anttasks.loc" location="${basedir}/FlexUnit4AntTasks" />
    <property name="core.loc" location="${basedir}/FlexUnit4" />
+   <property name="fluint.loc" location="${basedir}/FlexUnit4FluintExtensions" />
    <property name="cilistener.loc" location="${basedir}/FlexUnit4CIListener" />
    <property name="tests.loc" location="${basedir}/FlexUnit4Test" />
    <property name="uilistener.loc" location="${basedir}/FlexUnit4UIListener" />
@@ -38,6 +39,7 @@ to contribute to our CI process.
       <!-- Ask each project to clean up -->
       <ant dir="${anttasks.loc}" target="clean" inheritall="false" />
       <ant dir="${core.loc}" target="clean" inheritall="false" />
+      <ant dir="${fluint.loc}" target="clean" inheritall="false" />
       <ant dir="${cilistener.loc}" target="clean" inheritall="false" />
       <ant dir="${tests.loc}" target="clean" inheritall="false" />
       <ant dir="${uilistener.loc}" target="clean" inheritall="false" />
@@ -68,7 +70,16 @@ to contribute to our CI process.
          </propertyset>
       </ant>
    </target>
-
+	
+	<!-- Prepares and builds the FlexUnit4 Fluint Extensions -->
+   <target name="fluint" depends="core">
+      <ant dir="${fluint.loc}" target="package" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+   </target>
+	
    <!-- Prepares and builds the FlexUnit4CIListener project -->
    <target name="cilistener" depends="core">
       <ant dir="${cilistener.loc}" target="package" inheritall="false">
@@ -88,7 +99,7 @@ to contribute to our CI process.
    </target>
 
    <!-- Prepares and builds the FlexUnit4Test project -->
-   <target name="test" depends="anttasks,core,cilistener,flexcoverlistener" unless="build.skipTests">
+   <target name="test" depends="anttasks,core,fluint,cilistener,flexcoverlistener" unless="build.skipTests">
       <ant dir="${tests.loc}" target="test" inheritall="false">
          <propertyset>
             <propertyref prefix="build" />
@@ -99,7 +110,7 @@ to contribute to our CI process.
    <target name="listeners" depends="uilistener,aircilistener" />
 
    <!-- Prepares and builds the FlexUnit4UIRunner project -->
-   <target name="uilistener" depends="core,cilistener">
+   <target name="uilistener" depends="core,fluint,cilistener">
       <ant dir="${uilistener.loc}" target="package" inheritall="false">
          <propertyset>
             <propertyref prefix="build" />
@@ -108,7 +119,7 @@ to contribute to our CI process.
    </target>
 
    <!-- Prepares and builds the Air CI Listener project -->
-   <target name="aircilistener" depends="core,cilistener">
+   <target name="aircilistener" depends="core,fluint,cilistener">
       <ant dir="${aircilistener.loc}" target="package" inheritall="false">
          <propertyset>
             <propertyref prefix="build" />

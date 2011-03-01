@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="FlexUnit4CIListener" basedir="." default="package">
+   <import file="${basedir}/../utils.xml" />
+   <property environment="env" />
+
+   <!-- Configuration -->
+   <property name="build.artifactId" value="fluint-extensions" />
+   <property name="build.finalName" value="${build.artifactId}-${build.version}-${build.number}-${build.sdk}" />
+   <property name="build.packaging" value="swc" />
+   <property name="build.deploy.name" value="FlexUnit Fluint Extensions" />
+   <property name="build.deploy.description" value="Extensions to FlexUnit 4 to allow interaction with Fluint tests." />
+
+   <!-- Existing -->
+   <property name="src.loc" location="${basedir}/src" />
+   <property name="lib.loc" location="${basedir}/libs" />
+
+   <!-- Generated -->
+   <property name="dist.loc" location="${basedir}/target" />
+   <property name="sonatype.loc" location="${dist.loc}/sonatype" />
+   <property name="bin.loc" location="${basedir}/target/bin" />
+   <property name="doc.loc" location="${basedir}/target/docs" />
+
+   <!-- Setup Flex Ant Resources -->
+   <property name="FLEX_HOME" location="${env.FLEX_HOME}" />
+   <taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+
+   <target name="clean">
+      <delete dir="${dist.loc}" failonerror="false" />
+      <delete failonerror="false">
+         <fileset dir="${lib.loc}">
+			<include name="flexunit*.swc" />
+         </fileset>
+      </delete>
+   </target>
+
+   <target name="init">
+      <mkdir dir="${lib.loc}" />
+      <mkdir dir="${dist.loc}" />
+      <mkdir dir="${sonatype.loc}" />
+      <mkdir dir="${bin.loc}" />
+      <mkdir dir="${doc.loc}" />
+
+      <!-- Copy required dependencies -->
+      <copy todir="${lib.loc}" overwrite="true" failonerror="false">
+         <fileset dir="${basedir}/../FlexUnit4/target">
+            <include name="flexunit*as3*.swc" />
+         </fileset>
+      </copy>
+   </target>
+
+   <target name="compile" depends="init">
+      <compc output="${bin.loc}/${build.finalName}.${build.packaging}">
+         <include-sources dir="${src.loc}" includes="*" append="true" />
+         <source-path path-element="${src.loc}" />
+         <compiler.external-library-path dir="${lib.loc}" append="true">
+            <include name="*.swc" />
+         </compiler.external-library-path>
+         <compiler.external-library-path dir="${FLEX_HOME}/frameworks/libs" append="true">
+            <include name="flex.swc" />
+            <include name="framework.swc" />
+            <include name="rpc.swc" />
+            <include name="utilities.swc" />
+         </compiler.external-library-path>
+         <compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
+         <compiler.headless-server>true</compiler.headless-server>
+      </compc>
+   </target>
+
+   <target name="report" depends="compile" if="build.report">
+      <java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
+         <jvmarg value="-Xmx256M" />
+         <arg line="+flexlib '${FLEX_HOME}/frameworks'" />
+         <arg line="-doc-sources '${src.loc}'" />
+         <arg line="-source-path+='${src.loc}'" />
+         <arg line="-output '${doc.loc}'" />
+         <arg line="-library-path+='${lib.loc}'" />
+      </java>
+   </target>
+
+   <target name="package" depends="report">
+      <copy file="${bin.loc}/${build.finalName}.${build.packaging}" todir="${dist.loc}" />
+   </target>
+   
+   <target name="deploy" depends="package" description="Requires Ant-Contrib and GPG to work.">
+      <!-- Copy artifacts w/o build number for use with sonatype -->
+   	  <copy todir="${sonatype.loc}">
+   	  	<fileset dir="${dist.loc}">
+   	  	   <include name="*.swc" />
+   	  	</fileset>
+   	  	<filtermapper>
+      	  <replacestring from="-${build.number}-" to="-" />
+		</filtermapper>
+   	  </copy>
+   
+      <!-- prepare sonatype bundle -->
+      <sonatype-bundle dir="${sonatype.loc}" 
+         todir="${sonatype.loc}" 
+         pomTemplate="${basedir}/../pom.template" 
+         artifact="${build.artifactId}" 
+         type="${build.packaging}" 
+         name="${build.deploy.name}" 
+         version="${build.version}" 
+         description="${build.deploy.description}">
+         <includes>
+            <include name="*.swc" />
+            <include name="pom.xml" />
+         </includes>
+      </sonatype-bundle>
+   </target>
+</project>

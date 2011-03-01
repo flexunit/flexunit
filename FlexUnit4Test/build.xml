@@ -40,8 +40,10 @@
 	        <library-path dir="${lib.loc}" append="true">
 	            <include name="@{include}" />
 	            <include name="*cilistener*.swc" />
+             	<include name="fluint*.swc" />
 	            <include name="*flexcoverlistener*.swc" />
 	            <include name="FlexUnit1Lib.swc" />
+				<include name="FlexUnit1Lib.swc" />
 	            <include name="hamcrest-as3*.swc" />
     	        <include name="mock-as3.swc" />
         	    <include name="mockolate*.swc" />
@@ -118,6 +120,7 @@
       <delete dir="${dist.loc}" />
       <delete>
          <fileset dir="${lib.loc}">
+			<exclude name="fluint-1_2.swc" />
             <exclude name="FlexUnit1Lib.swc" />
             <exclude name="hamcrest-as3*.swc" />
             <exclude name="mock-as3.swc" />
@@ -145,6 +148,9 @@
             <include name="*.swc" />
          </fileset>
          <fileset dir="${basedir}/../FlexUnit4FlexCoverListener/target">
+            <include name="*.swc" />
+         </fileset>
+		 <fileset dir="${basedir}/../FlexUnit4FluintExtensions/target">
             <include name="*.swc" />
          </fileset>
       </copy>
