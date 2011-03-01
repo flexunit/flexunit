@@ -28,8 +28,6 @@
 package org.flexunit
 {
 	import org.flexunit.async.AsyncTestResponder;
-	import org.flexunit.async.ITestResponder;
-	import org.flexunit.async.TestResponder;
 	import org.flexunit.events.AsyncResponseEvent;
 	import org.flexunit.internals.TextListener;
 	import org.fluint.sequence.ISequenceAction;
@@ -53,8 +51,6 @@ package org.flexunit
 	public class IncludeFlexClasses
 	{
 		private var fxu1:AsyncTestResponder;
-		private var fxu2:ITestResponder;
-		private var fxu3:TestResponder;
 		private var fxu4:AsyncResponseEvent;
 		
 		private var flu1:ISequenceAction;

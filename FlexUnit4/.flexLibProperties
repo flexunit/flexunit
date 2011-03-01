@@ -27,7 +27,8 @@
     <classEntry path="org.flexunit.async.Async"/>
     <classEntry path="org.flexunit.async.AsyncHandler"/>
     <classEntry path="org.flexunit.async.AsyncLocator"/>
-    <classEntry path="org.flexunit.async.AsyncTestResponder"/>
+    <classEntry path="org.flexunit.async.ITestResponder"/>
+    <classEntry path="org.flexunit.async.TestResponder"/>
     <classEntry path="org.flexunit.constants.AnnotationArgumentConstants"/>
     <classEntry path="org.flexunit.constants.AnnotationConstants"/>
     <classEntry path="org.flexunit.events.AsyncEvent"/>

@@ -11,7 +11,6 @@ package tests.org.flexunit.async {
 		import org.flexunit.asserts.assertEquals;
 		import org.flexunit.asserts.assertNull;
 		import org.flexunit.asserts.assertStrictlyEquals;
-		import org.flexunit.async.AsyncTestResponder;
 		import org.flexunit.events.AsyncResponseEvent;
 
 		[Test(description="Ensure the result function is passed")]

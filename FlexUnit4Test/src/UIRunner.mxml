@@ -17,7 +17,7 @@
 				core = new FlexUnitCore();
 				core.addUncaughtErrorListener( systemManager.loaderInfo );
 				core.addListener( uiListener );
-				core.run( EventRuleSuite );
+				core.run( SuitesToRun );
 			}
 		]]>
 	</mx:Script>

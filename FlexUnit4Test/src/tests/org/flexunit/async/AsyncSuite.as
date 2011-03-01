@@ -4,9 +4,9 @@ package tests.org.flexunit.async {
 	[RunWith("org.flexunit.runners.Suite")]
 	public class AsyncSuite {
 		CONFIG::useFlexClasses {		
-			public var testResponder:TestResponderCase;
+			public var asyncResponder:AsyncTestResponderCase;	
 		}
-		public var asyncResponder:AsyncTestResponderCase;
+		public var testResponder:TestResponderCase;
 		public var nativeResponder:AsyncNativeTestResponderCase;
 		public var asyncLocator:AsyncLocatorCase;
 	}
