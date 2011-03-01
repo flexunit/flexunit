@@ -36,7 +36,7 @@ package org.flexunit.async.cases
 			
 			//Set expectations
 			asyncHandlingStatementMock.mock.method("asyncResponder").withArgs(responder, timeout, passThroughData, timeoutHandler).once.returns(responderMock);
-			
+
 			Async.asyncResponder(testCase, responder, timeout, passThroughData, timeoutHandler);
 			
 			//Verify expectations were met
