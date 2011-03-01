@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<flexLibProperties includeAllClasses="false" useMultiPlatformConfig="false" version="1">
+<flexLibProperties includeAllClasses="false" version="1">
   <includeClasses>
     <classEntry path="flex.lang.reflect.Constructor"/>
     <classEntry path="flex.lang.reflect.Field"/>
@@ -27,6 +27,7 @@
     <classEntry path="org.flexunit.async.Async"/>
     <classEntry path="org.flexunit.async.AsyncHandler"/>
     <classEntry path="org.flexunit.async.AsyncLocator"/>
+    <classEntry path="org.flexunit.async.AsyncTestResponder"/>
     <classEntry path="org.flexunit.constants.AnnotationArgumentConstants"/>
     <classEntry path="org.flexunit.constants.AnnotationConstants"/>
     <classEntry path="org.flexunit.events.AsyncEvent"/>
