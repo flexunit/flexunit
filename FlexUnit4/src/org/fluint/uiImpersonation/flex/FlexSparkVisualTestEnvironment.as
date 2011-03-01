@@ -133,7 +133,7 @@ package org.fluint.uiImpersonation.flex
 		 * Constructor
 		 * 
 		 * <p>Creates a new test environment using the <code>baseClass</code> as a base. This base
-		 * needs to be a container that implements <code>IVisualElementContainer</code>.
+		 * needs to be a container that implements <code>IVisualElementContainer</code>.</p>
 		 * 
 		 * @param baseClass A class reference to the container the environment should be built from.
 		 * 
