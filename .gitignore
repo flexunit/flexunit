@@ -4,6 +4,7 @@ FlexUnit4/target/*
 */bin-debug
 FlexUnit4UIListener/bin/*
 FlexUnit4CIListener/bin/*
+FlexUnit4AntTasks/bin/*
 FlexUnit4FluintExtensions/bin/*
 FlexUnit4FluintExtensions/target/*
 FlexUnit4CIListener/target/*

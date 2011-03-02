@@ -1,13 +1,15 @@
 package org.flexunit.ant.tasks;
 
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.DynamicElement;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 import org.flexunit.ant.tasks.configuration.TaskConfiguration;
+import org.flexunit.ant.tasks.types.LoadConfig;
 
 //TODO: Add AIR and Flex 4 support to compilation
-public class FlexUnitTask extends Task
+public class FlexUnitTask extends Task implements DynamicElement
 {
    private TaskConfiguration configuration;
 
@@ -72,16 +74,6 @@ public class FlexUnitTask extends Task
    public void setSWF(final String testSWF)
    {
       configuration.setSwf(testSWF);
-   }
-   
-   /**
-    * The URL of a Flex application to run.
-    * 
-    * @param url
-    */
-   public void setUrl(final String url)
-   {
-	   configuration.setUrl(url);
    }
 
    /**
@@ -166,16 +158,6 @@ public class FlexUnitTask extends Task
    }
    
    /**
-    * 
-    * 
-    * @param testDescriptor
-    */
-   public void setPrecompiledAppDescriptor(final String testDescriptor)
-   {
-	   configuration.setPrecompiledAppDescriptor(testDescriptor);
-   }
-
-   /**
     * Called by Ant to execute the task.
     */
    public void execute() throws BuildException
@@ -194,4 +176,25 @@ public class FlexUnitTask extends Task
       TestRun testRun = new TestRun(getProject(), configuration.getTestRunConfiguration());
       testRun.run();
    }
+   
+   public void setDebug(boolean value)
+   {
+       configuration.setDebug(value);
+   }
+
+	public Object createDynamicElement(String arg0) throws BuildException 
+	{
+	  if("load-config".equals(arg0))
+	  {
+	      LoadConfig loadconfig = new LoadConfig();
+	      configuration.setLoadConfig(loadconfig);
+	      return loadconfig;
+	  
+	  } 
+	  else
+	  {
+	      throw new BuildException( "The <flexUnit> type doesn't support the " + arg0 + "nested element");
+	  }
+	}
+
 }

@@ -6,6 +6,7 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.FileSet;
 import org.flexunit.ant.LoggingUtil;
 import org.flexunit.ant.tasks.types.LibraryPaths;
+import org.flexunit.ant.tasks.types.LoadConfig;
 import org.flexunit.ant.tasks.types.SourcePaths;
 
 public class CompilationConfiguration implements StepConfiguration
@@ -22,6 +23,7 @@ public class CompilationConfiguration implements StepConfiguration
       sources = new SourcePaths();
       testSources = new SourcePaths();
       libraries = new LibraryPaths();
+      debug = false;
    }
    
    public File getFlexHome()
@@ -101,9 +103,9 @@ public class CompilationConfiguration implements StepConfiguration
          throw new BuildException("One of the directories specified as a 'library' element does not exist.");
       }
       
-      if(libraries.exists() && libraries.isEmpty())
+      if(libraries.exists() && libraries.isEmpty() && loadConfig == null)
       {
-         throw new BuildException("No SWC files could be found for the provided 'library' elements.");
+         throw new BuildException("'library' elements not specified or 'load-config' element not specified. Also possible no SWC files could be found for the provided 'library' elements.");
       }
    }
    
@@ -116,4 +118,27 @@ public class CompilationConfiguration implements StepConfiguration
       LoggingUtil.log("\ttestSourceDirectories: [" + testSources.getPathElements(",") + "]");
       LoggingUtil.log("\tlibraries: [" + libraries.getPathElements(",") + "]");
    }
+   
+   private boolean debug;
+   public boolean getDebug()
+   {
+       return debug;
+   }
+
+   public void setDebug(boolean value)
+   {
+       debug = value;
+   }
+   
+   private LoadConfig loadConfig;
+   public void setLoadConfig(LoadConfig loadconfig)
+   {
+       loadConfig = loadconfig;
+   }
+
+   public LoadConfig getLoadConfig()
+   {
+       return loadConfig;
+   }
+   
 }
