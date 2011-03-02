@@ -3,7 +3,7 @@
 	<id>FlexUnit4AdlWrapper</id>
 	<filename>FlexUnit4AdlWrapper</filename>
 	<name>FlexUnit4 Adl Wrapper</name>
-	<version>1.0.0</version>
+	<@VERSION_PROP@>1.0.0</@VERSION_PROP@>
 	<description>Wrapper application for use with the FlexUnit4 Ant task.</description>
 	<initialWindow>
 		<title>FlexUnit4 Adl Wrapper</title>
