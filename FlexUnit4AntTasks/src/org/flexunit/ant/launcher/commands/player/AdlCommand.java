@@ -92,15 +92,29 @@ public class AdlCommand extends DefaultPlayerCommand
       versionArgument.setValue("-version");
 
       task.execute();
-
-      //Parse version number and return as int
-      String output = getProject().getProperty(outputProperty);
-      int prefixIndex = output.indexOf("adt version \"");
-      double version = Double.parseDouble(output.substring(prefixIndex + 13, prefixIndex + 16));
-
+      double version = parseAdtVersionNumber( getProject().getProperty(outputProperty) );
       LoggingUtil.log("Found AIR version: " + version);
-
       return version;
+   }
+
+
+   private double parseAdtVersionNumber( String versionString )
+   {
+	  double version;
+
+      //AIR 2.6 and greater only returns the version number.
+      if( versionString.startsWith("adt") )
+      {
+          //Parse version number and return as int
+	      int prefixIndex = versionString.indexOf("adt version \"");
+	      version = Double.parseDouble(versionString.substring(prefixIndex + 13, prefixIndex + 16));
+
+      }else
+      {
+    	  version = Double.parseDouble(versionString.substring(0, 3) );
+      }
+
+	  return version;
    }
 
    @Override
