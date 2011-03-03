@@ -218,7 +218,7 @@ package org.flexunit.async
 		/**
 		 * Calls a method after a given delay. 
 		 * @param testCase The current asynchronous test case.
-		 * @param callback The function that will be executed if the <code>delay</delay> has been reached.
+		 * @param callback The function that will be executed if the <code>delay</code> has been reached.
 		 * @param delay The length of time, in milliseconds, before calling the <code>callback</code>.
 		 */		
 		public static function delayCall(testCase:Object, callback:Function, delay:Number):void
