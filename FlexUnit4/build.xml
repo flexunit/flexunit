@@ -50,10 +50,7 @@
             <arg line="-source-path+='${src.loc}'" />
             <arg line="-output '${bin.loc}/@{artifact}'" />
             <arg line="-library-path+='${lib.loc}'" />
-            <arg line="-external-library-path+='@{sdk}/frameworks/libs/flex.swc'" />
-            <arg line="-external-library-path+='@{sdk}/frameworks/libs/framework.swc'" />
-            <arg line="-external-library-path+='@{sdk}/frameworks/libs/rpc.swc'" />
-            <arg line="-external-library-path+='@{sdk}/frameworks/libs/utilities.swc'" />
+            <arg line="-external-library-path+='@{sdk}/frameworks/libs/'" />
             <arg line="-keep-as3-metadata+=RunWith,BeforeClass,AfterClass,Before,After,Suite,Test,TestCase,Ignore,Filter,Sort,Theory,DataPoint,DataPoints,ArrayElementType,Rule,Parameters" />
             <arg line="-define=CONFIG::useFlexClasses,@{useFlex}" />
             <arg line="-verbose-stacktraces=true" />
