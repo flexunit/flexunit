@@ -6,6 +6,7 @@ FlexUnit4UIListener/bin/*
 FlexUnit4CIListener/bin/*
 FlexUnit4FluintExtensions/bin/*
 FlexUnit4FluintExtensions/target/*
+FlexUnit4FluintExtensions/libs/*
 FlexUnit4CIListener/target/*
 FlexUnit4CIListener/libs/*
 FlexUnit4AirCIListener/bin/*
