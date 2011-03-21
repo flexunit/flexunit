@@ -133,6 +133,7 @@ to contribute to our CI process.
          <!-- Docs -->
          <zipfileset dir="${anttasks.loc}/target/docs" prefix="flexunit/docs/anttasks" />
          <zipfileset dir="${core.loc}/target/docs" prefix="flexunit/docs/flexunit" />
+		 <zipfileset dir="${fluint.loc}/target/docs" prefix="flexunit/docs/flexUnit4FluintExtensions" />
          <zipfileset dir="${cilistener.loc}/target/docs" prefix="flexunit/docs/cilistener" />
          <zipfileset dir="${uilistener.loc}/target/docs" prefix="flexunit/docs/uilistener" />
          <zipfileset dir="${aircilistener.loc}/target/docs" prefix="flexunit/docs/aircilistener" />
@@ -144,6 +145,9 @@ to contribute to our CI process.
          </zipfileset>
          <zipfileset dir="${core.loc}/target" prefix="flexunit">
             <include name="flexunit*.swc" />
+         </zipfileset>
+		<zipfileset dir="${fluint.loc}/target" prefix="flexunit">
+            <include name="*.swc" />
          </zipfileset>
          <zipfileset dir="${cilistener.loc}/target" prefix="flexunit">
             <include name="*.swc" />
@@ -169,6 +173,9 @@ to contribute to our CI process.
             <include name="*.swc" />
  			<exclude name="fluint-1_2.swc" />
          </zipfileset>
+		<zipfileset dir="${fluint.loc}/target" prefix="flexunit/turnkey/libs">
+            <include name="*.swc" />
+         </zipfileset>
          <zipfileset dir="${uilistener.loc}/target" prefix="flexunit/turnkey/libs">
             <include name="*.swc" />
          </zipfileset>
@@ -182,6 +189,9 @@ to contribute to our CI process.
          </zipfileset>
          <zipfileset dir="${core.loc}/target" prefix="flexunit/sampleCIProject/libs">
             <include name="*core*.swc" />
+         </zipfileset>
+		 <zipfileset dir="${fluint.loc}/target" prefix="flexunit/sampleCIProject/libs">
+            <include name="fluint*.swc" />
          </zipfileset>
          <zipfileset dir="${cilistener.loc}/target" prefix="flexunit/sampleCIProject/libs">
             <include name="*.swc" />
@@ -202,6 +212,11 @@ to contribute to our CI process.
          </propertyset>
       </ant>
       <ant dir="${core.loc}" target="deploy" inheritall="false">
+         <propertyset>
+            <propertyref prefix="build" />
+         </propertyset>
+      </ant>
+	  <ant dir="${fluint.loc}" target="deploy" inheritall="false">
          <propertyset>
             <propertyref prefix="build" />
          </propertyset>
