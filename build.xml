@@ -188,7 +188,7 @@ to contribute to our CI process.
             <include name="*.jar" />
          </zipfileset>
          <zipfileset dir="${core.loc}/target" prefix="flexunit/sampleCIProject/libs">
-            <include name="*core*.swc" />
+            <include name="flexunit*.swc" />
          </zipfileset>
 		 <zipfileset dir="${fluint.loc}/target" prefix="flexunit/sampleCIProject/libs">
             <include name="fluint*.swc" />
