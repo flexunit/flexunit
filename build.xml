@@ -193,6 +193,9 @@ to contribute to our CI process.
 		 <zipfileset dir="${fluint.loc}/target" prefix="flexunit/sampleCIProject/libs">
             <include name="fluint*.swc" />
          </zipfileset>
+		 <zipfileset dir="${fluint.loc}/libs" prefix="flexunit/sampleCIProject/libs">
+            <include name="fluint*.swc" />
+         </zipfileset>
          <zipfileset dir="${cilistener.loc}/target" prefix="flexunit/sampleCIProject/libs">
             <include name="*.swc" />
          </zipfileset>
