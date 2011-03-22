@@ -15,6 +15,7 @@ FlexUnit4FlexCoverListener/libs/*
 FlexUnit4FlexCoverListener/target/*
 FlexUnit4CIListener/bin/*
 FlexUnit4AntTasks/target/*
+FlexUnit4AntTasks/bin/*
 FlexUnit4Test/libs/*
 FlexUnit4Test/target/*
 FlexUnit4UIListener/libs/*
