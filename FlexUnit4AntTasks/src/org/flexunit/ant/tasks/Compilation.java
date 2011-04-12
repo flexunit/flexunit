@@ -168,15 +168,40 @@ public class Compilation
       Argument sourcePath = task.createArg();
       sourcePath.setLine("-source-path " + configuration.getSources().getPathElements(" ") + " " + configuration.getTestSources().getPathElements(" "));
       
-      Argument libraryPath = task.createArg();
-      libraryPath.setLine("-library-path+=" + configuration.getLibraries().getPathElements(" -library-path+="));
-      
+      determineLibraryPath( task );
+     
+      determineLoadConfigArgument( task );
+       
+      Argument debug = task.createArg();
+      debug.setLine( "-debug=" + configuration.getDebug() );
+
       Argument headlessServer = task.createArg();
       headlessServer.setLine("-headless-server=true");
+      
       
       Argument mainFile = task.createArg();
       mainFile.setValue(runnerFile.getAbsolutePath());
       
       return task;
    }
+   
+   
+   private void determineLoadConfigArgument(Java java)
+   {
+       if(configuration.getLoadConfig() != null)
+       {
+           Argument argument = java.createArg();
+           argument.setLine(configuration.getLoadConfig().getCommandLineArgument());
+       }
+   }
+
+   private void determineLibraryPath(Java java)
+   {
+       if(!configuration.getLibraries().getPathElements(" -library-path+=").isEmpty())
+       {
+           Argument libraryPath = java.createArg();
+           libraryPath.setLine("-library-path+=" + configuration.getLibraries().getPathElements(" -library-path+="));
+       }
+   }
+   
 }

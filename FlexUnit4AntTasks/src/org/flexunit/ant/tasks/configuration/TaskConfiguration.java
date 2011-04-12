@@ -8,6 +8,7 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
 import org.flexunit.ant.LoggingUtil;
+import org.flexunit.ant.tasks.types.LoadConfig;
 
 public class TaskConfiguration
 {
@@ -130,16 +131,6 @@ public class TaskConfiguration
       testRunConfiguration.setSwf(swf);
    }
    
-   public void setUrl(String url)
-   {
-	   testRunConfiguration.setUrl(url);
-   }
-   
-   public void setPrecompiledAppDescriptor(String precompiledAppDescriptor) 
-   {
-	   testRunConfiguration.setPrecompiledAppDescriptor(project.resolveFile(precompiledAppDescriptor));
-   }
-   
    public boolean isVerbose()
    {
       return verbose;
@@ -155,7 +146,7 @@ public class TaskConfiguration
    {
       this.workingDir = project.resolveFile(workingDirPath);
    }
-      
+   
    public boolean shouldCompile()
    {
       File swf = testRunConfiguration.getSwf();
@@ -186,38 +177,19 @@ public class TaskConfiguration
          throw new BuildException("The provided 'player' property value [" + player + "] must be either of the following values: " + VALID_PLAYERS.toString() + ".");
       }
       
-      String url = testRunConfiguration.getUrl();
       File swf = testRunConfiguration.getSwf();
-      File precompiledAppDescriptor = testRunConfiguration.getPrecompiledAppDescriptor();
-      
       boolean noTestSources = !compilationConfiguration.getTestSources().provided();
       
-      if(url != null && swf != null) {
-    	 throw new BuildException("Please specify either the 'url' or 'swf' property, but not both."); 
+      if ((swf == null || !swf.exists()) && noTestSources)
+      {
+         throw new BuildException("The provided 'swf' property value [" + (swf == null ? "" : swf.getPath()) + "] could not be found.");
       }
       
-      if(url == null && precompiledAppDescriptor == null) {
-	      if ((swf == null || !swf.exists()) && noTestSources)
-	      {
-	         throw new BuildException("The provided 'swf' property value [" + (swf == null ? "" : swf.getPath()) + "] could not be found.");
-	      }
-	      
-	      if(swf != null && !noTestSources)
-	      {
-	         throw new BuildException("Please specify the 'swf' property or use the 'testSource' element(s), but not both.");
-	      }
-      } 
-      else if(url != null)
+      if(swf != null && !noTestSources)
       {
-    	  if(url.indexOf("http://") != 0 && url.indexOf("file://") != 0) {
-    		  throw new BuildException("The 'url' property must begin with 'http://' or 'file://'.");	  
-    	  }
+         throw new BuildException("Please specify the 'swf' property or use the 'testSource' element(s), but not both.");
       }
-      else if(precompiledAppDescriptor != null && !precompiledAppDescriptor.exists()) 
-      {
-    	  throw new BuildException("The provided 'precompiledAppDescriptor' does not exist: " + precompiledAppDescriptor.getPath());
-      }
-    	  
+      
       //if we can't find the FLEX_HOME and we're using ADL or compilation
       if((flexHome == null || !flexHome.exists()) && (new String("air").equals(testRunConfiguration.getPlayer()) || shouldCompile()))
       {
@@ -263,4 +235,15 @@ public class TaskConfiguration
       
       testRunConfiguration.setReportDir(reportDir);
    }
+   
+   public void setDebug(boolean value)
+   {
+       compilationConfiguration.setDebug(value);
+   }
+
+   public void setLoadConfig(LoadConfig loadconfig)
+   {
+       compilationConfiguration.setLoadConfig(loadconfig);
+   }
+
 }

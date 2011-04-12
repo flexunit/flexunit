@@ -144,5 +144,4 @@ public class AdlCommand extends DefaultPlayerCommand
    {
 	   this.precompiledAppDescriptor = precompiledAppDescriptor;
    }
-
 }
