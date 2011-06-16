@@ -50,8 +50,10 @@ public class TestRun
          //start the execution context
          context.start();
          
-         // launch the player
-         Process process = player.launch();
+         // launch the player.  Note, this is sometimes a blocking call
+         // and sometimes not, depending on the player configuration.  If
+         // blocking, process will be 'null'.
+         Process process = player.launch(configuration.getSocketTimeout());
 
          // block until daemon is completely done with all test data
          daemon.get();

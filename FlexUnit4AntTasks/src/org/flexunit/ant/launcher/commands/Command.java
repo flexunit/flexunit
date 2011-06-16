@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Execute;
+import org.apache.tools.ant.taskdefs.ExecuteWatchdog;
+import org.apache.tools.ant.taskdefs.PumpStreamHandler;
 import org.apache.tools.ant.types.Commandline;
 import org.flexunit.ant.LoggingUtil;
 
@@ -37,31 +39,37 @@ public abstract class Command
    
    public int execute() throws IOException
    {
-      Execute execute = new Execute();
-      execute.setCommandline(getCommandLine().getCommandline());
-      execute.setAntRun(getProject());
-      execute.setEnvironment(getEnvironment());
-      
-      LoggingUtil.log(getCommandLine().describeCommand());
-      
-      return execute.execute();
+       return execute(null);
    }
    
-   public Process launch() throws IOException
+   public Process launch(long timeoutMsec) throws IOException
    {
-      Execute execute = new Execute();
-      execute.setCommandline(getCommandLine().getCommandline());
-      execute.setAntRun(getProject());
-      execute.setEnvironment(getEnvironment());
+      ExecuteWatchdog watchdog = new ExecuteWatchdog(timeoutMsec);
+      execute(watchdog);
       
-      LoggingUtil.log(getCommandLine().describeCommand());
-      
-      execute.execute();
-      
-      //By default we use the Ant Execute task which does not give us a handle to a process
       return null;
    }
 
+   private int execute(ExecuteWatchdog watchdog) throws IOException
+   {
+       Execute execute = new Execute(new PumpStreamHandler(), watchdog);
+       execute.setCommandline(getCommandLine().getCommandline());
+       execute.setAntRun(getProject());
+       execute.setEnvironment(getEnvironment());
+       
+       LoggingUtil.log(getCommandLine().describeCommand());
+       
+       try 
+       {
+           return execute.execute();
+       }
+       catch (IOException e) 
+       {
+           LoggingUtil.log("IOException when executing command: " + e);
+           throw e;
+       }
+   }
+   
    public void setEnvironment(String[] variables)
    {
       this.environment = variables;

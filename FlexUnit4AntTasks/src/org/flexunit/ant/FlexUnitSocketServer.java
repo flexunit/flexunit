@@ -106,6 +106,7 @@ public class FlexUnitSocketServer
       
       // This method blocks until a connection is made.
       clientSocket = serverSocket.accept();
+      clientSocket.setSoTimeout(timeout);
 
       LoggingUtil.log("Client connected.");
       LoggingUtil.log("Setting inbound buffer size to [" + inboundBufferSize + "] bytes.");

@@ -74,7 +74,7 @@ public class CustomPlayerCommand implements PlayerCommand
 
    }
    
-   public Process launch() throws IOException
+   public Process launch(long timeoutMsec) throws IOException
    {
       LoggingUtil.log(proxiedCommand.getCommandLine().describeCommand());
       

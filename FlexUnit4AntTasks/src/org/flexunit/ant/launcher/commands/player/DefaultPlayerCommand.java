@@ -50,8 +50,8 @@ public abstract class DefaultPlayerCommand extends Command implements PlayerComm
    public abstract void prepare();
    
    @Override
-   public Process launch() throws IOException
+   public Process launch(long timeoutMsec) throws IOException
    {
-      return super.launch();
+       return super.launch(timeoutMsec);
    }
 }

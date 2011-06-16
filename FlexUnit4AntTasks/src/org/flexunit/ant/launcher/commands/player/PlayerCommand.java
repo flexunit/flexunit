@@ -18,5 +18,14 @@ public interface PlayerCommand
    public void setSwf(File swf);
    public void setUrl(String url);
    public void prepare();
-   public Process launch() throws IOException;
+   /**
+    * Launches the player.  Depending on the implementation, this call will
+    * either block until the player exits, in which cases the return value
+    * is null, or return an asynchronous Process object.  Only when blocking
+    * is the timeout parameter respected.
+    * @param timeoutMsec The maximum amount of time to wait for the call to
+    * return.
+    * @throws IOException Thrown on launch failure, including timeout
+    */
+   public Process launch(long timeoutMsec) throws IOException;
 }
