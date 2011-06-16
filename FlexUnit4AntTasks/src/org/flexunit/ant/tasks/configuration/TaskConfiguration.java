@@ -100,6 +100,11 @@ public class TaskConfiguration
    {
       this.player = player;
    }
+   
+   public void addAirArgument(AirArgument airArgument)
+   {
+       testRunConfiguration.addAirArgument(airArgument);
+   }
 
    public void setPort(int port)
    {

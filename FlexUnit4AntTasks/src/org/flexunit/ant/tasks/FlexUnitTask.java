@@ -5,6 +5,7 @@ import org.apache.tools.ant.DynamicElement;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
+import org.flexunit.ant.tasks.configuration.AirArgument;
 import org.flexunit.ant.tasks.configuration.TaskConfiguration;
 import org.flexunit.ant.tasks.types.LoadConfig;
 
@@ -120,6 +121,13 @@ public class FlexUnitTask extends Task implements DynamicElement
    public void setPlayer(String player)
    {
       configuration.setPlayer(player);
+   }
+   
+   public AirArgument createAirArgument()
+   {
+       AirArgument argument = new AirArgument();
+       configuration.addAirArgument(argument);
+       return argument;
    }
 
    public void setCommand(String executableFilePath)

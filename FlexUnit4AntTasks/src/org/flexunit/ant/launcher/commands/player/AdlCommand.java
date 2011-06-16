@@ -1,6 +1,7 @@
 package org.flexunit.ant.launcher.commands.player;
 
 import java.io.File;
+import java.util.Vector;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.taskdefs.Java;
@@ -11,6 +12,7 @@ import org.apache.tools.ant.types.resources.FileResource;
 import org.apache.tools.ant.types.resources.URLResource;
 import org.apache.tools.ant.util.ResourceUtils;
 import org.flexunit.ant.LoggingUtil;
+import org.flexunit.ant.tasks.configuration.AirArgument;
 
 public class AdlCommand extends DefaultPlayerCommand
 {
@@ -19,7 +21,8 @@ public class AdlCommand extends DefaultPlayerCommand
    private final String DESCRIPTOR_FILE = "flexUnitDescriptor.xml";
 
    private File precompiledAppDescriptor;
-
+   private Vector<AirArgument> airArguments;
+   
    @Override
    public File getFileToExecute()
    {
@@ -123,6 +126,16 @@ public class AdlCommand extends DefaultPlayerCommand
       getCommandLine().setExecutable(generateExecutable());
       getCommandLine().addArguments(new String[]{getFileToExecute().getAbsolutePath()});
 
+      Vector<AirArgument> airArgs = getAirArguments();
+      if (airArgs != null)
+      {
+          getCommandLine().addArguments(new String[]{"--"});
+          for (AirArgument arg : airArgs)
+          {
+              getCommandLine().addArguments(new String[]{arg.getValue()});
+          }
+      }
+      
       if(getPrecompiledAppDescriptor() == null)
       {
     	  //Create Adl descriptor file
@@ -143,5 +156,15 @@ public class AdlCommand extends DefaultPlayerCommand
    public void setPrecompiledAppDescriptor(File precompiledAppDescriptor)
    {
 	   this.precompiledAppDescriptor = precompiledAppDescriptor;
+   }
+   
+   public Vector<AirArgument> getAirArguments()
+   {
+       return airArguments;
+   }
+   
+   public void setAirArguments(Vector<AirArgument> airArguments)
+   {
+       this.airArguments = airArguments;
    }
 }

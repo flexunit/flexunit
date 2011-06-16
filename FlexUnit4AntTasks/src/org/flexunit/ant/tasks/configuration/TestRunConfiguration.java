@@ -1,6 +1,7 @@
 package org.flexunit.ant.tasks.configuration;
 
 import java.io.File;
+import java.util.Vector;
 
 import org.apache.tools.ant.BuildException;
 import org.flexunit.ant.LoggingUtil;
@@ -12,6 +13,7 @@ public class TestRunConfiguration implements StepConfiguration
    private final int SHORTEST_SOCKET_TIMEOUT = 5000; //ms
 
    private String player;
+   private Vector<AirArgument> airArguments;
    private File command = null;
    private int display = 99;
    private boolean failOnTestFailure = false;
@@ -123,6 +125,20 @@ public class TestRunConfiguration implements StepConfiguration
       return port;
    }
 
+   public void addAirArgument(AirArgument airArgument)
+   {
+       if (airArguments == null)
+       {
+           airArguments = new Vector<AirArgument>();
+       }
+       airArguments.add(airArgument);
+   }
+   
+   public Vector<AirArgument> getAirArguments()
+   {
+       return airArguments;
+   }
+   
    public void setPort(int port)
    {
       this.port = port;

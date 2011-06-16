@@ -50,7 +50,7 @@ public class TestRun
          //start the execution context
          context.start();
          
-         //launch the player
+         // launch the player
          Process process = player.launch();
 
          // block until daemon is completely done with all test data
@@ -89,7 +89,9 @@ public class TestRun
       
       if(command instanceof AdlCommand) 
       {
-    	  ((AdlCommand)command).setPrecompiledAppDescriptor(configuration.getPrecompiledAppDescriptor());
+          AdlCommand adlCommand = (AdlCommand)command;
+          adlCommand.setPrecompiledAppDescriptor(configuration.getPrecompiledAppDescriptor());
+          adlCommand.setAirArguments(configuration.getAirArguments());
       }
       
       return command;
