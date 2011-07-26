@@ -16,6 +16,7 @@ public class CompilationConfiguration implements StepConfiguration
    private LibraryPaths libraries;
    private File flexHome;
    private String player;
+   private String jvmArgs;
    private File workingDir;
 
    public CompilationConfiguration()
@@ -23,6 +24,7 @@ public class CompilationConfiguration implements StepConfiguration
       sources = new SourcePaths();
       testSources = new SourcePaths();
       libraries = new LibraryPaths();
+      jvmArgs = "";
       debug = false;
    }
    
@@ -50,10 +52,20 @@ public class CompilationConfiguration implements StepConfiguration
    {
       return player;
    }
-   
+
    public void setPlayer(String player)
    {
       this.player = player;
+   }
+   
+   public String getJvmArgs()
+   {
+      return jvmArgs;	
+   }
+   
+   public void setJvmArgs(String jvmArgs)
+   {
+      this.jvmArgs = jvmArgs;	
    }
    
    public void addSource(FileSet fileset)
@@ -114,6 +126,7 @@ public class CompilationConfiguration implements StepConfiguration
       LoggingUtil.log("Using the following settings for compilation:");
       LoggingUtil.log("\tFLEX_HOME: [" + flexHome.getAbsolutePath() + "]");
       LoggingUtil.log("\tplayer: [" + player + "]");
+      LoggingUtil.log("\tjvmArgs: [" + jvmArgs + "]");
       LoggingUtil.log("\tsourceDirectories: [" + sources.getPathElements(",") + "]");
       LoggingUtil.log("\ttestSourceDirectories: [" + testSources.getPathElements(",") + "]");
       LoggingUtil.log("\tlibraries: [" + libraries.getPathElements(",") + "]");

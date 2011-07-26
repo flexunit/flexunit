@@ -17,6 +17,7 @@ public class TaskConfiguration
    private final List<String> VALID_PLAYERS = Arrays.asList(new String[]{"flash", "air"});
    
    private String player = "flash";
+   private String jvmArgs = "-Xmx256M"; //MXMLC needs to eat
    private File reportDir = null;
    private File workingDir = null;
    private boolean verbose = false;
@@ -99,6 +100,11 @@ public class TaskConfiguration
    public void setPlayer(String player)
    {
       this.player = player;
+   }
+
+   public void setJvmArgs(String jvmArgs) 
+   {
+      this.jvmArgs = jvmArgs;	
    }
 
    public void setPort(int port)
@@ -206,6 +212,9 @@ public class TaskConfiguration
       //setup player
       compilationConfiguration.setPlayer(player);
       testRunConfiguration.setPlayer(player);
+
+      //setup jvm arguments
+      compilationConfiguration.setJvmArgs(jvmArgs);
       
       //set FLEX_HOME property to respective configs
       compilationConfiguration.setFlexHome(flexHome);

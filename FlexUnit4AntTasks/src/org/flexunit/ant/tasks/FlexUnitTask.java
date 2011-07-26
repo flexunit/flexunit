@@ -122,6 +122,11 @@ public class FlexUnitTask extends Task implements DynamicElement
       configuration.setPlayer(player);
    }
 
+   public void setJvmArgs(String jvmArgs)
+   {
+      configuration.setJvmArgs(jvmArgs);	
+   }
+
    public void setCommand(String executableFilePath)
    {
       configuration.setCommand(executableFilePath);
