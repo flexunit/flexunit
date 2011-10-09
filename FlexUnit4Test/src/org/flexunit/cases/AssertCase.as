@@ -26,11 +26,13 @@ package org.flexunit.cases
 {
 	import flexunit.framework.AssertionFailedError;
 	
+	import org.flexunit.runners.Parameterized;
 	import org.flexunit.Assert;
 
 	/**
 	 * @private
 	 */
+	[RunWith("org.flexunit.runners.Parameterized")]
 	public class AssertCase
 	{
 		protected var asserterCalled:int = 0;
@@ -81,6 +83,29 @@ package org.flexunit.cases
 		[Test(description="Ensure that the assertEquals function correctly determines if two non-strictly equal items are equal when a message is provided")]
 		public function testAssertEqualsWithMessage():void {
 			Assert.assertEquals( "Assert equals fail", "5", 5 );
+		}
+
+		public static var almostEqualData:Array = [
+				[ 42, 43, 1 ],
+				[ "0.00003", "0.00004", 0.00003 ],
+				[ 1.25e280, 1.26e280, 1.1e278 ]];
+
+		[Test(dataProvider="almostEqualData",
+			  description="Ensure that the assertEquals, with a delta for approximation, works correctly.")]
+		public function testAssertAlmostEquals(expected:Object, actual:Object, delta:Number):void {
+			Assert.assertEquals( expected, actual, delta );
+		}
+
+		public static var notAlmostEqualData:Array = [
+				[ 42, 43, 0.999999 ],
+				[ "0.00003", "0.00004", 0.00000995 ],
+				[ 1.25e280, 1.26e280, 9.9e277 ]];
+
+		[Test(dataProvider="notAlmostEqualData",
+			  expects="flexunit.framework.AssertionFailedError",
+			  description="Ensure that the assertEquals, with a delta, when given values that are not in the delta range, throws an AssertionFailedError")]
+		public function testAssertAlmostEqualsFails(expected:Object, actual:Object, delta:Number):void {
+			Assert.assertEquals( expected, actual, delta );
 		}
 		
 		[Test(description="Ensure that the assertEquals function fails when two items are not equal")]
