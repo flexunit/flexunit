@@ -73,31 +73,77 @@ package org.flexunit
 		/**
 		 * Asserts that two provided values are equal.
 		 * 
-		 * @param asserter The function to use for assertion. 
 		 * @param rest
-		 * 			Must be passed at least 2 arguments of type Object to compare for equality.
-		 * 			If three arguments are passed, the first argument must be a String
-		 * 			and will be used as the error message.
+		 * 			Must be passed at least two arguments of type Object to compare for equality.
+		 * 			If three arguments are passed, the code determines if the first parameter
+		 * 			is the error message, or the third parameter is the delta (see note).
+		 * 			The delta is used for asserting that two values are almost equal (when
+		 * 			Math.abs(actual - expected) &lt;= delta).
+		 * 			If four arguments are passed, the first parameter is the error message and
+		 * 			the last is the delta.
 		 * 
-		 * 			<code>assertEquals( String, Object, Object );</code>
 		 * 			<code>assertEquals( Object, Object );</code>
+		 * 			<code>assertEquals( String, Object, Object );</code>
+		 * 			<code>assertEquals( Object, Object, Number );</code>
+		 * 			<code>assertEquals( String, Object, Object, Number );</code>
+		 *
+		 * 			NOTE: In determining, with three arguments, whether the first parameter
+		 * 			is the error message, or the last is the delta, there is one susceptibility
+		 * 			to misinterprentation: when comparing two numbers, the error message must
+		 * 			not be a number (<code>!(errorMessage is Number)</code>) or else the error
+		 * 			message will be interpreted as the first number to compare to.
 		 */
 		public static function assertEquals(... rest):void
 		{
 			_assertCount++;
-			if ( rest.length == 3 )
-				failNotEquals( rest[0], rest[1], rest[2] );
+			var needsBlankMessage:Boolean;
+			if ( rest.length == 2 )
+			{
+				needsBlankMessage = true;
+			}
+			else if ( rest.length == 4 )
+			{
+				needsBlankMessage = false;
+			}
 			else
-				failNotEquals( "", rest[0], rest[1] );
+			{
+				needsBlankMessage = true;
+				for each ( var value:Object in rest )
+				{
+					var num:Number = Number( value );
+					if ( isNaN( num ) )
+					{
+						needsBlankMessage = false;
+						break;
+					}
+				}
+			}
+
+			if ( needsBlankMessage )
+				rest = [ "" ].concat( rest );
+			failNotEquals.apply( null, rest );
 		}
 	
         /**
          * @private
          */
-		public static function failNotEquals( message:String, expected:Object, actual:Object ):void
+		public static function failNotEquals( message:String, expected:Object, actual:Object, delta:Number=0.0 ):void
 		{
-			if ( expected != actual )
-			   failWithUserMessage( message, "expected:<" + expected + "> but was:<" + actual + ">" );
+			var isFail:Boolean = false;
+			if ( delta == 0.0 )
+			{
+				if ( expected != actual )
+					isFail = true;
+			}
+			else
+			{
+				var actualNum:Number = Number( actual );
+				var expectedNum:Number = Number( expected );
+				if ( Math.abs( actualNum - expectedNum ) > delta )
+					isFail = true;
+			}
+			if ( isFail )
+				failWithUserMessage( message, "expected:<" + expected + "> but was:<" + actual + ">" );
 		}
 	
 		/**
