@@ -198,6 +198,7 @@ package org.flexunit.listeners
 			
 			if ( stackTrace != null ) stackTrace = stackTrace.toString();
 			
+			type = FailureFormatter.xmlEscapeMessage( type );
 			stackTrace = FailureFormatter.xmlEscapeMessage( stackTrace );
 			message = FailureFormatter.xmlEscapeMessage( message );
  
