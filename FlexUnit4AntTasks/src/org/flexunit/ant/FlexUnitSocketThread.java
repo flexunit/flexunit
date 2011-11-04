@@ -17,11 +17,6 @@ import org.flexunit.ant.report.Suite;
  */
 public class FlexUnitSocketThread implements Callable<Object>
 {
-   // Messages from CIListener
-   private static final String END_OF_SUCCESS = "status=\"success\" />";
-   private static final String END_OF_FAILURE = "</testcase>";
-   private static final String END_OF_IGNORE = "<skipped /></testcase>";
-
    // XML attribute labels
    private static final String SUITE_ATTRIBUTE = "classname";
 
@@ -77,15 +72,7 @@ public class FlexUnitSocketThread implements Callable<Object>
 
       while ((request = server.readNextTokenFromSocket()) != null)
       {
-         // If the string is a failure, process the report
-         if (request.endsWith(END_OF_FAILURE) || request.endsWith(END_OF_SUCCESS) || request.endsWith(END_OF_IGNORE))
-         {
-            processTestReport(request);
-         }
-         else
-         {
-            throw new BuildException("command [" + request + "] not understood");
-         }
+         // TODO: handling of malformed XML         processTestReport(request);
       }
    }
 
