@@ -1,55 +1,85 @@
-<project>
-   <macrodef name="gpg">
-      <attribute name="todir" />
-      <attribute name="file" />
-      <sequential>
-         <exec executable="gpg" dir="@{todir}">
-            <arg line="-ab @{file}" />
-         </exec>
-      </sequential>
-   </macrodef>
-   
-   <macrodef name="sonatype-bundle">
-      <attribute name="dir" />
-      <attribute name="todir" />
-      <attribute name="pomTemplate" />
-      <attribute name="artifact" />
-      <attribute name="type" />
-      <attribute name="name" />
-      <attribute name="version" />
-      <attribute name="description" />
-      <element name="includes" />
-      
-      <sequential>
-         <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+<project xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+    <!-- xml namespace which is used to deploy the artifacts with maven -->
+    <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+             uri="antlib:org.apache.maven.artifact.ant"
+             classpath="lib/maven-ant-tasks-2.1.3.jar"/>
+
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties"
+             classpath="lib/ant-contrib-0.6.jar"/>
+
+    <!-- defined maven snapshots and staging repository id and url -->
+    <property name="maven-staging-repository-id" value="sonatype-nexus-staging" />
+    <property name="maven-staging-repository-url" value="https://oss.sonatype.org/service/local/staging/deploy/maven2/" />
+
+    <macrodef name="sonatype-deploy">
+        <attribute name="binaryFile"/>
+        <attribute name="sourcesFile" default=""/>
+        <attribute name="docFile" default=""/>
+        <attribute name="todir"/>
+        <attribute name="pomTemplate"/>
+        <attribute name="artifact"/>
+        <attribute name="type"/>
+        <attribute name="name"/>
+        <attribute name="version"/>
+        <attribute name="description"/>
+
+        <sequential>
+            <!-- Create POM from template -->
+            <copy file="@{pomTemplate}" tofile="@{todir}/pom.xml"/>
+            <replace file="@{todir}/pom.xml">
+                <replacefilter token="@ARTIFACT@" value="@{artifact}"/>
+                <replacefilter token="@TYPE@" value="@{type}"/>
+                <replacefilter token="@NAME@" value="@{name}"/>
+                <replacefilter token="@VERSION@" value="@{version}"/>
+                <replacefilter token="@DESCRIPTION@" value="@{description}"/>
+            </replace>
             
-         <!-- Create POM from template -->
-         <copy file="@{pomTemplate}" tofile="@{todir}/pom.xml" />
-         <replace file="@{todir}/pom.xml">
-            <replacefilter token="@ARTIFACT@" value="@{artifact}" />
-            <replacefilter token="@TYPE@" value="@{type}" />
-            <replacefilter token="@NAME@" value="@{name}" />
-            <replacefilter token="@VERSION@" value="@{version}" />
-            <replacefilter token="@DESCRIPTION@" value="@{description}" />
-         </replace>
-      
-         <!-- Sign all files using GPG, assumes GPG is installed and configured -->
-         <for param="fileToSign">
-            <fileset dir="@{todir}">
-               <includes />
-            </fileset>
-            <sequential>
-               <gpg todir="@{todir}" file="@{fileToSign}" />
-            </sequential>
-         </for>
-      
-         <!-- Zip into bundle for manual upload -->
-         <zip destfile="@{todir}/sonatype-@{artifact}-@{version}.zip">
-            <zipfileset dir="@{todir}">
-               <includes />
-               <include name="*.asc" />
-            </zipfileset>
-         </zip>
-      </sequential>
-   </macrodef>
+            <copy file="@{binaryFile}" tofile="@{todir}/@{artifact}-@{version}.@{type}" />
+            <if>
+                <equals arg1="@{type}" arg2="jar" />
+                <then>
+                    <copy file="@{sourcesFile}" tofile="@{todir}/@{artifact}-@{version}-sources.@{type}" />
+                    <copy file="@{docFile}" tofile="@{todir}/@{artifact}-@{version}-javadoc.@{type}" />
+                </then>
+            </if>
+
+            <!-- sign and deploy the main artifact -->
+            <artifact:mvn>
+                <artifact:arg value="org.apache.maven.plugins:maven-gpg-plugin:1.3:sign-and-deploy-file"/>
+                <artifact:arg value="-Durl=${maven-staging-repository-url}"/>
+                <artifact:arg value="-DrepositoryId=${maven-staging-repository-id}"/>
+                <artifact:arg value="-DpomFile=@{todir}/pom.xml"/>
+                <artifact:arg value="-Dfile=@{todir}/@{artifact}-@{version}.@{type}"/>
+                <artifact:arg value="-Pgpg"/>
+            </artifact:mvn>
+
+            <if>
+                <equals arg1="@{type}" arg2="jar" />
+                <then>
+                    <!-- sign and deploy the sources artifact -->
+                    <artifact:mvn>
+                        <artifact:arg value="org.apache.maven.plugins:maven-gpg-plugin:1.3:sign-and-deploy-file"/>
+                        <artifact:arg value="-Durl=${maven-staging-repository-url}"/>
+                        <artifact:arg value="-DrepositoryId=${maven-staging-repository-id}"/>
+                        <artifact:arg value="-DpomFile=@{todir}/pom.xml"/>
+                        <artifact:arg value="-Dfile=@{todir}/@{artifact}-@{version}-sources.@{type}"/>
+                        <artifact:arg value="-Dclassifier=sources"/>
+                        <artifact:arg value="-Pgpg"/>
+                    </artifact:mvn>
+
+                    <!-- sign and deploy the javadoc artifact -->
+                    <artifact:mvn>
+                        <artifact:arg value="org.apache.maven.plugins:maven-gpg-plugin:1.3:sign-and-deploy-file"/>
+                        <artifact:arg value="-Durl=${maven-staging-repository-url}"/>
+                        <artifact:arg value="-DrepositoryId=${maven-staging-repository-id}"/>
+                        <artifact:arg value="-DpomFile=@{todir}/pom.xml"/>
+                        <artifact:arg value="-Dfile=@{todir}/@{artifact}-@{version}-javadoc.@{type}"/>
+                        <artifact:arg value="-Dclassifier=javadoc"/>
+                        <artifact:arg value="-Pgpg"/>
+                    </artifact:mvn>
+                </then>
+            </if>
+        </sequential>
+    </macrodef>
 </project>

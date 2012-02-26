@@ -34,6 +34,13 @@ to contribute to our CI process.
    <property name="turnkey.loc" location="${basedir}/FlexUnit4TurnKey" />
    <property name="sampleCI.loc" location="${basedir}/FlexUnit4SampleCIProject" />
 
+   <!-- xml namespace which is used to deploy the artifacts with maven -->
+   <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+            uri="antlib:org.apache.maven.artifact.ant"
+            classpath="lib/maven-ant-tasks-2.1.3.jar"/>
+   <taskdef resource="net/sf/antcontrib/antcontrib.properties"
+            classpath="lib/ant-contrib-0.6.jar"/>
+
    <!-- Cleans up all projects -->
    <target name="clean">
       <!-- Ask each project to clean up -->

@@ -87,18 +87,9 @@
    </target>
    
    <target name="deploy" depends="package" description="Requires Ant-Contrib and GPG to work.">
-      <!-- Copy artifacts w/o build number for use with sonatype -->
-   	  <copy todir="${sonatype.loc}">
-   	  	<fileset dir="${dist.loc}">
-   	  	   <include name="*.swc" />
-   	  	</fileset>
-   	  	<filtermapper>
-      	  <replacestring from="-${build.number}-" to="-" />
-		</filtermapper>
-   	  </copy>
-   
-      <!-- prepare sonatype bundle -->
-      <sonatype-bundle dir="${sonatype.loc}" 
+      <!-- deploy to sonatype repo -->
+      <sonatype-deploy
+         binaryFile="${bin.loc}/${build.finalName}.${build.packaging}"
          todir="${sonatype.loc}" 
          pomTemplate="${basedir}/../pom.template" 
          artifact="${build.artifactId}" 
@@ -106,10 +97,6 @@
          name="${build.deploy.name}" 
          version="${build.version}" 
          description="${build.deploy.description}">
-         <includes>
-            <include name="*.swc" />
-            <include name="pom.xml" />
-         </includes>
-      </sonatype-bundle>
+      </sonatype-deploy>
    </target>
 </project>
