@@ -36,6 +36,7 @@ package org.flexunit.runners {
 	import org.flexunit.internals.runners.statements.IAsyncStatement;
 	import org.flexunit.internals.runners.statements.RunAftersClass;
 	import org.flexunit.internals.runners.statements.RunBeforesClass;
+	import org.flexunit.internals.runners.statements.RunClassRules;
 	import org.flexunit.internals.runners.statements.StatementSequencer;
 	import org.flexunit.runner.Description;
 	import org.flexunit.runner.IDescription;
@@ -225,6 +226,7 @@ package org.flexunit.runners {
 		 * 
 		 * <ul>
 		 * <li>Call <code>#runChild(Object, IRunNotifier, AsyncTestToken)</code> on each object returned by <code> #children()</code> (subject to any imposed filter and sort).</li>
+		 * <li>ALWAYS run all class-level <code>Rule</code> fields on this class
 		 * <li>ALWAYS run all non-overridden <code>BeforeClass</code> methods on this class
 		 * and superclasses before the previous step; if any throws an
 		 * Exception, stop execution and pass the exception on.</li>
@@ -244,14 +246,19 @@ package org.flexunit.runners {
 		protected function classBlock( notifier:IRunNotifier ):IAsyncStatement {
 			var sequencer:StatementSequencer;
 			
+			var classRuleStatement:IAsyncStatement = withPotentialClassRules();
 			var beforeClassStatement:IAsyncStatement = withBeforeClasses();
 			var afterClassStatement:IAsyncStatement = withAfterClasses();
 			var childrenInvokerStatement:IAsyncStatement = childrenInvoker( notifier );
 			
-			if ( !( beforeClassStatement || afterClassStatement ) ) {
+			if ( !( classRuleStatement || beforeClassStatement || afterClassStatement ) ) {
 				return childrenInvokerStatement;
 			} else {
 				sequencer = new StatementSequencer();
+				
+				if ( classRuleStatement ) {
+					sequencer.addStep( classRuleStatement );
+				}
 				
 				if ( beforeClassStatement ) {
 					sequencer.addStep( beforeClassStatement );	
@@ -267,6 +274,26 @@ package org.flexunit.runners {
 			return sequencer;
 		}
 
+		/**
+		 * Potentially returns a new <code>IAsyncStatement</code> defined by the user on the testcase via the Rule metadata.
+		 */
+		protected function withPotentialClassRules():IAsyncStatement {
+			var statement:IAsyncStatement;			
+			var classRules:Array = testClass.getMetaDataFields(AnnotationConstants.RULE, true);
+			
+			if ( classRules.length ) {
+				
+				if ( classRules.length > 1 ) {
+					//Sort the befores array
+					classRules.sort( compare );
+				}
+				
+				statement = new RunClassRules( classRules, testClass );
+			}
+			
+			return statement;
+		}
+		
 		/**
 		 * Returns an <code>IAsyncStatement</code>: run all non-overridden <code>BeforeClass</code> methods on this class
 		 * and superclasses before executing the <code>statement</code>; if any throws an
