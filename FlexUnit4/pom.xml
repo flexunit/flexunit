@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2008 Marvin Herman Froeder Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless 
+  required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions 
+  and limitations under the License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.flexunit</groupId>
+    <artifactId>flexunit-parent</artifactId>
+    <version>4.1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>flexunit</artifactId>
+  <packaging>swc</packaging>
+
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.sonatype.flexmojos</groupId>
+        <artifactId>flexmojos-maven-plugin</artifactId>
+        <configuration>
+          <verboseStacktraces>true</verboseStacktraces>
+          <keepAs3Metadatas>
+            <metadata>RunWith</metadata>
+            <metadata>BeforeClass</metadata>
+            <metadata>AfterClass</metadata>
+            <metadata>Before</metadata>
+            <metadata>After</metadata>
+            <metadata>Suite</metadata>
+            <metadata>Test</metadata>
+            <metadata>TestCase</metadata>
+            <metadata>Ignore</metadata>
+            <metadata>Filter</metadata>
+            <metadata>Sort</metadata>
+            <metadata>Theory</metadata>
+            <metadata>DataPoint</metadata>
+            <metadata>DataPoints</metadata>
+            <metadata>ArrayElementType</metadata>
+            <metadata>Rule</metadata>
+            <metadata>Parameters
+          </metadata>
+          </keepAs3Metadatas>
+          <defines>
+            <property>
+              <name>CONFIG::useFlexClasses</name>
+              <value>true</value>
+            </property>
+          </defines>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.adobe.flex.framework</groupId>
+      <artifactId>flex-framework</artifactId>
+      <type>pom</type>
+    </dependency>
+
+    <dependency>
+      <groupId>org.flexunit</groupId>
+      <artifactId>flexunit</artifactId>
+      <version>1.0</version>
+      <type>swc</type>
+      <scope>merged</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.digitalprimates.fluint</groupId>
+      <artifactId>fluint</artifactId>
+      <version>1.2</version>
+      <type>swc</type>
+      <scope>merged</scope>
+    </dependency>
+    <dependency>
+      <groupId>hamcrest-as3</groupId>
+      <artifactId>hamcrest-as3</artifactId>
+      <version>1.1.0</version>
+      <type>swc</type>
+      <scope>merged</scope>
+    </dependency>
+  </dependencies>
+
+</project>
