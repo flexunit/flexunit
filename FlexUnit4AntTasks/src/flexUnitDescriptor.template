@@ -5,6 +5,7 @@
 	<name>FlexUnit4 Adl Wrapper</name>
 	<@VERSION_PROP@>1.0.0</@VERSION_PROP@>
 	<description>Wrapper application for use with the FlexUnit4 Ant task.</description>
+        <supportedProfiles>extendedDesktop</supportedProfiles>
 	<initialWindow>
 		<title>FlexUnit4 Adl Wrapper</title>
 		<content>@ADL_SWF@</content>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+    xmlns:s="library://ns.adobe.com/flex/spark"
+    xmlns:mx="library://ns.adobe.com/flex/mx"
+    width="100%" height="100%">
+
+    <fx:Script>
+        <![CDATA[
+
+            public var b:Boolean = false;
+
+            public function function1():void {
+                trace("function1 - line 1");
+                trace("function1 - line 2");
+                trace("function1 - line 3");
+            }
+
+            public function function2():void {
+                if (b) {
+                    trace("function2 - line 1");
+                    trace("function2 - line 2");
+                } else {
+                    trace("function2 - line 3");
+                }
+            }
+
+            public function function3():void {
+                trace("function3 - line 1");
+                trace("function3 - line 2");
+                trace("function3 - line 3");
+            }
+
+        ]]>
+    </fx:Script>
+
+</s:Group>

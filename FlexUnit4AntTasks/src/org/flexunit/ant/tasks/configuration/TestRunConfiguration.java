@@ -1,15 +1,23 @@
 package org.flexunit.ant.tasks.configuration;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.apache.tools.ant.BuildException;
 import org.flexunit.ant.LoggingUtil;
 import org.flexunit.ant.launcher.OperatingSystem;
+import org.flexunit.ant.tasks.types.CoverageSource;
+import org.flexunit.ant.tasks.types.ExcludedPackage;
 
 public class TestRunConfiguration implements StepConfiguration
 {
    private final int FLOOR_FOR_PORT = 1;
    private final int SHORTEST_SOCKET_TIMEOUT = 5000; //ms
+
+/* JG */
+   public ArrayList<CoverageSource> coverageSources = new ArrayList<CoverageSource>();
+   public ArrayList<ExcludedPackage> coverageExcludes = new ArrayList<ExcludedPackage>();
+/* JG */
 
    private String player;
    private File command = null;
@@ -27,7 +35,7 @@ public class TestRunConfiguration implements StepConfiguration
    private String url = null;
    private File precompiledAppDescriptor = null;
    private OperatingSystem os = OperatingSystem.identify();
-   
+
    public File getCommand()
    {
       return command;
@@ -37,7 +45,7 @@ public class TestRunConfiguration implements StepConfiguration
    {
       this.command = command;
    }
-   
+
    public boolean isCustomCommand()
    {
       return command != null;
@@ -72,17 +80,17 @@ public class TestRunConfiguration implements StepConfiguration
    {
       this.failureProperty = failureProperty;
    }
-   
+
    public File getFlexHome()
    {
       return flexHome;
    }
-   
+
    public void setFlexHome(File flexHome)
    {
       this.flexHome = flexHome;
    }
-   
+
    public boolean isHeadless()
    {
       return headless;
@@ -97,7 +105,7 @@ public class TestRunConfiguration implements StepConfiguration
    {
       return isLocalTrusted;
    }
-   
+
    public boolean usePolicyFile()
    {
       return !isLocalTrusted && player.equals("flash");
@@ -162,30 +170,30 @@ public class TestRunConfiguration implements StepConfiguration
    {
       return swf;
    }
-   
+
    public void setSwf(File swf)
    {
       this.swf = swf;
    }
-   
-   public String getUrl() 
+
+   public String getUrl()
    {
-	   return url;
+      return url;
    }
 
-   public void setUrl(String url) 
+   public void setUrl(String url)
    {
-	   this.url = url;
+      this.url = url;
    }
 
-   public File getPrecompiledAppDescriptor() 
+   public File getPrecompiledAppDescriptor()
    {
-	   return precompiledAppDescriptor;
+      return precompiledAppDescriptor;
    }
 
-   public void setPrecompiledAppDescriptor(File precompiledAppDescriptor) 
+   public void setPrecompiledAppDescriptor(File precompiledAppDescriptor)
    {
-	   this.precompiledAppDescriptor = precompiledAppDescriptor;
+      this.precompiledAppDescriptor = precompiledAppDescriptor;
    }
 
    public OperatingSystem getOs()
@@ -199,57 +207,57 @@ public class TestRunConfiguration implements StepConfiguration
       {
          throw new BuildException("The provided 'port' property value [" + port + "] must be great than " + FLOOR_FOR_PORT + ".");
       }
-      
+
       if(socketTimeout < SHORTEST_SOCKET_TIMEOUT)
       {
          throw new BuildException("The provided 'timeout' property value [" + socketTimeout + "] must be great than " + SHORTEST_SOCKET_TIMEOUT + ".");
       }
-      
+
       if(reportDir != null && !reportDir.exists())
       {
          LoggingUtil.log("Provided report directory path [" + reportDir.getPath() + "] does not exist.");
       }
-      
+
       if(command != null && !command.exists())
       {
          throw new BuildException("The provided command path [" + command + "] does not exist.");
       }
-      
+
       if(headless)
       {
          if(OperatingSystem.identify() != OperatingSystem.LINUX)
          {
             throw new BuildException("Headless mode can only be used on Linux with vncserver installed.");
          }
-         
+
          if(display < 1)
          {
             throw new BuildException("The provided 'display' number must be set higher than 0.  99 or higher is recommended.");
          }
       }
    }
-   
+
    public void log()
    {
       LoggingUtil.log("Using the following settings for the test run:");
-      
+
       //FLEX_HOME not required to run if not using ADL
       if(flexHome != null)
       {
-         LoggingUtil.log("\tFLEX_HOME: [" + flexHome.getAbsolutePath() + "]");         
+         LoggingUtil.log("\tFLEX_HOME: [" + flexHome.getAbsolutePath() + "]");
       }
-      
+
       LoggingUtil.log("\thaltonfailure: [" + failOnTestFailure + "]");
       LoggingUtil.log("\theadless: [" + headless + "]");
       LoggingUtil.log("\tdisplay: [" + display + "]");
       LoggingUtil.log("\tlocalTrusted: [" + isLocalTrusted + "]");
       LoggingUtil.log("\tplayer: [" + player + "]");
-      
+
       if(isCustomCommand())
       {
          LoggingUtil.log("\tcommand: [" + command + "]");
       }
-      
+
       LoggingUtil.log("\tport: [" + port + "]");
       LoggingUtil.log("\tswf: [" + swf + "]");
       LoggingUtil.log("\ttimeout: [" + socketTimeout + "ms]");

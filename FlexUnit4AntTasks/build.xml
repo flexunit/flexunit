@@ -52,6 +52,12 @@
 
       <unjar src="${lib.loc}/dom4j-1.6.1.jar" dest="${bin.loc}" />
       <unjar src="${lib.loc}/jaxen-1.1-beta-6.jar" dest="${bin.loc}" />
+      <unjar src="${lib.loc}/apparat-log-1.0-RC9.jar" dest="${bin.loc}" />
+      <unjar src="${lib.loc}/apparat-core-1.0-RC9.jar" dest="${bin.loc}" />
+      <unjar src="${lib.loc}/cobertura.jar" dest="${bin.loc}" />
+      <unjar src="${lib.loc}/plexus-utils-3.0.1.jar" dest="${bin.loc}" />
+      <unjar src="${lib.loc}/scala-library.jar" dest="${bin.loc}" />
+      <unjar src="${lib.loc}/log4j-1.2.9.jar" dest="${bin.loc}" />
 
       <!-- Create JAR for binaries, source and javadoc -->
       <jar destfile="${dist.loc}/${build.finalName}.${build.packaging}">

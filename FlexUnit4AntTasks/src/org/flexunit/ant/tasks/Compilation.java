@@ -31,54 +31,54 @@ public class Compilation
    private final String MXMLC_RELATIVE_PATH = "lib/mxmlc.jar";
    private final String FRAMEWORKS_RELATIVE_PATH = "frameworks";
    private final String SWF_FILENAME = "TestRunner.swf";
-   
+
    private CompilationConfiguration configuration;
    private Project project;
    private String mxmlcPath;
-   
+
    public Compilation(Project project, CompilationConfiguration configuration)
    {
       this.project = project;
       this.configuration = configuration;
       mxmlcPath = configuration.getFlexHome().getAbsolutePath() + File.separatorChar + MXMLC_RELATIVE_PATH;
    }
-   
+
    public File compile() throws BuildException
    {
       configuration.log();
 
       File runnerFile = generateTestRunnerFromTemplate(configuration.getWorkingDir());
       File finalFile = new File(configuration.getWorkingDir().getAbsolutePath() + File.separatorChar + SWF_FILENAME);
-      
+
       Java compilationTask = createJavaTask(runnerFile, finalFile);
       LoggingUtil.log("Compiling test classes: [" + configuration.getTestSources().getCanonicalClasses(", ") + "]", true);
       LoggingUtil.log(compilationTask.getCommandLine().describeCommand());
-      
+
       if(compilationTask.executeJava() != 0)
       {
          throw new BuildException("Compilation failed:\n" + project.getProperty("MXMLC_ERROR"));
       }
-      
+
       return finalFile;
    }
-   
+
    private File generateTestRunnerFromTemplate(File workingDir) throws BuildException
    {
       try
       {
          int sdkVersion = getSDKVersion();
-         
+
          String applicationPrefix = sdkVersion == 3 ? MXML2006_PREFIX : SPARK_PREFIX;
          String applicationClass = configuration.getPlayer().equals("flash") ? FLEX_APPLICATION_CLASS : AIR_APPLICATION_CLASS;
          String mxmlPrefix = sdkVersion == 3 ? MXML2006_PREFIX : MXML2009_PREFIX;
          String namespaces = sdkVersion == 3 ? MXML2006_NAMESPACE : MXML2009_NAMESPACE + "\n" + SPARK_NAMESPACE;
          String ciListener = configuration.getPlayer().equals("flash") ? CI_LISTENER : AIR_CI_LISTENER;
-         
+
          File runner = new File(workingDir.getAbsolutePath() + File.separatorChar + TESTRUNNER_FILE);
-         
+
          //Template location in JAR
          URLResource template = new URLResource(getClass().getResource("/" + TESTRUNNER_TEMPLATE));
-         
+
          //Create tokens to filter
          FilterSet filters = new FilterSet();
          filters.addFilter("APPLICATION_PREFIX", applicationPrefix);
@@ -88,7 +88,7 @@ public class Compilation
          filters.addFilter("CI_LISTENER_CLASS", ciListener);
          filters.addFilter("CLASS_REFS", configuration.getTestSources().getClasses());
          filters.addFilter("IMPORT_REFS", configuration.getTestSources().getImports());
-         
+
          //Copy descriptor template to SWF folder performing token replacement
          ResourceUtils.copyResource(
             template,
@@ -101,9 +101,9 @@ public class Compilation
             null,
             project
          );
-         
+
          LoggingUtil.log("Created test runner at [" + runner.getAbsolutePath() + "]");
-         
+
          return runner;
       }
       catch (Exception e)
@@ -111,11 +111,11 @@ public class Compilation
          throw new BuildException("Could not create test runner from template.", e);
       }
    }
-   
+
    private int getSDKVersion()
    {
       String outputProperty = "SDK_VERSION";
-      
+
       //Execute mxmlc to find SDK version number
       Java task = new Java();
       task.setFork(true);
@@ -124,26 +124,26 @@ public class Compilation
       task.setProject(project);
       task.setDir(project.getBaseDir());
       task.setOutputproperty(outputProperty);
-      
+
       Argument versionArgument = task.createArg();
       versionArgument.setValue("--version");
-      
+
       task.execute();
-      
+
       //Parse version number and return as int
       String output = project.getProperty(outputProperty);
       int prefixIndex = output.indexOf("Version ");
       int version = Integer.parseInt(output.substring(prefixIndex + 8, prefixIndex + 9));
-      
+
       LoggingUtil.log("Found SDK version: " + version);
-      
+
       return version;
    }
-   
+
    private Java createJavaTask(File runnerFile, File finalFile)
    {
       String frameworksPath = configuration.getFlexHome().getAbsolutePath() + File.separatorChar + FRAMEWORKS_RELATIVE_PATH;
-      
+
       Java task = new Java();
       task.setFork(true);
       task.setFailonerror(true);
@@ -152,40 +152,40 @@ public class Compilation
       task.setDir(project.getBaseDir());
       task.setMaxmemory("256M"); //MXMLC needs to eat
       task.setErrorProperty("MXMLC_ERROR");
-      
+
       Argument flexLibArgument = task.createArg();
       flexLibArgument.setLine("+flexlib \"" + frameworksPath + "\"");
-      
+
       if(configuration.getPlayer().equals("air"))
       {
          Argument airConfigArgument = task.createArg();
          airConfigArgument.setValue("+configname=air");
       }
-      
+
       Argument outputFile = task.createArg();
       outputFile.setLine("-output \"" + finalFile.getAbsolutePath() + "\"");
-      
+
       Argument sourcePath = task.createArg();
       sourcePath.setLine("-source-path " + configuration.getSources().getPathElements(" ") + " " + configuration.getTestSources().getPathElements(" "));
-      
+
       determineLibraryPath( task );
-     
+
       determineLoadConfigArgument( task );
-       
+
       Argument debug = task.createArg();
       debug.setLine( "-debug=" + configuration.getDebug() );
 
       Argument headlessServer = task.createArg();
       headlessServer.setLine("-headless-server=true");
-      
-      
+
+
       Argument mainFile = task.createArg();
       mainFile.setValue(runnerFile.getAbsolutePath());
-      
+
       return task;
    }
-   
-   
+
+
    private void determineLoadConfigArgument(Java java)
    {
        if(configuration.getLoadConfig() != null)
@@ -200,8 +200,11 @@ public class Compilation
        if(!configuration.getLibraries().getPathElements(" -library-path+=").isEmpty())
        {
            Argument libraryPath = java.createArg();
-           libraryPath.setLine("-library-path+=" + configuration.getLibraries().getPathElements(" -library-path+="));
+
+           /* JG */
+           //libraryPath.setLine("-library-path+=" + configuration.getLibraries().getPathElements(" -library-path+="));
+           libraryPath.setLine("-include-libraries+=" + configuration.getLibraries().getPathElements(" -include-libraries+="));
        }
    }
-   
+
 }

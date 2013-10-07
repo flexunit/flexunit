@@ -8,6 +8,8 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
 import org.flexunit.ant.LoggingUtil;
+import org.flexunit.ant.tasks.types.CoverageSource;
+import org.flexunit.ant.tasks.types.ExcludedPackage;
 import org.flexunit.ant.tasks.types.LoadConfig;
 
 public class TaskConfiguration
@@ -84,7 +86,19 @@ public class TaskConfiguration
    {
       fileset.setProject(project);
       compilationConfiguration.addLibrary(fileset);
-   }
+   }  
+   
+/* JG */   
+   public void addCoverageSource(CoverageSource sourcePath)
+   {
+      testRunConfiguration.coverageSources.add(sourcePath);
+   }      
+   
+   public void addCoverageExclude(ExcludedPackage exclude)
+   {
+      testRunConfiguration.coverageExcludes.add(exclude);
+   }   
+/* JG */   
    
    public void setHeadless(boolean headless)
    {

@@ -52,10 +52,14 @@ public class Report
 
    protected Suite suite;
    private Document document;
+   
+   public List<String> xmls; //JG
+   
    private List<String> recordedRuns;
 
    public Report(Suite suite)
    {
+      this.xmls = new ArrayList<String>(); //JG
       this.recordedRuns = new ArrayList<String>();
       this.suite = suite;
 
@@ -80,8 +84,10 @@ public class Report
    /**
     * Adds the test to the suite report given an XML test document
     */
-   public void addTest(Document test)
+   //public void addTest(Document test)
+   public void addTest(Document test, String xml) //JG
    {
+      this.xmls.add(xml); //JG
       Element root = test.getRootElement();
       
       // Add to the number of tests in this suite if not seen and not null

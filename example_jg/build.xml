@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ExampleApp" default="test" basedir=".">
+
+    <!-- =========================================================================================================================================
+=============================================================  PROPERTY DEFINITIONS  =============================================================
+========================================================================================================================================== -->
+
+    <property environment="env" />
+    <property name="FLEX_HOME" value="${env.FLEX_HOME}" />
+
+    <property name="src.dir" value="${basedir}/src" />
+    <property name="lib.dir" value="${basedir}/lib" />
+    <property name="build.dir" value="${basedir}/build" />
+    <property name="report.dir" value="${build.dir}/ut-report" />
+
+    <path id="buildtools.classpath">
+        <fileset dir="${basedir}/lib/build" includes="*.jar" />
+    </path>
+
+
+    <!-- =========================================================================================================================================
+===============================================================  TASK DEFINITIONS  ===============================================================
+========================================================================================================================================== -->
+
+    <taskdef name="mxmlc" classname="flex.ant.MxmlcTask" classpathref="buildtools.classpath" />
+
+    <taskdef name="compc"
+        classname="flex.ant.CompcTask"
+        classpathref="buildtools.classpath"/>
+
+    <taskdef resource="flexUnitTasks.tasks">
+        <classpath>
+            <fileset dir="${lib.dir}/test">
+                <include name="flexUnitTasks*.jar" />
+            </fileset>
+        </classpath>
+    </taskdef>
+
+    <!-- =========================================================================================================================================
+==========================================================  INITIALIZATION TARGETS  ==========================================================
+========================================================================================================================================== -->
+
+    <target name="clean">
+        <delete dir="${build.dir}" />
+    </target>
+
+
+    <target name="init" >
+        <mkdir dir="${build.dir}" />
+    </target>
+
+<!-- =========================================================================================================================================
+===========================================================  SWC TARGETS  ==========================================================
+========================================================================================================================================== -->
+
+    <target name="build-swf" depends="init">
+        <mxmlc file="${src.dir}/swf/org/included/ExampleApp.mxml" output="${build.dir}/ExampleApp.swf"
+              strict="true" debug="true" compiler.debug="true" incremental="false"
+              maxmemory="1024m" optimize="true" fork="true" static-link-runtime-shared-libraries="true">
+            <default-frame-rate>24</default-frame-rate>
+            <source-path path-element="src/swf" />
+            <show-unused-type-selector-warnings>false</show-unused-type-selector-warnings>
+        </mxmlc>
+    </target>
+
+    <target name="build-test-swf" depends="build-swf">
+        <mxmlc file="src/test_swf/TestRunner.mxml" output="${build.dir}/TestRunner.swf" strict="true" debug="true" incremental="true"
+                      maxmemory="1024m" optimize="true" fork="true" static-link-runtime-shared-libraries="true">
+            <default-frame-rate>24</default-frame-rate>
+            <source-path path-element="src/swf" />
+            <source-path path-element="src/test_swf" />
+            <show-unused-type-selector-warnings>false</show-unused-type-selector-warnings>
+            <include-libraries dir="${lib.dir}/test">
+                <include name="flexunit-uilistener-4.1.0-3JG-4.6.0.23201.swc" />
+                <include name="flexunit-4.1.0-3JG-flex_4.6.0.23201.swc" />
+                <include name="flexunit-cilistener-4.1.0-3JG-4.6.0.23201.swc" />
+            </include-libraries>
+        </mxmlc>
+    </target>
+
+    <target name="test" depends="build-test-swf">
+        <mkdir dir="${report.dir}" />
+        <flexunit
+            workingDir="${build.dir}"
+            toDir="${report.dir}"
+            swf="${build.dir}/TestRunner.swf"
+            haltonfailure="false"
+            verbose="true"
+            localTrusted="true"
+            port="1025">
+            <coverageSource>${src.dir}/swf/</coverageSource>
+            <coverageExclude>org.excluded</coverageExclude>
+       </flexunit>
+
+        <!-- Generate readable JUnit-style reports -->
+        <junitreport todir="${report.dir}">
+            <fileset dir="${report.dir}">
+                <include name="TEST-*.xml" />
+            </fileset>
+            <report format="frames" todir="${report.dir}/html" />
+        </junitreport>
+    </target>
+
+</project>
