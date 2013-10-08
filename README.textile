@@ -1,5 +1,17 @@
 h2. FlexUnit: a unit testing framework for Flex and ActionScript 3.0
 
+h2. IMPORTANT
+
+FlexUnit has been donated to the Apache Flex project and is now maintained in Apache repositories and via their mailing lists:
+
+http://flex.apache.org/
+http://flex.apache.org/community-mailinglists.html
+
+
+All patches and submissions to FlexUnit must now be handled via Apache.
+
+---
+
 FlexUnit is a unit testing framework for Flex and ActionScript 3.0 applications and libraries. It mimics the functionality of JUnit, a Java unit testing framework, and comes with a graphical test runner.
 
 h3. Features
@@ -19,4 +31,6 @@ Documentation for FlexUnit can be found at "docs.flexunit.org":http://docs.flexu
 
 h3. Code
 
-The code for FlexUnit can be found on "github":http://github.com/flexunit
+The code for FlexUnit can be found on "Apache Git":https://fisheye6.atlassian.com/graph/flex-flexunit-git
+
+
