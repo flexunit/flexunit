@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+               xmlns:s="library://ns.adobe.com/flex/spark"
+               xmlns:mx="library://ns.adobe.com/flex/mx"
+               xmlns:inc="org.included.*" xmlns:exc="org.excluded.*"
+               width="100%" height="100%" creationComplete="init()">
+
+    <fx:Script>
+        <![CDATA[
+
+        import org.included.ExampleClass;
+        import org.excluded.ExcludedClass;
+
+        private function init():void {
+            var ec:ExampleClass = new ExampleClass();
+            var ex:ExcludedClass = new ExcludedClass();
+        }
+
+        ]]>
+    </fx:Script>
+
+    <inc:ExampleMXMLClass>
+        <s:Label text="sample application"/>
+    </inc:ExampleMXMLClass>
+    <exc:ExcludedMXMLClass/>
+
+</s:Application>

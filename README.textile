@@ -1,5 +1,7 @@
 h2. FlexUnit: a unit testing framework for Flex and ActionScript 3.0
 
+This code coverage branch started originally at "Google Code":https://code.google.com/p/flexunit-with-code-coverage/.
+
 FlexUnit is a unit testing framework for Flex and ActionScript 3.0 applications and libraries. It mimics the functionality of JUnit, a Java unit testing framework, and comes with a graphical test runner.
 
 h3. Features

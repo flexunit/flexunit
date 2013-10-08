@@ -65,7 +65,7 @@
          </compiler.external-library-path>
          <compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
          <compiler.headless-server>true</compiler.headless-server>
-         <target-player>10.0.0</target-player>
+         <target-player>11.1</target-player>
       </compc>
    </target>
 
@@ -78,7 +78,7 @@
          <arg line="-output '${doc.loc}'" />
          <arg line="-library-path+='${lib.loc}'" />
          <arg line="-library-path+='${FLEX_HOME}/frameworks/libs/air/airglobal.swc'" />
-         <arg line="-target-player=10.0.0" />
+         <arg line="-target-player=10.2.0" />
       </java>
    </target>
 

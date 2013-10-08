@@ -113,7 +113,8 @@ public class FlexUnitSocketThread implements Callable<Object>
 
       // Fetch report, add test, and write to disk
       Report report = reports.get(suiteName);
-      report.addTest(test);
+      //report.addTest(test);
+      report.addTest(test, xml);  //JG
 
       report.save(reportDir);
    }
