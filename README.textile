@@ -23,11 +23,9 @@ Some of FlexUnits features include:
 * Exception Handling
 * Theories, Datapoints and Assumptions
 
-A complete list of features can be found on "the FlexUnit homepage":http://flexunit.org
-
 h3. Documentation
 
-Documentation for FlexUnit can be found at "docs.flexunit.org":http://docs.flexunit.org
+Documentation for FlexUnit can be found at "https://cwiki.apache.org/confluence/display/FLEX/FlexUnit+Introduction":https://cwiki.apache.org/confluence/display/FLEX/FlexUnit+Introduction
 
 h3. Code
 
