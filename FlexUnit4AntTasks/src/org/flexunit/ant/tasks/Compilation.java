@@ -150,7 +150,7 @@ public class Compilation
       task.setJar(new File(mxmlcPath));
       task.setProject(project);
       task.setDir(project.getBaseDir());
-      task.setMaxmemory("256M"); //MXMLC needs to eat
+      task.setJvmargs(configuration.getJvmArgs());
       task.setErrorProperty("MXMLC_ERROR");
       
       Argument flexLibArgument = task.createArg();
