@@ -7,11 +7,15 @@ package org.flexunit.runners.cases.stub {
 	import org.flexunit.token.ChildResult;
 	
 	public class SynchronousRule extends MethodRuleBase implements IMethodRule {
+		
+		public var counter:int = 0;
+		
 		override public function evaluate( parentToken:AsyncTestToken ):void {
 			super.evaluate( parentToken );
 			
-			//Do something synchronous if you wanted to
-
+			//Do something synchronous
+			counter++;
+			
 			//Tell the framework to execute the next statement moving toward the actual test execution
 			proceedToNextStatement();
 		}

@@ -195,8 +195,15 @@ package org.flexunit.runners {
 		 */
 		override protected function describeChild( child:* ):IDescription {
 			//OPTIMIZATION POINT
-			var method:FrameworkMethod = FrameworkMethod( child );
-			return Description.createTestDescription( testClass.asClass, method.name, method.metadata );
+			if ( child is FrameworkMethod ) {
+				var method:FrameworkMethod = FrameworkMethod( child );
+				return Description.createTestDescription( testClass.asClass, method.name, method.metadata );
+			} else if ( child is Field ) {
+				var field:Field = Field( child );
+				return Description.createTestDescription( testClass.asClass, field.name, field.metadata );
+			} else {
+				return null;
+			}
 		}
 		
 		/**

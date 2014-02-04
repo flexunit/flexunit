@@ -3,6 +3,7 @@ package org.flexunit.runners
 	import org.flexunit.runners.cases.BlockFlexUnit4ClassRunnerCase;
 	import org.flexunit.runners.cases.ParameterizedCase;
 	import org.flexunit.runners.cases.ParentRunnerCase;
+	import org.flexunit.runners.cases.RunRulesCase;
 	import org.flexunit.runners.cases.SuiteCase;
 	import org.flexunit.runners.model.ModelSuite;
 
@@ -16,5 +17,6 @@ package org.flexunit.runners
 		public var parentRunnerCase:ParentRunnerCase;
 		public var parametizedCase:ParameterizedCase;
 		public var suiteCase:SuiteCase;
+		public var rulesCase:RunRulesCase;
 	}
 }

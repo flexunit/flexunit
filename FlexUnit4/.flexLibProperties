@@ -98,6 +98,7 @@
     <classEntry path="org.flexunit.internals.runners.statements.RunAftersClass"/>
     <classEntry path="org.flexunit.internals.runners.statements.RunBefores"/>
     <classEntry path="org.flexunit.internals.runners.statements.RunBeforesClass"/>
+	<classEntry path="org.flexunit.internals.runners.statements.RunClassRules"/>
     <classEntry path="org.flexunit.internals.runners.statements.SequencerWithDecoration"/>
     <classEntry path="org.flexunit.internals.runners.statements.StackAndFrameManagement"/>
     <classEntry path="org.flexunit.internals.runners.statements.StatementSequencer"/>

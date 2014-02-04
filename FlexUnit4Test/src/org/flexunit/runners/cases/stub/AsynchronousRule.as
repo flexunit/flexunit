@@ -12,6 +12,8 @@ package org.flexunit.runners.cases.stub {
 	public class AsynchronousRule extends MethodRuleBase implements IMethodRule {
 		private var timer:Timer;
 		
+		public var counter:int = 0;
+		
 		public function AsynchronousRule( delay:int ) {
 			//this is an async version, note it takes a parameter
 			timer = new Timer( delay, 1 );
@@ -19,6 +21,8 @@ package org.flexunit.runners.cases.stub {
 		}
 		
 		private function timerComplete( event:TimerEvent ):void {
+			counter++;
+			
 			//Tell the framework to execute the next statement moving toward the actual test execution
 			proceedToNextStatement();
 		}
