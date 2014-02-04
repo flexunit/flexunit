@@ -22,7 +22,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
- * @author     Jeff Tapper
+ * @author	 Jeff Tapper
  * @version
  **/
 
@@ -80,7 +80,7 @@ package org.flexunit.listeners
 		private var timeOut:Timer;
 		private var lastTestTime:Number = 0;
 		
-		public function CIListener(port : uint = DEFAULT_PORT, server : String = DEFAULT_SERVER) 
+		public function CIListener(port : uint = DEFAULT_PORT, server : String = DEFAULT_SERVER)
 		{
 			this.port = port;
 			this.server = server;
@@ -112,7 +112,7 @@ package org.flexunit.listeners
 		}
 		
 		[Bindable(event="listenerReady")]
-		public function get ready():Boolean 
+		public function get ready():Boolean
 		{
 			return _ready;
 		}
@@ -122,70 +122,69 @@ package org.flexunit.listeners
 			dispatchEvent( new Event( AsyncListenerWatcher.LISTENER_READY ) );
 		}
 
-		private function getTestCount( description:IDescription ):int 
+		private function getTestCount( description:IDescription ):int
 		{
 			return description.testCount;
 		}
 
 		public function testTimed( description:IDescription, runTime:Number ):void {
 			if(!runTime || isNaN(runTime))
-         {
-            lastTestTime = 0;
-         }
-         else
-         {
-            lastTestTime = runTime;
-         }
-         
+		 {
+			lastTestTime = 0;
+		 }
+		 else
+		 {
+			lastTestTime = runTime;
+		 }
+
 			//trace( description.displayName + " took " + runTime + " ms " );
 		}
 		
 		public function testRunStarted( description:IDescription ):void
 		{
-			//Since description tells us nothing about failure, error, and skip counts, this is 
+			//Since description tells us nothing about failure, error, and skip counts, this is
 		   //computed by the Ant task as the process executes and no work is needed to signify
 		   //the start of a test run.
 		}
 		
-		public function testRunFinished( result:Result ):void 
+		public function testRunFinished( result:Result ):void
 		{
 			sendResults(END_OF_TEST_RUN);
 		}
 		
-		public function testStarted( description:IDescription ):void 
+		public function testStarted( description:IDescription ):void
 		{
 			// called before each test
 		}
 		
-		public function testFinished( description:IDescription ):void 
+		public function testFinished( description:IDescription ):void
 		{
 			// called after each test
 			if(!lastFailedTest || description.displayName != lastFailedTest.displayName){
 				var desc:Descriptor = getDescriptorFromDescription(description);
-				sendResults("<testcase classname=\""+desc.suite+"\" name=\""+desc.method+"\" time=\"" + lastTestTime  + "\" status=\""+SUCCESS+"\" />");
+				sendResults(<testcase classname={desc.suite} name={desc.method} time={lastTestTime} status={SUCCESS} />.toXMLString());
 			}
 		}
 		
-		public function testAssumptionFailure( failure:Failure ):void 
+		public function testAssumptionFailure( failure:Failure ):void
 		{
 			// called on assumptionFail
 		}
 		
-		public function testIgnored( description:IDescription ):void 
+		public function testIgnored( description:IDescription ):void
 		{
 			// called on ignored test if we want to send ignore to ant.
 			var descriptor:Descriptor = getDescriptorFromDescription(description);
 
-			var xml:String =
-				"<testcase classname=\""+descriptor.suite+"\" name=\""+descriptor.method+"\" time=\"" + lastTestTime  + "\" status=\""+IGNORE+"\">"
-				+ "<skipped />"
-				+ "</testcase>";
+			var xml:XML =
+				<testcase classname={descriptor.suite} name={descriptor.method} time={lastTestTime} status={IGNORE}>
+					<skipped />
+				</testcase>;
 
-			sendResults( xml );
+			sendResults( xml.toXMLString() );
 		}
 		
-		
-		public function testFailure( failure:Failure ):void 
+		public function testFailure( failure:Failure ):void
 		{
 			// called on a test failure
 			lastFailedTest = failure.description;
@@ -197,32 +196,29 @@ package org.flexunit.listeners
 			var methodName : String = descriptor.method;
 			
 			if ( stackTrace != null ) stackTrace = stackTrace.toString();
-			
-			stackTrace = FailureFormatter.xmlEscapeMessage( stackTrace );
-			message = FailureFormatter.xmlEscapeMessage( message );
- 
-			var xml : String = null;
-			
-			if(FailureFormatter.isError(failure.exception)) 
+
+			var xml : XML = null;
+
+			if(FailureFormatter.isError(failure.exception))
 			{
 				xml =
-					"<testcase classname=\""+descriptor.suite+"\" name=\""+descriptor.method+"\" time=\"" + lastTestTime  + "\" status=\""+ERROR+"\">"
-					+ "<error message=\"" + message + "\" type=\""+ type +"\" >"
-					+ "<![CDATA[" + stackTrace + "]]>"
-					+ "</error>"
-					+ "</testcase>";
+					<testcase classname={descriptor.suite} name={methodName} time={lastTestTime} status={ERROR}>
+						<error message={message} type={type}>
+							{stackTrace}
+						</error>
+					</testcase>;
 			}
-			else 
+			else
 			{
 				xml =
-					"<testcase classname=\""+descriptor.suite+"\" name=\""+descriptor.method+"\" time=\"" + lastTestTime  + "\" status=\""+FAILURE+"\">"
-					+ "<failure message=\"" + message + "\" type=\""+ type +"\" >"
-					+ "<![CDATA[" + stackTrace + "]]>"
-					+ "</failure>"
-					+ "</testcase>";
+					<testcase classname={descriptor.suite} name={methodName} time={lastTestTime} status={FAILURE}>
+						<failure message={message} type={type}>
+							{stackTrace}
+						</failure>
+					</testcase>;
 			}
 			
-			sendResults(xml);
+			sendResults(xml.toXMLString());
 		}
 		
 		/*
@@ -238,18 +234,18 @@ package org.flexunit.listeners
 			 * and formats accordingly.
 			 **/
 			var descriptor:Descriptor = new Descriptor();
-			var descriptionArray:Array = description.displayName.split("::");
+			var descriptionArray:Array = description.displayName.split("::", 2);
 			var classMethod:String;
-			if ( descriptionArray.length > 1 ) 
+			if ( descriptionArray.length > 1 )
 			{
 				descriptor.path = descriptionArray[0];
 				classMethod =  descriptionArray[1];
-			} 
-			else 
+			}
+			else
 			{
 				classMethod =  descriptionArray[0];
 			}
-			var classMethodArray:Array = classMethod.split(".");
+			var classMethodArray:Array = classMethod.split(".", 2);
 			descriptor.suite = ( descriptor.path == "" ) ?  classMethodArray[0] :
 				descriptor.path + "::" + classMethodArray[0];
 			descriptor.method = classMethodArray[1];
@@ -260,7 +256,7 @@ package org.flexunit.listeners
 		{
 			if(socket.connected)
 			{
-				socket.send( msg );				
+				socket.send(msg);
 			}
 			
 			trace(msg);
@@ -291,7 +287,7 @@ package org.flexunit.listeners
 		{
 			var data : String = event.data;
 
-			// If we received an acknowledgement on startup, the java server is read and we can start sending.			
+			// If we received an acknowledgement on startup, the java server is read and we can start sending.
 			if ( data == START_OF_TEST_RUN_ACK ) {
 				setStatusReady();
 			} else if ( data == END_OF_TEST_ACK ) {
