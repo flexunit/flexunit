@@ -166,29 +166,28 @@
    </target>
    
    <target name="deploy" depends="package" description="Requires Ant-Contrib and GPG to work.">
-      <!-- Copy artifacts w/o build number for use with sonatype -->
-   	  <copy todir="${sonatype.loc}">
-   	  	<fileset dir="${dist.loc}">
-   	  	   <include name="flexunit*.swc" />
-   	  	</fileset>
-   	  	<filtermapper>
-      	  <replacestring from="-${build.number}-" to="-" />
-		</filtermapper>
-   	  </copy>
-   
-      <!-- prepare sonatype bundle -->
-      <sonatype-bundle dir="${sonatype.loc}" 
-         todir="${sonatype.loc}" 
-         pomTemplate="${basedir}/../pom.template" 
-         artifact="${build.artifactId}" 
-         type="${build.packaging}" 
-         name="${build.deploy.name}" 
-         version="${build.version}" 
-         description="${build.deploy.description}">
-         <includes>
-            <include name="flexunit*.swc" />
-            <include name="pom.xml" />
-         </includes>
-      </sonatype-bundle>
+      <!-- deploy flex swc to sonatype -->
+      <sonatype-deploy
+           binaryFile="${bin.loc}/${build.finalName.flex}.${build.packaging}"
+           todir="${sonatype.loc}/flex"
+           pomTemplate="${basedir}/../pom.template"
+           artifact="${build.artifactId}-flex"
+           type="${build.packaging}"
+           name="${build.deploy.name}"
+           version="${build.version}"
+           description="${build.deploy.description}">
+      </sonatype-deploy>
+
+       <!-- deploy as3 swc to sonatype -->
+       <sonatype-deploy
+           binaryFile="${bin.loc}/${build.finalName.as3}.${build.packaging}"
+           todir="${sonatype.loc}/as3"
+           pomTemplate="${basedir}/../pom.template"
+           artifact="${build.artifactId}-as3"
+           type="${build.packaging}"
+           name="${build.deploy.name}"
+           version="${build.version}"
+           description="${build.deploy.description}">
+       </sonatype-deploy>
    </target>
 </project>
